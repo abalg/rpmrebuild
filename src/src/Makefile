@@ -34,7 +34,7 @@ INCLUDE_SCRIPTS =        \
 
 POPTS       = rpmrebuild_popt popt-without-POPTdesc popt-with-POPTdesc
 SPEC_SCRIPTS = spec.scripts.input spec.scripts.make.sh remove_from_popt.make.include
-MANPAGES     = rpmrebuild.1
+MANPAGES     = rpmrebuild.1 rpmrebuild_plugins.1
 PLUGINS      = file2pacDep
 
 SOURCES =                \
@@ -69,7 +69,7 @@ define Spec
    }
 endef
 
-all: rpmrebuild.spec
+all: rpmrebuild.spec VERSION
 	ln -sf rpmrebuild_popt .popt
 
 rpmrebuild.spec: rpmrebuild.spc spec.scripts Version Release Changelog 
@@ -80,13 +80,18 @@ spec.scripts:
 	rm --force $@
 	/bin/sh spec.scripts.make.sh < $@.input > $@
 
+VERSION: Version
+	rm --force $@
+	read VERSION < $< && echo "VERSION='$$VERSION'" > $@
+
+
 install:
 	mkdir --parent                   $(TARGET_DIR)
 	install --mode=555 $(SCRIPTS)    $(TARGET_DIR)
 
 	mkdir --parent                                $(TARGET_LIB)
 	install --mode=555 $(LIB_SCRIPTS)             $(TARGET_LIB)
-	install --mode=444 $(INCLUDE_SCRIPTS)         $(TARGET_LIB)
+	install --mode=444 $(INCLUDE_SCRIPTS) VERSION $(TARGET_LIB)
 	install --mode=444 $(POPTS)                   $(TARGET_LIB)
 	cd $(TARGET_LIB) && ln -sf rpmrebuild_popt .popt
 
