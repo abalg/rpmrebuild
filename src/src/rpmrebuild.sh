@@ -49,6 +49,7 @@ options:
    -k, --keep-perm,
        --pug-from-fs           keep installed files permission, uid and gid
        --pug-from-db (default) use files permission, uid and gid from rpm db
+   -p, --package               use package file, not installed rpm
    -s, --spec-only <spec>      generate specfile only
                                (If <spec> '-' stdout will be used)
    -v, --verbose               verbose
@@ -64,26 +65,26 @@ this program is distributed under GNU General Public License
 function Interrog
 {
 	QF=$1
-	rpm --query --queryformat "${QF}" ${PAQUET}
+	rpm --query $package_flag --queryformat "${QF}" ${PAQUET}
 }
 ###############################################################################
 # build general tags
 function SpecFile
 {
-	HOME=$MY_LIB_DIR rpm --query --spec_spec ${PAQUET}
+	HOME=$MY_LIB_DIR rpm --query $package_flag --spec_spec ${PAQUET}
 }
 ###############################################################################
 # build the list of files in package
 function FilesSpecFile
 {
 	echo "%files"
-	HOME=$MY_LIB_DIR rpm --query --spec_files ${PAQUET} | $MY_LIB_DIR/rpmrebuild_files.sh
+	HOME=$MY_LIB_DIR rpm --query $package_flag --spec_files ${PAQUET} | $MY_LIB_DIR/rpmrebuild_files.sh
 }
 
 ###############################################################################
 function ChangeSpecFile
 {
-	HOME=$MY_LIB_DIR rpm --query --spec_change ${PAQUET} | sed 's/%/%%/g'
+	HOME=$MY_LIB_DIR rpm --query $package_flag --spec_change ${PAQUET} | sed 's/%/%%/g'
 }
 
 ###############################################################################
@@ -126,13 +127,15 @@ batch=""
 filter=""
 rpmdir=""
 editspec=""
+package_flag=""
 speconly=""
 specfile=""
 rpm_verbose="--quiet"
 export keep_perm=""
 PAQUET=""
+PAQUET_NAME=""
 
-while getopts "bd:ef:hks:vV-:" opt
+while getopts "bd:ef:hkps:vV-:" opt
 do
 	case "$opt" in
 		b) LONG_OPTION=batch;;
@@ -140,6 +143,7 @@ do
 		e) LONG_OPTION=edit-spec;;
 		f) LONG_OPTION=filter;;
 		k) LONG_OPTION=keep-perm;;
+		p) LONG_OPTION=package;;
 		s) LONG_OPTION=spec-only;;
 		h) LONG_OPTION=help;;
 		v) LONG_OPTION=verbose;;
@@ -205,6 +209,10 @@ do
 			keep_perm=""
 		;;
 
+		package)  
+                   package_flag="-p"
+                ;;
+
 		spec-only)
 			RequeredArgument
 			spec_only=y
@@ -248,6 +256,7 @@ case $# in
 
    1) # One argument, it's ok
       PAQUET="$1"
+      PAQUET_NAME="$PAQUET"
    ;;
 
    *)
@@ -345,8 +354,8 @@ function SpecGeneration
 {
 	# fabrication fichier spec
 	# build spec file
-	FIC_SPEC=${TMPDIR:-/tmp}/rpmrebuild_$$_${PAQUET}.spec
-	rm -rf ${FIC_SPEC} || return
+	FIC_SPEC=${TMPDIR:-/tmp}/rpmrebuild_$$_${PAQUET_NAME}.spec
+	rm -f ${FIC_SPEC} || return
 
 	eval SpecGen $filter > ${FIC_SPEC} || return
 	return 0
@@ -363,6 +372,17 @@ function SpecEdit
 	return 0
 }
 
+function RpmUnpack
+{
+	CPIO_TEMP=${TMPDIR:-/tmp}/rpmrebuild_$$_${PAQUET_NAME}.cpio
+	rm -f $CPIO_TEMP                                    || return
+	rpm2cpio ${PAQUET} > $CPIO_TEMP                     || return
+	rm    --force --recursive $BUILDROOT                || return
+	mkdir --parent            $BUILDROOT                || return
+	(cd $BUILDROOT && cpio --quiet -idmu ) < $CPIO_TEMP || return
+	rm -f $CPIO_TEMP                                    || return
+	return 0
+}
 ###############################################################################
 function RpmBuild
 {
@@ -370,11 +390,22 @@ function RpmBuild
 	# build rpm file, the src.rpm is not usefull to do
 	# for rpm 4.1 : use rpmbuild
 	BUILDCMD=rpm
+        BUILDROOT=/
 	[ -x /usr/bin/rpmbuild ] && BUILDCMD=rpmbuild
-	$BUILDCMD -bb $rpm_verbose --define "_rpmdir $rpmdir" ${FIC_SPEC} || {
+        if [ \! "x$package_flag" = "x" ]
+        then
+	   BUILDROOT=/tmp/${PAQUET_NAME}-root  ### TEMP !!!, to be fixed !!!!
+           RpmUnpack || return
+        fi
+	$BUILDCMD -bb $rpm_verbose --define "_rpmdir $rpmdir" --define "_buildroot $BUILDROOT" ${FIC_SPEC} || {
    		Error "package '${PAQUET}' build failed"
    		return 1
 	}
+	
+        if [ \! "x$package_flag" = "x" ]
+        then
+	   rm -rf $BUILDROOT || return
+	fi
 	return 0
 }
 
@@ -387,7 +418,7 @@ function RpmFileName
 	arch=$(rpm --specfile --query --queryformat "%{ARCH}"  ${FIC_SPEC})
 	if [ $arch = "(none)" ]
 	then
-		arch=$(rpm  --query --queryformat "%{ARCH}" ${PAQUET})
+		arch=$(rpm  --query $package_flag --queryformat "%{ARCH}" ${PAQUET})
 		RPMFILENAME=$(echo $RPMFILENAME | sed "s/(none)/$arch/g")
 	fi
 
@@ -426,18 +457,27 @@ MY_PLUGIN_DIR=${MY_LIB_DIR}/plugins
 
 PATH=$PATH:$MY_PLUGIN_DIR
 
-CommandLineParsing "$@" || exit
-IsPackageInstalled      || exit
-out=$(VerifyPackage)    || exit
-if [ -n "$out" ]
-then
-	Warning "some files have been modified:\n$out"
-	QuestionsToUser || exit
-fi
-
 # suite a des probleme de dates incorrectes
 # to solve problems of bad date
 export LC_TIME=POSIX
+
+CommandLineParsing "$@" || exit
+if [ "x" = "x$package_flag" ]
+then
+   IsPackageInstalled      || exit
+   out=$(VerifyPackage)    || exit
+   if [ -n "$out" ]
+   then
+	Warning "some files have been modified:\n$out"
+	QuestionsToUser || exit
+   fi
+else
+   PAQUET_NAME="${PAQUET##*/}"
+   [ "x$PAQUET_NAME" = "x" ] && {
+      Error "Package file '$PAQUET' should not be a directory"
+      exit 1
+   }
+fi
 
 if [ -n "$spec_only" ]
 then

@@ -37,17 +37,20 @@ keep installed files permission, uid and gid (do not force to orginal files perm
 \fB\-\-pug\-from\-db (default)\fR
 set files permission, uid and gid as saved in rpm database
 .TP 
-\fB\-h|\-\-help\fR
-Output help information and exit.
-.TP 
 \fB\-s|\-\-spec\-only\fR <\fIspecfile\fP>
 do not rebuild package. only generate specfile.
+.TP 
+\fB\-p|\-\-package\fR
+use package file, not installed rpm (this option is like rpm's -p option)
 .TP 
 \fB\-v|\-\-verbose\fR
 verbose output
 .TP 
 \fB\-V|\-\-version\fR
 Output version information and exit.
+.TP 
+\fB\-h|\-\-help\fR
+Output help information and exit.
 .SH "FILES"
 .LP 
 .TP 
@@ -58,6 +61,9 @@ is used by rpm when building packages (macros)
 contains rpm alias used by rpmrebuild
 .SH "ENVIRONMENT VARIABLES"
 .LP 
+.TP 
+\fBTMPDIR\fP
+Directory for temporal files. If not set /tmp is used.
 .TP 
 \fBVISUAL\fP
 used to specify an editor for specfile
@@ -96,6 +102,9 @@ to build a modified package :
 .LP 
 rpm \-\-rpmrebuild \-\-keep\-perm package
 .LP 
+to build a rpm from another rpm file :
+rpm \-\-rpmrebuild \-\-package \-\-filter filter /usr/src/redhat/i386/package-i386.rpm
+.LP 
 if you have problem with rpm building, and if you know specfile syntax, you can also edit it:
 .LP 
 rpm \-\-rpmrebuild  \-\-edit\-spec package
@@ -127,4 +136,4 @@ It is provided "as is", without any express or implied
 warranties.  See the file COPYING for details.
 .SH "SEE ALSO"
 .LP 
-rpm(8)
+rpm(8), rpmbuild(8)
