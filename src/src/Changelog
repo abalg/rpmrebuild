@@ -1,3 +1,6 @@
+* Sat Dec  3 2002 <valery_reznic@users.sourceforge.net> 1.2-0
+- added long options
+
 * Sat Dec  2 2002 <valery_reznic@users.sourceforge.net> 1.2-0
 - now rpmrebuild can be run as 'rpm --rpmrebuild'
 

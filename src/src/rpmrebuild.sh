@@ -40,16 +40,18 @@ function Usage
 {
    Usage_Message="
 $0 is a tool to rebuild an rpm file from the rpm database
-syntaxe: $0 [options] package
+Usage: $0 [options] package
 options:
-   -b     : batch mode
-   -d dir : specify the working directory
-   -e     : edit specfile
-   -k     : keep installed files perm
-   -s spec: only generate specfile ( If spec '-' stdout will be used)
-   -v     : verbose
-   -V     : print version
-   -h     : print this help
+   -b, --batch                 batch mode
+   -d, --dir <dir>             specify the working directory
+   -e, --editspec              edit specfile
+   -k, --keep_perm             keep installed files perm
+   -s, --spec_only <spec>      generate specfile only
+                               (If <spec> '-' stdout will be used)
+   -v, --verbose               verbose
+   -V, --version               print version
+   -h, --help                  print this help
+
 Copyright (C) 2002 by Eric Gerbier
 this program is distributed under GNU General Public License
 "
@@ -75,6 +77,31 @@ function FilesSpecFile
 	HOME=$MY_LIB_DIR rpm --query --spec_files ${PAQUET} | $MY_LIB_DIR/rpmrebuild_files.sh
 }
 
+function Try_Help
+{
+	echo "Try \`$0 --help' for more information." 1>&2
+}
+
+
+function UnrecognizedOption
+{
+	echo "$0: unrecognized option \`--$LONG_OPTION'" 1>&2
+	Try_Help
+	exit 1
+}
+
+function RequeredArgument
+{
+	[ "x$SHORT_OPTION" = "x-" ] || return 0  # we use short option,
+                                                 # do nothing
+	if [ "$OPTARG_EXIST" ]; then
+		OPTIND=`expr $OPTIND + 1`
+	else
+		echo "$0: option \`$LONG_OPTION' requries an argument" 1>&2
+		Try_Help
+		exit 1
+	fi
+}
 ###############################################################################
 function CommandLineParsing
 {
@@ -89,25 +116,12 @@ rpm_verbose="--quiet"
 export keep_perm=""
 PAQUET=""
 
-while getopts "bd:ef:hks:vV" opt
+while getopts "bd:ef:hks:vV-:" opt
 do
 	case "$opt" in
-		b) 
-			batch=y
-		;;
-
-		d) 
-			rpmdir="$OPTARG"
-			mkdir -p -- "$rpmdir"
-			rpmdir="$(cd $rpmdir && echo $PWD)" || {
-				Error "Can't changedir to '$rpmdir'"
-				exit 1
-			}
-		;;
-
-		e) 
-			editspec=y
-		;;
+		b) LONG_OPTION=batch;;
+		d) LONG_OPTION=dir;;
+		e) LONG_OPTION=editspec;;
 		#f) 
 		#	lookfor=$(type -p $OPTARG)
 		#
@@ -116,35 +130,80 @@ do
 		#	[ -f $OPTARG -a -x $OPTARG ] && filter="$filter | $OPTARG"
 		#;;
 
-		k) 
+		k) LONG_OPTION=keep_perm;;
+		s) LONG_OPTION=spec_only;;
+		h) LONG_OPTION=help;;
+		v) LONG_OPTION=verbose;;
+		V) LONG_OPTION=version;;
+
+                -)
+                   LONG_OPTION="$OPTARG"
+                   if [ $OPTIND -le $# ]; then
+                      eval OPTARG=\$$OPTIND
+                      OPTARG_EXIST=1
+                   else
+                      OPTARG=""
+                      OPTARG_EXIST=""
+                   fi
+
+                ;;
+
+		*)
+			Try_Help
+			exit 1
+		;;
+	esac
+
+	SHORT_OPTION="$opt"
+	case "$LONG_OPTION" in
+		batch)
+			batch=y
+		;;
+
+		dir)
+			RequeredArgument
+			rpmdir="$OPTARG"
+			mkdir -p -- "$rpmdir"
+			rpmdir="$(cd $rpmdir && echo $PWD)" || {
+				Error "Can't changedir to '$rpmdir'"
+				exit 1
+			}
+		;;
+
+		editspec)
+			editspec=y
+		;;
+
+		keep_perm)
 			keep_perm=1
 		;;
 
-		s)
+		spec_only)
+			RequeredArgument
 			spec_only=y
 			specfile="$OPTARG"
 		;;
 
-		h) 
+		help)
 			Usage
 			exit 0
 		;;
 
-		v) 
+		verbose)
 			rpm_verbose="--verbose"
 		;;
 
-		V)
+		version)
 			echo "$VERSION"
 			exit 0
 		;;
 
 		*)
-			Usage
-			exit 1
+			UnrecognizedOption
 		;;
 	esac
 done
+
 
 # If no rpmdir was specified set variable to the native rpmdir value
 if [ -z "$rpmdir" ]
@@ -153,13 +212,23 @@ then
 fi
 
 shift $((OPTIND - 1))
-if [ $# -ne 1 ]
-then
+case $# in
+   0)
 	Error "package argument missing"
-	Usage
+	Try_Help
 	exit 1
-fi
-PAQUET="$1"
+   ;;
+
+   1) # One argument, it's ok
+      PAQUET="$1"
+   ;;
+
+   *)
+	Error "multiple package arguments is illegal"
+	Try_Help
+	exit 1
+   ;;
+esac
 }
 
 ###############################################################################
