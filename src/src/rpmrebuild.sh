@@ -77,12 +77,21 @@ function FilesSpecFile
 	HOME=$MY_LIB_DIR rpm --query --spec_files ${PAQUET} | $MY_LIB_DIR/rpmrebuild_files.sh
 }
 
+###############################################################################
+function ChangeSpecFile
+{
+	echo -e "\n%changelog"
+	HOME=$MY_LIB_DIR rpm --query --spec_change ${PAQUET} | sed 's/%/%%/g'
+}
+
+###############################################################################
 function Try_Help
 {
 	echo "Try \`$0 --help' for more information." 1>&2
 }
 
 
+###############################################################################
 function UnrecognizedOption
 {
 	echo "$0: unrecognized option \`--$LONG_OPTION'" 1>&2
@@ -90,6 +99,7 @@ function UnrecognizedOption
 	exit 1
 }
 
+###############################################################################
 function RequeredArgument
 {
 	[ "x$SHORT_OPTION" = "x-" ] || return 0  # we use short option,
@@ -294,9 +304,9 @@ function SpecGenerationOnly
 {
 	if [ "$specfile" = "-" ]
 	then
-		{ SpecFile && FilesSpecFile; } || return
+		{ SpecFile && FilesSpecFile && ChangeSpecFile; } || return
 	else
-		{ SpecFile && FilesSpecFile; } > $specfile || return
+		{ SpecFile && FilesSpecFile && ChangeSpecFile; } > $specfile || return
 	fi
 	return 0
 }
@@ -316,7 +326,8 @@ function SpecGeneration
                    :
                 fi       &&
    		SpecFile &&
-   		FilesSpecFile
+   		FilesSpecFile &&
+		ChangeSpecFile
 	} > ${FIC_SPEC} || return
 	return 0
 }
