@@ -1,3 +1,8 @@
+2004-11-?? : release 2.0.0-1
+- new infrastructure for plugins
+- added include files
+- updated documentation
+
 2004-08-16 : release 1.4.7-3
 - fixed problem with manpages compression
 - fixed problem with repackaging rpm with ghost files
