@@ -10,7 +10,7 @@ if [ -f /etc/popt ]; then
    (
       need_copy=1
       while :; do
-         if ! read line; then
+         if ! read -r line; then
             [ "x$line" = "x" ] && break
          fi
          case "x$line" in

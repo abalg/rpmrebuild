@@ -212,6 +212,14 @@ do
 			batch=y
 		;;
 
+		comment-missing)
+			RequeredArgument
+			case "x$OPTARG" in
+			   x[yY]*) comment_missing="1";;
+                           *)      comment_missing="0";;
+			esac
+		;;
+
 		dir)
 			RequeredArgument
 			rpmdir="$OPTARG"

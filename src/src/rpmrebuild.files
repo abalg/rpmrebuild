@@ -4,7 +4,6 @@
 %dir /usr/lib/rpmrebuild
      /usr/lib/rpmrebuild/.popt
      /usr/lib/rpmrebuild/rpmrebuild_popt
-     /usr/lib/rpmrebuild/rpmrebuild_dep.sh
      /usr/lib/rpmrebuild/rpmrebuild_files.sh
      /usr/lib/rpmrebuild/run.sh
      /usr/lib/rpmrebuild/popt-without-POPTdesc

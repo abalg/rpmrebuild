@@ -1,3 +1,8 @@
+* Wed Nov 14 2003 <gerbier@users.sourceforge.net> 1.4.5-2
+- remove blank lines in generated specfile to have filter work again
+- read -r on /etc/popt to keep backslash
+- comment-missing option
+
 * Wed Jul  2 2003 <valery_reznic@users.sourceforge.net> 1.4.5-1
 - switch from 'case' to usinf AskYesNo function
 - added -y/--verify flag
