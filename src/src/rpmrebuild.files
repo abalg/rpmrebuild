@@ -5,6 +5,10 @@
      /usr/lib/rpmrebuild/.popt
      /usr/lib/rpmrebuild/rpmrebuild_popt
      /usr/lib/rpmrebuild/rpmrebuild_files.sh
+     /usr/lib/rpmrebuild/run.sh
+     /usr/lib/rpmrebuild/popt-without-POPTdesc
+     /usr/lib/rpmrebuild/popt-with-POPTdesc
+
 %doc AUTHORS
 %doc COPYING
 %doc COPYRIGHT
