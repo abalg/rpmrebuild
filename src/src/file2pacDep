@@ -89,7 +89,8 @@ while read line
 do
 	if [ -z "$fin" ]
 	then
-		if [ -z "$line" ]
+		out=$(echo $line | grep "^%" | egrep -v "%define|%undefine")
+		if [ -n "$out" ]
 		then
 			# multi-line tag
 			transform
