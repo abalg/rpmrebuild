@@ -10,6 +10,11 @@ rpm alias --spec_spec --qf \
 [#OS:           %{OS}\n]\
 [#ARCH:         %{ARCH}\n]\
 \%undefine __check_files\n\
+\%undefine __find_provides\n\
+\%undefine __find_prereq\n\
+\%undefine __find_requires\n\
+\%undefine __find_conflicts\n\
+\%undefine __find_obsoletes\n\
 \%define _missing_doc_files_terminate_build	0\n\
 AutoReq:       no\n\
 AutoProv:      no\n\
@@ -40,12 +45,12 @@ Release:       \%O_Release\n\
 [ExclusiveOs:   %{EXCLUSIVEOS}\n]\
 [Prefix:        %{PREFIXES}\n]\
 [\n%%description\n %{DESCRIPTION}\n\n]\
-[%%trigger%{TRIGGERTYPE} -p %{TRIGGERSCRIPTPROG} -- %{TRIGGERCONDS} \n%{TRIGGERSCRIPTS}\n]\
-[%%pre -p %{PREINPROG}\n%{PREIN}\n\n]\
-[%%post -p %{POSTINPROG}\n%{POSTIN}\n\n]\
-[%%preun -p %{PREUNPROG}\n%{PREUN}\n\n]\
-[%%postun -p %{POSTUNPROG}\n%{POSTUN}\n\n]\
-[%%verifyscript -p %{VERIFYSCRIPTPROG}\n%{VERIFYSCRIPT}\n\n]\
+[%%trigger%{TRIGGERTYPE} -p %{TRIGGERSCRIPTPROG} -- %{TRIGGERCONDS}\n%|TRIGGERSCRIPTS?{%{TRIGGERSCRIPTS}\n}|\n]\
+[%%pre -p %{PREINPROG}\n%|PREIN?{%{PREIN}\n}|\n]\
+[%%post -p %{POSTINPROG}\n%|POSTIN?{%{POSTIN}\n}|\n]\
+[%%preun -p %{PREUNPROG}\n%|PREUN?{%{PREUN}\n}|\n]\
+[%%postun -p %{POSTUNPROG}\n%|POSTUN?{%{POSTUN}\n}|\n]\
+[%%verifyscript -p %{VERIFYSCRIPTPROG}\n%|VERIFYSCRIPT?{%{VERIFYSCRIPT}\n}|\n]\
 %|CHANGELOGTIME?{%%changelog\n[* %{CHANGELOGTIME:day} %{CHANGELOGNAME} \n\n%{CHANGELOGTEXT}\n\n]\n}:{}|\
 '
 
