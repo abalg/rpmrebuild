@@ -873,7 +873,7 @@ function CommandLineParsing
 			P) LONG_OPTION=autoprovide;;
 			R) LONG_OPTION=autorequire;;
 			s) LONG_OPTION=spec-only;;
-			S) LONG_OPTION=chnage--spec-whole;;
+			S) LONG_OPTION=change-spec-whole;;
 			h) LONG_OPTION=help;;
 			v) LONG_OPTION=verbose;;
 			V) LONG_OPTION=version;;
