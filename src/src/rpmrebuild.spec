@@ -23,8 +23,11 @@ one, and do not find the rpm file anymore. this tool is for you
 %setup -c rpmrebuild
 #%patch
 
+%build
+make
+
 %install
-cp -a . ${RPM_BUILD_ROOT-/}
+make ROOT="$RPM_BUILD_ROOT" install
 
 %clean
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf "$RPM_BUILD_ROOT"
