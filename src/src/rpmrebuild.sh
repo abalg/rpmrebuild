@@ -145,7 +145,7 @@ export warning=""
 PAQUET=""
 PAQUET_NAME=""
 
-while getopts "bd:D:ef:hkm:ps:vVw-:" opt
+while getopts "a:bd:D:ef:hkm:ps:vVw-:" opt
 do
 	case "$opt" in
 		a) LONG_OPTION=additional;;
