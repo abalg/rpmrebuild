@@ -11,11 +11,16 @@ One can access the database in shell-script (rpm -q), or throw an API in C langu
 I choose the shell-script for portability, debug facility, and because there was no 
 performance need.
 
-Be careful : the rebuild is done from the installed files, so, if there was some
+warning : 
+---------
+- the rebuild is done from the installed files, so, if there was some
 modifications (config or so), they are reported in the new package.
 but I show what is concerned
+- if the original package was signed, the new one is not
 
-last remark : the rpm software as now a "repackage" option but :
+last remark : 
+-------------
+the rpm software as now a "repackage" option but :
 - it is not documented in man page
 - it can only be used in erase command (rpm -e --repackage), this can be not possible because of dependencies
 - for informations, the result goes to /var/spool/up2date

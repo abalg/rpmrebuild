@@ -11,11 +11,16 @@ On peut y accéder par script, par des requêtes rpm -q, ou via une
 API C. Pour la simplicité et la portabilité, j'ai choisi le shell-script, surtout qu'il 
 n'y a pas de problèmes de performances.
 
-Attention, on reconstruit le package a partir des fichiers installés, donc
+Attention :
+-----------
+- on reconstruit le package a partir des fichiers installés, donc
 toute modification apportée depuis l'installation sera intégrée au nouveau package,
 mais je suis gentil, j'affiche ces modifications.
+- si le package original etait signe, le nouveau ne le sera pas
 
-Dernière remarque, le logiciel rpm intègre depuis peu, une option permettant de
+Dernière remarque 
+-----------------
+le logiciel rpm intègre depuis peu, une option permettant de
 reconstruire un package, mais  :
 - ce n'est pas documente dans le man (seulement dans rpm --help)
 - ce n'est qu'une option de désinstallation (rpm -e --repackage), ce qui n'est pas toujours possible
