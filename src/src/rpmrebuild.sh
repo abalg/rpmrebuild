@@ -26,6 +26,7 @@ function Usage
 	echo "syntaxe : $0 [options] package"
 	echo "options :"
 	echo "-b : batch mode"
+	echo "-f filter : apply an external filter"
 	echo "-h : print this help"
 	echo "-k : keep installed files perm"
 	echo "-v : verbose"
@@ -51,7 +52,7 @@ function SpecFile
 function FilesSpecFile
 {
 	echo "%files"
-	HOME=$MY_CONFIG_DIR rpm --query --spec_files ${PAQUET} | $MY_DIR/rpmrebuild_files.sh
+	HOME=$MY_CONFIG_DIR rpm --query --spec_files ${PAQUET} "$filter " | $MY_DIR/rpmrebuild_files.sh
 }
 
 ##############################################################
@@ -63,10 +64,14 @@ function FilesSpecFile
 MY_CONFIG_DIR=/etc/rpmrebuild
 MY_DIR=$(dirname $0)
 
-while getopts "bhkvV" opt
+filter=
+while getopts "bf:hkvV" opt
 do
 	case "$opt" in
 	b) batch=y;;
+	f) lookfor=$(type -p $OPTARG)
+	[ "$lookfor" ] && OPTARG=$lookfor
+	[ -f $OPTARG -a -x $OPTARG ] && filter="$filter | $OPTARG";;
 	h) Usage; exit 1;;
 	k) export keep_perm=1;;
 	v) verbose="-v";;
@@ -74,6 +79,9 @@ do
 	*) Usage; exit 1;;
 	esac
 done
+
+#echo "filter= $filter"
+#exit
 
 shift $((OPTIND - 1))
 if [ $# -ne 1 ]
