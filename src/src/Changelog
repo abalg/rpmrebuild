@@ -1,7 +1,6 @@
 * Wed Dec 29 2004 <gerbier@users.sourceforge.net> 2.0.0-1
 - add demo, uniq, file2pacDep plugins (exemples)
-- add commented tags (PAYLOAD*, PATCH, SIZE, INSTALLTID, OPTFLAGS, PLATFORM,
-  ARCHIVESIZE,SIGSIZE, SERIAL)
+- add commented tags (PAYLOAD*, PATCH, SIZE, INSTALLTID, OPTFLAGS, PLATFORM, ARCHIVESIZE,SIGSIZE, SERIAL)
 
 * Sun Nov 14 2004 <valery_reznic@users.sourceforge.net> 2.0.0-1
 - rpmrebuild_parser.src - added '--help-plugins' option
