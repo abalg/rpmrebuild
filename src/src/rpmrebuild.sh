@@ -100,12 +100,12 @@ function SpecChange
 
 	if [ -n $autorequire ]
 	then
-		sedscript="${sedscript};s/^AutoReq/#AutoReq/;s/^%undefine __find_requires/#%undefine __find_requires/"
+		sedscript="${sedscript};s/^AutoReq/#AutoReq/;s/^%undefine __find_requires/#undefine __find_requires/;s/^Require/#Require/"
 	fi
 
 	if [ -n $autoprovide ]
 	then
-		sedscript="${sedscript};s/^AutoProv/#AutoProv/;s/^%undefine __find_provides/#%undefine __find_provides/"
+		sedscript="${sedscript};s/^AutoProv/#AutoProv/;s/^%undefine __find_provides/#undefine __find_provides/;s/^Provide/#Provide/"
 	fi
 
 	# apply filter
