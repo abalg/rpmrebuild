@@ -225,7 +225,7 @@ function SpecGenerationOnly
 {
 	if [ "$specfile" = "-" ]
 	then
-		{ SpecFile && FilesSpecFile; } return
+		{ SpecFile && FilesSpecFile; } || return
 	else
 		{ SpecFile && FilesSpecFile; } > $specfile || return
 	fi
