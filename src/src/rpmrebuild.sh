@@ -130,8 +130,11 @@ function SpecFile
 # build the list of files in package
 function FilesSpecFile
 {
+	local FILES=$RPMREBUILD_TMPDIR/${PAQUET_NAME}.files.in
+	HOME=$MY_LIB_DIR rpm --query $package_flag --spec_files ${PAQUET} > $FILES || return
 	echo "%files"
-	HOME=$MY_LIB_DIR rpm --query $package_flag --spec_files ${PAQUET} | $MY_LIB_DIR/rpmrebuild_files.sh
+	$MY_LIB_DIR/rpmrebuild_files.sh < $FILES || return
+	return 0
 }
 
 ###############################################################################
@@ -451,7 +454,7 @@ do
 		;;
 
 		pug-from-f | \
-		pug-from-fs) Alias to keep-perm
+		pug-from-fs) # Alias to keep-perm
 			keep_perm=1
 		;;
 
@@ -540,7 +543,15 @@ case $# in
 
    1) # One argument, it's ok
       PAQUET="$1"
-      PAQUET_NAME="$PAQUET"
+      if [ "x$package_flag" = "x" ]; then
+         PAQUET_NAME="$PAQUET"
+      else
+         PAQUET_NAME="${PAQUET##*/}"
+         [ "x$PAQUET_NAME" = "x" ] && {
+            Error "Package file '$PAQUET' should not be a directory"
+            exit 1
+         }
+      fi
    ;;
 
    *)
@@ -632,7 +643,7 @@ function SpecGeneration
 {
 	# fabrication fichier spec
 	# build spec file
-	FIC_SPEC=$RPMREBUILD_TMPDIR/${PAQUET_NAME}.spec.$$
+	FIC_SPEC=$RPMREBUILD_TMPDIR/${PAQUET_NAME}.spec
 	rm -f ${FIC_SPEC} || return
 
 	eval SpecGen $filter > ${FIC_SPEC} || return
@@ -660,7 +671,7 @@ function RpmUnpack
 	   Error "Internal '$BUILDROOT' can not be '/'." 
            return 1
 	}
-	CPIO_TEMP=$RPMREBUILD_TMPDIR/${PAQUET_NAME}.cpio.$$
+	CPIO_TEMP=$RPMREBUILD_TMPDIR/${PAQUET_NAME}.cpio
 	rm -f $CPIO_TEMP                                    || return
 	rpm2cpio ${PAQUET} > $CPIO_TEMP                     || return
 	rm    --force --recursive $BUILDROOT                || return
@@ -692,15 +703,6 @@ function RpmBuild
    		return 1
 	}
 	
-        [ "x$package_flag" = "x" ] || {
-	   # When we use package BUILDROOT should not be /,
-	   # but to be sure test it one more time.
-	   [ "x$BUILDROOT" = "x/" ] && {
-	      Error "Internal '$BUILDROOT' can not be '/'." 
-              return 1
-	   }
-	   rm -rf $BUILDROOT || return
-	}
 	return 0
 }
 
@@ -738,9 +740,7 @@ function InstallationTest
 function my_exit
 {
 	st=$?	# save status
-	rm -f ${FIC_SPEC}  # remove spec file
-	rm -f ${CPIO_TEMP} # remove package's cpio file
-	[ "x$BUILDROOT" = "x/" ] || rm -rf $BUILDROOT
+	rm -rf $RPMREBUILD_TMPDIR
 	exit $st
 }
 ##############################################################
@@ -756,14 +756,14 @@ MY_PLUGIN_DIR=${MY_LIB_DIR}/plugins
 
 PATH=$PATH:$MY_PLUGIN_DIR
 
-RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild}
-mkdir -p $RPMREBUILD_TMPDIR || exit
-
 # suite a des probleme de dates incorrectes
 # to solve problems of bad date
 export LC_TIME=POSIX
 
 CommandLineParsing "$@" || exit
+RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild.$$}
+mkdir -p $RPMREBUILD_TMPDIR || exit
+
 if [ "x" = "x$package_flag" ]
 then
    BUILDROOT="/"
@@ -778,11 +778,6 @@ then
       :
    fi
 else
-   PAQUET_NAME="${PAQUET##*/}"
-   [ "x$PAQUET_NAME" = "x" ] && {
-      Error "Package file '$PAQUET' should not be a directory"
-      exit 1
-   }
    keep_perm=""  # Be sure use perm, owner, group from the pkg query.
    BUILDROOT=$RPMREBUILD_TMPDIR/${PAQUET_NAME}-root
 fi
