@@ -12,15 +12,15 @@ RPM_DEFINES =                              \
    --define '_srcrpmdir $(RPM_SRPMS_DIR)'  \
    --define '_rpmfilename %%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm'
 
-TAR_FILE=$(RPM_SOURCE_DIR)/rpmrebuild.tar.gz
-TARGET_DIR = $(ROOT)/usr/local/bin
-TARGET_ETC = $(ROOT)/etc/rpmrebuild
-TARGET_LIB = $(ROOT)/usr/lib/rpmrebuild
-TARGET_PLUGIN = $(ROOT)/usr/lib/rpmrebuild/plugins
-TARGET_MAN = $(ROOT)/usr/local/man/man1
+TAR_FILE =$(RPM_SOURCE_DIR)/rpmrebuild.tar.gz
 
-SCRIPTS     = rpmrebuild.sh 
-LIB_SCRIPTS = rpmrebuild_files.sh rpmrebuild_buildroot.sh run.sh
+TARGET_DIR    = $(ROOT)/usr/local/bin
+TARGET_LIB    = $(ROOT)/usr/lib/rpmrebuild
+TARGET_PLUGIN = $(ROOT)/usr/lib/rpmrebuild/plugins
+TARGET_MAN    = $(ROOT)/usr/local/man/man1
+
+SCRIPTS     = rpmrebuild 
+LIB_SCRIPTS = rpmrebuild.sh rpmrebuild_files.sh rpmrebuild_buildroot.sh run.sh
 POPTS       = rpmrebuild_popt popt-without-POPTdesc popt-with-POPTdesc
 SPEC_SCRIPTS = spec.scripts.input spec.scripts.make.sh remove_from_popt.make.include
 MANPAGES     = rpmrebuild.1
@@ -58,6 +58,7 @@ define Spec
 endef
 
 all: rpmrebuild.spec
+	ln -sf rpmrebuild_popt .popt
 
 rpmrebuild.spec: rpmrebuild.spc spec.scripts Version Release Changelog 
 	rm --force $@
@@ -70,7 +71,6 @@ spec.scripts:
 install:
 	mkdir --parent                   $(TARGET_DIR)
 	install --mode=555 $(SCRIPTS)    $(TARGET_DIR)
-	cd $(TARGET_DIR) && ln -sf rpmrebuild.sh rpmrebuild
 
 	mkdir --parent                                $(TARGET_LIB)
 	install --mode=555 $(LIB_SCRIPTS)             $(TARGET_LIB)

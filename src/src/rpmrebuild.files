@@ -1,9 +1,9 @@
 %defattr(-,root,root)
-     /usr/local/bin/rpmrebuild.sh
      /usr/local/bin/rpmrebuild
 %dir /usr/lib/rpmrebuild
      /usr/lib/rpmrebuild/.popt
      /usr/lib/rpmrebuild/rpmrebuild_popt
+     /usr/lib/rpmrebuild/rpmrebuild.sh
      /usr/lib/rpmrebuild/rpmrebuild_files.sh
      /usr/lib/rpmrebuild/rpmrebuild_buildroot.sh
      /usr/lib/rpmrebuild/run.sh

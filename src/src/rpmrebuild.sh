@@ -136,7 +136,7 @@ function FilesSpecFile
 	rm -f $FILES_IN || return
 	HOME=$MY_LIB_DIR rpm --query $package_flag --spec_files ${PAQUET} > $FILES_IN || return
 	echo "%files"
-	$MY_LIB_DIR/rpmrebuild_files.sh < $FILES_IN || return
+	/bin/bash $MY_LIB_DIR/rpmrebuild_files.sh < $FILES_IN || return
 	return 0
 }
 
@@ -684,7 +684,7 @@ function CreateBuildRoot
 		if [ "x$modify" = "x" ]; then
 			: # Do nothing
 		else
-			$MY_LIB_DIR/rpmrebuild_buildroot.sh $BUILDROOT < $FILES_IN || return
+			/bin/bash $MY_LIB_DIR/rpmrebuild_buildroot.sh $BUILDROOT < $FILES_IN || return
 		fi
 	else
         	RpmUnpack || return
@@ -760,7 +760,8 @@ function my_exit
 
 WantContinue="Do you want to continue"
 
-MY_LIB_DIR=/usr/lib/rpmrebuild
+D=`dirname $0` || exit
+MY_LIB_DIR="$D"
 MY_PLUGIN_DIR=${MY_LIB_DIR}/plugins
 
 PATH=$PATH:$MY_PLUGIN_DIR
