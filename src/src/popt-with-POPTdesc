@@ -1,0 +1,10 @@
+### RPMREBUILD START. Don't change this string. rpmrebuild use it.###
+########################################################
+
+rpm alias --rpmrebuild --rpmrebuild-int --\
+   --POPTdesc=$"recreate rpm package. 'rpm --rpmrebuild -h' for more info."
+
+rpm exec --rpmrebuild-int /usr/lib/rpmrebuild/run.sh
+
+###################################################################
+### RPMREBUILD END. Don't change this string. rpmrebuild use it.###
