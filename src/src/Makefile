@@ -82,15 +82,15 @@ all: rpmrebuild.spec VERSION
 
 rpmrebuild.spec: rpmrebuild.spc spec.scripts Version Release Changelog 
 	$(RM) $@
-	$(Spec) > $@
+	$(Spec) > $@ || { $(RM) $@; exit 1; }
 
 spec.scripts:
 	$(RM) $@
-	/bin/sh spec.scripts.make.sh < $@.input > $@
+	/bin/sh spec.scripts.make.sh < $@.input > $@ || { $(RM) $@; exit 1; }
 
 VERSION: Version
 	$(RM) $@
-	read VERSION < $< && echo "VERSION='$$VERSION'" > $@
+	read VERSION < $< && echo "VERSION='$$VERSION'" > $@ || { $(RM) $@; exit 1; }
 
 
 install:
