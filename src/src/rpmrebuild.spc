@@ -6,7 +6,7 @@ Summary(fr): un outil pour construire un package depuis une base rpm
 Name: rpmrebuild
 License: GPL
 Group: Utilities/System
-BuildRoot: /tmp/rpmrebuild-root
+BuildRoot: %{_topdir}/installroots/%{name}-%{version}-%{release}
 Source: rpmrebuild.tar.gz
 # Following are optional fields
 Url: http://rpmrebuild.sourceforge.net
