@@ -130,10 +130,10 @@ function SpecFile
 # build the list of files in package
 function FilesSpecFile
 {
-	local FILES=$RPMREBUILD_TMPDIR/${PAQUET_NAME}.files.in
-	HOME=$MY_LIB_DIR rpm --query $package_flag --spec_files ${PAQUET} > $FILES || return
+	rm -f $FILES_IN || return
+	HOME=$MY_LIB_DIR rpm --query $package_flag --spec_files ${PAQUET} > $FILES_IN || return
 	echo "%files"
-	$MY_LIB_DIR/rpmrebuild_files.sh < $FILES || return
+	$MY_LIB_DIR/rpmrebuild_files.sh < $FILES_IN || return
 	return 0
 }
 
@@ -519,12 +519,12 @@ do
 	esac
 done
 
-if [ "x$package_flag" = "x" ]; then
-   if [ \! "x$modify" = "x" ]; then
-      Error "-m (--modify) option can be used only with -p (--package) option."
-      exit 1
-   fi
-fi
+#if [ "x$package_flag" = "x" ]; then
+#   if [ \! "x$modify" = "x" ]; then
+#      Error "-m (--modify) option can be used only with -p (--package) option."
+#      exit 1
+#   fi
+#fi
 
 # If no rpmdir was specified set variable to the native rpmdir value
 # (with respect to possible define)
@@ -547,10 +547,12 @@ case $# in
          PAQUET_NAME="$PAQUET"
       else
          PAQUET_NAME="${PAQUET##*/}"
-         [ "x$PAQUET_NAME" = "x" ] && {
+         if [ "x$PAQUET_NAME" = "x" ]; then
             Error "Package file '$PAQUET' should not be a directory"
             exit 1
-         }
+         else
+	   :
+	 fi
       fi
    ;;
 
@@ -643,7 +645,6 @@ function SpecGeneration
 {
 	# fabrication fichier spec
 	# build spec file
-	FIC_SPEC=$RPMREBUILD_TMPDIR/${PAQUET_NAME}.spec
 	rm -f ${FIC_SPEC} || return
 
 	eval SpecGen $filter > ${FIC_SPEC} || return
@@ -681,6 +682,20 @@ function RpmUnpack
 	return 0
 }
 ###############################################################################
+function CreateBuildRoot
+{
+        if [ "x$package_flag" = "x" ]; then
+		if [ "x$modify" = "x" ]; then
+			: # Do nothing
+		else
+			$MY_LIB_DIR/rpmrebuild_buildroot.sh $BUILDROOT < $FILES_IN || return
+		fi
+	else
+        	RpmUnpack || return
+	fi 
+	return 0
+}
+
 function RpmBuild
 {
 	# reconstruction fichier rpm : le src.rpm est inutile
@@ -688,15 +703,13 @@ function RpmBuild
 	# for rpm 4.1 : use rpmbuild
 	BUILDCMD=rpm
 	[ -x /usr/bin/rpmbuild ] && BUILDCMD=rpmbuild
-        [ "x$package_flag" = "x" ] || {
-           RpmUnpack || return
-           [ "x$modify" = "x" ] || {
-	      export RPM_BUILD_ROOT="$BUILDROOT"
-              eval $modify || {
-	         Error "package '${PAQUET}' build failed due to modify script problems."
-	         return 1
-	      }
-           }
+	CreateBuildRoot || return
+        [ "x$modify" = "x" ] || {
+		export RPM_BUILD_ROOT="$BUILDROOT"
+		eval $modify || {
+			Error "package '${PAQUET}' build failed due to modify script problems."
+			return 1
+		}
         }
 	eval $BUILDCMD $rpm_defines -bb $rpm_verbose $additional ${FIC_SPEC} || {
    		Error "package '${PAQUET}' build failed"
@@ -740,7 +753,7 @@ function InstallationTest
 function my_exit
 {
 	st=$?	# save status
-	rm -rf $RPMREBUILD_TMPDIR
+	#rm -rf $RPMREBUILD_TMPDIR
 	exit $st
 }
 ##############################################################
@@ -764,9 +777,10 @@ CommandLineParsing "$@" || exit
 RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild.$$}
 mkdir -p $RPMREBUILD_TMPDIR || exit
 
+BUILDROOT=$RPMREBUILD_TMPDIR/${PAQUET_NAME}-root
 if [ "x" = "x$package_flag" ]
 then
-   BUILDROOT="/"
+   [ "x$modify" = "x" ] && BUILDROOT="/"
    IsPackageInstalled      || exit
    if [ "$verify" -eq "1" ]; then
       out=$(VerifyPackage)    || exit
@@ -779,8 +793,10 @@ then
    fi
 else
    keep_perm=""  # Be sure use perm, owner, group from the pkg query.
-   BUILDROOT=$RPMREBUILD_TMPDIR/${PAQUET_NAME}-root
 fi
+
+FIC_SPEC=$RPMREBUILD_TMPDIR/${PAQUET_NAME}.spec
+FILES_IN=$RPMREBUILD_TMPDIR/${PAQUET_NAME}.files.in
 
 if [ -n "$spec_only" ]
 then
