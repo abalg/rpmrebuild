@@ -17,8 +17,24 @@ TAR_FILE=$(RPM_SOURCE_DIR)/rpmrebuild.tar.gz
 TARGET_DIR = $(ROOT)/usr/local/bin
 
 SCRIPTS = rpmrebuild.sh rpmrebuild_files.sh
-SOURCES = $(SCRIPTS) .popt MANIFEST Makefile Changelog rpmrebuild.spec
-all: 
+SOURCES =           \
+   $(SCRIPTS)       \
+   .popt            \
+   MANIFEST         \
+   Makefile         \
+   Changelog        \
+   rpmrebuild.spc   \
+   rpmrebuild.files \
+   Version          \
+   Release          \
+
+TAR_NAMES = $(SOURCES) rpmrebuild.spec
+
+all: rpmrebuild.spec
+
+rpmrebuild.spec: rpmrebuild.spc Version Release Changelog 
+	rm --force $@
+	Version="`cat Version`" && Release="`cat Release`" && { echo "Version: $$Version" && echo "Release: $$Release" && cat rpmrebuild.spc && echo "%changelog" && cat Changelog; } > $@ 
 
 install:
 	mkdir --parent $(TARGET_DIR)
@@ -26,8 +42,8 @@ install:
 	install --mode=444 .popt      $(TARGET_DIR)
 	cd $(TARGET_DIR) && ln -sfd .popt rpmrebuild_popt
 
-tar:
-	List=`cat MANIFEST` && tar -cvzf $(TAR_FILE) $(SOURCES) $$List
+tar:	rpmrebuild.spec
+	List=`cat MANIFEST` && tar -cvzf $(TAR_FILE) $(TAR_NAMES) $$List
 
 rpm:	tar
 	mkdir --parent $(RPM_BUILD_DIR)
@@ -35,4 +51,4 @@ rpm:	tar
 	rpm --resign rpmrebuild*.rpm
 
 clean:
-	rm -rf $(ROOT) $(RPM_BUILD_DIR)
+	rm -rf $(ROOT) $(RPM_BUILD_DIR) rpmrebuild.spec *.rpm rpmrebuild.tar.gz
