@@ -256,7 +256,7 @@ function CreateProcessing
 		;;
 
 		Xfini)
-			[ "X$need_change_spec" = "Xyes" ] && {
+			if [ "X$need_change_spec" = "Xyes" ]; then
 				SPEC_IN="$FIC_SPEC.$spec_index"
 				case "x$specfile" in
 					x) # No spec-only flag
@@ -275,7 +275,9 @@ function CreateProcessing
 				# fini
 				   $cmd || return
 				CMD_FINI
-			}
+			else
+				:
+			fi
 		;;
 
 		Xedit)
