@@ -132,6 +132,9 @@ function spec_concatenate
 		$SPEC_PROVIDES.$si_provides         \
 		$SPEC_REQUIRES.$si_requires         \
 	|| return
+	echo -e                                     \
+		"\n%description"                    \
+	|| return
 	cat                                         \
 		$SPEC_DESCRIPTION.$si_description   \
 		$SPEC_FILES.$si_files               \

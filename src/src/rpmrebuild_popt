@@ -128,7 +128,7 @@ rpm alias --spec_requires --qf \
 
 rpm alias --spec_description --qf \
 '\
-[%%description\n %{DESCRIPTION}\n\n]\
+[%{DESCRIPTION}\n]\
 '
 
 rpm alias --spec_files --qf \
