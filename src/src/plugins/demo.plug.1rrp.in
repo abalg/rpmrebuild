@@ -1,6 +1,6 @@
 .TH "demo.plug" "1rrp" "@VERSION@" "Eric Gerbier" "rpmrebuild plugin"
 .SH "NAME"
-demo \- a plugin for rpmrebuild, to show how the plugin work
+demo.plug \- a plugin for rpmrebuild, to show how the plugin work
 .SH "SYNOPSIS"
 rpmrebuild \-\-include demo.plug <\fIpackagename\fP>
 .br 

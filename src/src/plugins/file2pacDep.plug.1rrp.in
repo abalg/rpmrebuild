@@ -1,6 +1,6 @@
 .TH "file2pacDep" "1rrp" "@VERSION@" "Eric Gerbier" "rpmrebuild plugin"
 .SH "NAME"
-file2pacDep \- a plugin for rpmrebuild, to change file dependencies into package dependencies
+file2pacDep.plug \- a plugin for rpmrebuild, to change file dependencies into package dependencies
 .SH "SYNOPSIS"
 rpmrebuild \-\-include file2pacDep.plug <\fIpackagename\fP>
 .br 
