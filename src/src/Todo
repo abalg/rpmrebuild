@@ -4,3 +4,6 @@ what now ?
 - sort dependencies to remove duplicates ?
 
 write a graphical interface ?
+
+something about package signature ?
+(detect passed signature with SIGGPG, ask for new one .)

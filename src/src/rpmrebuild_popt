@@ -19,8 +19,20 @@ rpm alias --spec_preamble --qf '\
 %|SOURCERPM?{\
 [#SOURCERPM:    %{SOURCERPM}\n]\
 }|\
+%|PATCH?{\
+[#PATCH:    %{PATCH}\n]\
+}|\
 %|RPMVERSION?{\
 [#RPMVERSION:   %{RPMVERSION}\n]\
+}|\
+%|PAYLOADFORMAT?{\
+[#PAYLOADFORMAT:   %{PAYLOADFORMAT}\n]\
+}|\
+%|PAYLOADCOMPRESSOR?{\
+[#PAYLOADCOMPRESSOR:   %{PAYLOADCOMPRESSOR}\n]\
+}|\
+%|PAYLOADFLAGS?{\
+[#PAYLOADFLAGS:   %{PAYLOADFLAGS}\n]\
 }|\
 %|COOKIE?{\
 [#COOKIE:       %{COOKIE}\n]\
@@ -28,14 +40,35 @@ rpm alias --spec_preamble --qf '\
 %|INSTALLTIME?{\
 [#INSTALLTIME:  %{INSTALLTIME:date}\n]\
 }|\
+%|INSTALLTID?{\
+[#INSTALLTID:  %{INSTALLTID:date}\n]\
+}|\
 %|INSTPREFIXES?{\
 [#INSTPREFIXES: %{INSTPREFIXES}\n]\
 }|\
 %|OS?{\
 [#OS:           %{OS}\n]\
 }|\
+%|OPTFLAGS?{\
+[#OPTFLAGS:           %{OPTFLAGS}\n]\
+}|\
+%|PLATFORM?{\
+[#PLATFORM:           %{PLATFORM}\n]\
+}|\
+%|SIZE?{\
+[#SIZE:           %{SIZE}\n]\
+}|\
+%|ARCHIVESIZE?{\
+[#ARCHIVESIZE:           %{ARCHIVESIZE}\n]\
+}|\
+%|SIGSIZE?{\
+[#SIGSIZE:           %{SIGSIZE}\n]\
+}|\
 %|ARCH?{\
 [#ARCH:         %{ARCH}\n]\
+}|\
+%|BUILDARCHS?{\
+[BUILDARCHS:     %{BUILDARCHS}\n]\
 }|\
 %|NAME?{\
 [Name:          %{NAME}\n]\
@@ -67,11 +100,11 @@ rpm alias --spec_preamble --qf '\
 %|PACKAGER?{\
 [Packager:      %{PACKAGER}\n]\
 }|\
-%|ARCH?{\
-[BuildArch:     %{ARCH}\n]\
-}|\
 %|EPOCH?{\
 [Epoch:         %{EPOCH}\n]\
+}|\
+%|SERIAL?{\
+[#SERIAL:         %{SERIAL}\n]\
 }|\
 %|ICON?{\
 [Icon:          %{ICON}\n]\
@@ -189,3 +222,4 @@ rpm alias --spec_changelog --qf \
 '\
 %|CHANGELOGTIME?{[* %{CHANGELOGTIME:day} %{CHANGELOGNAME}\n\n%{CHANGELOGTEXT}\n\n]}|\
 '
+

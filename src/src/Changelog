@@ -1,5 +1,10 @@
+* Wed Dec 29 2004 <gerbier@users.sourceforge.net> 2.0.0-1
+- add demo, uniq, file2pacDep plugins (exemples)
+- add commented tags (PAYLOAD*, PATCH, SIZE, INSTALLTID, OPTFLAGS, PLATFORM,
+  ARCHIVESIZE,SIGSIZE, SERIAL)
+
 * Sun Nov 14 2004 <valery_reznic@users.sourceforge.net> 2.0.0-1
-- rpmrebuild_parser.src - added '--help-pligins' option
+- rpmrebuild_parser.src - added '--help-plugins' option
 
 * Wed Oct 26 2004 <valery_reznic@users.sourceforge.net> 2.0.0-1
 - processing of /change/modify/edit was moved to the processng_func.src
