@@ -65,13 +65,14 @@ this program is distributed under GNU General Public License
 function Interrog
 {
 	QF=$1
-	rpm --query $package_flag --queryformat "${QF}" ${PAQUET}
+	rpm --query --i18ndomains /dev/null $package_flag --queryformat "${QF}" ${PAQUET}
 }
 ###############################################################################
 # build general tags
 function SpecFile
 {
-	HOME=$MY_LIB_DIR rpm --query $package_flag --spec_spec ${PAQUET}
+	HOME=$MY_LIB_DIR rpm --query --i18ndomains /dev/null $package_flag --spec_spec ${PAQUET}
+                                               
 }
 ###############################################################################
 # build the list of files in package
