@@ -227,13 +227,18 @@ function SpecGenerationOnly
 {
 	if [ "$specfile" = "-" ]
 	then
-		SpecFile && FilesSpecFile || return
+		{ 
+		SpecFile && FilesSpecFile 
+		} || return
 	else
-		{ SpecFile && FilesSpecFile } > $specfile || return
+		{ 
+		SpecFile && FilesSpecFile 
+		} > $specfile || return
 	fi
 	return 0
 }
 
+###############################################################################
 function SpecGeneration
 {
 	# fabrication fichier spec
@@ -253,6 +258,7 @@ function SpecGeneration
 	return 0
 }
 
+###############################################################################
 function SpecEdit
 {
 	# -e option : edit the spec file
@@ -284,7 +290,7 @@ function RpmFileName
 	QF_RPMFILENAME=$(rpm --eval %_rpmfilename) || return
 	RPMFILENAME=$(rpm --specfile --query --queryformat "${QF_RPMFILENAME}" ${FIC_SPEC}) || return
 	[ -n "$RPMFILENAME" ] || return
-	RPMFILENAME="$rpmdir$RPMFILENAME"
+	RPMFILENAME="${rpmdir}/${RPMFILENAME}"
 	return 0
 }
 
@@ -299,6 +305,7 @@ function InstallationTest
 	}
 	return 0
 }
+###############################################################################
 
 function my_exit
 {
