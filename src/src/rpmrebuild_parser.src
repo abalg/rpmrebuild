@@ -96,11 +96,11 @@ function CommandLineParsing
 	autoprovide="no"
 	autorequire="no"
 	batch="no"
+	need_change_files="no"
 	need_change_spec="no"
 	rpm_defines=""
 	rpmdir=""
 	package_flag=""
-	modify="no"
 	spec_only="no"
 	specfile=""
 	verify="yes"
@@ -546,7 +546,7 @@ function CommandLineParsing
 	done || return
 
 	CreateProcessing "fini" || return
-	[ "X$spec_only" = "Xyes" -a "X$modify" = "Xyes" ] && {
+	[ "X$spec_only" = "Xyes" -a "X$need_change_files" = "Xyes" ] && {
 		Error "You can't use both '--spec_only' and '--change-files/--change-all'"
 		return 1
 	}

@@ -294,7 +294,7 @@ function CreateProcessing
 		;;
 
 		Xall)
-			modify="yes"
+			need_change_files="yes"
 			need_change_spec="yes"
 			SPEC_IN="$FIC_SPEC.$spec_index"
 			spec_index=$[spec_index + 1]
@@ -314,7 +314,7 @@ function CreateProcessing
 		;;
 
 		Xfiles)
-			modify="yes"
+			need_change_files="yes"
 			cat <<-CMD_FILES >> $Output || return
 			# files
 			(
@@ -372,7 +372,7 @@ function RpmUnpack
 function CreateBuildRoot
 {
         if [ "x$package_flag" = "x" ]; then
-		if [ "X$modify" = "Xyes" ]; then
+		if [ "X$need_change_files" = "Xyes" ]; then
 			/bin/bash $MY_LIB_DIR/rpmrebuild_buildroot.sh $BUILDROOT < $FILES_IN || return
 		else
 			: # Do nothing
@@ -432,13 +432,17 @@ function InstallationTest
 function Processing
 {
 	# Have we something to do ?
-	[ "X$need_change_spec" = "Xyes" -o "X$modify" = "Xyes" ] || return 0
-	local Aborted="no"
-	local MsgFail="package '$PAQUET' modification failed."
+	if [ "X$need_change_spec" = "Xyes" -o "X$need_change_files" = "Xyes" ]; then
+		local Aborted="no"
+		local MsgFail="package '$PAQUET' modification failed."
 
-	source $RPMREBUILD_PROCESSING && return 0
-	[ "X$Aborted" = "Xyes" ] || Error "$MsgFail"
-	return 1 
+		source $RPMREBUILD_PROCESSING && return 0
+		[ "X$Aborted" = "Xyes" ] || Error "$MsgFail"
+		return 1 
+	else
+		: # Do nothing
+	fi
+	return 0
 }
 ##############################################################
 # Main Part                                                  #
