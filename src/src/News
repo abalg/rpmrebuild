@@ -1,40 +1,13 @@
-2004-11-?? : release 2.0.0-1
-- new infrastructure for plugins
-- added include files
-- updated documentation
-
-2004-08-16 : release 1.4.7-3
-- fixed problem with manpages compression
-- fixed problem with repackaging rpm with ghost files
-- change dependency from rpm-build package to rpmbuild file for suses distrib
-- some fixes from rmlint
-
-2004-07-21 : release 1.4.7-1
-- remove some restrictions on rpmrebuild use
-- fix some bugs
-
-2004-05-25 : release 1.4.6-4
-- better security : change default working directories
-- bug fix (autorequire, option analysis)
-
-2004-05-19 : release 1.4.6-3
-- add remaining dependencies, add long options
-
-2004-05-06 : release 1.4.6-2
-- split in 2 packages for rpm <4 and rpm >4 (add rpm-build dependency)
-
-2004-01-01 : release 1.4.6-1
-add --autoprovide/--autorequire flags
-
-2003-11-19 : release 1.4.5-2
-fix some bugs
-
-2003-07-10 : release 1.4.5-1 
-- add some flags to improve performances (-y/-c)
-
-2003-06-18 : release 1.4.4-1
-- now can modify an rpm file
-
-2003-06-10 : release 1.4.3-1
-- to work on rpm 4.2 (redhat 9 for exemple)
-
+* 2005-03-04 : release 2.0.2-1, bug fix for 2.x releases (BuildArch)
+* 2005-02-25 : release 2.0.1-1, fix for rpm-4.3
+* 2005-02-21 : release 2.0.0-1, major code rewrite to be more modular, allow change in specific spec sections
+* 2004-08-16 : release 1.4.7-3, dependency changes to work on suse, rpmlint check, bug fix
+* 2004-07-20 : release 1.4.7-1, bugs fix, working on file packages, avoid some sed treatments
+* 2004-05-24 : release 1.4.6-4, security: change working directory to ~/.tmp/rpmrebuild, bug fix
+* 2004-05-19 : release 1.4.6-3, add remaining dependencies, long option abbreviation
+* 2004-05-06 : release 1.4.6-2, add rpm-build dependency for rpm > 4.0
+* 2004-01-01 : release 1.4.6-1, add --autoprovide and --autorequire flags
+* 2003-11-14 : release 1.4.5-2, bug fix
+* 2003-07-10 : release 1.4.5-1, add some flags to improve performances (-y/-c)
+* 2003-06-18 : release 1.4.4-1, now can modify an rpm file
+* 2003-06-10 : release 1.4.3-1, to work on rpm 4.2 (redhat 9 for exemple)
