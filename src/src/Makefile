@@ -27,6 +27,9 @@ LIB_SCRIPTS =              \
    rpmrebuild_ghost.sh     \
    run.sh
 
+INCLUDE_SCRIPTS =        \
+   rpmrebuild_parser.src \
+
 POPTS       = rpmrebuild_popt popt-without-POPTdesc popt-with-POPTdesc
 SPEC_SCRIPTS = spec.scripts.input spec.scripts.make.sh remove_from_popt.make.include
 MANPAGES     = rpmrebuild.1
@@ -35,6 +38,7 @@ PLUGINS      = file2pacDep
 SOURCES =                \
    $(SCRIPTS)            \
    $(LIB_SCRIPTS)        \
+   $(INCLUDE_SCRIPTS)    \
    $(POPTS)              \
    $(SPEC_SCRIPTS)       \
    $(MANPAGES)		 \
@@ -80,6 +84,7 @@ install:
 
 	mkdir --parent                                $(TARGET_LIB)
 	install --mode=555 $(LIB_SCRIPTS)             $(TARGET_LIB)
+	install --mode=444 $(INCLUDE_SCRIPTS)         $(TARGET_LIB)
 	install --mode=444 $(POPTS)                   $(TARGET_LIB)
 	cd $(TARGET_LIB) && ln -sf rpmrebuild_popt .popt
 

@@ -4,6 +4,7 @@
      /usr/lib/rpmrebuild/.popt
      /usr/lib/rpmrebuild/rpmrebuild_popt
      /usr/lib/rpmrebuild/rpmrebuild.sh
+     /usr/lib/rpmrebuild/rpmrebuild_parser.src
      /usr/lib/rpmrebuild/rpmrebuild_files.sh
      /usr/lib/rpmrebuild/rpmrebuild_buildroot.sh
      /usr/lib/rpmrebuild/rpmrebuild_ghost.sh
