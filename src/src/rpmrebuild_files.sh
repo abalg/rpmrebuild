@@ -59,7 +59,16 @@ while :; do
    read file_lang
    read file
 
-   [[ $file = *\** ]] && file=$(echo "$file"|sed 's/\*/\\*/')
+   # bash 2 syntaxe
+   #[[ $file = *\** ]] && file=$(echo "$file"|sed 's/\*/\\*/')
+   # bash 1 but with a fork (grep)
+   #wild=$(echo $file | grep "\*")
+   #[ -n "$wild" ] && file=$(echo "$file"|sed 's/\*/\\*/')
+   # quick and portable
+   case "x$file" in
+      x*\**) file=$(echo "$file"|sed 's/\*/\\*/');;
+      x*) ;;
+   esac
    miss_str=""
    if [ "x$comment_missing" = "x1" ]; then
       if [ -e "$file" ]; then

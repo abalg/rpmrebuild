@@ -10,7 +10,7 @@ bad=0
 for pac in $list
 do
 	let total="$total + 1"
-	rpmrebuild -b -d . $pac > output  2>&1
+	rpmrebuild -b -k  -y no -c yes -d /tmp $pac > output  2>&1
 	irep=$?
 	if [ $irep -eq 0 ]
 	then
