@@ -1,3 +1,6 @@
+* Wen Jan 17 2003 <gerbier@users.sourceforge.net> 1.4.0-1
+- public release of 1.3 dev branch
+
 * Mon Dec 29 2002 <valery_reznic@users.sourceforge.net> 1.3-1
 - add '-p' option. Now is possible rebuild not only installed rpm, but rpm file too. May be usefull with '-e' or '--filter' option
 
