@@ -144,5 +144,18 @@ while :; do
       verify_str="${non_verify_par:+%verify(not ${non_verify_par%?}) }" 
    fi
 
+   # test for jokers in file : globing seems not to work
+   # for performance reason, just if warning flag
+   if [ -n "$warning" ]
+   then
+	out=$(echo "$file" | grep "\*|\?")
+	if [ -n "$out" ]
+	then
+		echo -e "\n-------------------------------- WARNING ------------------------------------------" 1>&2
+		echo -e "file named $file contains globbing characters\nrpm building may not work" 1>&2
+		echo -e "-----------------------------------------------------------------------------------" 1>&2
+	fi
+   fi
+
    echo "${miss_str}${lang_str}${dir_str}${fflags_str}${attr_str}${verify_str}\"${file}\""
 done

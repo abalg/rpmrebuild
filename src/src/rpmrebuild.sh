@@ -133,10 +133,11 @@ specfile=""
 rpm_verbose="--quiet"
 export keep_perm=""
 export missing_as_usual=""
+export warning=""
 PAQUET=""
 PAQUET_NAME=""
 
-while getopts "bd:ef:hkps:vV-:" opt
+while getopts "bd:ef:hkps:vVw-:" opt
 do
 	case "$opt" in
 		b) LONG_OPTION=batch;;
@@ -149,6 +150,7 @@ do
 		h) LONG_OPTION=help;;
 		v) LONG_OPTION=verbose;;
 		V) LONG_OPTION=version;;
+		w) LONG_OPTION=warning;;
 
                 -)
                    LONG_OPTION="$OPTARG"
@@ -233,6 +235,10 @@ do
 		version)
 			echo "$VERSION"
 			exit 0
+		;;
+
+		warning)
+			warning=y
 		;;
 
 		*)

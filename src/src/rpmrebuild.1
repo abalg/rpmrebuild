@@ -31,6 +31,9 @@ open the generated specfile with your favorite editor before rpm build
 .br 
 apply an externel filter to the specfile before rpm build (see below PLUGINS). if more than one filter is called, they are concateneted.
 .TP 
+\fB\-h|\-\-help\fR
+Output help information and exit.
+.TP 
 \fB\-k|\-\-keep\-perm|\-\-pug\-from\-fs\fR
 keep installed files permission, uid and gid (do not force to orginal files permission, uid and gid saved in rpm database)
 .TP 
@@ -41,7 +44,7 @@ set files permission, uid and gid as saved in rpm database
 do not rebuild package. only generate specfile.
 .TP 
 \fB\-p|\-\-package\fR
-use package file, not installed rpm (this option is like rpm's -p option)
+use package file, not installed rpm (this option is like rpm's \-p option)
 .TP 
 \fB\-v|\-\-verbose\fR
 verbose output
@@ -49,8 +52,8 @@ verbose output
 \fB\-V|\-\-version\fR
 Output version information and exit.
 .TP 
-\fB\-h|\-\-help\fR
-Output help information and exit.
+\fB\-w|\-\-warning\fR
+display warning if detect bad specfile.
 .SH "FILES"
 .LP 
 .TP 
@@ -103,7 +106,7 @@ to build a modified package :
 rpm \-\-rpmrebuild \-\-keep\-perm package
 .LP 
 to build a rpm from another rpm file :
-rpm \-\-rpmrebuild \-\-package \-\-filter filter /usr/src/redhat/i386/package-i386.rpm
+rpm \-\-rpmrebuild \-\-package \-\-filter filter /usr/src/redhat/i386/package\-i386.rpm
 .LP 
 if you have problem with rpm building, and if you know specfile syntax, you can also edit it:
 .LP 
