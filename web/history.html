@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+  <HEAD>
+    <TITLE>rpmrebuild history</TITLE>
+    <META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <META name="Author" content="Gerbier">
+    <META NAME="generator" CONTENT="vim">
+    <LINK rev="made" href="mailto:gerbier@users.sourceforge.net">
+  </HEAD>
+  <BODY>
+    <H1 align=center>history</H1>
+
+    I am system admin on Linux, and I am using <A href="http://www.rpm.org">rpm</A> packages to help managing softwares.<BR>
+    I install all the software in rpm, even if must convert tar.gz to rpm 
+    (with <A href="http://kitenet.net/programs/alien/">alien</A>, 
+    <A href="http://www.npsnet.com/danf/software/">autospec</A>
+    software).<BR>
+    But I do not find an easy way to build an rpm file from the rpm database.<BR>
+    <BR>
+    this can be useful on "old" distributions, because one can only find "recent" versions on the net (rmpfind).<BR>
+    2 examples : 
+    
+    <UL>
+      <LI>want to reproduce a config from one PC to another one, and you do not have the rpm files any more ...</LI>
+      
+      <LI>want to test a new release, and go back if it does not work (how to re-install ?)</LI>
+    </UL>
+    
+    <BR> 
+    All the informations for the rpm file are in the rpm database (version, depends, install script ...), but there is no simple
+    command, so I write a shell script to do this work for my personal use. As I think it may be useful for others, I now
+    want to put on the net. 
+    
+    <BR><BR>
+    I know there is an "repackage" option in recent rpm releases, but it is not convenient, as you have to uninstall the package ...<BR>
+    (not always possible, because of dependencies)
+    
+    <HR>
+    <A href="index.html">back to main page</A>
+    
+  </BODY>
+</HTML>
