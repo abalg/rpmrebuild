@@ -25,6 +25,9 @@ rpm package result will be written in  <\fIdirectory\fP>.
 \fB\-e|\-\-edit\-spec\fR
 open the generated specfile with your favorite editor before rpm build
 .TP 
+\fB\-f|\-\-filter\fR <\fIfile\fP>
+apply an externel filter to the specfile before rpm build (see below PLUGINS)
+.TP 
 \fB\-k|\-\-keep\-perm|\-\-pug\-from\-fs\fR
 keep installed files permission, uid and gid (do not force to orginal files permission, uid and gid saved in rpm database)
 .TP 
@@ -33,9 +36,6 @@ set files permission, uid and gid as saved in rpm database
 .TP 
 \fB\-h|\-\-help\fR
 Output help information and exit.
-.TP 
-\fB\-r|\-\-resolv\-dep\fR
-change file dependencies in package dependencies.
 .TP 
 \fB\-s|\-\-spec\-only\fR <\fIspecfile\fP>
 do not rebuild package. only generate specfile.
@@ -47,9 +47,12 @@ verbose output
 Output version information and exit.
 .SH "FILES"
 .LP 
-\fI~/.rpmmacros\fP 
-\fI/etc/popt\fP 
-.br 
+.TP 
+\fB~/.rpmmacros\fP 
+is used by rpm when building packages (macros)
+.TP 
+\fB/etc/popt\fP
+contains rpm alias used by rpmrebuild
 .SH "ENVIRONMENT VARIABLES"
 .LP 
 .TP 
@@ -58,6 +61,26 @@ used to specify an editor for specfile
 .TP 
 \fBEDITOR\fP
 used to specify an editor for specfile
+.SH "PLUGINS"
+.LP 
+rpmrebuild use may be extended with plugins, via the "\-\-filter" option.
+.br 
+A plugin receive on STDIN the generated specfile, make any changes, and rewrite it on STDOUT.
+.TP 
+An example is given in rpmrebuild package with file2pac.plugin, which transform all rpm dependencies in package dependencies (dependencies to file are hard to resolve when updating a system).
+
+For example, it change
+.br 
+Requires: /bin/sh
+.br 
+Requires: libc.so.6(GLIBC_2.1)
+.br 
+
+into :
+.br 
+Requires: bash
+.br 
+Requires: glibc
 .SH "EXAMPLES"
 .LP 
 To build an rpm package as closed as possible to original one:
@@ -76,6 +99,27 @@ rpm \-\-rpmrebuild  \-\-edit\-spec package
 Eric Gerbier <gerbier@users.sourceforge.net>
 .br 
 Valery Reznic <valery_reznic@users.sourceforge.net>
+.TP 
+See <URL:http://rpmrebuild.sourceforge.net/>.
+.SH "NOTES"
+.LP 
+.TP 
+rpmrebuild can not reproduce exactly a package, so
+.br 
+\- md5 checksum will not match original ones.
+.br 
+\- gpg or pgp signatures are lost
+
+.TP 
+packages which contains file with globbing caracteres (* .. ? ) will not build
+.SH "COPYRIGHT"
+.LP 
+rpmrebuild is copyright © 2002 by Eric Gerbier.
+.br 
+this program is distributed under GNU General Public License
+.br 
+It is provided "as is", without any express or implied
+warranties.  See the file COPYING for details.
 .SH "SEE ALSO"
 .LP 
 rpm(8)
