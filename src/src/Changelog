@@ -1,10 +1,14 @@
 * Mon Jul 12 2004 <valery_reznic@users.sourceforge.net> 1.4.7-1
 - rpmrebuild.sh can be now run from local directory, without need 
-  to install package.
+  to install package (add rpmrebuild_buildroot.sh file).
 
 * Sun Jul 11 2004 <valery_reznic@users.sourceforge.net> 1.4.7-1
 - Fix a bug: --comment-missing=yes was work only when --verify=no 
 - --modify now work without --package too.
+- fix a bug on sed for redhat 7.2 (rewrite SpecChange)
+- change SpecFile to generate rpm according autorequire/autoprovide (avoid
+  post sed)
+- add rpmrebuild file (avoid symbolic link)
 
 * Mon May 24 2004 <gerbier@users.sourceforge.net> 1.4.6-4
 - fix a bug on --autoprovide/--autorequire

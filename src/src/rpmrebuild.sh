@@ -691,6 +691,7 @@ function CreateBuildRoot
 	fi 
 	return 0
 }
+###############################################################################
 
 function RpmBuild
 {
