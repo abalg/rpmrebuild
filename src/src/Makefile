@@ -43,7 +43,18 @@ INCLUDE_SCRIPTS =        \
 POPTS       = rpmrebuild_popt popt-without-POPTdesc popt-with-POPTdesc
 SPEC_SCRIPTS = spec.scripts.input spec.scripts.make.sh remove_from_popt.make.include
 MANPAGES     = rpmrebuild.1 rpmrebuild_plugins.1
-PLUGINS      = file2pacDep
+
+PLUGINS      = file2pacDep.plug \
+		file2pacDep.sh \
+		demo.plug \
+		demo.sh \
+		demofiles.sh \
+		uniq.plug \
+		uniq.sh
+
+PLUGINS_MANPAGES = file2pacDep.plug.1 \
+			demo.plug.1 \
+			uniq.plug.1
 
 SOURCES =                \
    $(SCRIPTS)            \
@@ -53,6 +64,7 @@ SOURCES =                \
    $(SPEC_SCRIPTS)       \
    $(MANPAGES)		 \
    $(PLUGINS)		 \
+   $(PLUGINS_MANPAGES)   \
    MANIFEST              \
    Makefile              \
    Changelog             \
@@ -107,7 +119,7 @@ install:
 	$(INSTALL_RUN) $(PLUGINS)		  $(TARGET_PLUGIN)
 
 	$(MKDIR)                                  $(TARGET_MAN)
-	$(INSTALL_MAN) ${MANPAGES}  		  $(TARGET_MAN)
+	$(INSTALL_MAN) ${MANPAGES} ${PLUGINS_MANPAGES} $(TARGET_MAN)
 
 tar:	rpmrebuild.spec
 	List=`cat MANIFEST` && tar -cvzf $(TAR_FILE) $(TAR_NAMES) $$List
