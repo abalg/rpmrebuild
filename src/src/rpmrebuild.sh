@@ -21,7 +21,6 @@
 function Usage
 {
 	echo -e "\nrpmrebuild.sh is a tool to rebuild an rpm file from the rpm database"
-	echo "it does not need to be run under root user"
 	echo "syntaxe : $0 package"
 	echo "the spec and rpm result are built on local directory"
 	echo "Copyright (C) 2002 by Eric Gerbier"
