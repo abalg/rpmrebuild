@@ -97,20 +97,22 @@ function SpecChange
 {
 	# rpmlib dependencies are insert during rpm building
 	# gpg key can not be provided
-	sedscript='s/\(^Requires:[[:space:]]*rpmlib(.*\)/#\1/;s/\(^Provides:[[:space:]]*gpg(.*\)/#\1/'
+	sed_script='s/\(^Requires:[[:space:]]*rpmlib(.*\)/#\1/;s/\(^Provides:[[:space:]]*gpg(.*\)/#\1/'
 
+	sed_req=""
 	if [ -n "$autorequire" ]
 	then
-		sedscript="${sedscript};s/^AutoReq/#AutoReq/;s/^%undefine __find_requires/#undefine __find_requires/;s/^Require/#Require/"
+		sed_req=';s/^AutoReq/#AutoReq/;s/^%undefine[[:space:]]+__find_requires/#undefine __find_requires/;s/^Require/#Require/'
 	fi
 
+	sed_prov=""
 	if [ -n "$autoprovide" ]
 	then
-		sedscript="${sedscript};s/^AutoProv/#AutoProv/;s/^%undefine __find_provides/#undefine __find_provides/;s/^Provide/#Provide/"
+		sed_prov=';s/^AutoProv/#AutoProv/;s/^%undefine[[:space:]]+__find_provides/#undefine __find_provides/;s/^Provide/#Provide/'
 	fi
 
 	# apply filter
-	sed -e $sedscript
+	sed -e "$sed_script$sed_req$sed_prov"
 }
 ###############################################################################
 # build general tags
