@@ -114,22 +114,25 @@ function CommandLineParsing
 	PAQUET_NAME=""
 
 	CreateProcessing "init" || return
-	while getopts "a:bc:d:D:ef:hkm:pPRs:vVwy:-:" opt; do
+	while getopts "a:A:bc:d:D:ef:F:hkm:pPRs:S:vVwy:-:" opt; do
 		OPTIND_INCR=""
 		case "$opt" in
 			a) LONG_OPTION=additional;;
+			A) LONG_OPTION=change-all;;
 			b) LONG_OPTION=batch;;
 			c) LONG_OPTION=comment-missing;;
 			d) LONG_OPTION=dir;;
 			D) LONG_OPTION=define;;
 			e) LONG_OPTION=edit-spec;;
 			f) LONG_OPTION=filter;;
+			F) LONG_OPTION=change-files;;
 			k) LONG_OPTION=keep-perm;;
 			m) LONG_OPTION=modify;;    
 			p) LONG_OPTION=package;;
 			P) LONG_OPTION=autoprovide;;
 			R) LONG_OPTION=autorequire;;
 			s) LONG_OPTION=spec-only;;
+			S) LONG_OPTION=change-spec;;
 			h) LONG_OPTION=help;;
 			v) LONG_OPTION=verbose;;
 			V) LONG_OPTION=version;;
@@ -164,7 +167,7 @@ function CommandLineParsing
 			;;
 		esac
 
-		SHORT_OPTION="$opt"
+		# Get "full" long option
 		case "$LONG_OPTION" in
 			a | \
 			au | \
@@ -183,8 +186,7 @@ function CommandLineParsing
 			addition | \
 			additiona | \
 			additional)
-				RequeredArgument || return
-				additional="$OPTARG"
+				LONG_OPTION='additional'
 			;;
 
 			autop | \
@@ -194,7 +196,7 @@ function CommandLineParsing
 			autoprovi | \
 			autoprovid | \
 			autoprovide)
-				autoprovide=y
+				LONG_OPTION='autoprovide'
 			;;
 
 			autor | \
@@ -204,7 +206,7 @@ function CommandLineParsing
 			autorequi | \
 			autorequir | \
 			autorequire)
-				autorequire=y
+				LONG_OPTION="autorequire"
 			;;
 
 			b | \
@@ -212,10 +214,41 @@ function CommandLineParsing
 			bat | \
 			batc | \
 			batch)
-				batch=y
+				LONG_OPTION="batch"
 			;;
 
 			c | \
+			c- | \
+			ch- | \
+			cha- | \
+			chan- | \
+			chang- | \
+			change-)
+				AmbiguousOption
+				return 1
+			;;
+
+			change-a | \
+			change-al | \
+			change-all)
+				LONG_OPTION='change-all'
+			;;
+
+			change-f | \
+			change-fi | \
+			change-fil | \
+			change-file | \
+			change-files)
+				LONG_OPTION="change-files"
+			;;
+
+			change-s | \
+			change-sp | \
+			change-spe | \
+			change-spec)
+				LONG_OPTION="change-spec"
+			;;
+
 			co | \
 			com | \
 			comm | \
@@ -230,11 +263,7 @@ function CommandLineParsing
 			comment-missi | \
 			comment-missin | \
 			comment-missing)
-				RequeredArgument || return
-				case "x$OPTARG" in
-			   		x[yY]*) comment_missing="1";;
-                           		*)      comment_missing="0";;
-				esac
+				LONG_OPTION="comment-missing"
 			;;
 
 			d)
@@ -247,8 +276,7 @@ function CommandLineParsing
 			defi | \
 			defin | \
 			define)
-				RequeredArgument || return
-				rpm_defines="$rpm_defines --define '$OPTARG'"
+				LONG_OPTION="define"
 			;;
 
 			di | \
@@ -259,14 +287,7 @@ function CommandLineParsing
 			directo | \
 			director | \
 			directory)
-				RequeredArgument || return
-				rpmdir="$OPTARG"
-				rpm_defines="$rpm_defines --define '_rpmdir $rpmdir'" 
-				mkdir -p -- "$rpmdir"
-				rpmdir="$(cd $rpmdir && echo $PWD)" || {
-					Error "Can't changedir to '$rpmdir'"
-					return 1
-				}
+				LONG_OPTION='directory'
 			;;
 
 			e | \
@@ -278,8 +299,7 @@ function CommandLineParsing
 			edit-sp | \
 			edit-spe | \
 			edit-spec)
-				editspec=y
-				CreateProcessing "edit" || return
+				LONG_OPTION='edit-spec'
 			;;
 
 			f | \
@@ -288,27 +308,14 @@ function CommandLineParsing
 			filt | \
 			filte | \
 			filter)
-				RequeredArgument || return
-				ExtractProgName $OPTARG  # set progname
-
-				# check if executable ?
-				if type -all -path "$progname" 1>/dev/null 2>&1
-				then
-					filter="y"
-					CreateProcessing "filter" || return
-				else
-					Error "Can't find '$progname' in '$PATH'"
-					return 1
-				fi
+				LONG_OPTION='change-spec' # alias
 			;;
 			
 			h | \
 			he | \
 			hel | \
 			help)
-				Usage
-				NEED_EXIT=0
-				return 0
+				LONG_OPTION='help'
 			;;
 
 			k | \
@@ -320,7 +327,7 @@ function CommandLineParsing
 			keep-pe | \
 			keep-per | \
 			keep-perm)
-				keep_perm=1
+				LONG_OPTION='pug-from-fs' # alias
 			;;
 
 			m | \
@@ -329,8 +336,7 @@ function CommandLineParsing
 			modi | \
 			modif | \
 			modify)
-				RequeredArgument          || return
-				CreateProcessing "modify" || return
+				LONG_OPTION='change-files' # alias
 			;;
 
 			p)
@@ -344,8 +350,7 @@ function CommandLineParsing
 			packa | \
 			packag | \
 			package)
-                   		package_flag="-p"
-                	   	comment_missing=0
+				LONG_OPTION='package'
                 	;;
 
 			pu | \
@@ -362,12 +367,12 @@ function CommandLineParsing
 
 			pug-from-d | \
 			pug-from-db)
-				keep_perm=""
+				LONG_OPTION='pug-from-db'
 			;;
 
 			pug-from-f | \
-			pug-from-fs) # Alias to keep-perm
-				keep_perm=1
+			pug-from-fs)
+				LONG_OPTION='pug-from-fs' # alias
 			;;
 
 			s | \
@@ -379,9 +384,7 @@ function CommandLineParsing
 			spec-on | \
 			spec-onl | \
 			spec-only)
-				RequeredArgument || return
-				spec_only=y
-				specfile="$OPTARG"
+				LONG_OPTION='spec-only'
 			;;
 
 			v | \
@@ -395,26 +398,20 @@ function CommandLineParsing
 			verbo | \
 			verbos | \
 			verbose)
-				rpm_verbose="--verbose"
+				LONG_OPTION='verbose'
 			;;
 
 			veri | \
 			verif | \
 			verify)
-				RequeredArgument || return
-				case "x$OPTARG" in
-			   		x[yY]*) verify="1";;
-                           		*)      verify="0";;
-				esac
+				LONG_OPTION='verify'
 			;;
 
 			vers | \
 			versi | \
 			versio | \
 			version)
-				echo "$VERSION"
-				NEED_EXIT=0
-				return 0
+				LONG_OPTION='version'
 			;;
 
 			w | \
@@ -424,11 +421,129 @@ function CommandLineParsing
 			warni | \
 			warnin | \
 			warning)
-				warning=y
+				LONG_OPTION='warning'
 			;;
 
 			*)
 				UnrecognizedOption
+				return 1
+			;;
+		esac || return
+
+		# Ok, finally, let us process options
+		SHORT_OPTION="$opt"
+		case "$LONG_OPTION" in
+			additional)
+				RequeredArgument || return
+				additional="$OPTARG"
+			;;
+
+			autoprovide)
+				autoprovide="y"
+			;;
+
+			autorequire)
+				autorequire="y"
+			;;
+
+			batch)
+				batch="y"
+			;;
+
+			change-all)
+				RequeredArgument       || return
+				CreateProcessing "all" || return
+			;;
+
+			change-files)
+				RequeredArgument         || return
+				CreateProcessing "files" || return
+			;;
+
+			change-spec)
+				RequeredArgument || return
+				filter="y"
+				CreateProcessing "spec" || return
+			;;
+
+			comment-missing)
+				RequeredArgument || return
+				case "x$OPTARG" in
+			   		x[yY]*) comment_missing="1";;
+                           		*)      comment_missing="0";;
+				esac
+			;;
+
+			define)
+				RequeredArgument || return
+				rpm_defines="$rpm_defines --define '$OPTARG'"
+			;;
+
+			directory)
+				RequeredArgument || return
+				rpmdir="$OPTARG"
+				rpm_defines="$rpm_defines --define '_rpmdir $rpmdir'" 
+				mkdir -p -- "$rpmdir"
+				rpmdir="$(cd $rpmdir && echo $PWD)" || {
+					Error "Can't changedir to '$rpmdir'"
+					return 1
+				}
+			;;
+
+			edit-spec)
+				editspec=y
+				CreateProcessing "edit" || return
+			;;
+
+			help)
+				Usage
+				NEED_EXIT=0
+				return 0
+			;;
+
+			package)
+                   		package_flag="-p"
+                	   	comment_missing=0
+                	;;
+
+			pug-from-db)
+				keep_perm=""
+			;;
+
+			pug-from-fs)
+				keep_perm=1
+			;;
+
+			spec-only)
+				RequeredArgument || return
+				spec_only=y
+				specfile="$OPTARG"
+			;;
+
+			verbose)
+				rpm_verbose="--verbose"
+			;;
+
+			verify)
+				RequeredArgument || return
+				case "x$OPTARG" in
+			   		x[yY]*) verify="1";;
+                           		*)      verify="0";;
+				esac
+			;;
+
+			version)
+				echo "$VERSION"
+				NEED_EXIT=0
+				return 0
+			;;
+
+			warning)
+				warning="y"
+			;;
+
+			*)
+				Error "Internal error: LONG_OPTION='$LONG_OPTION'"
 				return 1
 			;;
 		esac || return
