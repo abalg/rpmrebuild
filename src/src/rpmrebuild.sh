@@ -17,7 +17,24 @@
 #    GNU General Public License for more details.
 #
 ###############################################################################
+# log file are not copied
+function test_ghost
+{
+	file=$1
 
+	# premier test : terminaison en .log
+	# first guess : file name end with .log
+	# deuxieme test : situe sur /var/log
+	# second guess : file are on standard directory /var/log
+	out=$(echo $file | egrep "\.log$|^/var/log/")
+	if [ -n "$out" ]
+	then
+		return 1
+	else
+		return 0
+	fi
+}
+###############################################################################
 function Usage
 {
 	echo -e "\nrpmrebuild.sh is a tool to rebuild an rpm file from the rpm database"
@@ -87,6 +104,7 @@ echo "%files"
 QF="[%{FILENAMES} %{FILEFLAGS:fileflags}\n]"
 rpm --query --queryformat "${QF}" ${PAQUET} | while read file type
 do
+
 	if [ ! -e $file ]
 	then
 		# skip missing files
@@ -104,8 +122,14 @@ do
 		# configuration file
 		echo "%config $file"
 	else
-		# default
-		echo "$file"
+		test_ghost $file
+		if [ $? -eq 1 ]
+		then
+			echo "%ghost $file"
+		else
+			# default
+			echo "$file"
+		fi
 	fi
 done
 }
