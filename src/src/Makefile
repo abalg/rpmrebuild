@@ -20,7 +20,7 @@ TARGET_PLUGIN = $(ROOT)/usr/lib/rpmrebuild/plugins
 TARGET_MAN = $(ROOT)/usr/local/man/man1
 
 SCRIPTS     = rpmrebuild.sh 
-LIB_SCRIPTS = rpmrebuild_files.sh run.sh
+LIB_SCRIPTS = rpmrebuild_files.sh rpmrebuild_buildroot.sh run.sh
 POPTS       = rpmrebuild_popt popt-without-POPTdesc popt-with-POPTdesc
 SPEC_SCRIPTS = spec.scripts.input spec.scripts.make.sh remove_from_popt.make.include
 MANPAGES     = rpmrebuild.1
