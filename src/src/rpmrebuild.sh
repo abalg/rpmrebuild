@@ -111,16 +111,20 @@ function SpecFile
 		if [ "x$autorequire" = "x" ]; then
 			echo 'AutoReq: no'
 			echo '%undefine __find_requires'
+			echo '%define rpmrebuild_use_requires 1'
 		else
 			echo 'AutoReq: yes'
 			echo '#undefine __find_requires'
+			echo '%define rpmrebuild_use_requires 0'
 		fi
 		if [ "x$autoprovide" = "x" ]; then
 			echo 'AutoProv: no'
 			echo '%undefine __find_provides'
+			echo '%define rpmrebuild_use_provides 1'
 		else
 			echo 'AutoProv: yes'
 			echo '#undefine __find_provides'
+			echo '%define rpmrebuild_use_provides 0'
 		fi
 		HOME=$MY_LIB_DIR rpm --query --i18ndomains /dev/null $package_flag --spec_spec ${PAQUET}
 	) | SpecChange
@@ -767,6 +771,7 @@ export LC_TIME=POSIX
 
 CommandLineParsing "$@" || exit
 RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild.$$}
+#RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild}
 mkdir -p $RPMREBUILD_TMPDIR || exit
 
 BUILDROOT=$RPMREBUILD_TMPDIR/${PAQUET_NAME}-root

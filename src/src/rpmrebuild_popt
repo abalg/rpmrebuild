@@ -107,10 +107,14 @@ Release:       \%O_Release\n\
 [Obsoletes:     %{OBSOLETES}\n]\
 }|\
 %|PROVIDES?{\
+\%if \%rpmrebuild_use_provides\n\
 [Provides:      %{PROVIDES} %{PROVIDEFLAGS:depflags} %{PROVIDEVERSION}\n]\
+\%endif\n\
 }|\
 %|REQUIRENAME?{\
+\%if \%rpmrebuild_use_requires\n\
 [Requires:      %{REQUIRENAME} %{REQUIREFLAGS:depflags} %{REQUIREVERSION}\n]\
+\%endif\n\
 }|\
 [\n%%description\n %{DESCRIPTION}\n\n]\
 '
