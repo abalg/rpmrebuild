@@ -22,7 +22,11 @@
 # a shell to build an rpm file from the rpm database
 
 #####################################################
-
+usage() {
+	echo "syntaxe : $0 package"
+	echo "build an rpm package from rpm database"
+}
+#####################################################
 interrogation() {
 	rpm -q --queryformat "$1" ${PAQUET}
 }
@@ -48,7 +52,7 @@ write_info() {
 # test argument
 if [ $# -ne 1 ]
 then
-	echo "syntax :  $0 package"
+	usage
 	exit 1 
 fi
 
@@ -63,24 +67,6 @@ fi
 # suite a des probleme de dates incorrectes
 # to solve problems of bad date
 export LC_TIME=POSIX
-
-# check for rpm-build package
-out=$(rpm -q rpm-build)
-if [ -z "$out" ]
-then
-	echo "WARNING : package rpm-build need to be installed"
-	exit 1
-fi
-
-# try to guess where to build the package
-# should be done with a "rpm --showrc" to take care of .rpmrc and so
-# but too difficult : this code should work on almost all hosts
-BASE=$(rpm -ql rpm-build | grep "SOURCES$" | sed 's/SOURCES$//')
-if [ -z "${BASE}" ]
-then
-	echo "WARNING : can not find where to build rpm"
-	exit 1
-fi
 
 # test if package exists
 export PAQUET=$1
@@ -122,24 +108,9 @@ then
 	fi
 fi
 
-# fabrication fichier tar contenant les fichiers du paquet
-# build tar file
-REPER=/tmp/${NOM_VERSION}
-if [ -a $REPER ]
-then
-	echo "WARNING : directory $REPER already exists"
-	exit 1
-fi
-mkdir $REPER
-rpm -ql  ${PAQUET} | cpio -pd  $REPER > /dev/null 2>&1
-cd /tmp/
-tar cvzf ${BASE}/SOURCES/${NOM_COMPLET}.tgz  ${NOM_VERSION} >/dev/null
-cd -
-rm -rf  ${REPER} > /dev/null 2>&1
-
 # fabrication fichier spec
 # build spec file
-FIC_SPEC=${BASE}/SPECS/${NOM_COMPLET}.spec
+FIC_SPEC=${NOM_COMPLET}.spec
 
 if [ -a ${FIC_SPEC} ]
 then
@@ -152,9 +123,8 @@ write_info "Name: "    '%{NAME}\n'
 write_info "Version: " '%{VERSION}\n'
 write_info "Release: " '%{RELEASE}\n'
 
-echo "Source: ${NOM_COMPLET}.tgz " >> ${FIC_SPEC}
-# nor used
-#write_info "Patch: " '%{PATCH}\n'
+# not used Patch and Source
+
 write_info "URL: " '%{URL}\n'
 write_info "Distribution: " '%{DISTRIBUTION}\n'
 write_info "Vendor: " '%{VENDOR}\n'
@@ -185,11 +155,9 @@ write_info "%description\n" '%{DESCRIPTION}\n'
 
 cat << END >>  ${FIC_SPEC}
 %prep
-%setup
 %build
 %install
 %clean
-rm -rf \$RPM_BUILD_ROOT
 
 END
 
@@ -222,7 +190,6 @@ rm -f $S
 
 cat << END2 >>  ${FIC_SPEC}
 %files
-%defattr(-, root, root)
 END2
 
 listeall=$(rpm -ql ${PAQUET})
@@ -267,16 +234,32 @@ done
 echo "%changelog" >> ${FIC_SPEC}
 rpm -q --changelog ${PAQUET} >> ${FIC_SPEC}
 
-
 # reconstruction fichier rpm : le src.rpm est inutile
 # build rpm file, the src.rpm is not usefull to do
+
+# just an hint to build the rpm file in local dir
+fmacro=~/.rpmmacros
+# save it
+if [ -f $fmacro ]
+then
+        cp -a $fmacro ${fmacro}.sav
+fi
+
+# change rpmdir
+echo "%_rpmdir ." >> $fmacro
+
 rpm -bb ${FIC_SPEC}
+
+# restore it
+if [ -f ${fmacro}.sav ]
+then
+        mv ${fmacro}.sav $fmacro
+fi
+
 
 echo "##################################################################"
 echo "result :"
-ls -l ${BASE}/RPMS/${ARCH}/${PAQUET}-${VERSION}-${RELEASE}.${ARCH}.rpm
+ls -l ${ARCH}/${PAQUET}-${VERSION}-${RELEASE}.${ARCH}.rpm
 
 # be carefull, there is others files not cleaned :
-echo "you may clean too : "
-ls -l ${BASE}/SOURCES/${NOM_COMPLET}.tgz ${BASE}/SPECS/${NOM_COMPLET}.spec 
-ls -ld ${BASE}/BUILD/${NOM_VERSION}
+echo "you may clean too : ${FIC_SPEC} "
