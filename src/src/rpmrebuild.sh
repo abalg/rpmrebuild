@@ -28,15 +28,15 @@ interrogation() {
 }
 
 #####################################################
+# write_info rpm_tag rpm_query
+write_info() {
+	rpm_tag=$1
+	rpm_query=$2
 
-ecrire_info() {
-	comment=$1
-	query=$2
-
-	output=$(interrogation "$query")
+	output=$(interrogation "$rpm_query")
 	if [ "$output" != "(none)" ]
 	then
-		echo -e "$comment $output" >> ${FIC_SPEC}
+		echo -e "$rpm_tag $output" >> ${FIC_SPEC}
 	fi
 }
 
@@ -57,20 +57,40 @@ fi
 #        exit
 #fi
 
+# suite a des probleme de dates incorrectes
+# to solve problems of bad date
 export LC_TIME=POSIX
 
-# test existence package
+# check for rpm-build package
+out=$(rpm -q rpm-build)
+if [ -z "$out" ]
+then
+	echo "WARNING : package rpm-build need to be installed"
+	exit 1
+fi
+
+# try to guess where to build the package
+# should be done with a "rpm --showrc" to take care of .rpmrc and so
+# but too difficult : this code should work on almost all hosts
+BASE=$(rpm -ql rpm-build | grep "SOURCES$" | sed 's/SOURCES$//')
+if [ -z "${BASE}" ]
+then
+	echo "WARNING : can not find where to build rpm"
+	exit 1
+fi
+
+# test if package exists
 export PAQUET=$1
 output=$(rpm -q ${PAQUET})
 if [ -z "$output" ]
 then
-	echo "no package ${PAQUET} in rpm database"
+	echo "WARNING : no package ${PAQUET} in rpm database"
 	exit 1
 else
 	nb=$(echo $output | wc -w | awk '{print $1}')
 	if [ $nb -ne 1 ]
 	then
-		echo "too much packages match ${PAQUET} : $output"
+		echo "WARNING : too much packages match ${PAQUET} : $output"
 		exit 1
 	else
 		NAME=$(interrogation '%{NAME}\n')
@@ -83,10 +103,11 @@ else
 fi
 
 # verification des changements
+# check for package change
 out=$(rpm -V ${PAQUET})
 if [ -n "$out" ]
 then
-	echo "some files have been modified :"
+	echo "WARNING : some files have been modified :"
 	#echo $out concate all lines in one : not clear
 	# so recall the same command
 	rpm -V ${PAQUET}
@@ -99,21 +120,23 @@ then
 fi
 
 # fabrication fichier tar contenant les fichiers du paquet
+# build tar file
 REPER=/tmp/${NOM_VERSION}
 if [ -a $REPER ]
 then
-	echo "directory $REPER exists"
+	echo "WARNING : directory $REPER already exists"
 	exit 1
 fi
 mkdir $REPER
 rpm -ql  ${PAQUET} | cpio -pd  $REPER > /dev/null 2>&1
 cd /tmp/
-tar cvzf /usr/src/redhat/SOURCES/${NOM_COMPLET}.tgz  ${NOM_VERSION} >/dev/null
+tar cvzf ${BASE}/SOURCES/${NOM_COMPLET}.tgz  ${NOM_VERSION} >/dev/null
 cd -
 rm -rf  ${REPER} > /dev/null 2>&1
 
 # fabrication fichier spec
-FIC_SPEC=/usr/src/redhat/SPECS/${NOM_COMPLET}.spec
+# build spec file
+FIC_SPEC=${BASE}/SPECS/${NOM_COMPLET}.spec
 
 if [ -a ${FIC_SPEC} ]
 then
@@ -121,29 +144,30 @@ then
 	mv -f ${FIC_SPEC} ${FIC_SPEC}.sav
 fi
 
-ecrire_info "Summary: " '%{SUMMARY}\n'
+write_info "Summary: " '%{SUMMARY}\n'
 echo "Name: ${NAME}"  >> ${FIC_SPEC}
 echo "Version: ${VERSION}" >> ${FIC_SPEC}
 echo "Release: ${RELEASE}" >> ${FIC_SPEC}
 
 echo "Source: ${NOM_COMPLET}.tgz " >> ${FIC_SPEC}
-ecrire_info "URL: " '%{URL}\n'
-ecrire_info "Patch: " '%{PATCH}\n'
+write_info "URL: " '%{URL}\n'
+write_info "Patch: " '%{PATCH}\n'
 
-ecrire_info "Copyright: " '%{COPYRIGHT}\n'
-ecrire_info "Group: "  '%{GROUP}\n'
-ecrire_info "Packager: " '%{PACKAGER}\n'
-ecrire_info "BuildArch: " '%{ARCH}\n'
+write_info "Copyright: " '%{COPYRIGHT}\n'
+write_info "Group: "  '%{GROUP}\n'
+write_info "Packager: " '%{PACKAGER}\n'
+write_info "BuildArch: " '%{ARCH}\n'
 ARCH=$(interrogation '%{ARCH}\n')
 
-ecrire_info "Requires: " '%{REQUIRENAME}\n'
-ecrire_info "OBSOLETES: " '%{OBSOLETES}\n'
+write_info "Requires: " '%{REQUIRENAME}\n'
+write_info "OBSOLETES: " '%{OBSOLETES}\n'
 
 
-ecrire_info "Distribution: " '%{DISTRIBUTION}\n'
-ecrire_info "Vendor: " '%{VENDOR}\n'
+write_info "Distribution: " '%{DISTRIBUTION}\n'
+write_info "Vendor: " '%{VENDOR}\n'
+#echo "BuildRoot: %{_builddir}/%{name}" >> ${FIC_SPEC}
 
-ecrire_info "%description\n" '%{DESCRIPTION}\n'
+write_info "%description\n" '%{DESCRIPTION}\n'
 
 cat << END >>  ${FIC_SPEC}
 %prep
@@ -155,10 +179,10 @@ rm -rf \$RPM_BUILD_ROOT
 
 END
 
-ecrire_info "%pre\n" '%{PREINPROG}\n'
-ecrire_info "%preun\n" '%{PREUNPROG}\n'
-ecrire_info "%post\n" '%{POSTINPROG}\n'
-ecrire_info "%postun\n" '%{POSTUNPROG}\n'
+write_info "%pre\n" '%{PREINPROG}\n'
+write_info "%preun\n" '%{PREUNPROG}\n'
+write_info "%post\n" '%{POSTINPROG}\n'
+write_info "%postun\n" '%{POSTUNPROG}\n'
 
 cat << END2 >>  ${FIC_SPEC}
 %files
@@ -171,7 +195,7 @@ listeconfig=$(rpm -qlc ${PAQUET})
 for file in $listeall
 do
 	# petite subtilite : les repertoires ne doivent pas 
-	# aparaitre directement, sinon probleme de doublons
+	# apparaitre directement, sinon probleme de doublons
 	if [ -d $file ]
 	then
 		echo "%dir $file" >> ${FIC_SPEC}
@@ -208,9 +232,15 @@ echo "%changelog" >> ${FIC_SPEC}
 rpm -q --changelog ${PAQUET} >> ${FIC_SPEC}
 
 
-# reconstruction fichier rpm
-rpm -bb -vv  ${FIC_SPEC}
+# reconstruction fichier rpm : le src.rpm est inutile
+# build rpm file, the src.rpm is not usefull to do
+rpm -bb ${FIC_SPEC}
 
 echo "##################################################################"
 echo "result :"
-ls -l /usr/src/redhat/RPMS/$ARCH/$PAQUET-$VERSION-$RELEASE.$ARCH.rpm
+ls -l ${BASE}/RPMS/${ARCH}/${PAQUET}-${VERSION}-${RELEASE}.${ARCH}.rpm
+
+# be carefull, there is others files not cleaned :
+echo "you may clean too : "
+ls -l ${BASE}/SOURCES/${NOM_COMPLET}.tgz ${BASE}/SPECS/${NOM_COMPLET}.spec 
+ls -ld ${BASE}/BUILD/${NOM_VERSION}
