@@ -455,7 +455,10 @@ function RpmBuild
            RpmUnpack || return
            [ "x$modify" = "x" ] || {
 	      export RPM_BUILD_ROOT="$BUILDROOT"
-              eval $modify || return
+              eval $modify || {
+	         Error "package '${PAQUET}' build failed due to modify script problems."
+	         return 1
+	      }
            }
         }
 	eval $BUILDCMD $rpm_defines -bb $rpm_verbose $additional ${FIC_SPEC} || {
