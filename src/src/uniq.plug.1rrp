@@ -48,7 +48,7 @@ See <URL:http://rpmrebuild.sourceforge.net/>.
 this plugin is given as an example of what can be done
 .SH "COPYRIGHT"
 .LP 
-rpmrebuild is copyright © 2004 by Eric Gerbier.
+rpmrebuild is copyright (C) 2004 by Eric Gerbier.
 .br 
 this program is distributed under GNU General Public License
 .br 
