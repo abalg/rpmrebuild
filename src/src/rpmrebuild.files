@@ -15,9 +15,18 @@
      /usr/lib/rpmrebuild/popt-without-POPTdesc
      /usr/lib/rpmrebuild/popt-with-POPTdesc
 %dir /usr/lib/rpmrebuild/plugins
-     /usr/lib/rpmrebuild/plugins/file2pacDep
+     /usr/lib/rpmrebuild/plugins/file2pacDep.plug
+     /usr/lib/rpmrebuild/plugins/file2pacDep.sh
+     /usr/lib/rpmrebuild/plugins/demo.plug
+     /usr/lib/rpmrebuild/plugins/demo.sh
+     /usr/lib/rpmrebuild/plugins/demofiles.sh
+     /usr/lib/rpmrebuild/plugins/uniq.plug
+     /usr/lib/rpmrebuild/plugins/uniq.sh
 %doc /usr/local/man/man1/rpmrebuild.1*
 %doc /usr/local/man/man1/rpmrebuild_plugins.1*
+%doc /usr/local/man/man1/file2pacDep.plug.1
+%doc /usr/local/man/man1/demo.plug.1
+%doc /usr/local/man/man1/uniq.plug.1
 
 %doc AUTHORS
 %doc COPYING
