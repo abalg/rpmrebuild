@@ -89,83 +89,8 @@ function RequeredArgument
 	return 0
 }
 ###############################################################################
-function CommandLineParsing
+function ProcessLongOptions
 {
-	# Default flags' values. To be sure they don't came from environment
-	NEED_EXIT=""  # if not empty should be set to desired exit status
-	additional=""
-	autoprovide="no"
-	autorequire="no"
-	batch="no"
-	need_change_files="no"
-	need_change_spec="no"
-	rpm_defines=""
-	rpmdir=""
-	package_flag=""
-	spec_only="no"
-	specfile=""
-	verify="yes"
-	rpm_verbose="--quiet"
-
-	export RPMREBUILD_COMMENT_MISSING="no"
-	export RPMREBUILD_PUG_FROM_FS="no"
-	export RPMREBUILD_WARNING="no"
-
-	PAQUET=""
-	PAQUET_NAME=""
-
-	while getopts "a:bc:d:D:ef:F:hkm:pPRs:S:vVwy:-:" opt; do
-		OPTIND_INCR=""
-		case "$opt" in
-			a) LONG_OPTION=additional;;
-			b) LONG_OPTION=batch;;
-			c) LONG_OPTION=comment-missing;;
-			d) LONG_OPTION=dir;;
-			D) LONG_OPTION=define;;
-			e) LONG_OPTION=edit-spec;;
-			f) LONG_OPTION=filter;;
-			F) LONG_OPTION=change-files;;
-			k) LONG_OPTION=keep-perm;;
-			m) LONG_OPTION=modify;;    
-			p) LONG_OPTION=package;;
-			P) LONG_OPTION=autoprovide;;
-			R) LONG_OPTION=autorequire;;
-			s) LONG_OPTION=spec-only;;
-			S) LONG_OPTION=chnage--spec-whole;;
-			h) LONG_OPTION=help;;
-			v) LONG_OPTION=verbose;;
-			V) LONG_OPTION=version;;
-			w) LONG_OPTION=warning;;
-			y) LONG_OPTION=verify;;
-
-                	-)
-	        		case "x$OPTARG" in
-					x*=*)
-						LONG_OPTION=${OPTARG%%=*}
-						OPTARG=${OPTARG#*=}
-						OPTARG_EXIST=1
-					;;
-
-					*)
-                   				LONG_OPTION="$OPTARG"
-                   				if [ $OPTIND -le $# ]; then
-                      					eval OPTARG=\$$OPTIND
-                      					OPTARG_EXIST=1
-							OPTIND_INCR=1
-                   				else
-                      					OPTARG=""
-                      					OPTARG_EXIST=""
-                   				fi
-					;;
-				esac
-               		;;
-
-			*)
-				Try_Help
-				return 1
-			;;
-		esac
-
 		# Get "full" long option
 		case "$LONG_OPTION" in
 			a | \
@@ -864,11 +789,93 @@ function CommandLineParsing
 				return 1
 			;;
 		esac || return
+	return 0
+}
+function CommandLineParsing
+{
+	# Default flags' values. To be sure they don't came from environment
+	NEED_EXIT=""  # if not empty should be set to desired exit status
+	additional=""
+	autoprovide="no"
+	autorequire="no"
+	batch="no"
+	need_change_files="no"
+	need_change_spec="no"
+	rpm_defines=""
+	rpmdir=""
+	package_flag=""
+	spec_only="no"
+	specfile=""
+	verify="yes"
+	rpm_verbose="--quiet"
+
+	export RPMREBUILD_COMMENT_MISSING="no"
+	export RPMREBUILD_PUG_FROM_FS="no"
+	export RPMREBUILD_WARNING="no"
+
+	PAQUET=""
+	PAQUET_NAME=""
+
+	while getopts "a:bc:d:D:ef:F:hkm:pPRs:S:vVwy:-:" opt; do
+		OPTIND_INCR=""
+		case "$opt" in
+			a) LONG_OPTION=additional;;
+			b) LONG_OPTION=batch;;
+			c) LONG_OPTION=comment-missing;;
+			d) LONG_OPTION=dir;;
+			D) LONG_OPTION=define;;
+			e) LONG_OPTION=edit-spec;;
+			f) LONG_OPTION=filter;;
+			F) LONG_OPTION=change-files;;
+			k) LONG_OPTION=keep-perm;;
+			m) LONG_OPTION=modify;;    
+			p) LONG_OPTION=package;;
+			P) LONG_OPTION=autoprovide;;
+			R) LONG_OPTION=autorequire;;
+			s) LONG_OPTION=spec-only;;
+			S) LONG_OPTION=chnage--spec-whole;;
+			h) LONG_OPTION=help;;
+			v) LONG_OPTION=verbose;;
+			V) LONG_OPTION=version;;
+			w) LONG_OPTION=warning;;
+			y) LONG_OPTION=verify;;
+
+                	-)
+	        		case "x$OPTARG" in
+					x*=*)
+						LONG_OPTION=${OPTARG%%=*}
+						OPTARG=${OPTARG#*=}
+						OPTARG_EXIST=1
+					;;
+
+					*)
+                   				LONG_OPTION="$OPTARG"
+                   				if [ $OPTIND -le $# ]; then
+                      					eval OPTARG=\$$OPTIND
+                      					OPTARG_EXIST=1
+							OPTIND_INCR=1
+                   				else
+                      					OPTARG=""
+                      					OPTARG_EXIST=""
+                   				fi
+					;;
+				esac
+               		;;
+
+			*)
+				Try_Help
+				return 1
+			;;
+		esac
+
+		# Get "full" long option
+		ProcessLongOptions || return
+		[ "x$NEED_EXIT" = "x" ] || return $NEED_EXIT
 	done || return
 
 	CreateProcessing "fini" || return
 	[ "X$spec_only" = "Xyes" -a "X$need_change_files" = "Xyes" ] && {
-		Echo "You can't use both '--spec_only' and '--change-files/--change-all'"
+		Echo "You can't use both '--spec_only' and '--change-files'"
 		return 1
 	}
 
