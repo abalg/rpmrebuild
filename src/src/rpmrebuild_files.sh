@@ -148,13 +148,13 @@ while :; do
    # for performance reason, just if warning flag
    if [ -n "$warning" ]
    then
-	out=$(echo "$file" | grep "\*|\?")
-	if [ -n "$out" ]
-	then
+	case "$file" in
+      		*[*?]*)
 		echo -e "\n-------------------------------- WARNING ------------------------------------------" 1>&2
 		echo -e "file named $file contains globbing characters\nrpm building may not work" 1>&2
 		echo -e "-----------------------------------------------------------------------------------" 1>&2
-	fi
+		;;
+	esac
    fi
 
    echo "${miss_str}${lang_str}${dir_str}${fflags_str}${attr_str}${verify_str}\"${file}\""
