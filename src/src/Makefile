@@ -30,34 +30,35 @@ TARGET_LIB    := $(ROOT)/usr/lib/rpmrebuild
 TARGET_PLUGIN := $(ROOT)/usr/lib/rpmrebuild/plugins
 TARGET_MAN    := $(ROOT)/usr/share/man/man1
 
-SCRIPTS     = rpmrebuild 
-LIB_SCRIPTS =              \
+SCRIPTS     := rpmrebuild 
+
+LIB_SCRIPTS :=             \
    rpmrebuild.sh           \
    rpmrebuild_files.sh     \
    rpmrebuild_buildroot.sh \
    rpmrebuild_ghost.sh     \
    run.sh
 
-INCLUDE_SCRIPTS =        \
+INCLUDE_SCRIPTS :=       \
    processing_func.src   \
    rpmrebuild_parser.src \
    spec_func.src         \
 
-POPTS =                  \
+POPTS :=                 \
    rpmrebuild_popt       \
    popt-without-POPTdesc \
    popt-with-POPTdesc    \
 
-SPEC_SCRIPTS =                   \
+SPEC_SCRIPTS :=                  \
    spec.scripts.input            \
    spec.scripts.make.sh          \
    remove_from_popt.make.include \
 
-MANPAGES =              \
+MANPAGES :=             \
    rpmrebuild.1         \
    rpmrebuild_plugins.1 \
 
-PLUGINS =           \
+PLUGINS :=          \
    demo.plug        \
    demo.sh          \
    demofiles.sh     \
@@ -69,7 +70,7 @@ PLUGINS =           \
    uniq.sh          \
                     \
 
-PLUGINS_MANPAGES =       \
+PLUGINS_MANPAGES :=       \
    file2pacDep.plug.1rrp \
    demo.plug.1rrp        \
    uniq.plug.1rrp        \
@@ -85,7 +86,7 @@ DOC_FILES :=      \
    rpmrebuild.lsm \
    Todo           \
 
-SOURCES =                \
+SOURCES :=               \
    $(SCRIPTS)            \
    $(LIB_SCRIPTS)        \
    $(INCLUDE_SCRIPTS)    \
@@ -102,7 +103,7 @@ SOURCES =                \
    Version               \
    Release               \
 
-TAR_NAMES = $(SOURCES) rpmrebuild.spec
+TAR_NAMES := $(SOURCES) rpmrebuild.spec
 
 define Spec
    Version="`cat Version`"      && \
