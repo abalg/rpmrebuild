@@ -46,6 +46,7 @@ options:
    -d dir : specify the working directory
    -e     : edit specfile
    -k     : keep installed files perm
+   -s spec: only generate specfile ( If spec '-' stdout will be used)
    -v     : verbose
    -V     : print version
    -h     : print this help
@@ -82,13 +83,15 @@ function CommandLineParsing
 # Default flags' values. To be sure they don't came from environment
 batch=""
 filter=""
-workdir=""
+rpmdir=""
 editspec=""
+speconly=""
+specfile=""
 rpm_verbose="--quiet"
 export keep_perm=""
 PAQUET=""
 
-while getopts "bd:ef:hkvV" opt
+while getopts "bd:ef:hks:vV" opt
 do
 	case "$opt" in
 		b) 
@@ -96,18 +99,12 @@ do
 		;;
 
 		d) 
-			workdir=$OPTARG
-			if [ -d $workdir ]
-			then
-				cd $workdir
-			elif [  -e $workdir ]
-			then
-				Error "$workdir is not a directory"
+			rpmdir="$OPTARG"
+			mkdir -p -- "$rpmdir"
+			rpmdir="$(cd $rpmdir && echo $PWD/)" || {
+				Error "Can't changedir to '$rpmdir'"
 				exit 1
-			else
-				mkdir -p $workdir
-				cd $workdir
-			fi
+			}
 		;;
 
 		e) 
@@ -121,13 +118,18 @@ do
 		#	[ -f $OPTARG -a -x $OPTARG ] && filter="$filter | $OPTARG"
 		#;;
 
+		k) 
+			keep_perm=1
+		;;
+
+		s)
+			spec_only=y
+			specfile="$OPTARG"
+		;;
+
 		h) 
 			Usage
 			exit 0
-		;;
-
-		k) 
-			keep_perm=1
 		;;
 
 		v) 
@@ -146,9 +148,11 @@ do
 	esac
 done
 
-#echo "working dir : $PWD"
-#echo "filter= $filter"
-#exit
+# If no rpmdir was specified set variable to the naitive rpmdir value
+if [ -z "$rpmdir" ]
+then
+   rpmdir="$(rpm --eval %_rpmdir)" || exit
+fi
 
 shift $((OPTIND - 1))
 if [ $# -ne 1 ]
@@ -197,7 +201,8 @@ function VerifyPackage
 ###############################################################################
 function QuestionsToUser
 {
-	[ -n "$batch" ] && return 0 ## batch mode, continue
+	[ -n "$batch"     ] && return 0 ## batch mode, continue
+	[ -n "$spec_only" ] && return 0 ## spec only mode, no questions
 
 	echo -n "want to continue (y/n) ? "
 	read rep 
@@ -218,17 +223,23 @@ function QuestionsToUser
 	return 0
 }
 ###############################################################################
+function SpecGenerationOnly
+{
+	if [ "$specfile" = "-" ]
+	then
+		SpecFile && FilesSpecFile || return
+	else
+		{ SpecFile && FilesSpecFile } > $specfile || return
+	fi
+	return 0
+}
+
 function SpecGeneration
 {
 	# fabrication fichier spec
 	# build spec file
-	FIC_SPEC=./${PAQUET}.spec
-
-	if [ -a ${FIC_SPEC} ]
-	then
-		Warning "file ${FIC_SPEC} exists : renamed"
-		mv -f ${FIC_SPEC} ${FIC_SPEC}.sav
-	fi
+	FIC_SPEC=${TMPDIR:-/tmp}/rpmrebuild_$$_${PAQUET}.spec
+	rm -rf ${FIC_SPEC} || return
 
 	{
 		if [ -n "$new_release" ]; then
@@ -238,8 +249,12 @@ function SpecGeneration
                 fi       &&
    		SpecFile &&
    		FilesSpecFile
-	} > ${FIC_SPEC}
+	} > ${FIC_SPEC} || return
+	return 0
+}
 
+function SpecEdit
+{
 	# -e option : edit the spec file
 	if [ -n "$editspec" ]
 	then
@@ -256,7 +271,7 @@ function RpmBuild
 	# for rpm 4.1 : use rpmbuild
 	BUILDCMD=rpm
 	[ -x /usr/bin/rpmbuild ] && BUILDCMD=rpmbuild
-	$BUILDCMD -bb $rpm_verbose --define "_rpmdir $PWD/" ${FIC_SPEC} || { 
+	$BUILDCMD -bb $rpm_verbose --define "_rpmdir $rpmdir" ${FIC_SPEC} || {
    		Error "package '${PAQUET}' build failed"
    		return 1
 	}
@@ -266,8 +281,11 @@ function RpmBuild
 ###############################################################################
 function RpmFileName
 {
-	QF_RPMFILENAME=$(rpm --eval %_rpmfilename)
-	RPMFILENAME=$(rpm --specfile --query --queryformat "${QF_RPMFILENAME}" ${FIC_SPEC})
+	QF_RPMFILENAME=$(rpm --eval %_rpmfilename) || return
+	RPMFILENAME=$(rpm --specfile --query --queryformat "${QF_RPMFILENAME}" ${FIC_SPEC}) || return
+	[ -n "$RPMFILENAME" ] || return
+	RPMFILENAME="$rpmdir$RPMFILENAME"
+	return 0
 }
 
 ###############################################################################
@@ -275,11 +293,18 @@ function InstallationTest
 {
 	# installation test
 	# force is necessary to avoid the message : already installed
-	rpm -U --test --force ${PWD}/${RPMFILENAME} || {
+	rpm -U --test --force ${RPMFILENAME} || {
 		Error "Testinstall for package '${PAQUET}' failed"
 		return 1
 	}
 	return 0
+}
+
+function my_exit
+{
+	st=$?	# save status
+	rm -f ${FIC_SPEC} # remove spec file
+	exit $st
 }
 ##############################################################
 # Main Part                                                  #
@@ -302,10 +327,16 @@ fi
 # to solve problems of bad date
 export LC_TIME=POSIX
 
-SpecGeneration   || exit
-RpmBuild         || exit
-RpmFileName      || exit
-echo "result: ${PWD}/${RPMFILENAME}"
-InstallationTest || exit
+if [ -n "$spec_only" ]
+then
+   SpecGenerationOnly || exit
+   exit 0
+fi
+SpecGeneration   || my_exit
+SpecEdit         || my_exit
+RpmBuild         || my_exit
+RpmFileName      || my_exit
+echo "result: ${RPMFILENAME}"
+InstallationTest || my_exit
 
-exit 0
+my_exit 0

@@ -15,6 +15,9 @@
 - add generation verify directive to the spec file
 - add build testing and install testing
 - fix a bug if release change
+- specfile now temporary (Valery Reznic)
+- added -s flag to generate spec file only (Valery Reznic)
+- default dir for rpm now not current dir but naitive rpm dir (Valery Reznic)
 
 * Mon Oct  7 2002  <valery_reznic@users.sourceforge.net> 0.7.1
 - split the script for a more modular way
