@@ -1,5 +1,5 @@
-* Thu Oct 10 2002 <gerbier@users.sourceforge.net> 0.7.2
-- replace vi by sed to change release
+* Thu Oct 22 2002 <gerbier@users.sourceforge.net> 1.0-0
+- replace vi by %define
 - add command lines options (-h : help, -v : verbose, -V: version)
 - add lsm description
 - move .popt to /usr/lib/rpmrebuild
@@ -8,7 +8,7 @@
 - add option -b for batch processing
 - add option -k to keep installed files perm
 - fix a buggy test for non-installed packages (Han Holl)
-- add /usr/local/bin to the PATH and remove dirname
+- remove dirname and move code to /usr/lib/rpmrebuild
 - use rpmbuild  if it exists (rpm 4.1)  (Han Holl)
 - add -d option to change local dir
 - add -e  option to edit spec file (Han Holl)
@@ -18,6 +18,8 @@
 - specfile now temporary (Valery Reznic)
 - added -s flag to generate spec file only (Valery Reznic)
 - default dir for rpm now not current dir but naitive rpm dir (Valery Reznic)
+- fix a bug for redhat 6.2 package name
+- fix a bug for package providing
 
 * Mon Oct  7 2002  <valery_reznic@users.sourceforge.net> 0.7.1
 - split the script for a more modular way

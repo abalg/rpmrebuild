@@ -50,12 +50,10 @@ options:
    -v     : verbose
    -V     : print version
    -h     : print this help
-the spec and rpm result are built on local directory
 Copyright (C) 2002 by Eric Gerbier
 this program is distributed under GNU General Public License
 "
    Echo "$Usage_Message"
-#echo "-f filter : apply an external filter"
 }
 ###############################################################################
 function Interrog
