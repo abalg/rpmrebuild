@@ -13,6 +13,7 @@ rpm:	tar
 	rpm -bb -v rpmrebuild.spec
 	mv /usr/src/redhat/RPMS/noarch/rpmrebuild*.rpm .
 	rpm --resign rpmrebuild*.rpm
+	rm -rf $(BASE)
 
 clean:
 	rm -rf $(BASE)
