@@ -199,6 +199,7 @@ PAQUET_NAME=""
 
 while getopts "a:bc:d:D:ef:hkm:pPRs:vVwy:-:" opt
 do
+	OPTIND_INCR=""
 	case "$opt" in
 		a) LONG_OPTION=additional;;
 		b) LONG_OPTION=batch;;
