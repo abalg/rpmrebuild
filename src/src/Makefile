@@ -6,15 +6,16 @@ MKDIR       := mkdir --parents
 RM          := rm --force
 RMDIR       := rm --force --recursive
 
-ROOT=../build/rpmrebuild
-PWD=$(shell pwd)
-RPM_TOP_DIR   = $(PWD)/BUILD
-RPM_SOURCE_DIR = $(PWD)
-RPM_BUILD_DIR = $(PWD)/BUILD
-RPM_RPMS_DIR  = $(PWD)
-RPM_SRPMS_DIR = $(PWD)
+ROOT := ../build/rpmrebuild
 
-RPM_DEFINES =                              \
+PWD := $(shell pwd)
+RPM_TOP_DIR    := $(PWD)/BUILD
+RPM_SOURCE_DIR := $(PWD)
+RPM_BUILD_DIR  := $(PWD)/BUILD
+RPM_RPMS_DIR   := $(PWD)
+RPM_SRPMS_DIR  := $(PWD)
+
+RPM_DEFINES :=                             \
    --define '_topdir    $(RPM_TOP_DIR)'    \
    --define '_sourcedir $(RPM_SOURCE_DIR)' \
    --define '_builddir  $(RPM_BUILD_DIR)'  \
@@ -22,12 +23,12 @@ RPM_DEFINES =                              \
    --define '_srcrpmdir $(RPM_SRPMS_DIR)'  \
    --define '_rpmfilename %%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm'
 
-TAR_FILE =$(RPM_SOURCE_DIR)/rpmrebuild.tar.gz
+TAR_FILE := $(RPM_SOURCE_DIR)/rpmrebuild.tar.gz
 
-TARGET_DIR    = $(ROOT)/usr/local/bin
-TARGET_LIB    = $(ROOT)/usr/lib/rpmrebuild
-TARGET_PLUGIN = $(ROOT)/usr/lib/rpmrebuild/plugins
-TARGET_MAN    = $(ROOT)/usr/local/man/man1
+TARGET_DIR    := $(ROOT)/usr/local/bin
+TARGET_LIB    := $(ROOT)/usr/lib/rpmrebuild
+TARGET_PLUGIN := $(ROOT)/usr/lib/rpmrebuild/plugins
+TARGET_MAN    := $(ROOT)/usr/local/man/man1
 
 SCRIPTS     = rpmrebuild 
 LIB_SCRIPTS =              \
@@ -42,21 +43,36 @@ INCLUDE_SCRIPTS =        \
    rpmrebuild_parser.src \
    spec_func.src         \
 
-POPTS       = rpmrebuild_popt popt-without-POPTdesc popt-with-POPTdesc
-SPEC_SCRIPTS = spec.scripts.input spec.scripts.make.sh remove_from_popt.make.include
-MANPAGES     = rpmrebuild.1 rpmrebuild_plugins.1
+POPTS =                  \
+   rpmrebuild_popt       \
+   popt-without-POPTdesc \
+   popt-with-POPTdesc    \
 
-PLUGINS      = file2pacDep.plug \
-		file2pacDep.sh \
-		demo.plug \
-		demo.sh \
-		demofiles.sh \
-		uniq.plug \
-		uniq.sh
+SPEC_SCRIPTS =                   \
+   spec.scripts.input            \
+   spec.scripts.make.sh          \
+   remove_from_popt.make.include \
 
-PLUGINS_MANPAGES = file2pacDep.plug.1rrp \
-			demo.plug.1rrp \
-			uniq.plug.1rrp
+MANPAGES =              \
+   rpmrebuild.1         \
+   rpmrebuild_plugins.1 \
+
+PLUGINS =           \
+   demo.plug        \
+   demo.sh          \
+   demofiles.sh     \
+                    \
+   file2pacDep.plug \
+   file2pacDep.sh   \
+                    \
+   uniq.plug        \
+   uniq.sh          \
+                    \
+
+PLUGINS_MANPAGES =       \
+   file2pacDep.plug.1rrp \
+   demo.plug.1rrp        \
+   uniq.plug.1rrp        \
 
 SOURCES =                \
    $(SCRIPTS)            \
