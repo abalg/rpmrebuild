@@ -67,7 +67,6 @@ options:
        --pug-from-fs           keep installed files permission, uid and gid
        --pug-from-db (default) use files permission, uid and gid from rpm db
    -m  --modify <script>       script (or program) to modify unpacked rpm files
-                               (to be used with -p (--package) option)
    -p, --package               use package file, not installed rpm
    -P, --autoprovide
    -R, --autorequire
@@ -519,13 +518,6 @@ do
 	esac
 done
 
-#if [ "x$package_flag" = "x" ]; then
-#   if [ \! "x$modify" = "x" ]; then
-#      Error "-m (--modify) option can be used only with -p (--package) option."
-#      exit 1
-#   fi
-#fi
-
 # If no rpmdir was specified set variable to the native rpmdir value
 # (with respect to possible define)
 if [ -z "$rpmdir" ]
@@ -753,7 +745,7 @@ function InstallationTest
 function my_exit
 {
 	st=$?	# save status
-	#rm -rf $RPMREBUILD_TMPDIR
+	rm -rf $RPMREBUILD_TMPDIR
 	exit $st
 }
 ##############################################################
