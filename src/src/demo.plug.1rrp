@@ -1,4 +1,4 @@
-.TH "demo.plug" "1rrp" "1.4.7" "Eric Gerbier" "rpmrebuild plugin"
+.TH "demo.plug" "1rrp" "2.0.0" "Eric Gerbier" "rpmrebuild plugin"
 .SH "NAME"
 demo \- a plugin for rpmrebuild, to show how the plugin work
 .SH "SYNOPSIS"

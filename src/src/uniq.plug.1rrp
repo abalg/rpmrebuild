@@ -1,4 +1,4 @@
-.TH "uniq" "1rrp" "1.4.7" "Eric Gerbier" "rpmrebuild plugin"
+.TH "uniq" "1rrp" "2.0.0" "Eric Gerbier" "rpmrebuild plugin"
 .SH "NAME"
 uniq \- a plugin for rpmrebuild, to remove duplicate spec lines
 .SH "SYNOPSIS"
