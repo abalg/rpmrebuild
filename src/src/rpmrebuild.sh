@@ -45,11 +45,10 @@ options:
    -b, --batch                 batch mode
    -d, --dir <dir>             specify the working directory
    -e, --edit-spec             edit specfile
-   -f, --filter-spec <file>    apply an external filter on generated specfile
+   -f, --filter <file>    apply an external filter on generated specfile
    -k, --keep-perm,
        --pug-from-fs           keep installed files permission, uid and gid
        --pug-from-db (default) use files permission, uid and gid from rpm db
-   -r, --resolve-dep	       change file dependencies in package dependencies
    -s, --spec-only <spec>      generate specfile only
                                (If <spec> '-' stdout will be used)
    -v, --verbose               verbose
@@ -129,15 +128,14 @@ rpm_verbose="--quiet"
 export keep_perm=""
 PAQUET=""
 
-while getopts "bd:ef:hkrs:vV-:" opt
+while getopts "bd:ef:hks:vV-:" opt
 do
 	case "$opt" in
 		b) LONG_OPTION=batch;;
 		d) LONG_OPTION=dir;;
 		e) LONG_OPTION=edit-spec;;
-		f) LONG_OPTION=filter-spec;;
+		f) LONG_OPTION=filter;;
 		k) LONG_OPTION=keep-perm;;
-		r) LONG_OPTION=resolv-dep;;
 		s) LONG_OPTION=spec-only;;
 		h) LONG_OPTION=help;;
 		v) LONG_OPTION=verbose;;
@@ -181,14 +179,26 @@ do
 			editspec=y
 		;;
 
-		filter-spec)
+		filter)
 			RequeredArgument
+			# search in PATH
 			lookfor=$(type -p $OPTARG)
+			if [ "$lookfor" ]
+			then
+				OPTARG=$lookfor
+			else
+				Error "can not find plugin $OPTARG in PATH"
+				exit 1
+			fi
 		
-			[ "$lookfor" ] && OPTARG=$lookfor
-		
-			[ -f $OPTARG -a -x $OPTARG ] && filter="$filter | $OPTARG"
-			echo "filter=$filter"
+			# check for execute
+			if [ -f $OPTARG -a -x $OPTARG ]
+			then
+				filter="$filter | $OPTARG"
+			else
+				Error "can not execute plugin $lookfor"
+				exit 1
+			fi
 		;;
 			
 		keep-perm | pug-from-fs)
@@ -197,10 +207,6 @@ do
 
 		pug-from-db)
 			keep_perm=""
-		;;
-
-		resolv-dep)
-			resolv_dep=1
 		;;
 
 		spec-only)
@@ -315,18 +321,6 @@ function QuestionsToUser
 	return 0
 }
 ###############################################################################
-function SpecGenerationOnly
-{
-	if [ "$specfile" = "-" ]
-	then
-		{ SpecFile && FilesSpecFile && ChangeSpecFile; } || return
-	else
-		{ SpecFile && FilesSpecFile && ChangeSpecFile; } > $specfile || return
-	fi
-	return 0
-}
-
-###############################################################################
 function SpecGen
 {
 	if [ -n "$new_release" ]; then
@@ -339,6 +333,18 @@ function SpecGen
 	ChangeSpecFile
 }
 ###############################################################################
+function SpecGenerationOnly
+{
+	if [ "$specfile" = "-" ]
+	then
+		eval SpecGen $filter || return
+	else
+		eval SpecGen $filter > $specfile || return
+	fi
+	return 0
+}
+
+###############################################################################
 function SpecGeneration
 {
 	# fabrication fichier spec
@@ -346,7 +352,7 @@ function SpecGeneration
 	FIC_SPEC=${TMPDIR:-/tmp}/rpmrebuild_$$_${PAQUET}.spec
 	rm -rf ${FIC_SPEC} || return
 
-	eval SpecGen ${filter} > ${FIC_SPEC} || return
+	eval SpecGen $filter > ${FIC_SPEC} || return
 	return 0
 }
 
