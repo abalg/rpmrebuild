@@ -1,3 +1,6 @@
+* Wed Aug 11 2004 <valery_reznic@users.sourceforge.net> 1.4.7-3
+- fixed problem with repackaging rpm with ghost files
+
 * Sun Jul 25 2004 <valery_reznic@users.sourceforge.net> 1.4.7-2
 - fixed problem with manpages compression
 
