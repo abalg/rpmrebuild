@@ -1,4 +1,8 @@
-* Wed May 19 2004 <valery_treznic@users.sourceforge.net> 1.4.6-3
+* Sun May 23 2004 <valery_reznic@users.sourceforge.net> 1.4.6-4
+- fixed bug with parsing --long-option= 
+- buildroot was changed not to use /tmp dir
+
+* Wed May 19 2004 <valery_reznic@users.sourceforge.net> 1.4.6-3
 - added long option abbreviation
 - dir option changed to directory
 - add all remaining dependencies (bash, sed, grep ...) to package
