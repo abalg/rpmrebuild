@@ -1,4 +1,4 @@
-.TH "rpmrebuild" "1" "1.4.6" "Eric Gerbier" "rpm tools"
+.TH "rpmrebuild" "1" "1.4.7" "Eric Gerbier" "rpm tools"
 .SH "NAME"
 .LP 
 rpmrebuild \- a tool to build an rpm package from an installed package
@@ -47,10 +47,12 @@ Output help information and exit.
 keep installed files permission, uid and gid (do not force to orginal files permission, uid and gid saved in rpm database)
 .TP 
 \fB\-m|\-\-modify\fP <\fIscript\fP>
-can be used only with \fB\-\-package\fP option. After rpm package converted
+can be used with or without \fB\-\-package\fP option. 
+When used with \fB\-\-package\fP option rpm package converted
 to cpio and unpackaged invoked script \fB<script>\fP to change unpacked files.
-This script got \fBRPM_BUILD_ROOT\fP environment variable pointed to the
-unpacked files root directory.
+When used without \fB\-\-package\fP option all package's files are copied
+to the temporary directory and invoked \fB<script>\fP.
+In both cases script got \fBRPM_BUILD_ROOT\fP environment variable pointed to the buildroot.
 .TP 
 \fB\-p|\-\-package\fP
 use package file, not installed rpm (this option is like rpm's \-p option)
