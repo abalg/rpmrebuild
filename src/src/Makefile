@@ -8,12 +8,14 @@ RMDIR       := rm --force --recursive
 
 ROOT=../build/rpmrebuild
 PWD=$(shell pwd)
+RPM_TOP_DIR   = $(PWD)/BUILD
 RPM_SOURCE_DIR = $(PWD)
 RPM_BUILD_DIR = $(PWD)/BUILD
 RPM_RPMS_DIR  = $(PWD)
 RPM_SRPMS_DIR = $(PWD)
 
 RPM_DEFINES =                              \
+   --define '_topdir    $(RPM_TOP_DIR)'    \
    --define '_sourcedir $(RPM_SOURCE_DIR)' \
    --define '_builddir  $(RPM_BUILD_DIR)'  \
    --define '_rpmdir    $(RPM_RPMS_DIR)'   \
