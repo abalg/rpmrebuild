@@ -121,7 +121,7 @@ function RpmUnpack
 		Error "Internal '$BUILDROOT' can not be '/'." 
         	return 1
 	}
-	local CPIO_TEMP=$RPMREBUILD_TMPDIR/${PAQUET_NAME}.cpio
+	local CPIO_TEMP=$TMPDIR_WORK/${PAQUET_NAME}.cpio
 	rm --force $CPIO_TEMP                               || return
 	rpm2cpio ${PAQUET} > $CPIO_TEMP                     || return
 	rm    --force --recursive $BUILDROOT                || return
@@ -222,12 +222,13 @@ function Main
 	#RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild.$$}
 	RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild}
 	export RPMREBUILD_TMPDIR
+	TMPDIR_WORK=$RPMREBUILD_TMPDIR/work
 
-	FIC_SPEC=$RPMREBUILD_TMPDIR/spec
-	FILES_IN=$RPMREBUILD_TMPDIR/files.in
+	FIC_SPEC=$TMPDIR_WORK/spec
+	FILES_IN=$TMPDIR_WORK/files.in
 	# I need it here just in case user specify 
 	# plugins for fs modification  (--change-files)
-	BUILDROOT=$RPMREBUILD_TMPDIR/root
+	BUILDROOT=$TMPDIR_WORK/root
 
 	D=`dirname $0` || return
 	source $D/rpmrebuild_parser.src || return
@@ -241,10 +242,11 @@ function Main
 	# to solve problems of bad date
 	export LC_TIME=POSIX
 
-	RPMREBUILD_PROCESSING=$RPMREBUILD_TMPDIR/PROCESSING
+	RPMREBUILD_PROCESSING=$TMPDIR_WORK/PROCESSING
 
 	rm -rf   $RPMREBUILD_TMPDIR || return
-	mkdir -p $RPMREBUILD_TMPDIR || return
+	# It'll create $RPMREBUILD_TMPDIR too
+	mkdir -p $TMPDIR_WORK       || return
 	CommandLineParsing "$@" || return
 	[ "x$NEED_EXIT" = "x" ] || return $NEED_EXIT
 

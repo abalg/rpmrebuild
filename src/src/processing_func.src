@@ -19,7 +19,7 @@ function processing_init
 {
 	spec_concatenated="no"
 
-	local SPEC_DIR=$RPMREBUILD_TMPDIR
+	local SPEC_DIR=$TMPDIR_WORK
 
 	SPEC_CHANGELOG=$SPEC_DIR/changelog
 	SPEC_CONFLICTS=$SPEC_DIR/conflicts
