@@ -1,4 +1,4 @@
-.TH "uniq" "1rrp" "@VERSION@" "Eric Gerbier" "rpmrebuild plugin"
+.TH "uniq.plug" "1" "@VERSION@" "Eric Gerbier" "rpmrebuild plugin"
 .SH "NAME"
 uniq.plug \- a plugin for rpmrebuild, to remove duplicate spec lines
 .SH "SYNOPSIS"
@@ -56,4 +56,4 @@ It is provided "as is", without any express or implied
 warranties.  See the file COPYING for details.
 .SH "SEE ALSO"
 .LP 
-rpm(8), rpmbuild(8), rpmrebuild_plugins(1), demo.plug(1rrp), file2pacDep.plug(1rrp), 'man -k rrp' for plugins specific manpages
+rpm(8), rpmbuild(8), rpmrebuild_plugins(1), demo.plug(1), file2pacDep.plug(1), 'man -k rrp' for plugins specific manpages
