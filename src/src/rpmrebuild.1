@@ -1,4 +1,4 @@
-.TH "rpmrebuild" "1" "1.4.4" "Eric Gerbier" "rpm tools"
+.TH "rpmrebuild" "1" "1.4.5" "Eric Gerbier" "rpm tools"
 .SH "NAME"
 .LP 
 rpmrebuild \- a tool to build an rpm package from an installed package
@@ -21,6 +21,9 @@ pass additional flags to rpmbuild
 .TP 
 \fB\-b|\-\-batch\fP
 work in batch mode (no interactive query if files change)
+.TP 
+\fB\-c|\-\-comment-missing\fP <\fIyes\fP|\fIno\fP>
+comment out in ths specfile missing files. Default \fBno\fP. This flag is meanful only when \fB\-\-verify\fP is \fBno\fP.
 .TP 
 \fB\-D|\-\-define\fP <\fIdefines\fP>
 defines to be passed to rpmbuild.
@@ -65,7 +68,10 @@ verbose output
 Output version information and exit.
 .TP 
 \fB\-w|\-\-warning\fP
-display some warnings if it detects a potential problem (for exemple, spec file which contains filename with globbing char).
+display some warnings if it detects a potential problem (for example, spec file which contains filename with globbing char).
+.TP 
+\fB\-y|\-\-verify\fP <\fIyes\fP|\fIno\fP>
+Turn on/off package verifing before processing. Default \fByes\fP. Can be turn off to get better performance.
 .SH "FILES"
 .LP 
 .TP 
