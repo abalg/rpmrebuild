@@ -15,7 +15,7 @@
     <H2 ALIGN=left>Table of Contents</H2>
     
     <OL>
-      <LI><A HREF="changelog.html#0.7.2">0.7.2 (to come)</A>
+      <LI><A HREF="changelog.html#1.0-0">1.0-0</A>
       <LI><A HREF="changelog.html#0.7.1">0.7.1</A>
       <LI><A HREF="changelog.html#0.7.0">0.7.0</A>
       <LI><A HREF="changelog.html#0.6.0">0.6.0</A>
@@ -31,20 +31,30 @@
     <HR>
     
     <P>
-    2002-10-11 Eric Gerbier &lt;<A HREF="mailto:gerbier@users.sourceforge.net">gerbier@users.sourceforge.net</A>&gt; <A name="0.7.2">0.7.2 (to come)</A>
+    2002-10-23 Eric Gerbier &lt;<A HREF="mailto:gerbier@users.sourceforge.net">gerbier@users.sourceforge.net</A>&gt; <A name="0.1-0">1.0-0</A>
     <UL>
-      <LI>replace vi by sed to change release</LI>
+      <LI>replace vi specfile by a %define to change release</LI>
       <LI>add command lines options (-h : help, -v : verbose, -V: version)</LI>
       <LI>add lsm description</LI>
-      <LI>move .popt to /etc/rpmrebuild to avoid conflicts</LI>
+      <LI>move .popt to /usr/lib/rpmrebuild to avoid conflicts</LI>
       <LI>fix some .popt problems with rpm 4.1 (Han Holl)</LI> 
       <LI>have a link from rpmrebuild.sh to rpmrebuild</LI>
       <LI>add option -b for batch processing</LI>
       <LI>add option -k to keep installed files perm</LI>
       <LI>fix a buggy test for non-installed packages (Han Holl)</LI>
-      <LI>add option -f to have an external filter (Han Holl)</LI>
-      <LI>add /usr/local/bin to the PATH and remove dirname</LI> 
+      <LI>remove dirname and move code to /usr/lib/rpmrebuild</LI>
       <LI>use rpmbuild  if it exists (rpm 4.1)  (Han Holl)</LI>
+      <LI>add -d option to change working dir</LI>
+      <LI>add -e  option to edit spec file</LI>
+      <LI>add generation verify directive to the spec file</LI>
+      <LI>add build testing and install testing</LI>
+      <LI>fix a bug if release change</LI>
+      <LI>specfile now temporary (Valery Reznic)</LI>
+      <LI>added -s flag to generate spec file only (Valery Reznic)</LI>
+      <LI>default dir for rpm now not current dir, but native rpm dir (Valery Reznic)</LI>
+      <LI>fix a bug for redhat 6.2 package name</LI>
+      <LI>fix a bug for package providing</LI>
+      <LI>and full code rewrite (Valery Reznic)</LI>
     </UL> 
     
     <HR>

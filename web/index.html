@@ -40,6 +40,14 @@
     You have an installed package, you have customized (configuration ...) and want to distribute this one : just use rpmrebuild
     to build a new rpm ( no need to know anything about rpm building) !
     
+    <H2>advices</H2>
+    <UL>
+      <LI>rpmrebuild do not need explicitely to be run on root superuser, but you you have to be root if some files are root-protected (600)</LI>
+      <LI>the specfile is deleted after use. If you want to keep it, use -s option</LI>
+      <LI>the rpm files are builded on "natural" location (for exemple, on redhat, on /usr/src/redhat/RPMS, by default).<BR>
+      but you may change this with -d option or with ~/.rpmmacros file (add "%_rpmdir your_dir")</LI>
+    </UL> 
+    
     <H2>history</H2>
     I am system admin on linux, and I am using <A href="http://www.rpm.org">rpm</A> packages to help managing softwares.<BR>
     I install all the software in rpm, even if must convert tar.gz to rpm 
@@ -70,7 +78,7 @@
     <HR>
     <TABLE> 
       <TR> 
-	<TD>current version</TD><TD>0.7.1</TD>
+	<TD>current version</TD><TD>1.0-0</TD>
       </TR> 
       <TR> 
 	<TD>status</TD><TD>stable</TD>
@@ -97,7 +105,7 @@
     
     <HR>
     <A href="mailto:gerbier@users.sourceforge.net">Eric Gerbier</A><BR>
-    page changed on 2002/10/07
+    page changed on 2002/10/23
   </BODY>
 </HTML>
 
