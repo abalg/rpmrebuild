@@ -79,7 +79,7 @@ add AutoReq / AutoProv tags
 .br
 add BuildRoot tag
 .br
-add some defines to adjust rpm's behavour.
+add some defines to adjust rpm's behaviour.
 .br
 double all '%' - it'll prevent rpm from attempting expand %something as macro.
 .br
@@ -94,25 +94,25 @@ package's files under buildroot directory. So, there are two plugins type:
 .TP
 \- for specfile modification.
 .TP
-\- for files (under buildrooot) modification.
+\- for files (under buildroot) modification.
 .SH "PLUGIN'S INTERFACE"
 Plugins are executed AFTER rpm package is queried and BEFORE new package is
 rebuilded in the order specified on the command line.
 .TP
 Exit status
 Any plugin should exit with status 0 on success, and any other value on failure.
-Failed plugin will immediatly terminate whole rpmrebuild.
+Failed plugin will immediately terminate whole rpmrebuild.
 .TP 
 Environment variables
 all plugins get following environment variables:
 .RS
 .TP
 RPMREBUILD_TMPDIR
-directory for plugin's temprary files. plugin no need remove this direcory \- 
+directory for plugin's temporaries files. plugin no need remove this directory \- 
 rpmrebuild will care.
 .TP
 RPMREBUILD_PLUGINS_DIR
-directrory with plugins.
+directory with plugins.
 .TP
 RPMREBUILD_COMMENT_MISSING
 if 'yes' missing files commented in the 'files' part of specfile
@@ -131,7 +131,7 @@ LONG_OPTION
 Contains long option (without \-\-) which was used to invoke plugin.
 .TP
 RPM_BUILD_ROOT
-For plugins modifing files under buildroot set to buildroot.
+For plugins modifying files under buildroot set to buildroot.
 For other plugins \- empty.
 .RE
 .TP
