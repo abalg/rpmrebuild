@@ -1,0 +1,68 @@
+.TH "demo.plug" "1" "1.4.7" "Eric Gerbier" "rpm tools"
+.SH "NAME"
+demo \- a plugin for rpmrebuild, to show how the plugin work
+.SH "SYNOPSIS"
+rpmrebuild \-\-include demo.plug <\fIpackagename\fP>
+.br 
+or
+.br 
+rpmrebuild  \-\-change\-spec\-{type}="demo.sh [\fIoption\fP]" <\fIpackagename\fP>
+.br 
+
+the first form apply all changes
+.br 
+the second allow to choose which part to change, and plugin options
+.SH "DESCRIPTION"
+this plugin is to show how the plugin work
+.br 
+it will just add plugin type name begin of line in spec file
+.SH "OPTIONS"
+.TP 
+\fB\-h, \-\-help\fP
+output help information plugins option and exit.
+.TP 
+\fB\-v, \-\-version\fP
+print plugin version and exit
+.TP 
+\fB\-n, \-\-null\fP
+do not add anything : just echo spec file 
+.SH "FILES"
+.TP 
+\fBdemo.plug\fP
+is the 'include file' for a quicker use
+.TP 
+\fBdemo.sh\fP
+contains the code for change\-spec*
+.TP 
+\fBdemofiles.sh\fP
+contains the code for change\-files
+.TP 
+\fBdemo.plug.1\fP
+is this man page
+.SH "EXAMPLES"
+.LP 
+\fBrpmrebuild \-\-include demo.plug rpm\fP
+
+will build, apply plugin to spec file, then edit it
+
+.SH "AUTHORS"
+.LP 
+Eric Gerbier <gerbier@users.sourceforge.net>
+.TP 
+See <URL:http://rpmrebuild.sourceforge.net/>.
+.SH "NOTES"
+.LP 
+.TP 
+this plugin is given as an example of what can be done
+.SH "COPYRIGHT"
+.LP 
+rpmrebuild is copyright © 2004 by Eric Gerbier.
+.br 
+this program is distributed under GNU General Public License
+.br 
+It is provided "as is", without any express or implied
+warranties.  See the file COPYING for details.
+.SH "SEE ALSO"
+.LP 
+rpm(8), rpmbuild(8), rpmrebuild_plugins(1), plugins specific manpages.
+
