@@ -9,89 +9,217 @@ or
 rpm \-\-rpmrebuild [\fIoption\fP] <\fIpackagename\fP>
 .SH "DESCRIPTION"
 rpmrebuild is a tool to build easily rpm package.
-it can be used to build an rpm file from an installed package (lost rpm) or to quickly make change to a package : just have your change on installed files and call rpmrebuild.
+it can be used to build an rpm file from an installed package (lost rpm) or 
+to quickly make change to a package: 
+just have your change on installed files and call rpmrebuild.
 .SH "OPTIONS"
 .TP 
-\fB\-a|\-\-additional\fP <\fIflags\fP>
+\fB\-a, \-\-additional\fP=<\fIflags\fP>
 pass additional flags to \fBrpmbuild\fP
 .TP 
-\fB\-b|\-\-batch\fP
+\fB\-b, \-\-batch\fP
 work in batch mode (no interactive query if files change)
 .TP 
-\fB\-c|\-\-comment\-missing\fP <\fIyes\fP|\fIno\fP>
-comment out in the specfile missing files. Default \fBno\fP.
+\fB\-c, \-\-comment\-missing\fP=<\fIyes\fP|\fIno\fP>
+comment out in the specfile missing files. Default: \fBno\fP.
 .TP 
-\fB\-D|\-\-define\fP <\fIdefines\fP>
+\fB\-D, \-\-define\fP=<\fIdefines\fP>
 defines to be passed to rpmbuild.
 .TP 
-\fB\-d|\-\-directory\fP <\fIdirectory\fP>
-rpm package result will be written in  \fIdirectory\fP.
+\fB\-d, \-\-directory\fP=<\fIdirectory\fP>
+rpm package result will be written in \fIdirectory\fP.
 .TP 
-\fB\-e|\-\-edit\-spec\fP
-open the generated specfile with your favorite editor before rpm build
+\fB\-e, \-\-edit\-spec\fP
+alias to \-\-edit\-whole.
 .TP 
-\fB\-f|\-\-filter\fP <\fIcommand\fP>
-alias for \fB\-S/\-\-change\-spec\-whole\fP
+\fB\-f, \-\-filter\fP=<\fIcommand\fP>
+alias for \fB\-\-change\-spec\-whole\fP
 .TP 
-\fB\-F|\-\-change\-files\fP <\fIcommand\fP>
-Invoke plugin which change files. For more info see \fBPLUGINS\fP.
+\fB\-h, \-\-help\fP
+output help information about all, but plugins option and exit.
 .TP 
-\fB\-h|\-\-help\fP
-Output help information and exit.
+\fB\-\-help\-plugins\fP
+output help information about plugins options and exit.
 .TP 
-\fB\-k|\-\-keep\-perm
+\fB\-i, \-\-include\fP=<\fIfile\fP>
+read more options from the file 'file'.
+.TP 
+\fB\-k, \-\-keep\-perm
 alias to \fB\-\-pug\-from\-fs\fP
 .TP 
-\fB\-m|\-\-modify\fP <\fIcommand\fP>
-alias to \fB\-F/\-\-change\-files
-can be used with or without \fB\-\-package\fP option. 
-When used with \fB\-\-package\fP option rpm package converted to cpio and unpackaged.
-Then invoked script \fB<script>\fP to change unpacked files.
-When used without \fB\-\-package\fP option all package's files are copied
-to the temporary directory and invoked \fB<script>\fP.
-In both cases script got \fBRPM_BUILD_ROOT\fP environment variable pointed to the buildroot.
-Can't be used with \fB\-\-spec\-only\fP
+\fB\-m, \-\-modify\fP=<\fIcommand\fP>
+alias to \fB\-\-change\-files
 .TP 
-\fB\-p|\-\-package\fP
+\fB\-p, \-\-package\fP
 use package file, not installed rpm (this option is like rpm's \-p option)
 .TP 
 \fB\-\-pug\-from\-db (default)\fP
 set files permission, uid and gid as saved in rpm database
 .TP 
 \fB\-\-pug\-from\-fs\fP
-keep installed files permission, uid and gid (do not force to orginal files permission, uid and gid saved in rpm database)
+keep installed files permission, uid and gid 
+(do not force to orginal files permission, uid and gid saved in rpm database)
 .TP 
-\fB\-P|\-\-autoprovide\fP
+\fB\-P, \-\-autoprovide\fP
 use rpm scripts to compute provides
 .TP 
-\fB\-R|\-\-autorequire\fP
+\fB\-R, \-\-autorequire\fP
 use rpm scripts to compute requires
 .TP 
-\fB\-s|\-\-spec\-only\fP <\fIspecfile\fP>
-do not rebuild package. only generate specfile. 
+\fB\-s, \-\-spec\-only\fP=<\fIspecfile\fP>
+do not rebuild package, only generate specfile. 
 Can't be used with \fB\-\-change\-files\fP.
 .TP 
-\fB\-v|\-\-verbose\fP
+\fB\-v, \-\-verbose\fP
 verbose output
 .TP 
-\fB\-V|\-\-version\fP
-Output version information and exit.
+\fB\-V, \-\-version\fP
+output version information and exit.
 .TP 
-\fB\-w|\-\-warning\fP
-display some warnings if it detects a potential problem (for example, spec file which contains filename with globbing char).
+\fB\-w, \-\-warning\fP
+display some warnings if it detects a potential problem 
+(for example, spec file which contains filename with globbing char).
 .TP 
-\fB\-y|\-\-verify\fP <\fIyes\fP|\fIno\fP>
-Turn on/off package verifing before processing. Default \fByes\fP. Can be turn off to get better performance.
-.SH "PLUGINS"
-.LP 
+\fB\-y, \-\-verify\fP=<\fIyes\fP|\fIno\fP>
+Turn on/off package verifing before processing. 
+Default: \fByes\fP. Can be turn off to get better performance.
+.LP
+PLUGINS OPTION
+.LP
+rpmrebuild use may be extended with plugins.
+Plugins are searched in \fB/usr/lib/rpmrebuild/plugins\fP and then in $PATH
+.TP 
+\fB\-\-change\-files\fP=<\fIcommand\fP>
+Invoke plugin which change package's files. Note, that these files are copied
+before to the temporary location, so installed package's files not changed. 
+.br
+Can't be used with \fB\-\-spec\-only\fP
+.LP
+\fB\-\-change\-spec\-whole\fP=<\fIcommand\fP>
+.br
+\fB\-\-edit\-whole
+.RS
+Invoke plugin or editor to change specfile.
+.RE
+.LP
+\fB\-\-change\-spec\-preamble\fP=<\fIcommand\fP>
+.br
+\fB\-\-edit\-preamble
+.LP
+\fB\-\-change\-spec\-conflicts\fP=<\fIcommand\fP>
+.br
+\fB\-\-edit\-conflicts
+.LP
+\fB\-\-change\-spec\-obsoletes\fP=<\fIcommand\fP>
+.br
+\fB\-\-edit\-obsoletes
+.LP
+\fB\-\-change\-spec\-provides\fP=<\fIcommand\fP>
+.br
+\fB\-\-edit\-provides
+.LP
+\fB\-\-change\-spec\-requires\fP=<\fIcommand\fP>
+.br
+\fB\-\-edit\-requires
+.LP
+\fB\-\-change\-spec\-description\fP=<\fIcommand\fP>
+.br
+\fB\-\-edit\-description
+.LP
+\fB\-\-change\-spec\-files\fP=<\fIcommand\fP>
+.br
+\fB\-\-edit\-files
+.LP
+\fB\-\-change\-spec\-triggers\fP=<\fIcommand\fP>
+.br
+\fB\-\-edit\-triggers
+.LP
+\fB\-\-change\-spec\-pre\fP=<\fIcommand\fP>
+.br
+\fB\-\-edit\-pre
+.LP
+\fB\-\-change\-spec\-post\fP=<\fIcommand\fP>
+.br
+\fB\-\-edit\-post
+.LP
+\fB\-\-change\-spec\-preun\fP=<\fIcommand\fP>
+.br
+\fB\-\-edit\-preun
+.LP
+\fB\-\-change\-spec\-postun\fP=<\fIcommand\fP>
+.br
+\fB\-\-edit\-postun
+.LP
+\fB\-\-change\-spec\-verifyscript\fP=<\fIcommand\fP>
+.br
+\fB\-\-edit\-verifyscript
+.LP
+\fB\-\-change\-spec\-changelog\fP=<\fIcommand\fP>
+.br
+\fB\-\-edit\-changelog
+.LP
+.RS
+Invoke plugin or editor to change preamble, conflicts, obsoletes, provides,
+requires, description, files, triggers, preinstall, postinstall, preuninstall,
+postuninstall, verifyscript or changelog.
+.br
+None of these options can be specified after \fB\-\-change\-spec\-whole\fP
+or \fB\-\-edit\-whole\fP.
+.SH "INCLUDE FILES"
+Any of the rpmrebuild's LONG option can be specified on the command line or
+in the include file (file specified with \-i/\-\-include option).
+.LP
+Include files are searched in the \fB/usr/lib/rpmrebuild/plugins\fP directory.
+.LP
+Include file has following syntax.
+.TP
+\fBcomments\fP
+Any line begin with '#' or some number of whitespace and '#'.
+.TP
+\fBempty line\fP
+empty line are ignored.
+.TP
+\fBoption line\fP
+option line is very similar to the option written on the command line.
+the limitation of the option line in the file are:
+.RS
+.TP
+long option
+should be used ONLY long options WITHOUT leading \-\-.
+.TP
+option's argument
+option's argument should not be quoted. 
+.TP
+separartor
+\- option's argument should be separated from option by spaces or tabs, not by
+equial ('=') sign.
+.TP
+non\-optional argument(s)
+package name (non\-optional argument) shouldn't be specified in the include file.
+.RE
+.LP
+For exampe, if command line looks like:
+.RS
+rpmrebuild --change-files="pgm1 a b c" --change-spec-pre="pgm2 bb" pkg
+.RE
+.LP
+Then include file should be written like:
+.RS
+change-files    pgm1 a b c
+.br
+change-spec-pre pgm2 bb
+.br
+.RE
 .SH "FILES"
-.LP 
 .TP 
 \fB~/.rpmmacros\fP 
 is used by rpm when building packages (macros)
 .TP 
 \fB/etc/popt\fP
 contains rpm alias used by rpmrebuild
+.TP
+\fB$RPMREBUILD_TMPDIR/work\fP
+directory where rpmrebuild put temporary files.
 .SH "ENVIRONMENT"
 .LP 
 .TP 
@@ -103,31 +231,6 @@ used to specify an editor for specfile. if not set \fBEDITOR\fP variable examine
 .TP 
 \fBEDITOR\fP
 used to specify an editor for specfile. if not set \fBvi\fP used.
-.TP 
-\fBRPM_BUILD_ROOT\fP
-ROOT of unpacked files. Passed to script invoked with \fB\-\-modify\fP
-.SH "PLUGINS"
-.LP 
-rpmrebuild use may be extended with plugins, via the "\-\-filter" option.
-.LP 
-plugins are searched in PATH, then on /usr/lib/rpmrebuild/plugins
-.br 
-A plugin receive on STDIN the generated specfile, make any changes, and rewrite it on STDOUT.
-.TP 
-An example is given in rpmrebuild package with file2pac.plugin, which transform all rpm dependencies in package dependencies (dependencies to file are hard to resolve when updating a system).
-
-For example, it change
-.br 
-Requires: /bin/sh
-.br 
-Requires: libc.so.6(GLIBC_2.1)
-.br 
-
-into :
-.br 
-Requires: bash
-.br 
-Requires: glibc
 .SH "EXAMPLES"
 .LP 
 Build an rpm package as closed as possible to original one:
@@ -152,15 +255,15 @@ Specify generated rpm name:
 .LP 
 Change package interactive
 .LP 
-\fBrpm \-\-rpmrebuild \-\-package \-\-modify "/bin/bash" /some/place/bash.rpm\fP
+\fBrpm \-\-rpmrebuild \-\-package \-\-change\-files "/bin/bash" /some/place/bash.rpm\fP
 .LP 
 Change package non\-interactive
 .LP 
-\fBrpm \-\-rpmrebuild \-\-package \-\-modify "a.sh && b.sh" /some/place/bash.rpm\fP
+\fBrpm \-\-rpmrebuild \-\-package \-\-change\-files "a.sh && b.sh" /some/place/bash.rpm\fP
 .LP 
 if you have problem with rpm building, and if you know specfile syntax, you can also edit it:
 .LP 
-\fBrpm \-\-rpmrebuild  \-\-edit\-spec package\fP
+\fBrpm \-\-rpmrebuild  \-\-edit\-whole package\fP
 .SH "AUTHORS"
 .LP 
 Eric Gerbier <gerbier@users.sourceforge.net>
@@ -189,4 +292,5 @@ It is provided "as is", without any express or implied
 warranties.  See the file COPYING for details.
 .SH "SEE ALSO"
 .LP 
-rpm(8), rpmbuild(8)
+rpm(8), rpmbuild(8), rpmrebuild_plugins(1), plugins specific manpages.
+
