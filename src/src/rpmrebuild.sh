@@ -27,7 +27,7 @@ function Usage
 	echo "-b : batch mode"
 	echo "-d dir : specify the working directory"
 	echo "-e : edit specfile"
-	echo "-f filter : apply an external filter"
+	#echo "-f filter : apply an external filter"
 	echo "-h : print this help"
 	echo "-k : keep installed files perm"
 	echo "-v : verbose"
@@ -78,7 +78,7 @@ do
 		cd $workdir
 	elif [  -e $workdir ]
 	then
-		echo "$workdir is not a directory"
+		echo "WARNING : $workdir is not a directory"
 		Usage
 		exit 1
 	else
@@ -87,9 +87,9 @@ do
 	fi
 	;;
 	e) editspec=y;;
-	f) lookfor=$(type -p $OPTARG)
-	[ "$lookfor" ] && OPTARG=$lookfor
-	[ -f $OPTARG -a -x $OPTARG ] && filter="$filter | $OPTARG";;
+#	f) lookfor=$(type -p $OPTARG)
+#	[ "$lookfor" ] && OPTARG=$lookfor
+#	[ -f $OPTARG -a -x $OPTARG ] && filter="$filter | $OPTARG";;
 	h) Usage; exit 1;;
 	k) export keep_perm=1;;
 	v) verbose="-v";;
@@ -105,7 +105,7 @@ echo "working dir : $PWD"
 shift $((OPTIND - 1))
 if [ $# -ne 1 ]
 then
-	echo "package argument missing"
+	echo "WARNING : package argument missing"
 	Usage
 	exit 1
 fi
@@ -176,6 +176,7 @@ fi
    FilesSpecFile
 } > ${FIC_SPEC}
 
+# change release
 if [ -n "$new_release" ]
 then
 	sed "s/Release:.*/Release: $new_release/" ${FIC_SPEC} > ${FIC_SPEC}.new
@@ -192,9 +193,16 @@ fi
 # for rpm 4.1 : use rpmbuild
 BUILDCMD=rpm
 [ -x /usr/bin/rpmbuild ] && BUILDCMD=rpmbuild
-$BUILDCMD -bb $verbose --define "_rpmdir $PWD/" ${FIC_SPEC}
+$BUILDCMD -bb $verbose --define "_rpmdir $PWD/" ${FIC_SPEC} || { echo "WARNING : build failed"; exit 1; }
 
 QF_RPMFILENAME=$(rpm --eval %_rpmfilename)
 RPMFILENAME=$(rpm --query --queryformat "${QF_RPMFILENAME}" ${PAQUET})
 echo "result: ${PWD}/${RPMFILENAME}"
+
+# installation test
+# force is necessary to avoid the message : already installed
+rpm -U --test --force ${PWD}/${RPMFILENAME} || {
+	echo "WARNING : Testinstall failed"
+	exit 1
+}
 exit 0
