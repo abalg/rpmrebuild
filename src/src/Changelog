@@ -1,3 +1,9 @@
+* Thu Jun 12 2003 <valery_reznic@users.sourceforge.net> 1.4.4-1
+- added -m/--modify option - invoke script after rpm's file unpackaging
+- added -a/--additional option - pass additional flafs to rpmbuild
+- added -D/--define option - set defines for rpmbuild
+- after specfile editing (with -e option) is possible now abort rpm build 
+
 * Mon Jun 09 2003 <valery_reznic@users.sourceforge.net> 1.4.3-1
 - fixed problem with (none) in the FILELANG query
 - rpmrebuild now working with rpm-4.2
