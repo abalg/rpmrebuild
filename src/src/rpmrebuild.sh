@@ -68,6 +68,8 @@ options:
    -m  --modify <script>       script (or program) to modify unpacked rpm files
                                (to be used with -p (--package) option)
    -p, --package               use package file, not installed rpm
+   -P, --autoprovide
+   -R, --autorequire
    -s, --spec-only <spec>      generate specfile only
                                (If <spec> '-' stdout will be used)
    -v, --verbose               verbose
@@ -90,12 +92,30 @@ function Interrog
 	rpm --query --i18ndomains /dev/null $package_flag --queryformat "${QF}" ${PAQUET}
 }
 ###############################################################################
-# build general tags
-function SpecFile
+function SpecChange
 {
 	# rpmlib dependencies are insert during rpm building
 	# gpg key can not be provided
-	HOME=$MY_LIB_DIR rpm --query --i18ndomains /dev/null $package_flag --spec_spec ${PAQUET} | sed 's/\(^Requires:[[:space:]]*rpmlib(.*\)/#\1/;s/\(^Provides:[[:space:]]*gpg(.*\)/#\1/'
+	sedscript='s/\(^Requires:[[:space:]]*rpmlib(.*\)/#\1/;s/\(^Provides:[[:space:]]*gpg(.*\)/#\1/'
+
+	if [ -n $autorequire ]
+	then
+		sedscript="${sedscript};s/^AutoReq/#AutoReq/;s/^%undefine __find_requires/#%undefine __find_requires/"
+	fi
+
+	if [ -n $autoprovide ]
+	then
+		sedscript="${sedscript};s/^AutoProv/#AutoProv/;s/^%undefine __find_provides/#%undefine __find_provides/"
+	fi
+
+	# apply filter
+	sed "$sedscript"
+}
+###############################################################################
+# build general tags
+function SpecFile
+{
+	HOME=$MY_LIB_DIR rpm --query --i18ndomains /dev/null $package_flag --spec_spec ${PAQUET} | SpecChange
 }
 ###############################################################################
 # build the list of files in package
@@ -150,6 +170,8 @@ function CommandLineParsing
 {
 # Default flags' values. To be sure they don't came from environment
 additional=""
+autoprovide=""
+autorequire=""
 batch=""
 filter=""
 rpm_defines=""
@@ -167,7 +189,7 @@ export warning=""
 PAQUET=""
 PAQUET_NAME=""
 
-while getopts "a:bc:d:D:ef:hkm:ps:vVwy:-:" opt
+while getopts "a:bc:d:D:ef:hkm:pPRs:vVwy:-:" opt
 do
 	case "$opt" in
 		a) LONG_OPTION=additional;;
@@ -180,6 +202,8 @@ do
 		k) LONG_OPTION=keep-perm;;
 		m) LONG_OPTION=modify;;    
 		p) LONG_OPTION=package;;
+		P) LONG_OPTION=autoprovide;;
+		R) LONG_OPTION=autorequire;;
 		s) LONG_OPTION=spec-only;;
 		h) LONG_OPTION=help;;
 		v) LONG_OPTION=verbose;;
@@ -209,6 +233,14 @@ do
 		additional)
 			RequeredArgument
 			additional="$OPTARG"
+		;;
+
+		autoprovide)
+			autoprovide=y
+		;;
+
+		autorequire)
+			autorequire=y
 		;;
 
 		batch)

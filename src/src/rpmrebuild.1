@@ -22,7 +22,7 @@ pass additional flags to rpmbuild
 \fB\-b|\-\-batch\fP
 work in batch mode (no interactive query if files change)
 .TP 
-\fB\-c|\-\-comment-missing\fP <\fIyes\fP|\fIno\fP>
+\fB\-c|\-\-comment\-missing\fP <\fIyes\fP|\fIno\fP>
 comment out in the specfile missing files. Default \fBno\fP. This flag is meanful only when \fB\-\-verify\fP is \fBno\fP.
 .TP 
 \fB\-D|\-\-define\fP <\fIdefines\fP>
@@ -54,6 +54,12 @@ unpacked files root directory.
 .TP 
 \fB\-p|\-\-package\fP
 use package file, not installed rpm (this option is like rpm's \-p option)
+.TP 
+\fB\-P|\-\-autoprovide\fP
+use rpm scripts to compute provides
+.TP 
+\fB\-R|\-\-autorequire\fP
+use rpm scripts to compute requires
 .TP 
 \fB\-\-pug\-from\-db (default)\fP
 set files permission, uid and gid as saved in rpm database
@@ -129,9 +135,9 @@ Build a modified package:
 Build a rpm from another rpm file:
 .LP 
 \fBrpm \-\-rpmrebuild \-\-package \-\-filter filter /usr/src/redhat/i386/package\-i386.rpm\fP
-.LP
+.LP 
 Rebuild rpm as legacy (rpm[23]) package:
-.LP
+.LP 
 \fBrpm \-\-rpmrebuild \-\-additional "\-\-nodirtokens" bash\fP
 .LP 
 Specify generated rpm name:
@@ -142,7 +148,7 @@ Change package interactive
 .LP 
 \fBrpm \-\-rpmrebuild \-\-package \-\-modify "/bin/bash" /some/place/bash.rpm\fP
 .LP 
-Change package non-interactive
+Change package non\-interactive
 .LP 
 \fBrpm \-\-rpmrebuild \-\-package \-\-modify "a.sh && b.sh" /some/place/bash.rpm\fP
 .LP 
