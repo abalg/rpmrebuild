@@ -48,6 +48,7 @@ qu'il vous faut.
 make
 
 %install
+[ "$RPM_BUILD_ROOT" != "/" ] && rm -rf "$RPM_BUILD_ROOT"
 make ROOT="$RPM_BUILD_ROOT" install
 
 %clean
