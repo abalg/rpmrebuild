@@ -72,8 +72,7 @@ function processing_spec_change
 		Xconcatenate)
 			[ "X$spec_concatenated" = "Xyes" ] && return 0
 			spec_concatenated="yes"
-			SPEC_IN=$FIC_SPEC.$spec_index
-			spec_index=$[spec_index + 1]
+			# No need SPEC_IN here
 			SPEC_OUT=$FIC_SPEC.$spec_index
 		;;
 
