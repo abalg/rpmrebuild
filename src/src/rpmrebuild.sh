@@ -354,16 +354,16 @@ function CreateProcessing
 function RpmUnpack
 {
 	[ "x$BUILDROOT" = "x/" ] && {
-	   Error "Internal '$BUILDROOT' can not be '/'." 
-           return 1
+		Error "Internal '$BUILDROOT' can not be '/'." 
+        	return 1
 	}
 	local CPIO_TEMP=$RPMREBUILD_TMPDIR/${PAQUET_NAME}.cpio
-	rm -f $CPIO_TEMP                                    || return
+	rm --force $CPIO_TEMP                               || return
 	rpm2cpio ${PAQUET} > $CPIO_TEMP                     || return
 	rm    --force --recursive $BUILDROOT                || return
 	mkdir --parent            $BUILDROOT                || return
 	(cd $BUILDROOT && cpio --quiet -idmu ) < $CPIO_TEMP || return
-	rm -f $CPIO_TEMP                                    || return
+	rm --force $CPIO_TEMP                               || return
 	# Process ghost files
 	/bin/bash $MY_LIB_DIR/rpmrebuild_ghost.sh $BUILDROOT < $FILES_IN || return
 	return 0
