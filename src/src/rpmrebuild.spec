@@ -2,12 +2,12 @@
 Summary: a tool to build rpm file from rpm database
 # The Summary: line should be expanded to about here -----^
 Name: rpmrebuild
-Version: 0.4
-Release: 2
+Version: 0.5
+Release: 0
 License: GPL
 Group: Utilities/System
-#BuildRoot: /tmp/rpm-root
-Buildroot: %{_tmppath}/%{name}-%{version}-root
+# Buildroot: %{_tmppath}/%{name}-%{version}-root
+Buildroot: %{_builddir}/%{name}-%{version}-root
 Source: rpmrebuild.tar.gz
 # Following are optional fields
 Url: http://rpmrebuild.sourceforge.net
@@ -41,10 +41,18 @@ cp -a . ${RPM_BUILD_ROOT-/}
 %doc COPYING
 %doc COPYRIGHT
 %doc LISEZ.MOI
+%doc Todo
 
 %changelog
+* Sun Sep 20 2002  <gerbier@users.sourceforge.net> 0.5.0
+- try to have it work on any distribution
+- the rpm package is now signed with my gpg key
+
 * Mon Sep 17 2002  <gerbier@users.sourceforge.net> 0.4.2
 - add architecture support (thanks to Han Holl <han.holl@prismant.nl>)
+- add add require, obsolete tags
+- force time format with LC_TIME to POSIX
+- change shell name to match project name
 - full english messages
 
 * Mon Sep 17 2002  <gerbier@users.sourceforge.net> 0.4.1
