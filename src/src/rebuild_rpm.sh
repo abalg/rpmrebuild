@@ -1,6 +1,6 @@
 #!/bin/sh
 ###############################################################################
-#   ld_rpm.sh 
+#   rebuild_rpm.sh 
 #
 #    Copyright (C) 2002 by Eric Gerbier
 #    Bug reports to:  gerbier@users.sourceforge.net
@@ -49,20 +49,50 @@ then
 	exit 1 
 fi
 
+# test root
+#out=$(echo $HOME | grep root)
+#if [ -z "$out" ]
+#then
+#        echo "you have to work under root user"
+#        exit
+#fi
+
+
 # test existence package
 export PAQUET=$1
 output=`rpm -q ${PAQUET}`
 if [ -z "$output" ]
 then
-	# pas de package ${PAQUET}
+	echo "no package ${PAQUET} in database"
 	exit 1
 else
-	NAME=`interrogation '%{NAME}\n'`
-	VERSION=`interrogation '%{VERSION}\n'`
-	RELEASE=`interrogation '%{RELEASE}\n'`
+	nb=$(echo $output | wc -w | awk '{print $1}')
+	if [ $nb -ne 1 ]
+	then
+		echo "too much packages match ${PAQUET} : $output"
+		exit 1
+	else
+		NAME=`interrogation '%{NAME}\n'`
+		VERSION=`interrogation '%{VERSION}\n'`
+		RELEASE=`interrogation '%{RELEASE}\n'`
 
-	NOM_COMPLET=${NAME}-${VERSION}-${RELEASE}
-	NOM_VERSION=${NAME}-${VERSION}
+		NOM_COMPLET=${NAME}-${VERSION}-${RELEASE}
+		NOM_VERSION=${NAME}-${VERSION}
+	fi
+fi
+
+# verification des changements
+out=$(rpm -V ${PAQUET})
+if [ -n "$out" ]
+then
+	echo "some files have been modified :"
+	rpm -V ${PAQUET}
+	echo "want to continue (y/n) ?"
+	read rep
+	if [ "$rep" = 'n' ]
+	then
+		exit
+	fi
 fi
 
 # fabrication fichier tar contenant les fichiers du paquet
@@ -116,37 +146,60 @@ rm -rf \$RPM_BUILD_ROOT
 
 END
 
-rpm -q --scripts ${PAQUET} | awk -F: '/postinstall/ {printf ("%post \n%s\n", $2); getline}
-/postuninstall/ {printf ("%postun \n%s\n", $2); getline}
-/preinstall/ {printf ("%pre \n%s\n", $2);getline }
-/preuninstall/ {printf ("%preun \n%s\n", $2);getline }
-{ print $0} ' >> ${FIC_SPEC}
+ecrire_info "%pre\n" '%{PREINPROG}\n'
+ecrire_info "%preun\n" '%{PREUNPROG}\n'
+ecrire_info "%post\n" '%{POSTINPROG}\n'
+ecrire_info "%postun\n" '%{POSTUNPROG}\n'
 
 cat << END2 >>  ${FIC_SPEC}
 %files
 %defattr(-, root, root)
 END2
 
-# petite subtilite : les repertoires ne doivent pas 
-# aparaitre directement, sinon probleme de doublons
-liste=`rpm -ql ${PAQUET}`
-for file in $liste
+listeall=`rpm -ql ${PAQUET}`
+listedoc=$(rpm -qld ${PAQUET})
+listeconfig=$(rpm -qlc ${PAQUET})
+for file in $listeall
 do
+	# petite subtilite : les repertoires ne doivent pas 
+	# aparaitre directement, sinon probleme de doublons
 	if [ -d $file ]
 	then
 		echo "%dir $file" >> ${FIC_SPEC}
+		echo "%dir $file"
 	else
+		# test for doc files
+		for ficdoc in $listedoc
+		do
+			if [ "$file" = "$ficdoc" ]
+			then
+				echo "%doc $file" >> ${FIC_SPEC}
+				echo "%doc $file"
+				continue 2
+			fi
+		done
+		# test for config files
+		for ficconf in $listeconfig
+		do
+			if [ "$file" = "$ficconf" ]
+			then
+				echo "%config $file" >> ${FIC_SPEC}
+				echo "%config $file"
+				continue 2
+			fi
+		done
+		
+		# default
 		echo "$file" >> ${FIC_SPEC}
+		echo "$file"
 	fi
 done
 
-output=`rpm -q --changelog  ${PAQUET}`
-if [ $output != "(none)" ]
-then
-	echo "%changelog" >> ${FIC_SPEC}
-	echo $output >> ${FIC_SPEC}
-fi
+echo "%changelog" >> ${FIC_SPEC}
+rpm -q --changelog ${PAQUET} >> ${FIC_SPEC}
 
+
+exit
 # reconstruction fichier rpm
 rpm -bb -vv  ${FIC_SPEC}
 

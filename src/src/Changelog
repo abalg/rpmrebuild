@@ -1,0 +1,15 @@
+2002-07-18 Eric Gerbier <gerbier@users.sourceforge.net> 0.4
+	* check changes (rpm -V)
+	* check for multiples rpm
+	* simplify pre post tag
+	* add type doc and config files
+
+2002-07-12 Eric Gerbier <gerbier@users.sourceforge.net> 0.3
+	* bug fix with change pre and post install tag
+	* first public version
+
+2002-01-12 Eric Gerbier <gerbier@users.sourceforge.net> 0.2
+	* add changelog
+
+2000-01-01 Eric Gerbier <gerbier@users.sourceforge.net> 0.1
+	* initial version

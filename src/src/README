@@ -1,0 +1,38 @@
+summary
+--------
+rpmrebuild is a tool to build an rpm file from the rpm database
+of installed softwares.
+
+how does it work
+-----------------
+The rpm database contains many things,in fact all what is need to build the rpm file
+(even the pre/post install scripts).
+One can access the database in shell-script (rpm -q), or throw an API in C language.
+I choose the shell-script for portability, debug facility, and because there was no 
+performance need.
+
+Be careful : the rebuild is done from the installed files, so, if there was some
+modifications (config or so), they are reported in the new package.
+but I show what is concerned
+
+last remark : the rpm software as now a "repackage" option but :
+- it is not documented in man page
+- it can only be used in erase command (rpm -e --repackage), this can be not possible because of dependencies
+- for informations, the result goes to /var/spool/up2date
+
+The script as only been tested on redhat distribution (6.x and 7.x releases)
+
+historic
+----------
+In 1999, I had a big problem, when updating a package : the new version was not working !
+So I had to "go back", but it was impossible to find the old rpm file (on local disk, or on the net).
+I just had it installed, on another host ...
+
+I do not find any tool on the net, so I write a first release for this need, and I use it rarely.
+But, in July 2002, I had a request from other Linux admin.
+As the script seems to match a more general need, I decide to put public on the net
+
+author
+------
+Eric Gerbier <gerbier@users.sourceforge.net>
+URL : http://rpmrebuild.sourceforge.net
