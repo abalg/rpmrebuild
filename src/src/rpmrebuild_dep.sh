@@ -20,30 +20,29 @@
 #
 ###############################################################################
 
-#rpm --query --qf '[Requires:      %{REQUIRENAME} %{REQUIREFLAGS:depflags} % {REQUIREVERSION}\n]' rpmrebuild |sort -u| 
 function File_to_pac
 {
-
 while read tag name remain
 do
 	if [ -z "$remain" ]
 	then
-		# is this a file or a package ?
-		# a file should have a path
-		path=$(dirname $name)
-		if [ "$path" != "." ]
-		then
-			package=$(rpm -qf --qf '%{NAME}' $name)
-			echo "$tag $package"
-		else
-			echo "$tag $name"
-		fi
+		liste="$liste $name"
 	else
 		echo "$tag $name $remain"
 	fi
 done
+if [ -n "$liste" ]
+then
+	liste_pac=$(rpm --query --qf '%{NAME} ' --whatprovides $liste)
+	for pac in $liste_pac
+	do
+		echo "Requires: $pac"
+	done
+fi
 }
 
-#rpm --query --qf '[Requires:      %{REQUIRENAME} %{REQUIREFLAGS:depflags} % {REQUIREVERSION}\n]' rpmrebuild | File_to_pac | sort -u
+# just for test
+#HOME=/usr/lib/rpmrebuild rpm --query --qf '[Requires:      %{REQUIRENAME} %{REQUIREFLAGS:depflags} % {REQUIREVERSION}\n]' rpm | File_to_pac | sort -u
+
 File_to_pac | sort -u
 
