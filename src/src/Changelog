@@ -1,6 +1,14 @@
+* Thu Oct 10 2002 <gerbier@users.sourceforge.net> 0.7.2
+- replace vi by sed to change release
+- add command lines options 
+- add lsm description
+- move .popt to /etc/rpmrebuild
+- have a link from rpmrebuild.sh to rpmrebuild
+
 * Mon Oct  7 2002  <valery_reznic@users.sourceforge.net> 0.7.1
 - split the script for a more modular way
 - recode %file with all new tags (missingok, noreplace...)
+- Valery Reznic join the project
 
 * Mon Sep 30 2002  <gerbier@users.sourceforge.net> 0.7.0
 - work on local dir (thanks Valery Reznic <valery_reznic@users.sourceforge.net>)

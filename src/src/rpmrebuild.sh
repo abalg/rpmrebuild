@@ -43,14 +43,14 @@ function Interrog
 # build general tags
 function SpecFile
 {
-	HOME=$MY_DIR rpm --query --spec_spec ${PAQUET}
+	HOME=$MY_CONFIG_DIR rpm --query --spec_spec ${PAQUET}
 }
 ###############################################################################
 # build the list of files in package
 function FilesSpecFile
 {
 	echo "%files"
-	HOME=$MY_DIR rpm --query --spec_files ${PAQUET} | $MY_DIR/rpmrebuild_files.sh
+	HOME=$MY_CONFIG_DIR rpm --query --spec_files ${PAQUET} | $MY_DIR/rpmrebuild_files.sh
 }
 
 ##############################################################
@@ -59,6 +59,7 @@ function FilesSpecFile
 # shell pour refabriquer un fichier rpm a partir de la base rpm
 # a shell to build an rpm file from the rpm database
 
+MY_CONFIG_DIR=/etc/rpmrebuild
 MY_DIR=$(dirname $0)
 
 while getopts "bhvV" opt
