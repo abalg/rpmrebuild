@@ -1,4 +1,4 @@
-BASE=../build/rpmrebuild
+ROOT=../build/rpmrebuild
 PWD=$(shell pwd)
 RPM_SOURCE_DIR = $(PWD)
 RPM_BUILD_DIR = $(PWD)/BUILD
@@ -13,24 +13,26 @@ RPM_DEFINES =                              \
    --define '_rpmfilename %%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm'
 
 
-TAR_FILE=$(PWD)/rpmrebuild.tar.gz
+TAR_FILE=$(RPM_SOURCE_DIR)/rpmrebuild.tar.gz
+TARGET_DIR = $(ROOT)/usr/local/bin
 
-all: rpm
+SCRIPTS = rpmrebuild.sh rpmrebuild_files.sh
+SOURCES = $(SCRIPTS) .popt MANIFEST Makefile Changelog rpmrebuild.spec
+all: 
 
-tar:	clean
-	# rebuild
-	mkdir -p $(BASE)/usr/local/bin
-	install --mode=444 `cat < MANIFEST` $(BASE)
-	install --mode=555 rpmrebuild.sh rpmrebuild_files.sh $(BASE)/usr/local/bin
-	install --mode=444 .popt $(BASE)/usr/local/bin
-	cd $(BASE)/usr/local/bin && ln -sfd .popt rpmrebuild_popt
-	ls $(BASE)
-	cd $(BASE) && tar cvzf $(TAR_FILE) *
+install:
+	mkdir --parent $(TARGET_DIR)
+	install --mode=555 $(SCRIPTS) $(TARGET_DIR)
+	install --mode=444 .popt      $(TARGET_DIR)
+	cd $(TARGET_DIR) && ln -sfd .popt rpmrebuild_popt
+
+tar:
+	List=`cat MANIFEST` && tar -cvzf $(TAR_FILE) $(SOURCES) $$List
 
 rpm:	tar
-	mkdir -p $(RPM_BUILD_DIR)
-	rpm -bb -v $(RPM_DEFINES) rpmrebuild.spec
+	mkdir --parent $(RPM_BUILD_DIR)
+	rpm -ba -v $(RPM_DEFINES) rpmrebuild.spec
 	rpm --resign rpmrebuild*.rpm
 
 clean:
-	rm -rf $(BASE) $(RPM_BUILD_DIR)
+	rm -rf $(ROOT) $(RPM_BUILD_DIR)
