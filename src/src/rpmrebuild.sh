@@ -287,6 +287,14 @@ function RpmFileName
 {
 	QF_RPMFILENAME=$(rpm --eval %_rpmfilename) || return
 	RPMFILENAME=$(rpm --specfile --query --queryformat "${QF_RPMFILENAME}" ${FIC_SPEC}) || return
+	# workarount for redhat 6.x
+	arch=$(rpm --specfile --query --queryformat "%{ARCH}"  ${FIC_SPEC})
+	if [ $arch = "(none)" ]
+	then
+		arch=$(rpm  --query --queryformat "%{ARCH}" ${PAQUET})
+		RPMFILENAME=$(echo $RPMFILENAME | sed "s/(none)/$arch/g")
+	fi
+
 	[ -n "$RPMFILENAME" ] || return
 	RPMFILENAME="${rpmdir}/${RPMFILENAME}"
 	return 0
