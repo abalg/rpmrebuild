@@ -25,10 +25,10 @@ RPM_DEFINES :=                             \
 
 TAR_FILE := $(RPM_SOURCE_DIR)/rpmrebuild.tar.gz
 
-TARGET_DIR    := $(ROOT)/usr/local/bin
+TARGET_DIR    := $(ROOT)/usr/bin
 TARGET_LIB    := $(ROOT)/usr/lib/rpmrebuild
 TARGET_PLUGIN := $(ROOT)/usr/lib/rpmrebuild/plugins
-TARGET_MAN    := $(ROOT)/usr/local/man/man1
+TARGET_MAN    := $(ROOT)/usr/share/man/man1
 
 SCRIPTS     = rpmrebuild 
 LIB_SCRIPTS =              \
