@@ -51,7 +51,6 @@ Release:       \%O_Release\n\
 [%%preun -p %{PREUNPROG}\n%|PREUN?{%{PREUN}\n}|\n]\
 [%%postun -p %{POSTUNPROG}\n%|POSTUN?{%{POSTUN}\n}|\n]\
 [%%verifyscript -p %{VERIFYSCRIPTPROG}\n%|VERIFYSCRIPT?{%{VERIFYSCRIPT}\n}|\n]\
-%|CHANGELOGTIME?{%%changelog\n[* %{CHANGELOGTIME:day} %{CHANGELOGNAME} \n\n%{CHANGELOGTEXT}\n\n]\n}:{}|\
 '
 
 rpm alias --spec_files --qf \
@@ -65,4 +64,8 @@ rpm alias --spec_files --qf \
 %{FILEVERIFYFLAGS:octal}\n\
 %{FILENAMES}\n\
 ]\
+'
+rpm alias --spec_change --qf \
+'\
+%|CHANGELOGTIME?{[* %{CHANGELOGTIME:day} %{CHANGELOGNAME} \n\n%{CHANGELOGTEXT}\n\n]\n}:{}|\
 '
