@@ -65,7 +65,7 @@ function Interrog
 # build general tags
 function SpecFile
 {
-	HOME=$MY_LIB_DIR rpm --query --spec_spec ${PAQUET} | grep -v "(none)$"
+	HOME=$MY_LIB_DIR rpm --query --spec_spec ${PAQUET}
 }
 ###############################################################################
 # build the list of files in package
@@ -225,9 +225,7 @@ function SpecGenerationOnly
 {
 	if [ "$specfile" = "-" ]
 	then
-		{ 
-		SpecFile && FilesSpecFile 
-		} || return
+		{ SpecFile && FilesSpecFile; } return
 	else
 		{ SpecFile && FilesSpecFile; } > $specfile || return
 	fi
