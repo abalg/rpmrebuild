@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+  <HEAD>
+    <TITLE>rpmrebuild's install</TITLE>
+    <META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <META name="Author" content="Gerbier">
+    <META NAME="generator" CONTENT="vim">
+    <LINK rev="made" href="mailto:gerbier@users.sourceforge.net">
+  </HEAD>
+  <BODY>
+    
+    <H1 align=center>rpmrebuild's install</H1>
+    
+    As rpmrebuild is designed to work with rpm, it is packaged in rpm format.
+    
+    <H2>which package to choose</H2>
+    <UL>
+      <LI>rpm4.noarch.rpm : is for current linux distributions, which use rpm 4.x releases</LI>
+      <LI>rpm3.noarch.rpm : is for very old linux distributions, which still use rpm 3.x releases</LI>
+    </UL> 
+    
+    <H2>check packages</H2> 
+    all the rpm packages are signed with my <A href="gpg.asc">gpg key</A>, so you should verify them with <CODE>rpm -K rpmrebuild*.rpm</CODE>
+    
+    <H2>how to install</H2>
+    It is coded in shell script, so it does not depends from an os architecture or libraries, and should install anywhere with the following command : <CODE>rpm -Uvh rpmrebuild-{version}.noarch.rpm</CODE>
+    
+    <H2>what if dependencies problem occurs</H2>
+    <UL>
+      <LI>you can try to build your own package from src.rpm, with the following command :<CODE>rpmbuild --rebuild rpmrebuild-{version}.src.rpm</CODE>, then install the rpmrebuild-{version}.noarch.rpm file</LI>
+      <LI>send a <A href=support.html">bug report</A></LI>
+    </UL> 
+    
+    <HR>
+    <A href="index.html">back to main page</A>
+    
+  </BODY>
+</HTML>

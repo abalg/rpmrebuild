@@ -1,0 +1,228 @@
+<HTML><HEAD><TITLE>Manpage of rpmrebuild_plugins</TITLE>
+    </HEAD><BODY>
+    <H1 align=center>rpmrebuild_plugins</H1>
+    Section: rpm tools (1)<BR>Updated: 2.0.0<BR><A HREF="#index">Index</A>
+    
+    <A NAME="lbAB">&nbsp;</A>
+    <H2>NAME</H2>
+    
+    rpmrebuild_plugins - is an engine to expand <B>rpmrebuild</B> functionality.
+    <A NAME="lbAC">&nbsp;</A>
+    <H2>SYNOPSIS</H2>
+    
+    rpmrebuild [<I>non-plugins-option</I>] [<I>plugins-option</I>] &lt;<I>packagename</I>&gt;
+    <BR>
+    
+    or
+    <BR>
+    
+    rpm --rpmrebuild [<I>non-plugins-option</I>] [<I>plugins-option</I>] &lt;<I>packagename</I>&gt;
+    <A NAME="lbAD">&nbsp;</A>
+    <H2>DESCRIPTION</H2>
+    
+    <B>rpmrebuild</B> itself try to do it's best to reconstruct rpm package as close to original as possible.
+    <P>
+    
+    rpmrebuild plugins's aim is opposite - somehow change rebuilded rpm.
+    <A NAME="lbAE">&nbsp;</A>
+    <H2>RPMREBUILD WITHOUT PLUGINS</H2>
+    
+    Without plugins process of rpm rebuilding looks like:
+    <DL COMPACT>
+      <DT><B>query</B> -<DD>
+      Query rpm to be rebuilded for the different pieces of information.
+      <DT><B>concatenate</B> -<DD>
+      Create from these pieces specfile.
+      <DT><B>build</B> -<DD>
+      Use specfile to build rpm.
+    </DL>
+    <A NAME="lbAF">&nbsp;</A>
+    <H2>RPMREBUILD WITH PLUGINS</H2>
+    
+    With plugins process of rpm rebuilding looks like:
+    <DL COMPACT>
+      <DT><B>query</B> -<DD>
+      Query rpm to be rebuilded for the different pieces of information.
+      <DT><B>change parts</B> -<DD>
+      Change parts of the spec created by query.
+      <DT><B>concatenate</B> -<DD>
+      Create specfile from the pieces.
+      <DT><B>change whole</B> -<DD>
+      Change concatenated specfile.
+      <DT><B>build</B> -<DD>
+      use specfile to build rpm.
+    </DL>
+    <A NAME="lbAG">&nbsp;</A>
+    <H2>SPECFILE PIECES</H2>
+    
+    &quot;Query&quot; queries for the following information:
+    <DL COMPACT><DT><DD>
+      <BR>
+      
+      preamble
+      <BR>
+      
+      conflicts
+      <BR>
+      
+      obsoletes
+      <BR>
+      
+      provides
+      <BR>
+      
+      requires
+      <BR>
+      
+      description
+      <BR>
+      
+      files
+      <BR>
+      
+      triggers
+      <BR>
+      
+      pre
+      <BR>
+      
+      post
+      <BR>
+      
+      preun
+      <BR>
+      
+      postun
+      <BR>
+      
+      verifyscript
+      <BR>
+      
+      changelog
+    </DL>
+    
+    <A NAME="lbAH">&nbsp;</A>
+    <H2>SPECFILE CONCATENATION</H2>
+    
+    &quot;Concatenate&quot; create 'full' specfile from the pieces.
+    It do following:
+    <P>
+    
+    add AutoReq / AutoProv tags 
+    <BR>
+    
+    add BuildRoot tag
+    <BR>
+    
+    add some defines to adjust rpm's behaviour.
+    <BR>
+    
+    double all '%' - it'll prevent rpm from attempting expand %something as macro.
+    <BR>
+    
+    add '%description' before description
+    <BR>
+    
+    add '%files' before files
+    <BR>
+    
+    add '%changelog' before changelog
+    <A NAME="lbAI">&nbsp;</A>
+    <H2>PLUGINS TYPES</H2>
+    
+    rpm building (or rebuilding) process has two inputs: specfile and
+    package's files under buildroot directory. So, there are two plugins type:
+    <DL COMPACT>
+      <DT>- for specfile modification.<DD>
+      <DT>- for files (under buildroot) modification.<DD>
+    </DL>
+    <A NAME="lbAJ">&nbsp;</A>
+    <H2>PLUGIN'S INTERFACE</H2>
+    
+    Plugins are executed AFTER rpm package is queried and BEFORE new package is
+    rebuilded in the order specified on the command line.
+    <DL COMPACT>
+      <DT>Exit status<DD>
+      Any plugin should exit with status 0 on success, and any other value on failure.
+      Failed plugin will immediately terminate whole rpmrebuild.
+      <DT>Environment variables<DD>
+      all plugins get following environment variables:
+      <DL COMPACT><DT><DD>
+	<DL COMPACT>
+	  <DT>RPMREBUILD_TMPDIR<DD>
+	  directory for plugin's temporaries files. plugin no need remove this directory - 
+	  rpmrebuild will care.
+	  <DT>RPMREBUILD_PLUGINS_DIR<DD>
+	  directory with plugins.
+	  <DT>RPMREBUILD_COMMENT_MISSING<DD>
+	  if 'yes' missing files commented in the 'files' part of specfile
+	  <DT>RPMREBUILD_PUG_FROM_FS<DD>
+	  if 'yes' permission owner and group in the part file were taken from filesystem,
+	  otherwise - from rpm's database.
+	  <DT>RPMREBUILD_WARNING<DD>
+	  if 'yes' rpmrebuild will produce warning for filenames with glob characters.
+	  <DT>PATH<DD>
+	  This variable is set to $RPMREBUILD_PLUGINS_DIR:$PATH
+	  <DT>LONG_OPTION<DD>
+	  Contains long option (without --) which was used to invoke plugin.
+	  <DT>RPM_BUILD_ROOT<DD>
+	  For plugins modifying files under buildroot set to buildroot.
+	  For other plugins - empty.
+	</DL>
+      </DL>
+      
+      <DT>stdin and stdout<DD>
+      Plugins for specfile modification (i.e., invoked with --spec-hange-*)got &quot;source&quot; spec file from stdin and have to write resulting spec file to
+      stdout.
+    </DL>
+    <A NAME="lbAK">&nbsp;</A>
+    <H2>PLUGIN'S EXAMPLES</H2>
+    
+    Three plugins are given as examples :
+    <DL COMPACT>
+      <DT>demo<DD>
+      <DT>uniq<DD>
+      <DT>file2pacDep<DD>
+    </DL>
+    <A NAME="lbAL">&nbsp;</A>
+    <H2>AUTHORS</H2>
+    
+    <P>
+    
+    Eric Gerbier &lt;<A HREF="mailto:gerbier@users.sourceforge.net">gerbier@users.sourceforge.net</A>&gt;
+    <BR>
+    
+    Valery Reznic &lt;<A HREF="mailto:valery_reznic@users.sourceforge.net">valery_reznic@users.sourceforge.net</A>&gt;
+    <DL COMPACT>
+      <DT>See &lt;URL:<A HREF="http://rpmrebuild.sourceforge.net/">http://rpmrebuild.sourceforge.net/</A>&gt;.<DD>
+    </DL>
+    <A NAME="lbAM">&nbsp;</A>
+    <H2>SEE ALSO</H2>
+    
+    <P>
+    
+    rpm(8), rpmbuild(8), <A HREF="rpmrebuild.1.html">rpmrebuild</A>(1), plugins specific manpages
+    <P>
+    
+    <HR>
+    <A NAME="index">&nbsp;</A><H2>Index</H2>
+    <DL>
+      <DT><A HREF="#lbAB">NAME</A><DD>
+      <DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+      <DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+      <DT><A HREF="#lbAE">RPMREBUILD WITHOUT PLUGINS</A><DD>
+      <DT><A HREF="#lbAF">RPMREBUILD WITH PLUGINS</A><DD>
+      <DT><A HREF="#lbAG">SPECFILE PIECES</A><DD>
+      <DT><A HREF="#lbAH">SPECFILE CONCATENATION</A><DD>
+      <DT><A HREF="#lbAI">PLUGINS TYPES</A><DD>
+      <DT><A HREF="#lbAJ">PLUGIN'S INTERFACE</A><DD>
+      <DT><A HREF="#lbAK">PLUGIN'S EXAMPLES</A><DD>
+      <DT><A HREF="#lbAL">AUTHORS</A><DD>
+      <DT><A HREF="#lbAM">SEE ALSO</A><DD>
+    </DL>
+    <HR>
+    This document was created by man2html,
+    using the manual pages.<BR>
+    Time: 15:14:01 GMT, February 09, 2005
+  </BODY>
+</HTML>
