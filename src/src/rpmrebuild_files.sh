@@ -82,7 +82,7 @@ while :; do
       # Handle a rpm's bug described by Han Holl:
       # There are missignok or/and noreplace flag but no config flag
       # In this case I simple force using '%config' string
-      [ "X$config_param" = "X" ] || c_str=$c_val
+      [ "X$config_par" = "X" ] || c_str=$c_val
 
       # Conacatenate c_str with config_param. 
       # If config param non-empty strip it's last character
@@ -130,5 +130,5 @@ while :; do
       verify_str="${non_verify_par:+%verify(not ${non_verify_par%?}) }" 
    fi
 
-   echo "${miss_str}${dir_str}${fflags_str}${attr_str}${verify_str}${file}"
+   echo "${miss_str}${dir_str}${fflags_str}${attr_str}${verify_str}\"${file}\""
 done
