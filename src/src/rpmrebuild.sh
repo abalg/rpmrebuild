@@ -132,6 +132,7 @@ speconly=""
 specfile=""
 rpm_verbose="--quiet"
 export keep_perm=""
+export missing_as_usual=""
 PAQUET=""
 PAQUET_NAME=""
 
@@ -211,6 +212,7 @@ do
 
 		package)  
                    package_flag="-p"
+                   missing_as_usual=1
                 ;;
 
 		spec-only)
@@ -491,6 +493,7 @@ else
       Error "Package file '$PAQUET' should not be a directory"
       exit 1
    }
+   keep_perm=""  # Be sure use perm, owner, group from the pkg query.
    BUILDROOT=/tmp/${PAQUET_NAME}-root
 fi
 
@@ -512,7 +515,7 @@ my_exit 0
 
 #####################################
 # BUILDROOT note.
-# My original idea was for recreating package from anothe rpm file
+# My original idea was for recreating package from another rpm file
 # (not installed) use 'rpm -bb --define "buildroot foo"', but
 # It does not work:
 #  when i not specify buildroot in the spec file default value is "/"

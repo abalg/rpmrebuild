@@ -30,6 +30,12 @@
 # <file_verify> - file's verify flags (as %{FILEVERIFYFLAGS:octal})
 # <file_lang>   - file's language     (as %{FILELANGS})
 # <file>        - file name
+#
+# Environment:
+#   keep_perm - if value is not empty, use permission, owner and group from
+#               filesystem, otherwise - from package query
+#   missing_as_usual - if value not empty do not comment out missing files
+#                      in the spec
 ################################################################
 
 FFLAGS="d c s m n g"
@@ -54,10 +60,13 @@ while :; do
    read file_lang
    read file
 
-   if [ -e "$file" ]; then
-      miss_str=""
-   else 
-      miss_str='# MISSING: '
+   miss_str=""
+   if [ "x$missing_as_usual" = "x" ]; then
+      if [ -e "$file" ]; then
+         miss_str=""
+      else 
+         miss_str='# MISSING: '
+      fi
    fi
 
    # language handling
