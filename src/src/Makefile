@@ -112,4 +112,4 @@ rpm rpmbuild:	tar
 
 clean:
 	rm -rf $(ROOT) $(RPM_BUILD_DIR)
-	rm  -f rpmrebuild.spec spec.scripts *.rpm rpmrebuild.tar.gz
+	rm  -f VERSION rpmrebuild.spec spec.scripts *.rpm rpmrebuild.tar.gz
