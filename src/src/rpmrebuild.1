@@ -1,20 +1,16 @@
 .TH "rpmrebuild" "1" "1.4.7" "Eric Gerbier" "rpm tools"
 .SH "NAME"
-.LP 
 rpmrebuild \- a tool to build an rpm package from an installed package
 .SH "SYNOPSIS"
-.LP 
 rpmrebuild [\fIoption\fP] <\fIpackagename\fP>
 .br 
 or
 .br 
 rpm \-\-rpmrebuild [\fIoption\fP] <\fIpackagename\fP>
 .SH "DESCRIPTION"
-.LP 
 rpmrebuild is a tool to build easily rpm package.
 it can be used to build an rpm file from an installed package (lost rpm) or to quickly make change to a package : just have your change on installed files and call rpmrebuild.
 .SH "OPTIONS"
-.LP 
 .TP 
 \fB\-a|\-\-additional\fP <\fIflags\fP>
 pass additional flags to rpmbuild
@@ -48,11 +44,12 @@ keep installed files permission, uid and gid (do not force to orginal files perm
 .TP 
 \fB\-m|\-\-modify\fP <\fIscript\fP>
 can be used with or without \fB\-\-package\fP option. 
-When used with \fB\-\-package\fP option rpm package converted
-to cpio and unpackaged invoked script \fB<script>\fP to change unpacked files.
+When used with \fB\-\-package\fP option rpm package converted to cpio and unpackaged.
+Then invoked script \fB<script>\fP to change unpacked files.
 When used without \fB\-\-package\fP option all package's files are copied
 to the temporary directory and invoked \fB<script>\fP.
 In both cases script got \fBRPM_BUILD_ROOT\fP environment variable pointed to the buildroot.
+Can't be used with \fB\-\-spec\-only\fP
 .TP 
 \fB\-p|\-\-package\fP
 use package file, not installed rpm (this option is like rpm's \-p option)
@@ -67,7 +64,8 @@ use rpm scripts to compute requires
 set files permission, uid and gid as saved in rpm database
 .TP 
 \fB\-s|\-\-spec\-only\fP <\fIspecfile\fP>
-do not rebuild package. only generate specfile.
+do not rebuild package. only generate specfile. 
+Can't be used with \fB\-\-modify\fP
 .TP 
 \fB\-v|\-\-verbose\fP
 verbose output

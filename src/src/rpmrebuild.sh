@@ -21,30 +21,30 @@ VERSION="$Id$"
 ###############################################################################
 function Echo
 {
-   echo -e "$@" 1>&2
+	echo -e "$@" 1>&2
 }
 ###############################################################################
 function Error
 {
-    Echo "$0: ERROR: $@"
+	Echo "$0: ERROR: $@"
 }
 ###############################################################################
 
 function Warning
 {
-   Echo "$0: WARNING: $@"
+	Echo "$0: WARNING: $@"
 }
 ###############################################################################
 
 function AskYesNo
 {
-   echo -en "$@ ? (y/N) " 1>&2
-   read Ans
-   case "x$Ans" in
-      x[yY]*) return 0;;
-      *)      return 1;;
-   esac || return 1 # should not happened
-   return 1 # should not happend
+	echo -en "$@ ? (y/N) " 1>&2
+	read Ans
+	case "x$Ans" in
+		x[yY]*) return 0;;
+		*)      return 1;;
+	esac || return 1 # should not happened
+	return 1 # should not happend
 }
 
 ###############################################################################
@@ -58,10 +58,12 @@ function SpecChange
 {
 	# rpmlib dependencies are insert during rpm building
 	# gpg key can not be provided
-	sed_script='s/\(^Requires:[[:space:]]*rpmlib(.*\)/#\1/;s/\(^Provides:[[:space:]]*gpg(.*\)/#\1/'
-
-	# apply filter
-	sed -e "$sed_script"
+	# let us remove it.
+	sed                                                     \
+		-e 's/\(^Requires:[[:space:]]*rpmlib(.*\)/#\1/' \
+	    	-e 's/\(^Provides:[[:space:]]*gpg(.*\)/#\1/'    \
+	|| return
+	return 0
 }
 ###############################################################################
 # build general tags
@@ -89,7 +91,28 @@ function SpecFile
 			echo '%define rpmrebuild_use_provides 0'
 		fi
 		HOME=$MY_LIB_DIR rpm --query --i18ndomains /dev/null $package_flag --spec_spec ${PAQUET}
-	) | SpecChange
+	) | SpecChange || return
+	return 0
+}
+###############################################################################
+function ChangeSpecFile
+{
+	# first sed is to pervent all macros from expanding
+	# then rollback on tag line
+	HOME=$MY_LIB_DIR rpm --query $package_flag --spec_change ${PAQUET} | \
+	sed                                           \
+		-e 's/%/%%/g'                         \
+		-e 's/^%%description/%description/'   \
+		-e 's/^%%pre/%pre/'                   \
+		-e 's/^%%post/%post/'                 \
+		-e 's/^%%preun/%preun/'               \
+		-e 's/^%%postun/%postun/'             \
+		-e 's/^%%trigger/%trigger/'           \
+		-e 's/^%%files/%files/'               \
+		-e 's/^%%changelog/%changelog/'       \
+		-e 's/^%%verifyscript/%verifyscript/' \
+	|| return
+	return 0
 }
 ###############################################################################
 # build the list of files in package
@@ -102,69 +125,7 @@ function FilesSpecFile
 	return 0
 }
 
-###############################################################################
-function ChangeSpecFile
-{
-	# first sed is to expand all macros
-	# then rollback on tag line
-	HOME=$MY_LIB_DIR rpm --query $package_flag --spec_change ${PAQUET} | sed 's/%/%%/g;s/^%%description/%description/;s/^%%post/%post/;s/^%%pre/%pre/;s/^%%postun/%postun/;s/^%%preun/%preun/;s/^%%trigger/%trigger/;s/^%%files/%files/;s/^%%changelog/%changelog/'
-}
 
-###############################################################################
-function ExtractProgName
-{
-	progname="$1"
-}
-###############################################################################
-
-###############################################################################
-function IsPackageInstalled
-{
-   # test if package exists
-   output="$(rpm --query ${PAQUET} 2>&1 | grep -v 'is not installed')" # Don't return here - use output
-   set -- $output
-   case $# in
-      0)
-	   # No package found
-	   Error "no package '${PAQUET}' in rpm database"
-	   return 1
-      ;;
-
-      1)
-	: # Ok, do nothing
-      ;;
-
-      *)
-	Error "too much packages match '${PAQUET}':\n$output"
-	return 1
-      ;;
-   esac || return
-   return 0
-}
-
-###############################################################################
-function VerifyPackage
-{
-	# verification des changements
-	# check for package change
-	rpm --verify --nodeps ${PAQUET} # Don't return here, st=1 - verify fail 
-	return 0
-}
-
-###############################################################################
-function QuestionsToUser
-{
-	[ -n "$batch"     ] && return 0 ## batch mode, continue
-	[ -n "$spec_only" ] && return 0 ## spec only mode, no questions
-
-	AskYesNo "$WantContinue" || return
-	AskYesNo "Do you want to change release number" && {
-		old_release=$(Interrog '%{RELEASE}')
-		echo -n "Enter the new release (old: $old_release): "
-		read new_release
-	}
-	return 0
-}
 ###############################################################################
 function SpecGen
 {
@@ -180,46 +141,168 @@ function SpecGen
 	fi       &&
 	SpecFile &&
 	FilesSpecFile &&
-	ChangeSpecFile
-}
-###############################################################################
-function SpecGenerationOnly
-{
-	if [ "$specfile" = "-" ]
-	then
-		eval SpecGen $filter || return
-	else
-		eval SpecGen $filter > $specfile || return
-	fi
+	ChangeSpecFile || return
 	return 0
 }
-
 ###############################################################################
 function SpecGeneration
 {
 	# fabrication fichier spec
 	# build spec file
-	rm -f ${FIC_SPEC} || return
 
-	eval SpecGen $filter > ${FIC_SPEC} || return
+	if [ "x$need_change_spec" = "x" ]; then
+		case "x$specfile" in
+			x-)
+				SpecGen || return	
+			;;
+
+			x)
+				SpecGen > ${FIC_SPEC} || return
+			;;
+
+			*)
+				rm -f     $specfile || return
+				SpecGen > $specfile || return
+			;;
+		esac
+	else
+		SpecGen > ${FIC_SPEC}.1       || return
+	fi
 	return 0
 }
 
 ###############################################################################
 function SpecEdit
 {
+	[ $# -ne 1 -o "x$1" = "x" ] && {
+		Echo "Usage: $0 SpecEdit <file>"
+		return 1
+	}
 	# -e option : edit the spec file
-	if [ -n "$editspec" ]
-	then
-		${VISUAL:-${EDITOR:-vi}} ${FIC_SPEC}
-		AskYesNo "$WantContinue" && return
+	File=$1
+	${VISUAL:-${EDITOR:-vi}} $File
+	AskYesNo "$WantContinue" || {
 		Echo "Aborted."
 	        return 1
-	fi
+	}
 	return 0
 }
 ###############################################################################
 
+###############################################################################
+function ExtractProgName
+{
+	progname="$1"
+}
+###############################################################################
+
+###############################################################################
+function VerifyPackage
+{
+	# verification des changements
+	# check for package change
+	rpm --verify --nodeps ${PAQUET} # Don't return here, st=1 - verify fail 
+	return 0
+}
+
+function QuestionsToUser
+{
+	[ -n "$batch"     ] && return 0 ## batch mode, continue
+	[ -n "$spec_only" ] && return 0 ## spec only mode, no questions
+
+	AskYesNo "$WantContinue" || return
+	AskYesNo "Do you want to change release number" && {
+		old_release=$(Interrog '%{RELEASE}')
+		echo -n "Enter the new release (old: $old_release): "
+		read new_release
+	}
+	return 0
+}
+
+function IsPackageInstalled
+{
+	# test if package exists
+	output="$(rpm --query ${PAQUET} 2>&1 | grep -v 'is not installed')" # Don't return here - use output
+	set -- $output
+	case $# in
+		0)
+			# No package found
+			Error "no package '${PAQUET}' in rpm database"
+			return 1
+		;;
+
+		1)
+			: # Ok, do nothing
+		;;
+
+		*)
+			Error "too much packages match '${PAQUET}':\n$output"
+			return 1
+		;;
+	esac || return
+	return 0
+}
+
+function CreateProcessing
+{
+	[ $# -ne 1 -o "x$1" = "x" ] && {
+		Echo "$0: CreateProcessing <operation>"
+		return 1
+	}
+
+	operation=$1
+	case "X$operation" in
+		Xinit)
+			spec_index=1
+		;;
+
+		Xfini)
+			[ "x$need_change_spec" = "x" ] || {
+				case "x$specfile" in
+					x) # No spec-only flag
+						echo "cp -f \$FIC_SPEC.$spec_index \$FIC_SPEC" >> $RPMREBUILD_PROCESSING || return
+					;;
+
+					x-) # Spec-only flag, specfile is stdout
+						echo "cat \$FIC_SPEC.$spec_index" >> $RPMREBUILD_PROCESSING || return
+					;;
+
+					*) # Spec-only flag, not specfile not stdout
+						echo "cp -f \$FIC_SPEC.$spec_index $specfile" >> $RPMREBUILD_PROCESSING || return
+					;;
+				esac || return
+			}
+		;;
+
+		Xedit)
+			need_change_spec="y"
+			spec_index_next=$[spec_index + 1]
+			echo "cp -f \$FIC_SPEC.$spec_index \$FIC_SPEC.$spec_index_next" >> $RPMREBUILD_PROCESSING || return
+			echo "SpecEdit \$FIC_SPEC.$spec_index_next" >> $RPMREBUILD_PROCESSING || return
+			spec_index=$spec_index_next
+		;;
+
+		Xfilter)
+			need_change_spec="y"
+			spec_index_next=$[spec_index + 1]
+			echo "{ $OPTARG; } < \$FIC_SPEC.$spec_index > \$FIC_SPEC.$spec_index_next" >> $RPMREBUILD_PROCESSING || return
+			spec_index=$spec_index_next
+		;;
+
+		Xmodify)
+			modify="y"
+			echo "$OPTARG" >> $RPMREBUILD_PROCESSING || return
+		;;
+
+		*)
+			Echo "$0: CreateProcessing: unknown operation '$operation'"
+			return 1
+		;;
+	esac || return
+	return 0
+}
+###############################################################################
+###############################################################################
 function RpmUnpack
 {
 	[ "x$BUILDROOT" = "x/" ] && {
@@ -260,14 +343,6 @@ function RpmBuild
 	# for rpm 4.1 : use rpmbuild
 	BUILDCMD=rpm
 	[ -x /usr/bin/rpmbuild ] && BUILDCMD=rpmbuild
-	CreateBuildRoot || return
-        [ "x$modify" = "x" ] || {
-		export RPM_BUILD_ROOT="$BUILDROOT"
-		eval $modify || {
-			Error "package '${PAQUET}' build failed due to modify script problems."
-			return 1
-		}
-        }
 	eval $BUILDCMD $rpm_defines -bb $rpm_verbose $additional ${FIC_SPEC} || {
    		Error "package '${PAQUET}' build failed"
    		return 1
@@ -305,13 +380,15 @@ function InstallationTest
 	}
 	return 0
 }
-###############################################################################
 
-function my_exit
+function Processing
 {
-	st=$?	# save status
-	#rm -rf $RPMREBUILD_TMPDIR
-	exit $st
+	[ "x$need_change_spec" = "x" -a "x$modify" = "x" ] && return # Nothing to do
+	(
+		set -e
+		source $RPMREBUILD_PROCESSING
+	) || return
+	return 0
 }
 ##############################################################
 # Main Part                                                  #
@@ -319,63 +396,81 @@ function my_exit
 # shell pour refabriquer un fichier rpm a partir de la base rpm
 # a shell to build an rpm file from the rpm database
 
-WantContinue="Do you want to continue"
+function Main
+{
+	WantContinue="Do you want to continue"
 
-D=`dirname $0` || exit
-source $D/rpmrebuild_parser.src || exit
-MY_LIB_DIR="$D"
-MY_PLUGIN_DIR=${MY_LIB_DIR}/plugins
+	#RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild.$$}
+	RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild}
+	export RPMREBUILD_TMPDIR
 
-PATH=$PATH:$MY_PLUGIN_DIR
+	D=`dirname $0` || return
+	source $D/rpmrebuild_parser.src || return
+	MY_LIB_DIR="$D"
+	MY_PLUGIN_DIR=${MY_LIB_DIR}/plugins
 
-# suite a des probleme de dates incorrectes
-# to solve problems of bad date
-export LC_TIME=POSIX
+	PATH=$PATH:$MY_PLUGIN_DIR
 
-CommandLineParsing "$@" || exit
-[ "x$NEED_EXIT" = "x" ] || exit $NEED_EXIT
-#RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild.$$}
-RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild}
-export RPMREBUILD_TMPDIR
-mkdir -p $RPMREBUILD_TMPDIR || exit
+	# suite a des probleme de dates incorrectes
+	# to solve problems of bad date
+	export LC_TIME=POSIX
 
-BUILDROOT=$RPMREBUILD_TMPDIR/${PAQUET_NAME}-root
-if [ "x" = "x$package_flag" ]
-then
-   [ "x$modify" = "x" ] && BUILDROOT="/"
-   IsPackageInstalled      || exit
-   if [ "$verify" -eq "1" ]; then
-      out=$(VerifyPackage)    || exit
-      if [ -n "$out" ]; then
-	 Warning "some files have been modified:\n$out"
-	 QuestionsToUser || exit
-      fi
-   else # NoVerify
-      :
-   fi
-else
-   keep_perm=""  # Be sure use perm, owner, group from the pkg query.
-fi
+	RPMREBUILD_PROCESSING=$RPMREBUILD_TMPDIR/processing
 
-FIC_SPEC=$RPMREBUILD_TMPDIR/${PAQUET_NAME}.spec
-FILES_IN=$RPMREBUILD_TMPDIR/${PAQUET_NAME}.files.in
-export FIC_SPEC
+	rm -rf   $RPMREBUILD_TMPDIR || return
+	mkdir -p $RPMREBUILD_TMPDIR || return
+	CommandLineParsing "$@" || return
+	[ "x$NEED_EXIT" = "x" ] || return $NEED_EXIT
 
-if [ -n "$spec_only" ]
-then
-   BUILDROOT="/"
-   SpecGenerationOnly || exit
-   exit 0
-fi
-SpecGeneration   || my_exit
-SpecEdit         || my_exit
-RpmBuild         || my_exit
-RpmFileName      || my_exit
-echo "result: ${RPMFILENAME}"
-InstallationTest || my_exit
+	BUILDROOT=$RPMREBUILD_TMPDIR/${PAQUET_NAME}-root
+	if [ "x" = "x$package_flag" ]; then
+   		[ "x$modify" = "x" ] && BUILDROOT="/"
+   		IsPackageInstalled || return
+   		if [ "$verify" -eq "1" ]; then
+      			out=$(VerifyPackage) || return
+      			if [ -n "$out" ]; then
+		 		Warning "some files have been modified:\n$out"
+		 		QuestionsToUser || return
+      			fi
+   		else # NoVerify
+			:
+   		fi
+	else
+		:
+		# When rebuilding package from .rpm file it's just native
+		# to use perm/owner/group from the package.
+		# But because it anyway default and if one has a reasoni
+		# to change it, one can. I am not force it here anymore.
+		#keep_perm=""  # Be sure use perm, owner, group from the pkg query.
+	fi
 
-my_exit 0
+	FIC_SPEC=$RPMREBUILD_TMPDIR/${PAQUET_NAME}.spec
+	FILES_IN=$RPMREBUILD_TMPDIR/${PAQUET_NAME}.files.in
+	export FIC_SPEC
 
+	[ "x$spec_only" = "x" ] || BUILDROOT="/"
+	export RPM_BUILD_ROOT="$BUILDROOT"
+	SpecGeneration   || return
+	if [ "x$spec_only" = "x" ]; then
+		CreateBuildRoot  || return
+	fi
+	Processing || {
+			Error "package '${PAQUET}' build failed due to edit/modify/filter script problems."
+			return 1
+	}
+	if [ "x$spec_only" = "x" ]; then
+		RpmBuild         || return
+		RpmFileName      || return
+		echo "result: ${RPMFILENAME}"
+		InstallationTest || return
+	fi
+	return 0
+}
+
+Main "$@"
+st=$?	# save status
+#rm -rf $RPMREBUILD_TMPDIR
+exit $st
 
 #####################################
 # BUILDROOT note.

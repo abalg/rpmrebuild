@@ -18,7 +18,7 @@
 ###############################################################################
 function Usage
 {
-   Usage_Message="
+	Usage_Message="
 $0 is a tool to rebuild an rpm file from the rpm database
 Usage: $0 [options] package
 options:
@@ -51,7 +51,7 @@ options:
 Copyright (C) 2002 by Eric Gerbier
 this program is distributed under GNU General Public License
 "
-   Echo "$Usage_Message"
+	Echo "$Usage_Message"
 }
 
 ###############################################################################
@@ -97,6 +97,7 @@ function CommandLineParsing
 	autorequire=""
 	batch=""
 	filter=""
+	need_change_spec=""
 	rpm_defines=""
 	rpmdir=""
 	editspec=""
@@ -112,6 +113,7 @@ function CommandLineParsing
 	PAQUET=""
 	PAQUET_NAME=""
 
+	CreateProcessing "init" || return
 	while getopts "a:bc:d:D:ef:hkm:pPRs:vVwy:-:" opt; do
 		OPTIND_INCR=""
 		case "$opt" in
@@ -277,6 +279,7 @@ function CommandLineParsing
 			edit-spe | \
 			edit-spec)
 				editspec=y
+				CreateProcessing "edit" || return
 			;;
 
 			f | \
@@ -291,7 +294,8 @@ function CommandLineParsing
 				# check if executable ?
 				if type -all -path "$progname" 1>/dev/null 2>&1
 				then
-					filter="$filter | $OPTARG"
+					filter="y"
+					CreateProcessing "filter" || return
 				else
 					Error "Can't find '$progname' in '$PATH'"
 					return 1
@@ -325,8 +329,8 @@ function CommandLineParsing
 			modi | \
 			modif | \
 			modify)
-				RequeredArgument || return
-				modify="$OPTARG"
+				RequeredArgument          || return
+				CreateProcessing "modify" || return
 			;;
 
 			p)
@@ -430,11 +434,13 @@ function CommandLineParsing
 		esac || return
 	done || return
 
-	# If no rpmdir was specified set variable to the native rpmdir value
-	# (with respect to possible define)
-	if [ -z "$rpmdir" ]; then
-		rpmdir="$(eval rpm $rpm_defines --eval %_rpmdir)" || return
-	fi
+	CreateProcessing "fini" || return
+	[ "x$spec_only" = "x" ] || {
+		[ "x$modify" = "x" ] || {
+			Error "You can't use both '--spec_only' and '--modify'"
+			return 1
+		}
+	}
 
 	shift $((OPTIND - 1))
 	case $# in
@@ -465,5 +471,11 @@ function CommandLineParsing
 			return 1
 		;;
 	esac || return
+
+	# If no rpmdir was specified set variable to the native rpmdir value
+	# (with respect to possible define)
+	if [ -z "$rpmdir" ]; then
+		rpmdir="$(eval rpm $rpm_defines --eval %_rpmdir)" || return
+	fi
 	return 0
 }
