@@ -26,6 +26,7 @@ the rpm software as now a "repackage" option but :
 - for informations, the result goes to /var/spool/up2date
 
 The script as only been tested on redhat distribution (6.x and 7.x releases)
+but should work on any distribution now.
 
 historic
 ----------

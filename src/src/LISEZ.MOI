@@ -28,6 +28,7 @@ reconstruire un package, mais  :
 - pour info, le résultat va sur /var/spool/up2date/
 
 enfin, il faut preciser que je n'ai testé le script que sur la distribution redhat (version 6.x et 7.x)
+mail devrait marcher sur nimporte quelle distribution desormais
 
 historique
 ----------

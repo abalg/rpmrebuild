@@ -3,7 +3,7 @@ Summary: a tool to build rpm file from rpm database
 # The Summary: line should be expanded to about here -----^
 Name: rpmrebuild
 Version: 0.7
-Release: 0
+Release: 1
 License: GPL
 Group: Utilities/System
 BuildRoot: /tmp/rpmrebuild-root
