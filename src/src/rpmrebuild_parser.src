@@ -43,7 +43,7 @@ options:
    -v, --verbose               verbose
    -V, --version               print version
    -w, --warning               print warning if detect filenames with
-                               globbing characters
+                               globbing characters (default - no)
    -y, --verify <yes|no>       need verify package before processing
                                (default - yes)
    -h, --help                  print this help
@@ -91,25 +91,23 @@ function RequeredArgument
 function CommandLineParsing
 {
 	# Default flags' values. To be sure they don't came from environment
-	NEED_EXIT=""
+	NEED_EXIT=""  # if not empty should be set to desired exit status
 	additional=""
-	autoprovide=""
-	autorequire=""
-	batch=""
-	filter=""
-	need_change_spec=""
+	autoprovide="no"
+	autorequire="no"
+	batch="no"
+	need_change_spec="no"
 	rpm_defines=""
 	rpmdir=""
-	editspec=""
 	package_flag=""
-	modify=""
-	speconly=""
+	modify="no"
+	spec_only="no"
 	specfile=""
-	verify="1"
+	verify="yes"
 	rpm_verbose="--quiet"
-	export keep_perm=""
-	export comment_missing="0"
-	export warning=""
+	export keep_perm="no"
+	export comment_missing="no"
+	export warning="no"
 	PAQUET=""
 	PAQUET_NAME=""
 
@@ -439,15 +437,15 @@ function CommandLineParsing
 			;;
 
 			autoprovide)
-				autoprovide="y"
+				autoprovide="yes"
 			;;
 
 			autorequire)
-				autorequire="y"
+				autorequire="yes"
 			;;
 
 			batch)
-				batch="y"
+				batch="yes"
 			;;
 
 			change-all)
@@ -462,15 +460,14 @@ function CommandLineParsing
 
 			change-spec)
 				RequeredArgument || return
-				filter="y"
 				CreateProcessing "spec" || return
 			;;
 
 			comment-missing)
 				RequeredArgument || return
 				case "x$OPTARG" in
-			   		x[yY]*) comment_missing="1";;
-                           		*)      comment_missing="0";;
+			   		x[yY]*) comment_missing="yes";;
+                           		*)      comment_missing="no";;
 				esac
 			;;
 
@@ -491,7 +488,6 @@ function CommandLineParsing
 			;;
 
 			edit-spec)
-				editspec=y
 				CreateProcessing "edit" || return
 			;;
 
@@ -503,20 +499,20 @@ function CommandLineParsing
 
 			package)
                    		package_flag="-p"
-                	   	comment_missing=0
+                	   	comment_missing="no"
                 	;;
 
 			pug-from-db)
-				keep_perm=""
+				keep_perm="no"
 			;;
 
 			pug-from-fs)
-				keep_perm=1
+				keep_perm="yes"
 			;;
 
 			spec-only)
 				RequeredArgument || return
-				spec_only=y
+				spec_only="yes"
 				specfile="$OPTARG"
 			;;
 
@@ -527,8 +523,8 @@ function CommandLineParsing
 			verify)
 				RequeredArgument || return
 				case "x$OPTARG" in
-			   		x[yY]*) verify="1";;
-                           		*)      verify="0";;
+			   		x[yY]*) verify="yes";;
+                           		*)      verify="no";;
 				esac
 			;;
 
@@ -539,7 +535,7 @@ function CommandLineParsing
 			;;
 
 			warning)
-				warning="y"
+				warning="yes"
 			;;
 
 			*)
@@ -550,11 +546,9 @@ function CommandLineParsing
 	done || return
 
 	CreateProcessing "fini" || return
-	[ "x$spec_only" = "x" ] || {
-		[ "x$modify" = "x" ] || {
-			Error "You can't use both '--spec_only' and '--modify'"
-			return 1
-		}
+	[ "X$spec_only" = "Xyes" -a "X$modify" = "Xyes" ] && {
+		Error "You can't use both '--spec_only' and '--change-files/--change-all'"
+		return 1
 	}
 
 	shift $((OPTIND - 1))

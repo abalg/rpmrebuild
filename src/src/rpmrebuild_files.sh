@@ -32,9 +32,9 @@
 # <file>        - file name
 #
 # Environment:
-#   keep_perm - if value is not empty, use permission, owner and group from
+#   keep_perm - if value is 'yes', use permission, owner and group from
 #               filesystem, otherwise - from package query
-#   comment_missing  - 1 - comment missing files, otherwise - nothing
+#   comment_missing  - 'yes' - comment missing files, otherwise - nothing
 ################################################################
 
 FFLAGS="d c s m n g"
@@ -70,7 +70,7 @@ while :; do
       x*) ;;
    esac
    miss_str=""
-   if [ "x$comment_missing" = "x1" ]; then
+   if [ "X$comment_missing" = "Xyes" ]; then
       if [ -e "$file" ]; then
          miss_str=""
       else 
@@ -119,12 +119,11 @@ while :; do
    fi
 
    # %attr handling
-   if [ -z "$keep_perm" ]
-   then
+   if [ "X$keep_perm" = "Xyes" ]; then
+   	attr_str=""
+   else
    	file_perm="${file_perm#??}"
    	attr_str="%attr($file_perm $file_user $file_group) "
-   else
-   	attr_str=""
    fi
 
    # Verify handling
@@ -156,8 +155,7 @@ while :; do
 
    # test for jokers in file : globing seems not to work
    # for performance reason, just if warning flag
-   if [ -n "$warning" ]
-   then
+   if [ "X$warning" = "Xyes" ]; then
 	case "$file" in
       		*[*?]*)
 		echo -e "\n-------------------------------- WARNING ------------------------------------------" 1>&2
