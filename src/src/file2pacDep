@@ -73,6 +73,7 @@ function analyse ()
 		echo "$tag $name $remain"
 	fi
 }
+###############################################################################
 
 function transform () {
 	# rewrite require to file into require to packages
@@ -82,6 +83,7 @@ function transform () {
 		rpm --query --qf 'Requires: %{NAME} = %{VERSION}-%{RELEASE}\n' --whatprovides $liste | sort -u
 	fi
 }
+###############################################################################
 
 liste=""
 fin=""
@@ -89,10 +91,11 @@ while read line
 do
 	if [ -z "$fin" ]
 	then
-		out=$(echo $line | grep "^%" | egrep -v "%define|%undefine")
+		#search for the first multi-line tag
+		out=$(echo $line | grep -E "^%description|^%post|^%pre|^%postun|^%preun|^%trigger|^%files|^%changelog")
 		if [ -n "$out" ]
 		then
-			# multi-line tag
+			# end of one-line section : apply all changes
 			transform
 			echo "$line"
 			fin=y
@@ -107,7 +110,7 @@ do
 			fi
 		fi
 	else
-		# after blank line no other change
+		# multi-line tag section : we just copy
 		echo "$line"
 	fi
 done
