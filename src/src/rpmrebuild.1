@@ -22,17 +22,20 @@ work in batch mode (no interactive query if files change)
 \fB\-d|\-\-dir\fR <\fIdirectory\fP>
 rpm package result will be written in  <\fIdirectory\fP>.
 .TP 
-\fB\-e|\-\-editspec\fR
+\fB\-e|\-\-edit-spec\fR
 open the generated specfile with your favorite editor before rpm build
 .TP 
-\fB\-k|\-\-keep_perm\fR
-keep installed files permissions (do not force to orginal files permissions)
+\fB\-k|\-\-keep-perm|\-\-pug-from-fs\fR
+keep installed files permission, uid and gid (do not force to orginal files permission, uid and gid saved in rpm database)
+.TP 
+\fB\-\-pug-from-db (default)\fR
+set files permission, uid and gid as saved in rpm database
 .TP 
 \fB\-h|\-\-help\fR
 Output help information and exit.
 .TP 
-\fB\-s|\-\-spec_only\fR <\fIspecfile\fP>
-keep installed files permissions (do not force to orginal files permissions)
+\fB\-s|\-\-spec-only\fR <\fIspecfile\fP>
+do not rebuild package. only generate specfile.
 .TP 
 \fB\-v|\-\-verbose\fR
 verbose output
@@ -42,6 +45,7 @@ Output version information and exit.
 .SH "FILES"
 .LP 
 \fI~/.rpmmacros\fP 
+\fI/etc/popt\fP 
 .br 
 .SH "ENVIRONMENT VARIABLES"
 .LP 
@@ -53,7 +57,7 @@ used to specify an editor for specfile
 used to specify an editor for specfile
 .SH "EXAMPLES"
 .LP 
-To build an rpm package as closed as possible from original one :
+To build an rpm package as closed as possible to original one:
 .LP 
 rpm \-\-rpmrebuid \-b package 
 .LP 
@@ -61,14 +65,14 @@ to build a modified package :
 .LP 
 rpm \-\-rpmrebuild \-k package
 .LP 
-if you have problem with rpm building, and if you know specfile syntaxe, you can also edit it :
+if you have problem with rpm building, and if you know specfile syntax, you can also edit it:
 .LP 
 rpm \-\-rpmrebuild \-e package
 .SH "AUTHORS"
 .LP 
 Eric Gerbier <gerbier@users.sourceforge.net>
 .br 
-Valery Resnic <valery_reznic@users.sourceforge.net>
+Valery Reznic <valery_reznic@users.sourceforge.net>
 .SH "SEE ALSO"
 .LP 
 rpm(8)

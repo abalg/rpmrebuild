@@ -1,3 +1,6 @@
+* Mon Dec 10 2002 <valery_reznic@users.sourceforge.net> 1.2-1b
+- change long options name to be more consistant
+
 * Mon Dec 10 2002 <gerbier@users.sourceforge.net> 1.2-1b
 - add man page
 - fix bug with % in changelog

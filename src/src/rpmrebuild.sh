@@ -44,9 +44,11 @@ Usage: $0 [options] package
 options:
    -b, --batch                 batch mode
    -d, --dir <dir>             specify the working directory
-   -e, --editspec              edit specfile
-   -k, --keep_perm             keep installed files perm
-   -s, --spec_only <spec>      generate specfile only
+   -e, --edit-spec             edit specfile
+   -k, --keep-perm,
+       --pug-from-fs           keep installed files permission, uid and gid
+       --pug-from-db (default) use files permission, uid and gid from rpm db
+   -s, --spec-only <spec>      generate specfile only
                                (If <spec> '-' stdout will be used)
    -v, --verbose               verbose
    -V, --version               print version
@@ -131,7 +133,7 @@ do
 	case "$opt" in
 		b) LONG_OPTION=batch;;
 		d) LONG_OPTION=dir;;
-		e) LONG_OPTION=editspec;;
+		e) LONG_OPTION=edit-spec;;
 		#f) 
 		#	lookfor=$(type -p $OPTARG)
 		#
@@ -140,8 +142,8 @@ do
 		#	[ -f $OPTARG -a -x $OPTARG ] && filter="$filter | $OPTARG"
 		#;;
 
-		k) LONG_OPTION=keep_perm;;
-		s) LONG_OPTION=spec_only;;
+		k) LONG_OPTION=keep-perm;;
+		s) LONG_OPTION=spec-only;;
 		h) LONG_OPTION=help;;
 		v) LONG_OPTION=verbose;;
 		V) LONG_OPTION=version;;
@@ -180,15 +182,19 @@ do
 			}
 		;;
 
-		editspec)
+		edit-spec)
 			editspec=y
 		;;
 
-		keep_perm)
+		keep-perm | pug-from-fs)
 			keep_perm=1
 		;;
 
-		spec_only)
+		pug-from-db)
+			keep_perm=""
+		;;
+
+		spec-only)
 			RequeredArgument
 			spec_only=y
 			specfile="$OPTARG"
