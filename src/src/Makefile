@@ -1,3 +1,11 @@
+INSTALL_RUN := install --mode=555
+INSTALL_RO  := install --mode=444
+INSTALL_MAN := install --mode=644
+LN          := ln --symbolic --force --no-dereference
+MKDIR       := mkdir --parents
+RM          := rm --force
+RMDIR       := rm --force --recursive
+
 ROOT=../build/rpmrebuild
 PWD=$(shell pwd)
 RPM_SOURCE_DIR = $(PWD)
@@ -70,46 +78,46 @@ define Spec
 endef
 
 all: rpmrebuild.spec VERSION
-	ln -sf rpmrebuild_popt .popt
+	$(LN) rpmrebuild_popt .popt
 
 rpmrebuild.spec: rpmrebuild.spc spec.scripts Version Release Changelog 
-	rm --force $@
+	$(RM) $@
 	$(Spec) > $@
 
 spec.scripts:
-	rm --force $@
+	$(RM) $@
 	/bin/sh spec.scripts.make.sh < $@.input > $@
 
 VERSION: Version
-	rm --force $@
+	$(RM) $@
 	read VERSION < $< && echo "VERSION='$$VERSION'" > $@
 
 
 install:
-	mkdir --parent                   $(TARGET_DIR)
-	install --mode=555 $(SCRIPTS)    $(TARGET_DIR)
+	$(MKDIR)                                  $(TARGET_DIR)
+	$(INSTALL_RUN) $(SCRIPTS)                 $(TARGET_DIR)
 
-	mkdir --parent                                $(TARGET_LIB)
-	install --mode=555 $(LIB_SCRIPTS)             $(TARGET_LIB)
-	install --mode=444 $(INCLUDE_SCRIPTS) VERSION $(TARGET_LIB)
-	install --mode=444 $(POPTS)                   $(TARGET_LIB)
-	cd $(TARGET_LIB) && ln -sf rpmrebuild_popt .popt
+	$(MKDIR)                                  $(TARGET_LIB)
+	$(INSTALL_RUN) $(LIB_SCRIPTS)             $(TARGET_LIB)
+	$(INSTALL_RO)  $(INCLUDE_SCRIPTS) VERSION $(TARGET_LIB)
+	$(INSTALL_RO)  $(POPTS)                   $(TARGET_LIB)
+	cd $(TARGET_LIB) && $(LN) rpmrebuild_popt .popt
 
-	mkdir --parent                                $(TARGET_PLUGIN)
-	install --mode=555 $(PLUGINS)		      $(TARGET_PLUGIN)
+	$(MKDIR)                                  $(TARGET_PLUGIN)
+	$(INSTALL_RUN) $(PLUGINS)		  $(TARGET_PLUGIN)
 
-	mkdir --parent                                  $(TARGET_MAN)
-	install --mode=644 ${MANPAGES}  		$(TARGET_MAN)
+	$(MKDIR)                                  $(TARGET_MAN)
+	$(INSTALL_MAN) ${MANPAGES}  		  $(TARGET_MAN)
 
 tar:	rpmrebuild.spec
 	List=`cat MANIFEST` && tar -cvzf $(TAR_FILE) $(TAR_NAMES) $$List
 
 rpm rpmbuild:	tar
-	mkdir --parent $(RPM_BUILD_DIR)
+	$(MKDIR) $(RPM_BUILD_DIR)
 	$@ -ba $(RPM_DEFINES) rpmrebuild.spec
 	export RPMOLD=y && $@ -ba $(RPM_DEFINES) rpmrebuild.spec
 	rpm --resign rpmrebuild*.rpm
 
 clean:
-	rm -rf $(ROOT) $(RPM_BUILD_DIR)
-	rm  -f VERSION rpmrebuild.spec spec.scripts *.rpm rpmrebuild.tar.gz
+	$(RMDIR) $(ROOT) $(RPM_BUILD_DIR)
+	$(RM)    VERSION rpmrebuild.spec spec.scripts *.rpm rpmrebuild.tar.gz
