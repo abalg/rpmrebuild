@@ -454,6 +454,7 @@ function RpmBuild
         [ "x$package_flag" = "x" ] || {
            RpmUnpack || return
            [ "x$modify" = "x" ] || {
+	      export RPM_BUILD_ROOT="$BUILDROOT"
               eval $modify || return
            }
         }
