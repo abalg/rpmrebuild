@@ -46,6 +46,7 @@ rpm alias --spec_files --qf \
 %6.6{FILEMODES:octal}\n\
 %{FILEUSERNAME}\n\
 %{FILEGROUPNAME}\n\
+%{FILEVERIFYFLAGS:octal}\n\
 %{FILENAMES}\n\
 ]\
 '

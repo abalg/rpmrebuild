@@ -27,6 +27,7 @@
 # <file_perm>   - file's permission (as %{FILEMODES:octal})
 # <file_user>   - file's user id
 # <file_group>  - file's group id
+# <file_verify> - file's verify flags (as %{FILEVERIFYFLAGS:octal})
 # <file>        - file name
 ################################################################
 
@@ -37,6 +38,10 @@ s_val=""           # spec. DO I need do something with it ?
 m_val="missingok " # missignok
 n_val="noreplace " # noreplace
 g_val="%ghost "    # ghost
+
+# Should be in tha same order as in rpm.
+VERIFY_FLAGS="md5 size link user group mtime mode rdev"
+
 while :; do
    read file_type
    [ "x$file_type" = "x" ] && break
@@ -44,6 +49,7 @@ while :; do
    read file_perm
    read file_user
    read file_group
+   read file_verify
    read file
 
    if [ -e "$file" ]; then
@@ -53,9 +59,11 @@ while :; do
    fi
 
    
+   # %dir handling
    dir_str=""
    [ "X$file_type" = "Xd" ] && dir_str="%dir "
 
+   # %fflags handling
    if [ "X$file_flags" = "X" ]; then
       fflags_str=""
    else
@@ -67,13 +75,26 @@ while :; do
          fi
       done
 
+      # Reset strings' values
       config_par=""; config_full=""
+
       config_par="${m_str}${n_str}"
+      # Handle a rpm's bug described by Han Holl:
+      # There are missignok or/and noreplace flag but no config flag
+      # In this case I simple force using '%config' string
+      [ "X$config_param" = "X" ] || c_str=$c_val
+
+      # Conacatenate c_str with config_param. 
+      # If config param non-empty strip it's last character
       config_full="${c_str}${config_par:+(${config_par%?})}" 
+
+      # If config_full string non-empty add space
       config_full="${config_full:+${config_full} }"
+
       fflags_str="${d_str}${config_full}${g_str}"
    fi
 
+   # %attr handling
    if [ -z "$keep_perm" ]
    then
    	file_perm="${file_perm#??}"
@@ -81,5 +102,33 @@ while :; do
    else
    	attr_str=""
    fi
-   echo "${miss_str}${dir_str}${fflags_str}${attr_str}${file}"
+
+   # Verify handling
+   verify_str=""
+   verify_par=""
+   non_verify_par=""
+   Bit=1
+   file_verify="0$file_verify" # make it octal for shell
+   for verify_flag in $VERIFY_FLAGS; do
+      if [ $[$file_verify & $Bit] -eq 0 ]; then
+         non_verify_par="$non_verify_par$verify_flag "
+      else
+         verify_par="$verify_par$verify_flag "
+      fi
+      Bit=$[ $Bit << 1 ]
+   done
+
+   # if bit after last verify bit is off I assume that %verify( ...) was used
+   # otherwise I assume %verify(not ...) was used. 
+   if [ $[$file_verify & $Bit] -eq 0 ]; then ## Use "verify_par"
+      # If verify_par not empty, set verify_str to %verify($verify_par)
+      # Strip last character from verify_par
+      verify_str="${verify_par:+%verify(${verify_par%?}) }" 
+   else # Use "non_verify_par
+      # If non_verify_par not empty, set verify_str to %verify(not $verify_par)
+      # Strip last character from non_verify_par
+      verify_str="${non_verify_par:+%verify(not ${non_verify_par%?}) }" 
+   fi
+
+   echo "${miss_str}${dir_str}${fflags_str}${attr_str}${verify_str}${file}"
 done
