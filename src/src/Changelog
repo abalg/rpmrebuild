@@ -1,7 +1,10 @@
-* Wed Nov 14 2003 <gerbier@users.sourceforge.net> 1.4.5-2
-- remove blank lines in generated specfile to have filter work again
+* Wed Nov 19 2003 <gerbier@users.sourceforge.net> 1.4.5-2
+- change filter behavior to be more robust
 - read -r on /etc/popt to keep backslash
-- comment-missing option
+- fix comment-missing option
+- remove rpmlib dependencies from specfile
+- remove gpg key from provide list
+- fix wildcard problem in file list (guile) (Han Holl)
 
 * Wed Jul  2 2003 <valery_reznic@users.sourceforge.net> 1.4.5-1
 - switch from 'case' to usinf AskYesNo function
