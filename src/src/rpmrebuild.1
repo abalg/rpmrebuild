@@ -13,36 +13,37 @@ it can be used to build an rpm file from an installed package (lost rpm) or to q
 .SH "OPTIONS"
 .TP 
 \fB\-a|\-\-additional\fP <\fIflags\fP>
-pass additional flags to rpmbuild
+pass additional flags to \fBrpmbuild\fP
 .TP 
 \fB\-b|\-\-batch\fP
 work in batch mode (no interactive query if files change)
 .TP 
 \fB\-c|\-\-comment\-missing\fP <\fIyes\fP|\fIno\fP>
-comment out in the specfile missing files. Default \fBno\fP. This flag is meanful only when \fB\-\-verify\fP is \fBno\fP.
+comment out in the specfile missing files. Default \fBno\fP.
 .TP 
 \fB\-D|\-\-define\fP <\fIdefines\fP>
 defines to be passed to rpmbuild.
 .TP 
 \fB\-d|\-\-directory\fP <\fIdirectory\fP>
-rpm package result will be written in  <\fIdirectory\fP>.
+rpm package result will be written in  \fIdirectory\fP.
 .TP 
 \fB\-e|\-\-edit\-spec\fP
 open the generated specfile with your favorite editor before rpm build
 .TP 
-\fB\-f|\-\-filter\fP <\fIfile\fP>
-.LP 
-\fB\-f|\-\-filter\fP <\fI"file arguments"\fP>
-.br 
-apply an externel filter to the specfile before rpm build (see below PLUGINS). if more than one filter is called, they are concateneted.
+\fB\-f|\-\-filter\fP <\fIcommand\fP>
+alias for \fB\-S/\-\-change\-spec\-whole\fP
+.TP 
+\fB\-F|\-\-change\-files\fP <\fIcommand\fP>
+Invoke plugin which change files. For more info see \fBPLUGINS\fP.
 .TP 
 \fB\-h|\-\-help\fP
 Output help information and exit.
 .TP 
-\fB\-k|\-\-keep\-perm|\-\-pug\-from\-fs\fP
-keep installed files permission, uid and gid (do not force to orginal files permission, uid and gid saved in rpm database)
+\fB\-k|\-\-keep\-perm
+alias to \fB\-\-pug\-from\-fs\fP
 .TP 
-\fB\-m|\-\-modify\fP <\fIscript\fP>
+\fB\-m|\-\-modify\fP <\fIcommand\fP>
+alias to \fB\-F/\-\-change\-files
 can be used with or without \fB\-\-package\fP option. 
 When used with \fB\-\-package\fP option rpm package converted to cpio and unpackaged.
 Then invoked script \fB<script>\fP to change unpacked files.
@@ -54,18 +55,21 @@ Can't be used with \fB\-\-spec\-only\fP
 \fB\-p|\-\-package\fP
 use package file, not installed rpm (this option is like rpm's \-p option)
 .TP 
+\fB\-\-pug\-from\-db (default)\fP
+set files permission, uid and gid as saved in rpm database
+.TP 
+\fB\-\-pug\-from\-fs\fP
+keep installed files permission, uid and gid (do not force to orginal files permission, uid and gid saved in rpm database)
+.TP 
 \fB\-P|\-\-autoprovide\fP
 use rpm scripts to compute provides
 .TP 
 \fB\-R|\-\-autorequire\fP
 use rpm scripts to compute requires
 .TP 
-\fB\-\-pug\-from\-db (default)\fP
-set files permission, uid and gid as saved in rpm database
-.TP 
 \fB\-s|\-\-spec\-only\fP <\fIspecfile\fP>
 do not rebuild package. only generate specfile. 
-Can't be used with \fB\-\-modify\fP
+Can't be used with \fB\-\-change\-files\fP.
 .TP 
 \fB\-v|\-\-verbose\fP
 verbose output
@@ -78,6 +82,8 @@ display some warnings if it detects a potential problem (for example, spec file 
 .TP 
 \fB\-y|\-\-verify\fP <\fIyes\fP|\fIno\fP>
 Turn on/off package verifing before processing. Default \fByes\fP. Can be turn off to get better performance.
+.SH "PLUGINS"
+.LP 
 .SH "FILES"
 .LP 
 .TP 
