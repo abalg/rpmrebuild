@@ -1,3 +1,6 @@
+* Sun Jul 25 2004 <valery_reznic@users.sourceforge.net> 1.4.7-2
+- fixed problem with manpages compression
+
 * Mon Jul 12 2004 <valery_reznic@users.sourceforge.net> 1.4.7-1
 - rpmrebuild.sh can be now run from local directory, without need 
   to install package (add rpmrebuild_buildroot.sh file).
