@@ -58,7 +58,7 @@ options:
    -c, --comment-missing <y|n> comment missing files in the specfile.
                                default - no.
                                This flag is only meanful with --verify no
-   -d, --dir <dir>             specify the working directory
+   -d, --directory <dir>       specify the working directory
    -D, --define <define>       defines to be passed to the rpmbuild
    -e, --edit-spec             edit specfile
    -f, --filter <file>         apply an external filter on generated specfile
