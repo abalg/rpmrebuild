@@ -33,7 +33,7 @@ Release:       \%O_Release\n\
 [Requires:      %{REQUIRENAME} %{REQUIREFLAGS:depflags} % {REQUIREVERSION}\n]\
 [Conflicts:     %{CONFLICTNAME} %{CONFLICTFLAGS:depflags} % {CONFLICTVERSION}\n]\
 [Obsoletes:     %{OBSOLETES}\n]\
-[Provides:      %{PROVIDES}\n]\
+[Provides:      %{PROVIDES} %{PROVIDEFLAGS:depflags} %{PROVIDEVERSION}\n]\
 [ExcludeArch:   %{EXCLUDEARCH}\n]\
 [ExclusiveArch: %{EXCLUSIVEARCH}\n]\
 [ExcludeOs:     %{EXCLUDEOS}\n]\
