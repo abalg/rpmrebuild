@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<HTML>
+  <HEAD>
+    <META name="generator" content= "HTML Tidy for Linux/x86 (vers 1st June 2002), see www.w3.org">
+    
+    <TITLE>rpmrebuild</TITLE>
+    <META http-equiv="Content-Type" content= "text/html; charset=iso-8859-1">
+    <META name="Author" content="Gerbier">
+    <LINK rev="made" href="mailto:gerbier@users.sourceforge.net">
+  </HEAD>
+  
+  <BODY>
+    <TABLE width="100%">
+      <TR>
+	<TD width="15%" valign=top align=left>
+	  <A href="http://sourceforge.net/projects/rpmrebuild">Project Page</A>
+	</TD>
+	<TD align=center width="70%">
+	  <H1 align="center">RPMREBUILD</H1>
+	</TD>
+	<TD width="15%" valign=top align=right>
+	  <A href="mailto:gerbier@users.sourceforge.net">Feedback..</A>
+	</TD>
+      </TR>
+    </TABLE>
+    
+    <BR>
+    
+    <H2>resume</H2>
+    rpmrebuild est un logiciel qui permet de construire des packages rpm depuis des packages rpm installés<BR><BR>
+    
+    <HR>
+    
+    <H2>utilisation</H2>
+    <UL>
+    <LI>depuis la version 0.5, il marche sur toute distribution utilisant rpm</LI>
+    <LI>il ne necessite pas de connaissances sur la fabrication de packages</LI> 
+    </UL> 
+    
+    <H3>reconstruire un rpm perdu</H3>
+    C'etait le premier objectif : automatiser la fabrication d'un fichier rpm depuis la base de donnée rpm, quand on a perdu le fichier d'origine.
+    
+    <H3>modifier un package</H3>
+    Vous avez modifié un logiciel (fichier de configuration, scripts ...) et vous voulez le distribuer (au format rpm) tel quel : c'est maintenant mon utilisation principale.
+    
+    <H3>conseils d'utilisation</H3>
+    <UL>
+	<LI>rpmrebuild ne necessite pas d'etre utilise sous l'identité "root", mais cela peut etre necessaire pour acceder aux fichiers protégés</LI> 
+	<LI>le fichier "spec" est détruit après utilisation. Pour le conserver, utiliser l'option -s</LI> 
+	<LI>les fichiers rpm sont construits dans le repertoire naturel (pour rpm) : par exemple, sur RedHat, par defaut sur /usr/src/redhat/RPMS<BR>
+	mais vous pouvez le modifier avec l'option -d ou avec un fichier ~/.rpmmacros (ligne "%_topdir un_repertoire")</LI> 
+	<LI>rpmrebuild a de nombreuses autres options, consultez-les avec <EM>man rpmrebuild</EM> ou <EM>rpmrebuild --help</EM> </LI>
+    </UL> 
+
+    <HR>
+
+    <H2>autres projets</H2>
+    <a href="http://pkgrebuild.sourceforge.net/">pkgrebuild</a> est un outil semblable pour systeme d'exploitation :
+    <UL>
+	    <LI>UnixWare 7.1.1</LI>
+	    <LI>SunOs 5.8</LI>
+    </UL> 
+    Il est developpé par un des developpeurs du projet rpmrebuild : Valery Reznic
+    
+    <HR>
+    <TABLE> 
+      <TR> 
+	<TD>version courante</TD><TD>1.4.5-2</TD>
+      </TR> 
+      <TR> 
+	<TD>etat</TD><TD>stable</TD>
+      </TR> 
+      <TR> 
+	<TD>licence</TD><TD><A href="http://www.gnu.org/copyleft/gpl.html">gpl</A></TD>
+      </TR> 
+      <TR> 
+	<TD><A href="news.html">les nouvelles</A></TD>
+      </TR> 
+      <TR> 
+	<TD><A href="changelog.html">les changements</A></TD>
+      </TR> 
+      <TR> 
+	<TD><A href="http://sourceforge.net/project/showfiles.php?group_id=57523">téléchargement</A></TD>
+      </TR> 
+      <TR> 
+	<TD><A href="gpg.asc">ma clef publique</A></TD>
+      </TR> 
+      <TR> 
+	<TD><A href="todo.html">a faire</A></TD>
+      </TR> 
+      <TR> 
+	<TD><A href="credits.html">remerciements</A></TD>
+      </TR> 
+      <TR> 
+	<TD><A href="history.html">historique</A></TD>
+      </TR> 
+    </TABLE> 
+    
+    <HR>
+    <ADDRESS><A href="mailto:gerbier@users.sourceforge.net">Eric Gerbier</A></ADDRESS><BR>
+    page changed on 2003/11/24<BR>
+    version <a href="index.html"><img alt="anglaise" src="lang_english.gif" width="40" height="25" border="0"></a>
+  </BODY>
+</HTML>
+
