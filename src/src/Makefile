@@ -86,9 +86,9 @@ install:
 tar:	rpmrebuild.spec
 	List=`cat MANIFEST` && tar -cvzf $(TAR_FILE) $(TAR_NAMES) $$List
 
-rpm:	tar
+rpm rpmbuild:	tar
 	mkdir --parent $(RPM_BUILD_DIR)
-	rpm -ba $(RPM_DEFINES) rpmrebuild.spec
+	$@ -ba $(RPM_DEFINES) rpmrebuild.spec
 	rpm --resign rpmrebuild*.rpm
 
 t:
