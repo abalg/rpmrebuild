@@ -51,7 +51,7 @@ function SpecFile
 function FilesSpecFile
 {
 	echo "%files"
-	HOME=$MY_CONFIG_DIR rpm --query --spec_files ${PAQUET} "$filter " | rpmrebuild_files.sh
+	HOME=$MY_CONFIG_DIR rpm --query --spec_files ${PAQUET} | rpmrebuild_files.sh
 }
 
 ##############################################################
@@ -97,24 +97,29 @@ fi
 export LC_TIME=POSIX
 
 # test if package exists
-export PAQUET=$1
-output=$(rpm -q ${PAQUET})
-if [ $? -ne 0 ]
-then
-	echo "WARNING : no package ${PAQUET} in rpm database"
+PAQUET="$1"
+output="$(rpm --query ${PAQUET})"
+set -- $output
+case $# in
+   0)
+	# No package found
+	echo "WARNING : no package '${PAQUET}' in rpm database"
 	exit 1
-else
-	nb=$(echo $output | wc -w)
-	if [ $nb -ne 1 ]
-	then
-		echo "WARNING : too much packages match ${PAQUET} : $output"
-		exit 1
-	fi
-fi
+   ;;
+
+   1)
+	: # Ok, do nothing
+   ;;
+
+   *)
+	echo -e "WARNING : too much packages match '${PAQUET}':\n$output"
+	exit 1
+   ;;
+esac
 
 # verification des changements
 # check for package change
-out=$(rpm -V ${PAQUET})
+out="$(rpm --verify --nodeps ${PAQUET})"
 if [ -n "$out" ]
 then
 	echo "WARNING : some files have been modified :"
@@ -148,7 +153,6 @@ then
 	mv -f ${FIC_SPEC} ${FIC_SPEC}.sav
 fi
 
-QF=""
 {
    SpecFile &&
    FilesSpecFile
