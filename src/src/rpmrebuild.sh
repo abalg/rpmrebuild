@@ -131,7 +131,7 @@ do
 		;;
 
 		v) 
-			rpm_verbose="-v"
+			rpm_verbose="--verbose"
 		;;
 
 		V)
@@ -231,16 +231,15 @@ function SpecGeneration
 	fi
 
 	{
+		if [ -n "$new_release" ]; then
+                   echo "%define new_release $new_release";
+                else
+                   :
+                fi       &&
    		SpecFile &&
    		FilesSpecFile
 	} > ${FIC_SPEC}
 
-	# change release
-	if [ -n "$new_release" ]
-	then
-		sed "s/^Release:.*/Release: $new_release/" ${FIC_SPEC} > ${FIC_SPEC}.new
-		mv -f ${FIC_SPEC}.new ${FIC_SPEC}
-	fi
 	# -e option : edit the spec file
 	if [ -n "$editspec" ]
 	then
