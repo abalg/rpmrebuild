@@ -54,7 +54,6 @@ function spec_files
 {
 	rm -f $FILES_IN || return
 	spec_query --spec_files > $FILES_IN || return
-	echo "%files" || return
 	/bin/bash $MY_LIB_DIR/rpmrebuild_files.sh < $FILES_IN || return
 	return 0
 }
@@ -132,12 +131,20 @@ function spec_concatenate
 		$SPEC_PROVIDES.$si_provides         \
 		$SPEC_REQUIRES.$si_requires         \
 	|| return
+
 	echo -e                                     \
 		"\n%description"                    \
 	|| return
 	cat                                         \
 		$SPEC_DESCRIPTION.$si_description   \
+	|| return
+
+	echo "%files" || return
+	cat                                         \
 		$SPEC_FILES.$si_files               \
+	|| return
+
+	cat                                         \
 		$SPEC_TRIGGERS.$si_triggers         \
 		$SPEC_PRE.$si_pre                   \
 		$SPEC_POST.$si_post                 \
