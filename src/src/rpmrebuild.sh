@@ -235,7 +235,7 @@ function Main
 	source $D/processing_func.src   || return
 	processing_init || return
 	MY_LIB_DIR="$D"
-	MY_PLUGIN_DIR=${MY_LIB_DIR}/plugins
+	export RPMREBUILD_PLUGINS_DIR=${MY_LIB_DIR}/plugins
 
 	# suite a des probleme de dates incorrectes
 	# to solve problems of bad date
