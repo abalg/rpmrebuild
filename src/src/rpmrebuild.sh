@@ -93,8 +93,9 @@ function Interrog
 # build general tags
 function SpecFile
 {
-	HOME=$MY_LIB_DIR rpm --query --i18ndomains /dev/null $package_flag --spec_spec ${PAQUET}
-                                               
+	# rpmlib dependencies are insert during rpm building
+	# gpg key can not be provided
+	HOME=$MY_LIB_DIR rpm --query --i18ndomains /dev/null $package_flag --spec_spec ${PAQUET} | sed 's/\(^Requires:[[:space:]]*rpmlib(.*\)/#\1/;s/\(^Provides:[[:space:]]*gpg(.*\)/#\1/'
 }
 ###############################################################################
 # build the list of files in package
@@ -107,7 +108,9 @@ function FilesSpecFile
 ###############################################################################
 function ChangeSpecFile
 {
-	HOME=$MY_LIB_DIR rpm --query $package_flag --spec_change ${PAQUET} | sed 's/%/%%/g'
+	# first sed is to expand all macros
+	# then rollback on tag line
+	HOME=$MY_LIB_DIR rpm --query $package_flag --spec_change ${PAQUET} | sed 's/%/%%/g;s/^%%description/%description/;s/^%%post/%post/;s/^%%pre/%pre/;s/^%%postun/%postun/;s/^%%preun/%preun/;s/^%%trigger/%trigger/;s/^%%files/%files/;s/^%%changelog/%changelog/'
 }
 
 ###############################################################################
