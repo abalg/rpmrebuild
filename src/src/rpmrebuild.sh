@@ -131,7 +131,7 @@ function CommandLineParsing
 additional=""
 batch=""
 filter=""
-rpm_define=""
+rpm_defines=""
 rpmdir=""
 editspec=""
 package_flag=""
@@ -194,6 +194,7 @@ do
 		dir)
 			RequeredArgument
 			rpmdir="$OPTARG"
+			rpm_defines="$rpm_defines --define '_rpmdir $rpmdir'" 
 			mkdir -p -- "$rpmdir"
 			rpmdir="$(cd $rpmdir && echo $PWD)" || {
 				Error "Can't changedir to '$rpmdir'"
@@ -203,7 +204,7 @@ do
 
 		define)
 			RequeredArgument
-			rpm_define="$rpm_define $OPTARG"
+			rpm_defines="$rpm_defines --define '$OPTARG'"
 		;;
 
 		edit-spec)
@@ -280,9 +281,10 @@ if [ "x$package_flag" = "x" ]; then
 fi
 
 # If no rpmdir was specified set variable to the native rpmdir value
+# (with respect to possible define)
 if [ -z "$rpmdir" ]
 then
-   rpmdir="$(rpm --eval %_rpmdir)" || exit
+   rpmdir="$(eval rpm $rpm_defines --eval %_rpmdir)" || exit
 fi
 
 shift $((OPTIND - 1))
@@ -446,7 +448,7 @@ function RpmBuild
               eval $modify || return
            }
         }
-	$BUILDCMD -bb $rpm_verbose --define "_rpmdir $rpmdir" $additional ${FIC_SPEC} || {
+	eval $BUILDCMD $rpm_defines -bb $rpm_verbose $additional ${FIC_SPEC} || {
    		Error "package '${PAQUET}' build failed"
    		return 1
 	}
@@ -466,13 +468,13 @@ function RpmBuild
 ###############################################################################
 function RpmFileName
 {
-	QF_RPMFILENAME=$(rpm --eval %_rpmfilename) || return
-	RPMFILENAME=$(rpm --specfile --query --queryformat "${QF_RPMFILENAME}" ${FIC_SPEC}) || return
+	QF_RPMFILENAME=$(eval rpm $rpm_defines --eval %_rpmfilename) || return
+	RPMFILENAME=$(eval rpm $rpm_defines --specfile --query --queryformat "${QF_RPMFILENAME}" ${FIC_SPEC}) || return
 	# workarount for redhat 6.x
-	arch=$(rpm --specfile --query --queryformat "%{ARCH}"  ${FIC_SPEC})
+	arch=$(eval rpm $rpm_defines --specfile --query --queryformat "%{ARCH}"  ${FIC_SPEC})
 	if [ $arch = "(none)" ]
 	then
-		arch=$(rpm  --query $package_flag --queryformat "%{ARCH}" ${PAQUET})
+		arch=$(eval rpm $rpm_defines --query $package_flag --queryformat "%{ARCH}" ${PAQUET})
 		RPMFILENAME=$(echo $RPMFILENAME | sed "s/(none)/$arch/g")
 	fi
 
