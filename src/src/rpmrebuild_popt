@@ -1,5 +1,15 @@
-rpm alias --spec_preamble --qf \
-'\
+# rpm query has a strange bug:
+# when format is enough long/complicate/whatsoever/
+# first constant string is disappears.
+# i.e, string '#dummy' will not be printed.
+# Without this format  (with '#dummy' string)
+# '#BUILDHOST:   ' is disappears.
+# If one day this bug will be fixed, it'll be just harmless
+# comment '#dummy' in the specfile
+
+rpm alias --spec_preamble --qf '\
+%|BUILDHOST?{#dummy}|\
+\
 %|BUILDHOST?{\
 [#BUILDHOST:    %{BUILDHOST}\n]\
 }|\
