@@ -45,6 +45,7 @@ options:
    -b, --batch                 batch mode
    -d, --dir <dir>             specify the working directory
    -e, --edit-spec             edit specfile
+   -f, --filter-spec <file>    apply an external filter on generated specfile
    -k, --keep-perm,
        --pug-from-fs           keep installed files permission, uid and gid
        --pug-from-db (default) use files permission, uid and gid from rpm db
@@ -71,17 +72,6 @@ function Interrog
 function SpecFile
 {
 	HOME=$MY_LIB_DIR rpm --query --spec_spec ${PAQUET}
-}
-###############################################################################
-# build dependencies tags
-function DepSpecFile
-{
-	if [ -n "$resolv_dep" ]
-	then
-		HOME=$MY_LIB_DIR rpm --query --spec_dep ${PAQUET} | sort -u | $MY_LIB_DIR/rpmrebuild_dep.sh | sort -u
-	else
-		HOME=$MY_LIB_DIR rpm --query --spec_dep ${PAQUET} | sort -u
-	fi
 }
 ###############################################################################
 # build the list of files in package
@@ -145,14 +135,7 @@ do
 		b) LONG_OPTION=batch;;
 		d) LONG_OPTION=dir;;
 		e) LONG_OPTION=edit-spec;;
-		#f) 
-		#	lookfor=$(type -p $OPTARG)
-		#
-		#	[ "$lookfor" ] && OPTARG=$lookfor
-		#
-		#	[ -f $OPTARG -a -x $OPTARG ] && filter="$filter | $OPTARG"
-		#;;
-
+		f) LONG_OPTION=filter-spec;;
 		k) LONG_OPTION=keep-perm;;
 		r) LONG_OPTION=resolv-dep;;
 		s) LONG_OPTION=spec-only;;
@@ -198,6 +181,16 @@ do
 			editspec=y
 		;;
 
+		filter-spec)
+			RequeredArgument
+			lookfor=$(type -p $OPTARG)
+		
+			[ "$lookfor" ] && OPTARG=$lookfor
+		
+			[ -f $OPTARG -a -x $OPTARG ] && filter="$filter | $OPTARG"
+			echo "filter=$filter"
+		;;
+			
 		keep-perm | pug-from-fs)
 			keep_perm=1
 		;;
@@ -326,13 +319,25 @@ function SpecGenerationOnly
 {
 	if [ "$specfile" = "-" ]
 	then
-		{ DepSpecFile && SpecFile && FilesSpecFile && ChangeSpecFile; } || return
+		{ SpecFile && FilesSpecFile && ChangeSpecFile; } || return
 	else
-		{ DepSpecFile && SpecFile && FilesSpecFile && ChangeSpecFile; } > $specfile || return
+		{ SpecFile && FilesSpecFile && ChangeSpecFile; } > $specfile || return
 	fi
 	return 0
 }
 
+###############################################################################
+function SpecGen
+{
+	if [ -n "$new_release" ]; then
+		echo "%define new_release $new_release";
+	else
+		:
+	fi       &&
+	SpecFile &&
+	FilesSpecFile &&
+	ChangeSpecFile
+}
 ###############################################################################
 function SpecGeneration
 {
@@ -341,17 +346,7 @@ function SpecGeneration
 	FIC_SPEC=${TMPDIR:-/tmp}/rpmrebuild_$$_${PAQUET}.spec
 	rm -rf ${FIC_SPEC} || return
 
-	{
-		if [ -n "$new_release" ]; then
-                   echo "%define new_release $new_release";
-                else
-                   :
-                fi       &&
-		DepSpecFile &&
-   		SpecFile &&
-   		FilesSpecFile &&
-		ChangeSpecFile
-	} > ${FIC_SPEC} || return
+	eval SpecGen ${filter} > ${FIC_SPEC} || return
 	return 0
 }
 
