@@ -1,4 +1,4 @@
-rpm alias --spec_spec --qf \
+rpm alias --spec_preamble --qf \
 '\
 # Do not try autogenerate prereq/conflicts/obsoletes and check files\n\
 \%undefine __check_files\n\
@@ -43,11 +43,7 @@ rpm alias --spec_spec --qf \
 [Version:       %{VERSION}\n]\
 }|\
 %|RELEASE?{\
-\%define orig_release %{RELEASE}\n\
-}|\
-\%define O_Release \%\{?new_release:\%\{new_release\}\}\%\{!?new_release:\%\{orig_release\}\}\n\
-%|RELEASE?{\
-Release:       \%O_Release\n\
+[Release:       %{RELEASE}\n]\
 }|\
 %|LICENSE?{\
 [License:       %{LICENSE}\n]\
@@ -100,23 +96,39 @@ Release:       \%O_Release\n\
 %|PREFIXES?{\
 [Prefix:        %{PREFIXES}\n]\
 }|\
+'
+
+rpm alias --spec_conflicts --qf \
+'\
 %|CONFLICTNAME?{\
 [Conflicts:     %{CONFLICTNAME} %{CONFLICTFLAGS:depflags} %{CONFLICTVERSION}\n]\
 }|\
+'
+
+rpm alias --spec_obsoletes --qf \
+'\
 %|OBSOLETES?{\
 [Obsoletes:     %{OBSOLETES}\n]\
 }|\
+'
+
+rpm alias --spec_provides --qf \
+'\
 %|PROVIDES?{\
-\%if \%rpmrebuild_use_provides\n\
 [Provides:      %{PROVIDES} %{PROVIDEFLAGS:depflags} %{PROVIDEVERSION}\n]\
-\%endif\n\
 }|\
+'
+
+rpm alias --spec_requires --qf \
+"\
 %|REQUIRENAME?{\
-\%if \%rpmrebuild_use_requires\n\
 [Requires:      %{REQUIRENAME} %{REQUIREFLAGS:depflags} %{REQUIREVERSION}\n]\
-\%endif\n\
 }|\
-[\n%%description\n %{DESCRIPTION}\n\n]\
+"
+
+rpm alias --spec_description --qf \
+'\
+[%%description\n %{DESCRIPTION}\n\n]\
 '
 
 rpm alias --spec_files --qf \
@@ -133,28 +145,46 @@ rpm alias --spec_files --qf \
 ]\
 '
 
-rpm alias --spec_change --qf \
+rpm alias --spec_triggers --qf \
 '\
-[\n%%trigger%{TRIGGERTYPE} -p %{TRIGGERSCRIPTPROG} -- %{TRIGGERCONDS}\n%|TRIGGERSCRIPTS?{%{TRIGGERSCRIPTS}\n}|]\
+[%%trigger%{TRIGGERTYPE} -p %{TRIGGERSCRIPTPROG} -- %{TRIGGERCONDS}\n%|TRIGGERSCRIPTS?{%{TRIGGERSCRIPTS}\n}|]\
 \
+'
+
+rpm alias --spec_pre --qf \
+'\
 %|PREINPROG\
-?{\n%%pre -p %{PREINPROG}\n%|PREIN?{[%{PREIN}\n]}|}\
+?{%%pre -p %{PREINPROG}\n%|PREIN?{[%{PREIN}\n]}|}\
 :{%|PREIN?{\n%%pre\n[%{PREIN}\n]}|}|\
-\
+'
+rpm alias --spec_post --qf \
+'\
 %|POSTINPROG\
-?{\n%%post -p %{POSTINPROG}\n%|POSTIN?{[%{POSTIN}\n]}|}\
+?{%%post -p %{POSTINPROG}\n%|POSTIN?{[%{POSTIN}\n]}|}\
 :{%|POSTIN?{\n%%post\n[%{POSTIN}\n]}|}|\
-\
+'
+
+rpm alias --spec_preun --qf \
+'\
 %|PREUNPROG\
-?{\n%%preun -p %{PREUNPROG}\n%|PREUN?{[%{PREUN}\n]}|}\
+?{%%preun -p %{PREUNPROG}\n%|PREUN?{[%{PREUN}\n]}|}\
 :{%|PREUN?{\n%%preun\n[%{PREUN}\n]}|}|\
-\
+'
+
+rpm alias --spec_postun --qf \
+'\
 %|POSTUNPROG\
-?{\n%%postun -p %{POSTUNPROG}\n%|POSTUN?{[%{POSTUN}\n]}|}\
+?{%%postun -p %{POSTUNPROG}\n%|POSTUN?{[%{POSTUN}\n]}|}\
 :{%|POSTUN?{\n%%postun\n[%{POSTUN}\n]}|}|\
-\
-%|VERIFYSCRIPTPROG?{\n%%verifyscript -p %{VERIFYSCRIPTPROG}\n%|VERIFYSCRIPT?{[%{VERIFYSCRIPT}\n]}|}\
+'
+
+rpm alias --spec_verifyscript --qf \
+'\
+%|VERIFYSCRIPTPROG?{%%verifyscript -p %{VERIFYSCRIPTPROG}\n%|VERIFYSCRIPT?{[%{VERIFYSCRIPT}\n]}|}\
 :{%|VERIFYSCRIPT?{\n%%verifyscript\n[%{VERIFYSCRIPT}\n]}|}|\
-\
-%|CHANGELOGTIME?{\n%%changelog\n[* %{CHANGELOGTIME:day} %{CHANGELOGNAME} \n\n%{CHANGELOGTEXT}\n\n]\n}|\
+'
+
+rpm alias --spec_changelog --qf \
+'\
+%|CHANGELOGTIME?{%%changelog\n[* %{CHANGELOGTIME:day} %{CHANGELOGNAME} \n\n%{CHANGELOGTEXT}\n\n]\n}|\
 '
