@@ -1,4 +1,4 @@
-#!/bin/bash
+# to be sourced from bash
 ###############################################################################
 #
 #    Copyright (C) 2002 by Eric Gerbier
@@ -65,14 +65,12 @@ function UnrecognizedOption
 {
 	Echo "$0: unrecognized option \`--$LONG_OPTION'"
 	Try_Help
-	exit 1
 }
 
 function AmbiguousOption
 {
 	Echo "$0: ambiguous option \`--$LONG_OPTION'"
 	Try_Help
-	exit 1
 }
 
 ###############################################################################
@@ -81,22 +79,19 @@ function RequeredArgument
 	[ "x$SHORT_OPTION" = "x-" ] || return 0  # we use short option,
                                                  # do nothing
 	if [ "$OPTARG_EXIST" ]; then
-		let OPTIND=$OPTIND+$OPTIND_INCR
+		[ "$OPTIND_INCR" ] && OPTIND=$[OPTIND + 1]
 	else
 		Echo "$0: option \`$LONG_OPTION' requires an argument"
 		Try_Help
-		exit 1
+		return 1
 	fi
-}
-###############################################################################
-function ExtractProgName
-{
-	progname="$1"
+	return 0
 }
 ###############################################################################
 function CommandLineParsing
 {
 # Default flags' values. To be sure they don't came from environment
+NEED_EXIT=""
 additional=""
 autoprovide=""
 autorequire=""
@@ -119,7 +114,7 @@ PAQUET_NAME=""
 
 while getopts "a:bc:d:D:ef:hkm:pPRs:vVwy:-:" opt
 do
-	OPTIND_INCR=0
+	OPTIND_INCR=""
 	case "$opt" in
 		a) LONG_OPTION=additional;;
 		b) LONG_OPTION=batch;;
@@ -164,7 +159,7 @@ do
 
 		*)
 			Try_Help
-			exit 1
+			return 1
 		;;
 	esac
 
@@ -175,6 +170,7 @@ do
 		aut | \
 		auto )
 			AmbiguousOption
+			return 1
 		;;
 
 		ad | \
@@ -186,7 +182,7 @@ do
 		addition | \
 		additiona | \
 		additional)
-			RequeredArgument
+			RequeredArgument || return
 			additional="$OPTARG"
 		;;
 
@@ -233,7 +229,7 @@ do
 		comment-missi | \
 		comment-missin | \
 		comment-missing)
-			RequeredArgument
+			RequeredArgument || return
 			case "x$OPTARG" in
 			   x[yY]*) comment_missing="1";;
                            *)      comment_missing="0";;
@@ -242,6 +238,7 @@ do
 
 		d)
 			AmbiguousOption
+			return 1
 		;;
 
 		de | \
@@ -249,7 +246,7 @@ do
 		defi | \
 		defin | \
 		define)
-			RequeredArgument
+			RequeredArgument || return
 			rpm_defines="$rpm_defines --define '$OPTARG'"
 		;;
 
@@ -261,7 +258,7 @@ do
 		directo | \
 		director | \
 		directory)
-			RequeredArgument
+			RequeredArgument || return
 			rpmdir="$OPTARG"
 			rpm_defines="$rpm_defines --define '_rpmdir $rpmdir'" 
 			mkdir -p -- "$rpmdir"
@@ -289,7 +286,7 @@ do
 		filt | \
 		filte | \
 		filter)
-			RequeredArgument
+			RequeredArgument || return
 			ExtractProgName $OPTARG  # set progname
 
 			# check if executable ?
@@ -298,7 +295,7 @@ do
 				filter="$filter | $OPTARG"
 			else
 				Error "Can't find '$progname' in '$PATH'"
-				exit 1
+				return 1
 			fi
 		;;
 			
@@ -307,7 +304,8 @@ do
 		hel | \
 		help)
 			Usage
-			exit 0
+			NEED_EXIT=0
+			return 0
 		;;
 
 		k | \
@@ -328,12 +326,13 @@ do
 		modi | \
 		modif | \
 		modify)
-			RequeredArgument
+			RequeredArgument || return
 			modify="$OPTARG"
 		;;
 
 		p)
 			AmbiguousOption
+			return 1
 		;;
 
 		pa | \
@@ -355,6 +354,7 @@ do
 		pug-from | \
 		pug-from-)
 			AmbiguousOption
+			return 1
 		;;
 
 		pug-from-d | \
@@ -376,7 +376,7 @@ do
 		spec-on | \
 		spec-onl | \
 		spec-only)
-			RequeredArgument
+			RequeredArgument || return
 			spec_only=y
 			specfile="$OPTARG"
 		;;
@@ -385,6 +385,7 @@ do
 		ve | \
 		ver )
 			AmbiguousOption
+			return 1
 		;;
 
 		verb | \
@@ -397,7 +398,7 @@ do
 		veri | \
 		verif | \
 		verify)
-			RequeredArgument
+			RequeredArgument || return
 			case "x$OPTARG" in
 			   x[yY]*) verify="1";;
                            *)      verify="0";;
@@ -409,7 +410,8 @@ do
 		versio | \
 		version)
 			echo "$VERSION"
-			exit 0
+			NEED_EXIT=0
+			return 0
 		;;
 
 		w | \
@@ -424,6 +426,7 @@ do
 
 		*)
 			UnrecognizedOption
+			return 1
 		;;
 	esac
 done
@@ -432,7 +435,7 @@ done
 # (with respect to possible define)
 if [ -z "$rpmdir" ]
 then
-   rpmdir="$(eval rpm $rpm_defines --eval %_rpmdir)" || exit
+   rpmdir="$(eval rpm $rpm_defines --eval %_rpmdir)" || return
 fi
 
 shift $((OPTIND - 1))
@@ -440,7 +443,7 @@ case $# in
    0)
 	Error "package argument missing"
 	Try_Help
-	exit 1
+	return 1
    ;;
 
    1) # One argument, it's ok
@@ -451,7 +454,7 @@ case $# in
          PAQUET_NAME="${PAQUET##*/}"
          if [ "x$PAQUET_NAME" = "x" ]; then
             Error "Package file '$PAQUET' should not be a directory"
-            exit 1
+            return 1
          else
 	   :
 	 fi
@@ -461,7 +464,7 @@ case $# in
    *)
 	Error "multiple package arguments is illegal"
 	Try_Help
-	exit 1
+	return 1
    ;;
 esac
 }

@@ -333,6 +333,7 @@ PATH=$PATH:$MY_PLUGIN_DIR
 export LC_TIME=POSIX
 
 CommandLineParsing "$@" || exit
+[ "x$NEED_EXIT" = "x" ] || exit $NEED_EXIT
 #RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild.$$}
 RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild}
 export RPMREBUILD_TMPDIR
