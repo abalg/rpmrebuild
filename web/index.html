@@ -27,8 +27,20 @@
     
     <BR>
     
+    <H2>resume</H2>
     rpmrebuild is a tool to build an RPM file from a package that has already been installed <BR><BR>
     
+    <H2>use</H2>
+    since release 0.5, it should work on any distribution.
+    
+    <H3>rebuild a lost rpm</H3>
+    It was my first goal : I wanted to rebuild an rpm file from the rpm database, in case of lost files
+    
+    <H3>build a modified rpm</H3>
+    You have an installed package, you have customized (configuration ...) and want to distribute this one : just use rpmrebuild
+    to build a new rpm ( no need to know anything about rpm building) !
+    
+    <H2>history</H2>
     I am system admin on linux, and I am using <A href="http://www.rpm.org">rpm</A> packages to help managing softwares.<BR>
     I install all the software in rpm, even if must convert tar.gz to rpm 
     (with <A href="http://kitenet.net/programs/alien/">alien</A>, 
@@ -54,20 +66,14 @@
     I know there is an "repackage" option in recent rpm releases, but it is not convenient, as you have to uninstall the package ...
     
     <BR><BR>
-    I recently find another use : you change some files on your host and want to distribute a modified package ...<BR>
-    you just need to change the release number in spec file
-    
-    <BR><BR>
-    
-    since release 0.5, the shell-script should work on any distribution.
     
     <HR>
     <TABLE> 
       <TR> 
-	<TD>current version</TD><TD>0.7.0</TD>
+	<TD>current version</TD><TD>0.7.1</TD>
       </TR> 
       <TR> 
-	<TD>status</TD><TD>beta</TD>
+	<TD>status</TD><TD>stable</TD>
       </TR> 
       <TR> 
 	<TD>licence</TD><TD><A href="http://www.gnu.org/copyleft/gpl.html">gpl</A></TD>
@@ -90,8 +96,8 @@
     </TABLE> 
     
     <HR>
-    <A href="mailto:gerbier@users.sourceforge.net">Eric Gerbier</A>
-    page changed on 2002/09/30
+    <A href="mailto:gerbier@users.sourceforge.net">Eric Gerbier</A><BR>
+    page changed on 2002/10/07
   </BODY>
 </HTML>
 
