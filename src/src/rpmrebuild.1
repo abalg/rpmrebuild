@@ -1,0 +1,74 @@
+.TH "rpmrebuild" "1" "1.2.1" "Eric Gerbier" "rpm tools"
+.SH "NAME"
+.LP 
+rpmrebuild \- a tool to build an rpm package from an installed package
+.SH "SYNTAX"
+.LP 
+rpmrebuild [\fIoption\fP] <\fIpackagename\fP>
+.br 
+or
+.br 
+rpm \-\-rpmrebuild [\fIoption\fP] <\fIpackagename\fP>
+.SH "DESCRIPTION"
+.LP 
+rpmrebuild is a tool to build easily rpm package.
+it can be used to build an rpm file from an installed package (lost rpm) or to quickly make change to a package : just have your change on installed files and call rpmrebuild.
+.SH "OPTIONS"
+.LP 
+.TP 
+\fB\-b|\-\-batch\fR
+work in batch mode (no interactive query if files change)
+.TP 
+\fB\-d|\-\-dir\fR <\fIdirectory\fP>
+rpm package result will be written in  <\fIdirectory\fP>.
+.TP 
+\fB\-e|\-\-editspec\fR
+open the generated specfile with your favorite editor before rpm build
+.TP 
+\fB\-k|\-\-keep_perm\fR
+keep installed files permissions (do not force to orginal files permissions)
+.TP 
+\fB\-h|\-\-help\fR
+Output help information and exit.
+.TP 
+\fB\-s|\-\-spec_only\fR <\fIspecfile\fP>
+keep installed files permissions (do not force to orginal files permissions)
+.TP 
+\fB\-v|\-\-verbose\fR
+verbose output
+.TP 
+\fB\-V|\-\-version\fR
+Output version information and exit.
+.SH "FILES"
+.LP 
+\fI~/.rpmmacros\fP 
+.br 
+.SH "ENVIRONMENT VARIABLES"
+.LP 
+.TP 
+\fBVISUAL\fP
+used to specify an editor for specfile
+.TP 
+\fBEDITOR\fP
+used to specify an editor for specfile
+.SH "EXAMPLES"
+.LP 
+To build an rpm package as closed as possible from original one :
+.LP 
+rpm \-\-rpmrebuid \-b package 
+.LP 
+to build a modified package :
+.LP 
+rpm \-\-rpmrebuild \-k package
+.LP 
+if you have problem with rpm building, and if you know specfile syntaxe, you can also edit it :
+.LP 
+rpm \-\-rpmrebuild \-e package
+.SH "AUTHORS"
+.LP 
+Eric Gerbier <gerbier@users.sourceforge.net>
+.br 
+Valery Resnic <valery_reznic@users.sourceforge.net>
+.SH "SEE ALSO"
+.LP 
+rpm(8)
