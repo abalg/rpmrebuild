@@ -42,13 +42,17 @@ function Usage
 $0 is a tool to rebuild an rpm file from the rpm database
 Usage: $0 [options] package
 options:
+   -a, --additional <flags>    additional flags to be pass to the rpmbuild
    -b, --batch                 batch mode
    -d, --dir <dir>             specify the working directory
+   -D, --define <define>       defines to be passed to the rpmbuild
    -e, --edit-spec             edit specfile
-   -f, --filter <file>    apply an external filter on generated specfile
+   -f, --filter <file>         apply an external filter on generated specfile
    -k, --keep-perm,
        --pug-from-fs           keep installed files permission, uid and gid
        --pug-from-db (default) use files permission, uid and gid from rpm db
+   -m  --modify <script>       script (or program) to modify unpacked rpm files
+                               (to be used with -p (--package) option)
    -p, --package               use package file, not installed rpm
    -s, --spec-only <spec>      generate specfile only
                                (If <spec> '-' stdout will be used)
@@ -124,11 +128,14 @@ function ExtractProgName
 function CommandLineParsing
 {
 # Default flags' values. To be sure they don't came from environment
+additional=""
 batch=""
 filter=""
+rpm_define=""
 rpmdir=""
 editspec=""
 package_flag=""
+modify=""
 speconly=""
 specfile=""
 rpm_verbose="--quiet"
@@ -138,14 +145,17 @@ export warning=""
 PAQUET=""
 PAQUET_NAME=""
 
-while getopts "bd:ef:hkps:vVw-:" opt
+while getopts "bd:D:ef:hkm:ps:vVw-:" opt
 do
 	case "$opt" in
+		a) LONG_OPTION=additional;;
 		b) LONG_OPTION=batch;;
 		d) LONG_OPTION=dir;;
+		D) LONG_OPTION=define;;
 		e) LONG_OPTION=edit-spec;;
 		f) LONG_OPTION=filter;;
 		k) LONG_OPTION=keep-perm;;
+		m) LONG_OPTION=modify;;    
 		p) LONG_OPTION=package;;
 		s) LONG_OPTION=spec-only;;
 		h) LONG_OPTION=help;;
@@ -162,7 +172,6 @@ do
                       OPTARG=""
                       OPTARG_EXIST=""
                    fi
-
                 ;;
 
 		*)
@@ -173,6 +182,11 @@ do
 
 	SHORT_OPTION="$opt"
 	case "$LONG_OPTION" in
+		additional)
+			RequeredArgument
+			additional="$OPTARG"
+		;;
+
 		batch)
 			batch=y
 		;;
@@ -185,6 +199,11 @@ do
 				Error "Can't changedir to '$rpmdir'"
 				exit 1
 			}
+		;;
+
+		define)
+			RequeredArgument
+			rpm_define="$rpm_define $OPTARG"
 		;;
 
 		edit-spec)
@@ -207,6 +226,11 @@ do
 			
 		keep-perm | pug-from-fs)
 			keep_perm=1
+		;;
+
+		modify)
+			RequeredArgument
+			modify="$OPTARG"
 		;;
 
 		pug-from-db)
@@ -248,6 +272,12 @@ do
 	esac
 done
 
+if [ "x$package_flag" = "x" ]; then
+   if [ \! "x$modify" = "x" ]; then
+      Error "-m (--modify) option can be used only with -p (--package) option."
+      exit 1
+   fi
+fi
 
 # If no rpmdir was specified set variable to the native rpmdir value
 if [ -z "$rpmdir" ]
@@ -412,8 +442,11 @@ function RpmBuild
 	[ -x /usr/bin/rpmbuild ] && BUILDCMD=rpmbuild
         [ "x$package_flag" = "x" ] || {
            RpmUnpack || return
+           [ "x$modify" = "x" ] || {
+              eval $modify || return
+           }
         }
-	$BUILDCMD -bb $rpm_verbose --define "_rpmdir $rpmdir" ${FIC_SPEC} || {
+	$BUILDCMD -bb $rpm_verbose --define "_rpmdir $rpmdir" $additional ${FIC_SPEC} || {
    		Error "package '${PAQUET}' build failed"
    		return 1
 	}
