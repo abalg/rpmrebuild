@@ -333,6 +333,11 @@ function SpecGen
 	else
 		:
 	fi       &&
+	if [ "x$BUILDROOT" = "x/" ]; then
+		:
+	else
+		echo "BuildRoot: $BUILDROOT"
+	fi       &&
 	SpecFile &&
 	FilesSpecFile &&
 	ChangeSpecFile
@@ -374,6 +379,10 @@ function SpecEdit
 
 function RpmUnpack
 {
+	[ "x$BUILDROOT" = "x/" ] && {
+	   Error "Internal '$BUILDROOT' can not be '/'." 
+           return 1
+	}
 	CPIO_TEMP=${TMPDIR:-/tmp}/rpmrebuild_$$_${PAQUET_NAME}.cpio
 	rm -f $CPIO_TEMP                                    || return
 	rpm2cpio ${PAQUET} > $CPIO_TEMP                     || return
@@ -390,22 +399,24 @@ function RpmBuild
 	# build rpm file, the src.rpm is not usefull to do
 	# for rpm 4.1 : use rpmbuild
 	BUILDCMD=rpm
-        BUILDROOT=/
 	[ -x /usr/bin/rpmbuild ] && BUILDCMD=rpmbuild
-        if [ \! "x$package_flag" = "x" ]
-        then
-	   BUILDROOT=/tmp/${PAQUET_NAME}-root  ### TEMP !!!, to be fixed !!!!
+        [ "x$package_flag" = "x" ] || {
            RpmUnpack || return
-        fi
-	$BUILDCMD -bb $rpm_verbose --define "_rpmdir $rpmdir" --define "_buildroot $BUILDROOT" ${FIC_SPEC} || {
+        }
+	$BUILDCMD -bb $rpm_verbose --define "_rpmdir $rpmdir" ${FIC_SPEC} || {
    		Error "package '${PAQUET}' build failed"
    		return 1
 	}
 	
-        if [ \! "x$package_flag" = "x" ]
-        then
+        [ "x$package_flag" = "x" ] || {
+	   # When we use package BUILDROOT should not be /,
+	   # but to be sure test it one more time.
+	   [ "x$BUILDROOT" = "x/" ] && {
+	      Error "Internal '$BUILDROOT' can not be '/'." 
+              return 1
+	   }
 	   rm -rf $BUILDROOT || return
-	fi
+	}
 	return 0
 }
 
@@ -443,7 +454,9 @@ function InstallationTest
 function my_exit
 {
 	st=$?	# save status
-	rm -f ${FIC_SPEC} # remove spec file
+	rm -f ${FIC_SPEC}  # remove spec file
+	rm -f ${CPIO_TEMP} # remove package's cpio file
+	[ "x$BUILDROOT" = "x/" ] || rm -rf $BUILDROOT
 	exit $st
 }
 ##############################################################
@@ -464,6 +477,7 @@ export LC_TIME=POSIX
 CommandLineParsing "$@" || exit
 if [ "x" = "x$package_flag" ]
 then
+   BUILDROOT="/"
    IsPackageInstalled      || exit
    out=$(VerifyPackage)    || exit
    if [ -n "$out" ]
@@ -477,10 +491,12 @@ else
       Error "Package file '$PAQUET' should not be a directory"
       exit 1
    }
+   BUILDROOT=/tmp/${PAQUET_NAME}-root
 fi
 
 if [ -n "$spec_only" ]
 then
+   BUILDROOT="/"
    SpecGenerationOnly || exit
    exit 0
 fi
@@ -492,3 +508,21 @@ echo "result: ${RPMFILENAME}"
 InstallationTest || my_exit
 
 my_exit 0
+
+
+#####################################
+# BUILDROOT note.
+# My original idea was for recreating package from anothe rpm file
+# (not installed) use 'rpm -bb --define "buildroot foo"', but
+# It does not work:
+#  when i not specify buildroot in the spec file default value is "/"
+#  I can build this package, but can't override buildroot from the
+#  command line.
+#
+# when i specify buildroot: / in the spec file i got parser error.
+#
+# So, for recreating installed packages I need specfile WITHOUT
+# buildroot
+# For recreating package from another rpm I have to put buildroot in the
+# specfile
+#########################################
