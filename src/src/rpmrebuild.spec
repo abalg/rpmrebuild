@@ -3,7 +3,7 @@ Summary: a tool to build rpm file from rpm database
 # The Summary: line should be expanded to about here -----^
 Name: rpmrebuild
 Version: 0.4
-Release: 0
+Release: 1
 License: GPL
 Group: Utilities/System
 #BuildRoot: /tmp/rpm-root
@@ -44,6 +44,10 @@ cp -a . ${RPM_BUILD_ROOT-/}
 %doc LISEZ.MOI
 
 %changelog
+* Mon Sep 17 2002  <gerbier@users.sourceforge.net>
+- suppress useless exit
+- shell cosmetic changes
+
 * Sun Jul 14 2002  <gerbier@users.sourceforge.net>
 - Initial spec file created by autospec ver. 0.6 with rpm 2.5 compatibility
 - check changes (rpm -V)
