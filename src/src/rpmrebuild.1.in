@@ -292,5 +292,5 @@ It is provided "as is", without any express or implied
 warranties.  See the file COPYING for details.
 .SH "SEE ALSO"
 .LP 
-rpm(8), rpmbuild(8), rpmrebuild_plugins(1), plugins specific manpages.
+rpm(8), rpmbuild(8), rpmrebuild_plugins(1), 'man -k rrp' for plugins specific manpages.
 

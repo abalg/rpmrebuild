@@ -142,11 +142,17 @@ stdout.
 .SH "PLUGIN'S EXAMPLES"
 Three plugins are given as examples :
 .TP 
-demo : a "dummy" plugin to show how plugins works
+demo.plug: a "dummy" plugin to show how plugins works
 .TP 
-uniq : a very simple plugin to sort and clean duplicate spec lines
+uniq.plug: a very simple plugin to sort and clean duplicate spec lines
 .TP 
-file2pacDep : a "real" plugin to convert file dependencies to package dependencies
+file2pacDep.plug: a "real" plugin to convert file dependencies to package dependencies
+.SH "PLUGINS' MANPAGES FILENAME CONVENTION"
+If you are going to write plugin (and manpage for it) it's strongly
+recommended than manpage's file looks like \fBname.1rrp\fP \- this way
+command \fB'man -k rrp'\fP will provide list of all rpmrebuild's plugins
+installed. Please note, that \fBmakewhatis\fP should be run 
+before newly installed manpages will be available for \fB'man -k rrp'
 .SH "AUTHORS"
 .LP 
 Eric Gerbier <gerbier@users.sourceforge.net>
@@ -156,4 +162,4 @@ Valery Reznic <valery_reznic@users.sourceforge.net>
 See <URL:http://rpmrebuild.sourceforge.net/>.
 .SH "SEE ALSO"
 .LP 
-rpm(8), rpmbuild(8), rpmrebuild(1), demo.plug(1rrp), uniq.plug(1rrp), file2pacDep.plug(1rrp), plugins specific manpages (section 1rrp)
+rpm(8), rpmbuild(8), rpmrebuild(1), 'man -k rrp' for plugins specific manpages
