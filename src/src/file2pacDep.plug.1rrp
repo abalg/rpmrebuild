@@ -1,4 +1,4 @@
-.TH "file2pacDep" "1" "1.4.7" "Eric Gerbier" "rpmrebuild plugin"
+.TH "file2pacDep" "1rrp" "1.4.7" "Eric Gerbier" "rpmrebuild plugin"
 .SH "NAME"
 file2pacDep \- a plugin for rpmrebuild, to change file dependencies into package dependencies
 .SH "SYNOPSIS"
