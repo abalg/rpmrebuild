@@ -72,8 +72,8 @@ rpm alias --spec_preamble --qf '\
 %|ARCH?{\
 [#ARCH:         %{ARCH}\n]\
 }|\
-%|BUILDARCHS?{\
-[BUILDARCHS:     %{BUILDARCHS}\n]\
+%|ARCH?{\
+[BuildArch:     %{ARCH}\n]\
 }|\
 %|NAME?{\
 [Name:          %{NAME}\n]\
