@@ -135,7 +135,7 @@ function spec_concatenate
 	spec_auto_prov || return
 	spec_auto_req  || return
 
-	cat <<-EOF || return
+	cat <<-SPEC_DEFS || return
 		# Do not try autogenerate prereq/conflicts/obsoletes and check files
 		%undefine __check_files
 		%undefine __find_prereq
@@ -145,8 +145,9 @@ function spec_concatenate
 		%define __spec_install_post %{nil}
 		# Something that need for rpm-4.1
 		%define _missing_doc_files_terminate_build 0
-	EOF
-	cat                                         \
+	SPEC_DEFS
+
+	sed -e "$sed_double_percent"                \
 		$SPEC_PREAMBLE.$si_preamble         \
 		$SPEC_CONFLICTS.$si_conflicts       \
 		$SPEC_OBSOLETES.$si_obsoletes       \
