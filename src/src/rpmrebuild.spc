@@ -19,7 +19,6 @@ one, and do not find the rpm file anymore. this tool is for you
 
 %prep
 %setup -c rpmrebuild
-#%patch
 
 %build
 make
@@ -31,3 +30,4 @@ make ROOT="$RPM_BUILD_ROOT" install
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf "$RPM_BUILD_ROOT"
 
 %files -f rpmrebuild.files
+
