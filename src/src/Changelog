@@ -1,3 +1,7 @@
+* Mon May 10 2004 <valery_treznic@users.sourceforge.net> 1.4.6-3
+- added long option abbreviation
+- dir option changed to directory
+
 * Thu May 6 2004 <gerbier@users.sourceforge.net> 1.4.6-2
 - split in 2 packages for rpm <4 and rpm >4 (add rpm-build dependency) 
 
