@@ -17,23 +17,6 @@
 #    GNU General Public License for more details.
 #
 ###############################################################################
-# log file are not copied
-function test_ghost
-{
-	file=$1
-
-	# premier test : terminaison en .log
-	# first guess : file name end with .log
-	# deuxieme test : situe sur /var/log
-	# second guess : file are on standard directory /var/log
-	out=$(echo $file | egrep "\.log$|^/var/log/")
-	if [ -n "$out" ]
-	then
-		return 1
-	else
-		return 0
-	fi
-}
 ###############################################################################
 function Usage
 {
@@ -43,6 +26,12 @@ function Usage
 	echo "the spec and rpm result are built on local directory"
 	echo "Copyright (C) 2002 by Eric Gerbier"
 	echo -e "this program is distributed under GNU General Public License\n"
+}
+###############################################################################
+function interrog
+{
+	QF=$1
+	rpm --query --queryformat "${QF}" ${PAQUET}
 }
 ###############################################################################
 # build general tags
@@ -121,15 +110,13 @@ do
 	then
 		# configuration file
 		echo "%config $file"
+	elif [ "$type" = "g" ]
+	then
+		# configuration file
+		echo "%ghost $file"
 	else
-		test_ghost $file
-		if [ $? -eq 1 ]
-		then
-			echo "%ghost $file"
-		else
-			# default
-			echo "$file"
-		fi
+		# default
+		echo "$file"
 	fi
 done
 }
@@ -182,6 +169,12 @@ then
 	then
 		exit
 	fi
+	echo -n "want to change release number (y/n) ? "
+	read rep
+	if [ "$rep" = 'y' ]
+	then
+		ch_release=y
+	fi
 fi
 
 # fabrication fichier spec
@@ -199,6 +192,11 @@ QF=""
    SpecFile &&
    FilesSpecFile
 } > ${FIC_SPEC}
+
+if [ -n "$ch_release" ]
+then
+	vi ${FIC_SPEC}
+fi
 
 # reconstruction fichier rpm : le src.rpm est inutile
 # build rpm file, the src.rpm is not usefull to do
