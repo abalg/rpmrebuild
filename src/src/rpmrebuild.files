@@ -4,11 +4,13 @@
      /usr/lib/rpmrebuild/.popt
      /usr/lib/rpmrebuild/rpmrebuild_popt
      /usr/lib/rpmrebuild/rpmrebuild.sh
+     /usr/lib/rpmrebuild/processing_func.src
      /usr/lib/rpmrebuild/rpmrebuild_parser.src
      /usr/lib/rpmrebuild/rpmrebuild_files.sh
      /usr/lib/rpmrebuild/rpmrebuild_buildroot.sh
      /usr/lib/rpmrebuild/rpmrebuild_ghost.sh
      /usr/lib/rpmrebuild/run.sh
+     /usr/lib/rpmrebuild/spec_func.src
      /usr/lib/rpmrebuild/popt-without-POPTdesc
      /usr/lib/rpmrebuild/popt-with-POPTdesc
 %dir /usr/lib/rpmrebuild/plugins

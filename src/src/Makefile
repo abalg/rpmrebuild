@@ -28,7 +28,9 @@ LIB_SCRIPTS =              \
    run.sh
 
 INCLUDE_SCRIPTS =        \
+   processing_func.src   \
    rpmrebuild_parser.src \
+   spec_func.src         \
 
 POPTS       = rpmrebuild_popt popt-without-POPTdesc popt-with-POPTdesc
 SPEC_SCRIPTS = spec.scripts.input spec.scripts.make.sh remove_from_popt.make.include
