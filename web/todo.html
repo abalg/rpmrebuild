@@ -12,15 +12,12 @@
     <H1 align=center>rpmrebuild todo</H1>
     
     <H2>remaining problems</H2>
-    <H3>rpm release</H3>
-    rpmrebuild was tested with rpm 3.x, 4.0.x<BR>
-    the current release does not work yet with rpm 4.2 (redhat 9)
 
     <H3>package signing (gpg or pgp)</H3>
     do not know how to do this : I have not the private key 
     
     <H3>packages</H3>
-    rpmrebuild has been tested on Redhat 6.2 (803 packages), 7.1 (581 packages) and 7.3 (714 packages)<BR>
+    rpmrebuild has been tested on Redhat 6.2 (803 packages), 7.1 (581 packages) 7.3 (714 packages), 9.0<BR>
     we still have problems with :
     <UL>
       <LI>AfterStep-1.8.0-1 (Redhat 6.2) : because some files contains "..."</LI>
@@ -30,6 +27,7 @@
       <LI>mount-2.11b-3 (Redhat 7.1) : strange core on install</LI>
       <LI>guile-1.3.4-19 (Redhat 7.3) : because a file contains a "*"</LI>
       <LI>man-pages-1.48-2 (Redhat 7.3) : bad changelog syntax (interpreted % macro)</LI> 
+      <LI>arts, kdegraphics, kdepim (redhat 9) : strange Failed dependencies</LI> 
     </UL> 
     
     <HR>
