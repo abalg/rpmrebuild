@@ -12,7 +12,7 @@
 %dir /usr/lib/rpmrebuild/plugins
      /usr/lib/rpmrebuild/plugins/file2pacDep
 %dir /usr/local/man/man1
-     /usr/local/man/man1/rpmrebuild.1
+%doc /usr/local/man/man1/rpmrebuild.1*
 
 %doc AUTHORS
 %doc COPYING
