@@ -1,3 +1,6 @@
+* Mon May 24 2004 <valery_reznic@users.sourceforge.net> 1.4.6-4
+- eliminate 'expr' usage
+
 * Sun May 23 2004 <valery_reznic@users.sourceforge.net> 1.4.6-4
 - fixed bug with parsing --long-option= 
 - buildroot was changed not to use /tmp dir
