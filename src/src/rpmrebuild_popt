@@ -28,8 +28,8 @@ Release:       \%O_Release\n\
 [BuildArch:     %{ARCH}\n]\
 [Epoch:         %{EPOCH}\n]\
 [Icon:          %{ICON}\n]\
-[XPM:           %{XPM}\n]\
-[GIF:           %{GIF}\n]\
+[#XPM:           %{XPM}\n]\
+[#GIF:           %{GIF}\n]\
 [Requires:      %{REQUIRENAME} %{REQUIREFLAGS:depflags} % {REQUIREVERSION}\n]\
 [Conflicts:     %{CONFLICTNAME} %{CONFLICTFLAGS:depflags} % {CONFLICTVERSION}\n]\
 [Obsoletes:     %{OBSOLETES}\n]\
