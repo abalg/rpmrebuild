@@ -1,0 +1,147 @@
+#!/bin/bash
+###############################################################################
+#    Copyright (C) 2004 by Valery Reznic
+#    This file is a part of the rpmrebuild project
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+###############################################################################
+
+function spec_auto_req
+{
+	if [ "X$autorequire" = "Xno" ]; then
+		echo 'AutoReq: no'
+		echo '%undefine __find_requires'
+	else
+		echo 'AutoReq: yes'
+		echo '#undefine __find_requires'
+	fi
+}
+function spec_auto_prov
+{
+	if [ "X$autoprovide" = "Xno" ]; then
+		echo 'AutoProv: no'
+		echo '%undefine __find_provides'
+	else
+		echo 'AutoProv: yes'
+		echo '#undefine __find_provides'
+	fi
+}
+###############################################################################
+function spec_query
+{
+	local RPM_QUERY="rpm --query --i18ndomains /dev/null $package_flag"
+	HOME=$MY_LIB_DIR $RPM_QUERY $1 $PAQUET || return
+	return 0
+}
+
+function spec_query_qf
+{
+	spec_query "--queryformat '$1'" || return
+	return 0
+}
+
+# build the list of files in package
+function spec_files
+{
+	rm -f $FILES_IN || return
+	spec_query --spec_files > $FILES_IN || return
+	echo "%files" || return
+	/bin/bash $MY_LIB_DIR/rpmrebuild_files.sh < $FILES_IN || return
+	return 0
+}
+
+function spec_preamble
+{
+	# Comment out Orig Release and add New one.
+	local sed_release="/Release[[:space:]]*:/{s/^/#/;a\\
+Release:       $RELEASE_NEW
+	}"
+
+	if [ "x$BUILDROOT" = "x/" ]; then
+		:
+	else
+		echo "BuildRoot: $BUILDROOT" || return
+	fi       
+	spec_auto_prov || return
+	spec_auto_req  || return
+
+	if [ "x$RELEASE_NEW" = "x" ]; then
+		spec_query --spec_preamble                         || return
+	else
+		spec_query --spec_preamble | sed -e "$sed_release" || return
+	fi
+}
+function SpecGeneration
+{
+	(
+	set -e 
+	local sed_double_percents='s/%/%%/g'
+	# Duplicate all percent but first in the first line
+	local sed_p="$sed_double_percents;1s/%%/%/1"
+	# Duplicate all percent but in the %triger in the begin of line
+	local sed_t="$sed_double_percents;/^%%trigger/s/%%/%/1"
+
+	# rpmlib dependencies are insert during rpm building
+	# gpg key can not be provided
+	# let us remove it.
+
+	# Comment out Provides with pgp()
+	local sed_P='/Provides[[:space:]]*:[[:space:]]*gpg(.*)/s/^/#/'
+	# Comment out Requires with rpmlib()
+	local sed_R='/Requires[[:space:]]*:[[:space:]]*rpmlib(.*)/s/^/#/'
+	# Comment Out every string
+	local sed_comment=';s/^/#/'
+
+	[ "X$autorequire" = "Xyes" ] && sed_R="$sed_R$sed_comment"
+	[ "X$autoprovide" = "Xyes" ] && sed_P="$sed_P$sed_comment"
+	local i=1
+	spec_preamble                                    > $SPEC_PREAMBLE.$i
+	spec_query --spec_conflicts                      > $SPEC_CONFLICTS.$i
+	spec_query --spec_obsoletes                      > $SPEC_OBSOLETES.$i
+	spec_query --spec_provides     | sed -e "$sed_P" > $SPEC_PROVIDES.$i
+	spec_query --spec_requires     | sed -e "$sed_R" > $SPEC_REQUIRES.$i
+	spec_query --spec_description  | sed -e "$sed_p" > $SPEC_DESCRIPTION.$i
+	spec_files                                       > $SPEC_FILES.$i
+	spec_query --spec_triggers     | sed -e "$sed_t" > $SPEC_TRIGGERS.$i
+	spec_query --spec_pre          | sed -e "$sed_p" > $SPEC_PRE.$i
+	spec_query --spec_post         | sed -e "$sed_p" > $SPEC_POST.$i
+	spec_query --spec_preun        | sed -e "$sed_p" > $SPEC_PREUN.$i
+	spec_query --spec_postun       | sed -e "$sed_p" > $SPEC_POSTUN.$i
+	spec_query --spec_verifyscript | sed -e "$sed_p" > $SPEC_VERIFYSCRIPT.$i
+	spec_query --spec_changelog    | sed -e "$sed_p" > $SPEC_CHANGELOG.$i
+	)
+
+	return 0
+}
+
+function spec_concatenate
+{
+	cat                                         \
+		$SPEC_PREAMBLE.$si_preamble         \
+		$SPEC_CONFLICTS.$si_conflicts       \
+		$SPEC_OBSOLETES.$si_obsoletes       \
+		$SPEC_PROVIDES.$si_provides         \
+		$SPEC_REQUIRES.$si_requires         \
+	|| return
+	cat                                         \
+		$SPEC_DESCRIPTION.$si_description   \
+		$SPEC_FILES.$si_files               \
+		$SPEC_TRIGGERS.$si_triggers         \
+		$SPEC_PRE.$si_pre                   \
+		$SPEC_POST.$si_post                 \
+		$SPEC_PREUN.$si_preun               \
+		$SPEC_POSTUN.$si_postun             \
+		$SPEC_VERIFYSCRIPT.$si_verifyscript \
+		$SPEC_CHANGELOG.$si_changelog       \
+	|| return
+	return 0
+}
