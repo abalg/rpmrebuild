@@ -303,10 +303,9 @@ function CreateProcessing
 			# all
 			(
 			   PATH="$MY_PLUGIN_DIR/all:\$PATH"       &&
-			   RPM_BUILD_ROOT="$BUILDROOT"            &&
-			   SPEC_IN="$SPEC_IN"                     &&
-			   SPEC_OUT="$SPEC_OUT"                   &&
-			   export RPM_BUILD_ROOT SPEC_IN SPEC_OUT &&
+			   export RPM_BUILD_ROOT="$BUILDROOT"     &&
+			   export RPMREBUILD_SPEC_IN="$SPEC_IN"   &&
+			   export RPMREBUILD_SPEC_OUT="$SPEC_OUT" &&
 			   $OPTARG;
 			) || return
 
@@ -319,8 +318,7 @@ function CreateProcessing
 			# files
 			(
 			   PATH="$MY_PLUGIN_DIR/files:\$PATH" &&
-			   RPM_BUILD_ROOT="$BUILDROOT"        &&
-			   export RPM_BUILD_ROOT              && 
+			   export RPM_BUILD_ROOT="$BUILDROOT" &&
 			   $OPTARG; 
 			) || return
 			
