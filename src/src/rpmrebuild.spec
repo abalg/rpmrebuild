@@ -35,6 +35,9 @@ cp -a . ${RPM_BUILD_ROOT-/}
 %dir /usr/local/
 %dir /usr/local/bin/
 /usr/local/bin/rpmrebuild.sh
+/usr/local/bin/rpmrebuild_files.sh
+/usr/local/bin/rpmrebuild_popt
+/usr/local/bin/.popt
 %doc AUTHORS
 %doc COPYING
 %doc COPYRIGHT
