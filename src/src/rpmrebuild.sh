@@ -482,7 +482,7 @@ function Main
 	[ "x$NEED_EXIT" = "x" ] || return $NEED_EXIT
 
 	if [ "x" = "x$package_flag" ]; then
-   		[ "X$modify" = "Xyes" ] || BUILDROOT="/"
+   		[ "X$need_change_files" = "Xyes" ] || BUILDROOT="/"
    		IsPackageInstalled || return
    		if [ "X$verify" = "Xyes" ]; then
       			out=$(VerifyPackage) || return
