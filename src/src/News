@@ -1,3 +1,17 @@
+2004-08-16 : release 1.4.7-3
+- fixed problem with manpages compression
+- fixed problem with repackaging rpm with ghost files
+- change dependency from rpm-build package to rpmbuild file for suses distrib
+- some fixes from rmlint
+
+2004-07-21 : release 1.4.7-1
+- remove some restrictions on rpmrebuild use
+- fix some bugs
+
+2004-05-25 : release 1.4.6-4
+- better security : change default working directories
+- bug fix (autorequire, option analysis)
+
 2004-05-19 : release 1.4.6-3
 - add remaining dependencies, add long options
 
