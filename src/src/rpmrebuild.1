@@ -58,7 +58,7 @@ set files permission, uid and gid as saved in rpm database
 .TP 
 \fB\-\-pug\-from\-fs\fP
 keep installed files permission, uid and gid 
-(do not force to orginal files permission, uid and gid saved in rpm database)
+(do not force to original files permission, uid and gid saved in rpm database)
 .TP 
 \fB\-P, \-\-autoprovide\fP
 use rpm scripts to compute provides
@@ -81,7 +81,7 @@ display some warnings if it detects a potential problem
 (for example, spec file which contains filename with globbing char).
 .TP 
 \fB\-y, \-\-verify\fP=<\fIyes\fP|\fIno\fP>
-Turn on/off package verifing before processing. 
+Turn on/off package verifying before processing. 
 Default: \fByes\fP. Can be turn off to get better performance.
 .LP
 PLUGINS OPTION
@@ -190,15 +190,15 @@ should be used ONLY long options WITHOUT leading \-\-.
 option's argument
 option's argument should not be quoted. 
 .TP
-separartor
+separator
 \- option's argument should be separated from option by spaces or tabs, not by
-equial ('=') sign.
+equal ('=') sign.
 .TP
 non\-optional argument(s)
 package name (non\-optional argument) shouldn't be specified in the include file.
 .RE
 .LP
-For exampe, if command line looks like:
+For example, if command line looks like:
 .RS
 rpmrebuild --change-files="pgm1 a b c" --change-spec-pre="pgm2 bb" pkg
 .RE
@@ -281,7 +281,7 @@ rpmrebuild can not reproduce exactly a package, so
 \- gpg or pgp signatures are lost
 
 .TP 
-packages which contains file with globbing caracteres (* .. ? ) will not build
+packages which contains file with globbing characters (* .. ? ) will not build
 .SH "COPYRIGHT"
 .LP 
 rpmrebuild is copyright © 2002 by Eric Gerbier.
