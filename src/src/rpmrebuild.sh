@@ -187,19 +187,12 @@ do
 			RequeredArgument
 			ExtractProgName $OPTARG  # set progname
 
-			# search in PATH and expand for next test
-			lookfor=$(type -p $progname)
-			if [ -n "$lookfor" ]
+			# check if executable ?
+			if type -all -path "$progname" 1>/dev/null 2>&1
 			then
-				# check if executable ?
-				if [ -f $lookfor -a -x $lookfor ]
-				then
-					filter="$filter | $OPTARG"
-				else
-					Error "Can't execute '$lookfor'"
-				fi
+				filter="$filter | $OPTARG"
 			else
-				Error "Can't find '$progname' in $PATH"
+				Error "Can't find '$progname' in '$PATH'"
 				exit 1
 			fi
 		;;
