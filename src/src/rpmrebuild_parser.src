@@ -23,15 +23,13 @@ $0 is a tool to rebuild an rpm file from the rpm database
 Usage: $0 [options] package
 options:
    -a, --additional=<flags>     additional flags to be pass to the rpmbuild
-   -A, --change-all=<command>   command to modify both package's files
-                                and specfile
    -b, --batch                  batch mode (ask no questions)
    -c, --comment-missing=<y|n>  comment missing files in the specfile.
                                 default - no.
    -d, --directory=<dir>        specify the working directory
    -D, --define=<define>        defines to be passed to the rpmbuild
-   -e, --edit-spec              edit specfile
-   -f, --filter=<command>       alias for -S/--change-spec
+   -e, --edit-spec              alias for --edit-whole
+   -f, --filter=<command>       alias for --change-spec-whole
    -F, --change-files=<command> command to modify package's files 
    -k, --keep-perm              alias for --pug-from-fs
        --pug-from-fs            keep installed files permission, uid and gid
@@ -42,7 +40,7 @@ options:
    -R, --autorequire            force rpm to auto generate 'Require:'
    -s, --spec-only=<specfile>   generate specfile only
                                 (If <specfile> '-' stdout will be used)
-   -S, --change-spec=<command>  command to modify specfile
+   -S  --change-spec-whole=<command>  command to modify whole specfile
    -v, --verbose                verbose
    -V, --version                print version
    -w, --warning                print warning if detect filenames with
@@ -116,12 +114,10 @@ function CommandLineParsing
 	PAQUET=""
 	PAQUET_NAME=""
 
-	CreateProcessing "init" || return
-	while getopts "a:A:bc:d:D:ef:F:hkm:pPRs:S:vVwy:-:" opt; do
+	while getopts "a:bc:d:D:ef:F:hkm:pPRs:S:vVwy:-:" opt; do
 		OPTIND_INCR=""
 		case "$opt" in
 			a) LONG_OPTION=additional;;
-			A) LONG_OPTION=change-all;;
 			b) LONG_OPTION=batch;;
 			c) LONG_OPTION=comment-missing;;
 			d) LONG_OPTION=dir;;
@@ -135,7 +131,7 @@ function CommandLineParsing
 			P) LONG_OPTION=autoprovide;;
 			R) LONG_OPTION=autorequire;;
 			s) LONG_OPTION=spec-only;;
-			S) LONG_OPTION=change-spec;;
+			S) LONG_OPTION=chnage--spec-whole;;
 			h) LONG_OPTION=help;;
 			v) LONG_OPTION=verbose;;
 			V) LONG_OPTION=version;;
@@ -231,12 +227,6 @@ function CommandLineParsing
 				return 1
 			;;
 
-			change-a | \
-			change-al | \
-			change-all)
-				LONG_OPTION='change-all'
-			;;
-
 			change-f | \
 			change-fi | \
 			change-fil | \
@@ -248,8 +238,159 @@ function CommandLineParsing
 			change-s | \
 			change-sp | \
 			change-spe | \
-			change-spec)
-				LONG_OPTION="change-spec"
+			change-spec | \
+			change-spec-)
+				AmbiguousOption
+				return 1
+			;;
+
+			change-spec-c)
+				AmbiguousOption
+				return 1
+			;;
+
+			change-spec-ch | \
+			change-spec-cha | \
+			change-spec-chan | \
+			change-spec-chang | \
+			change-spec-change | \
+			change-spec-changel | \
+			change-spec-changelo | \
+			change-spec-changelog)
+				LONG_OPTION="change-spec-changelog"
+			;;
+
+			change-spec-co | \
+			change-spec-con | \
+			change-spec-conf | \
+			change-spec-confl | \
+			change-spec-confli | \
+			change-spec-conflic | \
+			change-spec-conflict | \
+			change-spec-conflicts)
+				LONG_OPTION="change-spec-conflicts"
+			;;
+
+			change-spec-d | \
+			change-spec-de | \
+			change-spec-des | \
+			change-spec-desc | \
+			change-spec-descr | \
+			change-spec-descri | \
+			change-spec-descrip | \
+			change-spec-descript | \
+			change-spec-descripti | \
+			change-spec-descriptio | \
+			change-spec-description)
+				LONG_OPTION="change-spec-description"
+			;;
+
+			change-spec-f | \
+			change-spec-fi | \
+			change-spec-fil | \
+			change-spec-file | \
+			change-spec-files)
+				LONG_OPTION="change-spec-files"
+			;;
+
+			change-spec-o | \
+			change-spec-ob | \
+			change-spec-obs | \
+			change-spec-obso | \
+			change-spec-obsol | \
+			change-spec-obsole | \
+			change-spec-obsolet | \
+			change-spec-obsoletes)
+				LONG_OPTION="change-spec-obsoletes"
+			;;
+
+			change-spec-p)
+				AmbiguousOption
+				return 1
+			;;
+
+			change-spec-po | \
+			change-spec-pos | \
+			change-spec-post)
+				LONG_OPTION="change-spec-post"
+			;;
+
+			change-spec-postu | \
+			change-spec-postun)
+				LONG_OPTION="change-spec-postun"
+			;;
+
+			change-spec-p | \
+			change-spec-pr | \
+			change-spec-pre)
+				LONG_OPTION="change-spec-pre"
+			;;
+
+			change-spec-prea | \
+			change-spec-pream | \
+			change-spec-preamb | \
+			change-spec-preambl | \
+			change-spec-preamble)
+				LONG_OPTION="change-spec-preamble"
+			;;
+
+			change-spec-preu | \
+			change-spec-preun)
+				LONG_OPTION="change-spec-preun"
+			;;
+
+			change-spec-pro | \
+			change-spec-prov | \
+			change-spec-provi | \
+			change-spec-provid | \
+			change-spec-provide | \
+			change-spec-provides)
+				LONG_OPTION="change-spec-provides"
+			;;
+
+			change-spec-r | \
+			change-spec-re | \
+			change-spec-req | \
+			change-spec-requ | \
+			change-spec-requi | \
+			change-spec-requir | \
+			change-spec-require | \
+			change-spec-requires)
+				LONG_OPTION="change-spec-requires"
+			;;
+
+			change-spec-t | \
+			change-spec-tr | \
+			change-spec-tri | \
+			change-spec-trig | \
+			change-spec-trigg | \
+			change-spec-trigge | \
+			change-spec-trigger | \
+			change-spec-triggers)
+				LONG_OPTION="change-spec-triggers"
+			;;
+
+			change-spec-v | \
+			change-spec-ve | \
+			change-spec-ver | \
+			change-spec-veri | \
+			change-spec-verif | \
+			change-spec-verify | \
+			change-spec-verifys | \
+			change-spec-verifysc | \
+			change-spec-verifyscr | \
+			change-spec-verifyscri | \
+			change-spec-verifyscrip | \
+			change-spec-verifyscript)
+				LONG_OPTION="change-spec-verifyscript"
+			;;
+
+			change-spec-w | \
+			change-spec-wh | \
+			change-spec-who | \
+			change-spec-whol | \
+			change-spec-whole)
+				LONG_OPTION="change-spec-whole"
 			;;
 
 			co | \
@@ -297,12 +438,165 @@ function CommandLineParsing
 			ed | \
 			edi | \
 			edit | \
-			edit- | \
+			edit-)
+				AmbiguousOption
+				return 1
+			;;
+
+			edit-c)
+				AmbiguousOption
+				return 1
+			;;
+
+			edit-ch | \
+			edit-cha | \
+			edit-chan | \
+			edit-chang | \
+			edit-change | \
+			edit-changel | \
+			edit-changelo | \
+			edit-changelog)
+				LONG_OPTION='edit-changelog'
+			;;
+
+			edit-co | \
+			edit-con | \
+			edit-conf | \
+			edit-confl | \
+			edit-confli | \
+			edit-conflic | \
+			edit-conflict | \
+			edit-conflicts)
+				LONG_OPTION='edit-conflicts'
+			;;
+
+			edit-d | \
+			edit-de | \
+			edit-des | \
+			edit-desc | \
+			edit-descr | \
+			edit-descri | \
+			edit-descrip | \
+			edit-descript | \
+			edit-descripti | \
+			edit-descriptio | \
+			edit-description)
+				LONG_OPTION='edit-description'
+			;;
+
+			edit-f | \
+			edit-fi | \
+			edit-fil | \
+			edit-file | \
+			edit-files)
+				LONG_OPTION='edit-files'
+			;;
+
+			edit-o | \
+			edit-ob | \
+			edit-obs | \
+			edit-obso | \
+			edit-obsol | \
+			edit-obsole | \
+			edit-obsolet | \
+			edit-obsolete | \
+			edit-obsoletes)
+				LONG_OPTION='edit-obsoletes'
+			;;
+
+			edit-p)
+				AmbiguousOption
+				return 1
+			;;
+
+			edit-po | \
+			edit-pos | \
+			edit-post)
+				LONG_OPTION='edit-post'
+			;;
+
+			edit-postu | \
+			edit-postun)
+				LONG_OPTION='edit-postun'
+			;;
+
+			edit-pr | \
+			edit-pre)
+				LONG_OPTION='edit-pre'
+			;;
+
+			edit-prea | \
+			edit-pream | \
+			edit-preamb | \
+			edit-preambl | \
+			edit-preamble)
+				LONG_OPTION='edit-preamble'
+			;;
+
+			edit-preu | \
+			edit-preun)
+				LONG_OPTION='edit-preun'
+			;;
+
+			edit-pro | \
+			edit-prov | \
+			edit-provi | \
+			edit-provid | \
+			edit-provide | \
+			edit-provides)
+				LONG_OPTION='edit-provides'
+			;;
+
+			edit-r | \
+			edit-re | \
+			edit-req | \
+			edit-requ | \
+			edit-requi | \
+			edit-requir | \
+			edit-require | \
+			edit-requires)
+				LONG_OPTION='edit-requires'
+			;;
+
 			edit-s | \
 			edit-sp | \
 			edit-spe | \
 			edit-spec)
-				LONG_OPTION='edit-spec'
+				LONG_OPTION='edit-whole' # alias
+			;;
+
+			edit-t | \
+			edit-tr | \
+			edit-tri | \
+			edit-trig | \
+			edit-trigg | \
+			edit-trigge | \
+			edit-trigger | \
+			edit-triggers)
+				LONG_OPTION='edit-triggers'
+			;;
+
+			edit-v | \
+			edit-ve | \
+			edit-ver | \
+			edit-veri | \
+			edit-verif | \
+			edit-verify | \
+			edit-verifys | \
+			edit-verifysc | \
+			edit-verifyscr | \
+			edit-verifyscri | \
+			edit-verifyscrip | \
+			edit-verifyscript)
+				LONG_OPTION='edit-verifyscript'
+			;;
+
+			edit-w | \
+			edit-wh | \
+			edit-who | \
+			edit-whol | \
+			edit-whole)
+				LONG_OPTION='edit-whole'
 			;;
 
 			f | \
@@ -311,7 +605,7 @@ function CommandLineParsing
 			filt | \
 			filte | \
 			filter)
-				LONG_OPTION='change-spec' # alias
+				LONG_OPTION='change-spec-whole' # alias
 			;;
 			
 			h | \
@@ -453,19 +747,28 @@ function CommandLineParsing
 				batch="yes"
 			;;
 
-			change-all)
-				RequeredArgument       || return
-				CreateProcessing "all" || return
-			;;
-
 			change-files)
-				RequeredArgument         || return
-				CreateProcessing "files" || return
+				RequeredArgument                || return
+				CreateProcessing "$LONG_OPTION" || return
 			;;
 
-			change-spec)
-				RequeredArgument || return
-				CreateProcessing "spec" || return
+			change-spec-changelog    | \
+			change-spec-conflicts    | \
+			change-spec-description  | \
+			change-spec-files        | \
+			change-spec-obsoletes    | \
+			change-spec-post         | \
+			change-spec-postun       | \
+			change-spec-pre          | \
+			change-spec-preamble     | \
+			change-spec-preun        | \
+			change-spec-provides     | \
+			change-spec-requires     | \
+			change-spec-triggers     | \
+			change-spec-verifyscript | \
+			change-spec-whole)
+				RequeredArgument                || return
+				CreateProcessing "$LONG_OPTION" || return
 			;;
 
 			comment-missing)
@@ -492,8 +795,22 @@ function CommandLineParsing
 				rpm_defines="$rpm_defines --define '_rpmdir $rpmdir'" 
 			;;
 
-			edit-spec)
-				CreateProcessing "edit" || return
+			edit-changelog    | \
+			edit-conflicts    | \
+			edit-description  | \
+			edit-files        | \
+			edit-obsoletes    | \
+			edit-post         | \
+			edit-postun       | \
+			edit-pre          | \
+			edit-preamble     | \
+			edit-preun        | \
+			edit-provides     | \
+			edit-requires     | \
+			edit-triggers     | \
+			edit-verifyscript | \
+			edit-whole)
+				CreateProcessing "$LONG_OPTION" || return
 			;;
 
 			help)
@@ -551,7 +868,7 @@ function CommandLineParsing
 
 	CreateProcessing "fini" || return
 	[ "X$spec_only" = "Xyes" -a "X$need_change_files" = "Xyes" ] && {
-		Error "You can't use both '--spec_only' and '--change-files/--change-all'"
+		Echo "You can't use both '--spec_only' and '--change-files/--change-all'"
 		return 1
 	}
 
@@ -594,7 +911,7 @@ function CommandLineParsing
 		# There is rpmdir specified.
 		# Let us find it's absolute path.
 		# Yeah, a bit ugly, but simple and seems to work...
-		mkdir --parents -- "$rpmdir" # Not check eit status here
+		mkdir --parents -- "$rpmdir" # Not check exit status here
 		rpmdir="$(cd $rpmdir && echo $PWD)" || {
 			Error "Can't changedir to '$rpmdir'"
 			return 1
