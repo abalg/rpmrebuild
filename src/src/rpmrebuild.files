@@ -2,6 +2,7 @@
      /usr/local/bin/rpmrebuild
 %dir /usr/lib/rpmrebuild
      /usr/lib/rpmrebuild/.popt
+     /usr/lib/rpmrebuild/VERSION
      /usr/lib/rpmrebuild/rpmrebuild_popt
      /usr/lib/rpmrebuild/rpmrebuild.sh
      /usr/lib/rpmrebuild/processing_func.src
@@ -16,6 +17,7 @@
 %dir /usr/lib/rpmrebuild/plugins
      /usr/lib/rpmrebuild/plugins/file2pacDep
 %doc /usr/local/man/man1/rpmrebuild.1*
+%doc /usr/local/man/man1/rpmrebuild_plugins.1*
 
 %doc AUTHORS
 %doc COPYING
