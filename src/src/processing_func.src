@@ -191,9 +191,10 @@ function processing_spec_change
 	case "X$operation" in
 		Xchange-spec-*)
 			cat <<-CMD_CHANGE >> $Output || return
-				# spec
+				# $operation
 				( 
 				   PATH="\$RPMREBUILD_PLUGINS_DIR:\$PATH" &&
+				   export LONG_OPTION="$LONG_OPTION"      &&
 				   $OPTARG; 
 				) < $SPEC_IN > $SPEC_OUT || return
 			
@@ -202,7 +203,7 @@ function processing_spec_change
 
 		Xedit-*)
 			cat <<-CMD_EDIT >> $Output || return
-				# edit
+				# $operation
 				   cp -f $SPEC_IN $SPEC_OUT || return
 				   SpecEdit $SPEC_OUT       || return
 			
@@ -211,7 +212,7 @@ function processing_spec_change
 
 		Xconcatenate)
 			cat <<-CMD_CONCATENATE >> $Output || return
-				# concatenate
+				# $operation
 				   spec_concatenate > $SPEC_OUT || return
 			CMD_CONCATENATE
 
@@ -291,10 +292,11 @@ function CreateProcessing
 		Xchange-files)
 			need_change_files="yes"
 			cat <<-CMD_FILES >> $Output || return
-			# files
+			# $operation
 			(
 			   PATH="\$RPMREBUILD_PLUGINS_DIR:\$PATH" &&
 			   export RPM_BUILD_ROOT="$BUILDROOT"     &&
+			   export LONG_OPTION="$LONG_OPTION"      &&
 			   $OPTARG; 
 			) || return
 			
