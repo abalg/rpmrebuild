@@ -72,6 +72,8 @@ options:
                                (If <spec> '-' stdout will be used)
    -v, --verbose               verbose
    -V, --version               print version
+   -w, --warning               print warning if detect filenames with
+                               globbing characters
    -y, --verify <yes|no>       need verify package before processing
                                (default - yes)
    -h, --help                  print this help
