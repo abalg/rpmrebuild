@@ -59,6 +59,7 @@ while :; do
    read file_lang
    read file
 
+   [[ $file = *\** ]] && file=$(echo "$file"|sed 's/\*/\\*/')
    miss_str=""
    if [ "x$comment_missing" = "x1" ]; then
       if [ -e "$file" ]; then
