@@ -2,7 +2,7 @@
 Summary: a tool to build rpm file from rpm database
 # The Summary: line should be expanded to about here -----^
 Name: rpmrebuild
-Version: 0.5
+Version: 0.6
 Release: 0
 License: GPL
 Group: Utilities/System
@@ -44,6 +44,10 @@ cp -a . ${RPM_BUILD_ROOT-/}
 %doc Todo
 
 %changelog
+* Mon Sep 23 2002  <gerbier@users.sourceforge.net> 0.6.0
+- add triggers (thanks to Han Holl <han.holl@prismant.nl>
+- add many other spec tags (icon, exlude*, serial, provides, conflicts ...)
+
 * Sun Sep 20 2002  <gerbier@users.sourceforge.net> 0.5.0
 - try to have it work on any distribution
 - the rpm package is now signed with my gpg key
