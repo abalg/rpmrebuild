@@ -90,12 +90,12 @@ export LC_TIME=POSIX
 # test if package exists
 export PAQUET=$1
 output=$(rpm -q ${PAQUET})
-if [ -z "$output" ]
+if [ $? -ne 0 ]
 then
 	echo "WARNING : no package ${PAQUET} in rpm database"
 	exit 1
 else
-	nb=$(echo $output | wc -w | awk '{print $1}')
+	nb=$(echo $output | wc -w)
 	if [ $nb -ne 1 ]
 	then
 		echo "WARNING : too much packages match ${PAQUET} : $output"
