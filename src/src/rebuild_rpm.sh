@@ -19,25 +19,24 @@
 ###############################################################################
 
 # shell pour refabriquer un fichier rpm a partir de la base rpm
-# version 0.3 du 10/07/2002
 
 #####################################################
 
 interrogation() {
-rpm -q --queryformat "$1" ${PAQUET}
+	rpm -q --queryformat "$1" ${PAQUET}
 }
 
 #####################################################
 
 ecrire_info() {
-comment=$1
-query=$2
+	comment=$1
+	query=$2
 
-output=`interrogation "$query"`
-if [ "$output" != "(none)" ]
-then
-	echo -e "$comment $output" >> ${FIC_SPEC}
-fi
+	output=$(interrogation "$query")
+	if [ "$output" != "(none)" ]
+	then
+		echo -e "$comment $output" >> ${FIC_SPEC}
+	fi
 }
 
 #####################################################
@@ -60,7 +59,7 @@ fi
 
 # test existence package
 export PAQUET=$1
-output=`rpm -q ${PAQUET}`
+output=$(rpm -q ${PAQUET})
 if [ -z "$output" ]
 then
 	echo "no package ${PAQUET} in database"
@@ -72,9 +71,9 @@ else
 		echo "too much packages match ${PAQUET} : $output"
 		exit 1
 	else
-		NAME=`interrogation '%{NAME}\n'`
-		VERSION=`interrogation '%{VERSION}\n'`
-		RELEASE=`interrogation '%{RELEASE}\n'`
+		NAME=$(interrogation '%{NAME}\n')
+		VERSION=$(interrogation '%{VERSION}\n')
+		RELEASE=$(interrogation '%{RELEASE}\n')
 
 		NOM_COMPLET=${NAME}-${VERSION}-${RELEASE}
 		NOM_VERSION=${NAME}-${VERSION}
@@ -156,7 +155,7 @@ cat << END2 >>  ${FIC_SPEC}
 %defattr(-, root, root)
 END2
 
-listeall=`rpm -ql ${PAQUET}`
+listeall=$(rpm -ql ${PAQUET})
 listedoc=$(rpm -qld ${PAQUET})
 listeconfig=$(rpm -qlc ${PAQUET})
 for file in $listeall
@@ -199,7 +198,6 @@ echo "%changelog" >> ${FIC_SPEC}
 rpm -q --changelog ${PAQUET} >> ${FIC_SPEC}
 
 
-exit
 # reconstruction fichier rpm
 rpm -bb -vv  ${FIC_SPEC}
 

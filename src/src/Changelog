@@ -1,3 +1,7 @@
+2002-09-18 Eric Gerbier <gerbier@users.sourceforge.net> 0.4.1
+	* suppress useless exit
+	* shell cosmetic changes
+
 2002-07-18 Eric Gerbier <gerbier@users.sourceforge.net> 0.4
 	* check changes (rpm -V)
 	* check for multiples rpm
