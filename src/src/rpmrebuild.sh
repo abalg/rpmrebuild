@@ -34,7 +34,10 @@ write_info() {
 	rpm_query=$2
 
 	output=$(interrogation "$rpm_query")
-	if [ "$output" != "(none)" ]
+	if [ -z "$output" ]
+	then
+		return
+	elif [ "$output" != "(none)" ]
 	then
 		echo -e "$rpm_tag $output" >> ${FIC_SPEC}
 	fi
@@ -145,27 +148,38 @@ then
 fi
 
 write_info "Summary: " '%{SUMMARY}\n'
-echo "Name: ${NAME}"  >> ${FIC_SPEC}
-echo "Version: ${VERSION}" >> ${FIC_SPEC}
-echo "Release: ${RELEASE}" >> ${FIC_SPEC}
+write_info "Name: "    '%{NAME}\n'
+write_info "Version: " '%{VERSION}\n'
+write_info "Release: " '%{RELEASE}\n'
 
 echo "Source: ${NOM_COMPLET}.tgz " >> ${FIC_SPEC}
+# nor used
+#write_info "Patch: " '%{PATCH}\n'
 write_info "URL: " '%{URL}\n'
-write_info "Patch: " '%{PATCH}\n'
-
+write_info "Distribution: " '%{DISTRIBUTION}\n'
+write_info "Vendor: " '%{VENDOR}\n'
+write_info "Packager: " '%{PACKAGER}\n'
 write_info "Copyright: " '%{COPYRIGHT}\n'
 write_info "Group: "  '%{GROUP}\n'
-write_info "Packager: " '%{PACKAGER}\n'
 write_info "BuildArch: " '%{ARCH}\n'
 ARCH=$(interrogation '%{ARCH}\n')
 
-write_info "Requires: " '%{REQUIRENAME}\n'
-write_info "OBSOLETES: " '%{OBSOLETES}\n'
+# query of require may duplicate line, so disable automatic
+echo "AutoReqProv: no" >> ${FIC_SPEC}
+write_info "Requires: " '[%{REQUIRENAME} %{REQUIREFLAGS:depflags} %{REQUIREVERSION} ]\n'
+write_info "Conflicts: " '[%{CONFLICTNAME} %{CONFLICTFLAGS:depflags} %{CONFLICTVERSION} ]\n'
+write_info "Obsoletes: " '[%{OBSOLETES} ]\n'
+write_info "Provides: " '[%{PROVIDES} ]\n'
 
-
-write_info "Distribution: " '%{DISTRIBUTION}\n'
-write_info "Vendor: " '%{VENDOR}\n'
 #echo "BuildRoot: %{_builddir}/%{name}" >> ${FIC_SPEC}
+
+# some rare tags
+write_info "Serial: " '%{SERIAL}\n'
+write_info "Icon: " '%{ICON}\n'
+write_info "ExcludeArch: " '[%{EXCLUDEARCH} ]\n'
+write_info "ExclusiveArch: " '[%{EXCLUSIVEARCH} ]\n'
+write_info "ExcludeOs: " '[%{EXCLUDEOS} ]\n'
+write_info "ExclusiveOS: " '[%{EXCLUSIVEOS} ]\n'
 
 write_info "%description\n" '%{DESCRIPTION}\n'
 
@@ -183,6 +197,28 @@ write_info "%pre\n" '%{PREINPROG}\n'
 write_info "%preun\n" '%{PREUNPROG}\n'
 write_info "%post\n" '%{POSTINPROG}\n'
 write_info "%postun\n" '%{POSTUNPROG}\n'
+
+# code from Han Holl
+S=/tmp/trigger$$
+EOL="*#*#*#*#"
+rpm -q --qf "[%{TRIGGERTYPE}\n%{TRIGGERSCRIPTPROG}\n%{TRIGGERCONDS}\n%{TRIGGERSCRIPTS}\n$EOL\n]" $PAQUET >$S
+if [ -s $S ]
+then
+	while read ttype
+	do
+          read tshell
+          [ "$tshell" = "/bin/sh" ] && tshell="" || tshell="-p $tshell"
+          read tcond
+          read tline
+          echo "%trigger${ttype} $tshell -- $tcond"
+          while [ "$tline" != $EOL ]
+          do
+            echo $tline
+            read tline
+          done
+	done <$S  >>${FIC_SPEC}
+fi
+rm -f $S
 
 cat << END2 >>  ${FIC_SPEC}
 %files
