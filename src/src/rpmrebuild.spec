@@ -6,24 +6,21 @@ Version: 0.5
 Release: 0
 License: GPL
 Group: Utilities/System
-# Buildroot: %{_tmppath}/%{name}-%{version}-root
-Buildroot: %{_builddir}/%{name}-%{version}-root
+BuildRoot: /tmp/rpmrebuild-root
 Source: rpmrebuild.tar.gz
 # Following are optional fields
 Url: http://rpmrebuild.sourceforge.net
 Packager: Eric Gerbier <gerbier@users.sourceforge.net>
 #Distribution: Red Hat Contrib-Net
-#Patch: rpm.patch
-#Prefix: /
 BuildArchitectures: noarch
 Requires: rpm
-#Obsoletes: 
+
 %description
 you have an installed package on a computer, want to install on other
 one, and do not find the rpm file anymore. this tool is for you
 
 %prep
-%setup -c rpm
+%setup -c rpmrebuild
 #%patch
 
 %install
@@ -34,13 +31,16 @@ cp -a . ${RPM_BUILD_ROOT-/}
 
 %files
 %defattr(-,root,root)
+%dir /usr/
+%dir /usr/local/
 %dir /usr/local/bin/
 /usr/local/bin/rpmrebuild.sh
 %doc AUTHORS
-%doc Changelog
 %doc COPYING
 %doc COPYRIGHT
+%doc Changelog
 %doc LISEZ.MOI
+%doc README
 %doc Todo
 
 %changelog
