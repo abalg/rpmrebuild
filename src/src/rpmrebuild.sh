@@ -76,14 +76,8 @@ function FilesSpecFile
 	HOME=$MY_LIB_DIR rpm --query --spec_files ${PAQUET} | $MY_LIB_DIR/rpmrebuild_files.sh
 }
 
-##############################################################
-# Main Part                                                  #
-##############################################################
-# shell pour refabriquer un fichier rpm a partir de la base rpm
-# a shell to build an rpm file from the rpm database
-
-MY_LIB_DIR=/usr/lib/rpmrebuild
-
+function CommandLineParsing
+{
 # Default flags' values. To be sure they don't came from environment
 batch=""
 filter=""
@@ -91,15 +85,17 @@ workdir=""
 editspec=""
 rpm_verbose="--quiet"
 export keep_perm=""
+PAQUET=""
 
 while getopts "bd:ef:hkvV" opt
 do
 	case "$opt" in
 		b) 
-			batch=y\
+			batch=y
 		;;
 
-		d) workdir=$OPTARG
+		d) 
+			workdir=$OPTARG
 			if [ -d $workdir ]
 			then
 				cd $workdir
@@ -160,102 +156,149 @@ then
 	Usage
 	exit 1
 fi
+PAQUET="$1"
+}
+
+function IsPackageInstalled
+{
+   # test if package exists
+   output="$(rpm --query ${PAQUET} 2>&1 | grep -v 'is not installed')" # Don't return here - use output
+   set -- $output
+   case $# in
+      0)
+	   # No package found
+	   Error "no package '${PAQUET}' in rpm database"
+	   return 1
+      ;;
+
+      1)
+	: # Ok, do nothing
+      ;;
+
+      *)
+	Error "too much packages match '${PAQUET}':\n$output"
+	return 1
+      ;;
+   esac || return
+   return 0
+}
+
+function VerifyPackage
+{
+	# verification des changements
+	# check for package change
+	rpm --verify --nodeps ${PAQUET} # Don't return here, st=1 - verify fail 
+	return 0
+}
+
+function QuestionsToUser
+{
+	[ -n "$batch" ] && return 0 ## batch mode, continue
+
+	echo -n "want to continue (y/n) ? "
+	read rep 
+	case "$rep" in
+		y* | Y*)   ;; # Yes, do nothing
+		*) return 1;; # Otherwise no
+	esac
+
+	echo -n "want to change release number (y/n) ? "
+	read rep
+	case "$rep" in
+		y* | Y*)
+			old_release=$(Interrog '%{RELEASE}')
+			echo -n "enter the new release (old: $old_release): "
+			read new_release
+		;;
+	esac
+	return 0
+}
+function SpecGeneration
+{
+	# fabrication fichier spec
+	# build spec file
+	FIC_SPEC=./${PAQUET}.spec
+
+	if [ -a ${FIC_SPEC} ]
+	then
+		Warning "file ${FIC_SPEC} exists : renamed"
+		mv -f ${FIC_SPEC} ${FIC_SPEC}.sav
+	fi
+
+	{
+   		SpecFile &&
+   		FilesSpecFile
+	} > ${FIC_SPEC}
+
+	# change release
+	if [ -n "$new_release" ]
+	then
+		sed "s/Release:.*/Release: $new_release/" ${FIC_SPEC} > ${FIC_SPEC}.new
+		mv -f ${FIC_SPEC}.new ${FIC_SPEC}
+	fi
+	# -e option : edit the spec file
+	if [ -n "$editspec" ]
+	then
+		${VISUAL:-${EDITOR:-vi}} ${FIC_SPEC}
+	fi
+	return 0
+}
+
+function RpmBuild
+{
+	# reconstruction fichier rpm : le src.rpm est inutile
+	# build rpm file, the src.rpm is not usefull to do
+	# for rpm 4.1 : use rpmbuild
+	BUILDCMD=rpm
+	[ -x /usr/bin/rpmbuild ] && BUILDCMD=rpmbuild
+	$BUILDCMD -bb $rpm_verbose --define "_rpmdir $PWD/" ${FIC_SPEC} || { 
+   		Error "package '${PAQUET}' build failed"
+   		return 1
+	}
+	return 0
+}
+
+function RpmFileName
+{
+	QF_RPMFILENAME=$(rpm --eval %_rpmfilename)
+	RPMFILENAME=$(rpm --query --queryformat "${QF_RPMFILENAME}" ${PAQUET})
+}
+
+function InstallationTest
+{
+	# installation test
+	# force is necessary to avoid the message : already installed
+	rpm -U --test --force ${PWD}/${RPMFILENAME} || {
+		Error "Testinstall for package '${PAQUET}' failed"
+		return 1
+	}
+	return 0
+}
+##############################################################
+# Main Part                                                  #
+##############################################################
+# shell pour refabriquer un fichier rpm a partir de la base rpm
+# a shell to build an rpm file from the rpm database
+
+MY_LIB_DIR=/usr/lib/rpmrebuild
+
+CommandLineParsing "$@" || exit
+IsPackageInstalled      || exit
+out=$(VerifyPackage)    || exit
+if [ -n "$out" ]
+then
+	Warning "some files have been modified:\n$out"
+	QuestionsToUser || exit
+fi
 
 # suite a des probleme de dates incorrectes
 # to solve problems of bad date
 export LC_TIME=POSIX
 
-# test if package exists
-PAQUET="$1"
-output="$(rpm --query ${PAQUET} | grep -v "is not installed")"
-set -- $output
-case $# in
-   0)
-	# No package found
-	Error "no package '${PAQUET}' in rpm database"
-	exit 1
-   ;;
-
-   1)
-	: # Ok, do nothing
-   ;;
-
-   *)
-	Error "too much packages match '${PAQUET}':\n$output"
-	exit 1
-   ;;
-esac
-
-# verification des changements
-# check for package change
-out="$(rpm --verify --nodeps ${PAQUET})"
-if [ -n "$out" ]
-then
-	Warning "some files have been modified:\n$out"
-	if [ -z "$batch" ]
-	then
-		echo -n "want to continue (y/n) ? "
-		read rep 
-		case "$rep" in
-			y* | Y*) ;; # Yes, do nothing
-			*) exit 1;; # Otherwise no
-		esac
-		echo -n "want to change release number (y/n) ? "
-		read rep
-		case "$rep" in
-			y* | Y*)
-				old_release=$(Interrog '%{RELEASE}')
-				echo -n "enter the new release (old: $old_release): "
-				read new_release
-		esac
-	fi
-fi
-
-# fabrication fichier spec
-# build spec file
-FIC_SPEC=./${PAQUET}.spec
-
-if [ -a ${FIC_SPEC} ]
-then
-	Warning "file ${FIC_SPEC} exists : renamed"
-	mv -f ${FIC_SPEC} ${FIC_SPEC}.sav
-fi
-
-{
-   SpecFile &&
-   FilesSpecFile
-} > ${FIC_SPEC}
-
-# change release
-if [ -n "$new_release" ]
-then
-	sed "s/Release:.*/Release: $new_release/" ${FIC_SPEC} > ${FIC_SPEC}.new
-	mv -f ${FIC_SPEC}.new ${FIC_SPEC}
-fi
-# -e option : edit the spec file
-if [ -n "$editspec" ]
-then
-	${VISUAL:-${EDITOR:-vi}} ${FIC_SPEC}
-fi
-
-# reconstruction fichier rpm : le src.rpm est inutile
-# build rpm file, the src.rpm is not usefull to do
-# for rpm 4.1 : use rpmbuild
-BUILDCMD=rpm
-[ -x /usr/bin/rpmbuild ] && BUILDCMD=rpmbuild
-$BUILDCMD -bb $rpm_verbose --define "_rpmdir $PWD/" ${FIC_SPEC} || { 
-   Error "package '${PAQUET}' build failed"
-   exit 1
-}
-
-QF_RPMFILENAME=$(rpm --eval %_rpmfilename)
-RPMFILENAME=$(rpm --query --queryformat "${QF_RPMFILENAME}" ${PAQUET})
+SpecGeneration   || exit
+RpmBuild         || exit
+RpmFileName      || exit
 echo "result: ${PWD}/${RPMFILENAME}"
+InstallationTest || exit
 
-# installation test
-# force is necessary to avoid the message : already installed
-rpm -U --test --force ${PWD}/${RPMFILENAME} || {
-	Error "Testinstall for package '${PAQUET}' failed"
-	exit 1
-}
 exit 0
