@@ -60,7 +60,7 @@ while :; do
    read file
 
    miss_str=""
-   if [ "x$commenmt_missing" = "x1" ]; then
+   if [ "x$comment_missing" = "x1" ]; then
       if [ -e "$file" ]; then
          miss_str=""
       else 
