@@ -20,8 +20,10 @@ all: rpm
 tar:	clean
 	# rebuild
 	mkdir -p $(BASE)/usr/local/bin
-	cp `cat < MANIFEST` $(BASE)
-	cp rpmrebuild.sh $(BASE)/usr/local/bin
+	install --mode=444 `cat < MANIFEST` $(BASE)
+	install --mode=555 rpmrebuild.sh rpmrebuild_files.sh $(BASE)/usr/local/bin
+	install --mode=444 .popt $(BASE)/usr/local/bin
+	cd $(BASE)/usr/local/bin && ln -sfd .popt rpmrebuild_popt
 	ls $(BASE)
 	cd $(BASE) && tar cvzf $(TAR_FILE) *
 
