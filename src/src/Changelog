@@ -1,5 +1,8 @@
 2002-09-18 Eric Gerbier <gerbier@users.sourceforge.net> 0.4.2
 	* add architecture (thanks to Han Holl <han.holl@prismant.nl>
+	* add require, obsolete
+	* force time format with LC_TIME
+	* change shell name to match project name
 	* try to have full english messages
 
 2002-09-18 Eric Gerbier <gerbier@users.sourceforge.net> 0.4.1

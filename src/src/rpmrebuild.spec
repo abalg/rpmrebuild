@@ -3,7 +3,7 @@ Summary: a tool to build rpm file from rpm database
 # The Summary: line should be expanded to about here -----^
 Name: rpmrebuild
 Version: 0.4
-Release: 1
+Release: 2
 License: GPL
 Group: Utilities/System
 #BuildRoot: /tmp/rpm-root
@@ -22,7 +22,6 @@ Requires: rpm
 you have an installed package on a computer, want to install on other
 one, and do not find the rpm file anymore. this tool is for you
 
-
 %prep
 %setup -c rpm
 #%patch
@@ -36,7 +35,7 @@ cp -a . ${RPM_BUILD_ROOT-/}
 %files
 %defattr(-,root,root)
 %dir /usr/local/bin/
-/usr/local/bin/rebuild_rpm.sh
+/usr/local/bin/rpmrebuild.sh
 %doc AUTHORS
 %doc Changelog
 %doc COPYING
@@ -44,7 +43,11 @@ cp -a . ${RPM_BUILD_ROOT-/}
 %doc LISEZ.MOI
 
 %changelog
-* Mon Sep 17 2002  <gerbier@users.sourceforge.net>
+* Mon Sep 17 2002  <gerbier@users.sourceforge.net> 0.4.2
+- add architecture support (thanks to Han Holl <han.holl@prismant.nl>)
+- full english messages
+
+* Mon Sep 17 2002  <gerbier@users.sourceforge.net> 0.4.1
 - suppress useless exit
 - shell cosmetic changes
 
