@@ -1,11 +1,10 @@
 %defattr(-,root,root)
-%dir /usr/local/bin
-/usr/local/bin/rpmrebuild.sh
-/usr/local/bin/rpmrebuild
-/usr/local/bin/rpmrebuild_files.sh
-%dir /etc/rpmrebuild
-%config /etc/rpmrebuild/.popt
-/etc/rpmrebuild/rpmrebuild_popt
+     /usr/local/bin/rpmrebuild.sh
+     /usr/local/bin/rpmrebuild
+%dir /usr/lib/rpmrebuild
+     /usr/lib/rpmrebuild/.popt
+     /usr/lib/rpmrebuild/rpmrebuild_popt
+     /usr/lib/rpmrebuild/rpmrebuild_files.sh
 %doc AUTHORS
 %doc COPYING
 %doc COPYRIGHT

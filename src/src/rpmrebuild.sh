@@ -21,7 +21,7 @@ VERSION="$Id$"
 ###############################################################################
 function Usage
 {
-	echo -e "\nrpmrebuild.sh is a tool to rebuild an rpm file from the rpm database"
+	echo -e "\n$0 is a tool to rebuild an rpm file from the rpm database"
 	echo "syntaxe : $0 [options] package"
 	echo "options :"
 	echo "-b : batch mode"
@@ -46,14 +46,14 @@ function Interrog
 # build general tags
 function SpecFile
 {
-	HOME=$MY_CONFIG_DIR rpm --query --spec_spec ${PAQUET}
+	HOME=$MY_LIB_DIR rpm --query --spec_spec ${PAQUET}
 }
 ###############################################################################
 # build the list of files in package
 function FilesSpecFile
 {
 	echo "%files"
-	HOME=$MY_CONFIG_DIR rpm --query --spec_files ${PAQUET} | rpmrebuild_files.sh
+	HOME=$MY_LIB_DIR rpm --query --spec_files ${PAQUET} | $MY_LIB_DIR/rpmrebuild_files.sh
 }
 
 ##############################################################
@@ -62,12 +62,16 @@ function FilesSpecFile
 # shell pour refabriquer un fichier rpm a partir de la base rpm
 # a shell to build an rpm file from the rpm database
 
-MY_CONFIG_DIR=/etc/rpmrebuild
-# to be sure
-export PATH=$PATH:/usr/local/bin
+MY_LIB_DIR=/usr/lib/rpmrebuild
 
-filter=
-verbose="--quiet"
+# Default flags' values. To be sure they don't came from environment
+batch=""
+filter=""
+workdir=""
+editspec=""
+rpm_verbose="--quiet"
+export keep_perm=""
+
 while getopts "bd:ef:hkvV" opt
 do
 	case "$opt" in
@@ -92,7 +96,7 @@ do
 #	[ -f $OPTARG -a -x $OPTARG ] && filter="$filter | $OPTARG";;
 	h) Usage; exit 1;;
 	k) export keep_perm=1;;
-	v) verbose="-v";;
+	v) rpm_verbose="-v";;
 	V) echo "$VERSION"; exit 0;;
 	*) Usage; exit 1;;
 	esac
@@ -193,7 +197,7 @@ fi
 # for rpm 4.1 : use rpmbuild
 BUILDCMD=rpm
 [ -x /usr/bin/rpmbuild ] && BUILDCMD=rpmbuild
-$BUILDCMD -bb $verbose --define "_rpmdir $PWD/" ${FIC_SPEC} || { echo "WARNING : build failed"; exit 1; }
+$BUILDCMD -bb $rpm_verbose --define "_rpmdir $PWD/" ${FIC_SPEC} || { echo "WARNING : build failed"; exit 1; }
 
 QF_RPMFILENAME=$(rpm --eval %_rpmfilename)
 RPMFILENAME=$(rpm --query --queryformat "${QF_RPMFILENAME}" ${PAQUET})

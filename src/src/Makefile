@@ -16,6 +16,7 @@ RPM_DEFINES =                              \
 TAR_FILE=$(RPM_SOURCE_DIR)/rpmrebuild.tar.gz
 TARGET_DIR = $(ROOT)/usr/local/bin
 TARGET_ETC = $(ROOT)/etc/rpmrebuild
+TARGET_LIB = $(ROOT)/usr/lib/rpmrebuild
 
 SCRIPTS = rpmrebuild.sh rpmrebuild_files.sh
 SOURCES =           \
@@ -38,13 +39,14 @@ rpmrebuild.spec: rpmrebuild.spc Version Release Changelog
 	Version="`cat Version`" && Release="`cat Release`" && { echo "Version: $$Version" && echo "Release: $$Release" && cat rpmrebuild.spc && echo "%changelog" && cat Changelog; } > $@ 
 
 install:
-	mkdir --parent                $(TARGET_DIR)
-	install --mode=755 $(SCRIPTS) $(TARGET_DIR)
+	mkdir --parent                   $(TARGET_DIR)
+	install --mode=555 rpmrebuild.sh $(TARGET_DIR)
 	cd $(TARGET_DIR) && ln -sf rpmrebuild.sh rpmrebuild
 
-	mkdir --parent                     $(TARGET_ETC)
-	install --mode=444 rpmrebuild_popt $(TARGET_ETC)
-	cd $(TARGET_ETC) && ln -sf rpmrebuild_popt .popt
+	mkdir --parent                         $(TARGET_LIB)
+	install --mode=555 rpmrebuild_files.sh $(TARGET_LIB)
+	install --mode=444 rpmrebuild_popt     $(TARGET_LIB)
+	cd $(TARGET_LIB) && ln -sf rpmrebuild_popt .popt
 
 tar:	rpmrebuild.spec
 	List=`cat MANIFEST` && tar -cvzf $(TAR_FILE) $(TAR_NAMES) $$List
