@@ -18,7 +18,6 @@
 #
 ###############################################################################
 VERSION="$Id$"
-verbose="--quiet"
 ###############################################################################
 function Usage
 {
@@ -52,7 +51,7 @@ function SpecFile
 function FilesSpecFile
 {
 	echo "%files"
-	HOME=$MY_CONFIG_DIR rpm --query --spec_files ${PAQUET} "$filter " | $MY_DIR/rpmrebuild_files.sh
+	HOME=$MY_CONFIG_DIR rpm --query --spec_files ${PAQUET} "$filter " | rpmrebuild_files.sh
 }
 
 ##############################################################
@@ -62,9 +61,11 @@ function FilesSpecFile
 # a shell to build an rpm file from the rpm database
 
 MY_CONFIG_DIR=/etc/rpmrebuild
-MY_DIR=$(dirname $0)
+# to be sure
+export PATH=$PATH:/usr/local/bin
 
 filter=
+verbose="--quiet"
 while getopts "bf:hkvV" opt
 do
 	case "$opt" in
@@ -161,7 +162,10 @@ fi
 
 # reconstruction fichier rpm : le src.rpm est inutile
 # build rpm file, the src.rpm is not usefull to do
-rpm -bb $verbose --define "_rpmdir $PWD/" ${FIC_SPEC}
+# for rpm 4.1 : use rpmbuild
+BUILDCMD=rpm
+[ -x /usr/bin/rpmbuild ] && BUILDCMD=rpmbuild
+$BUILDCMD -bb $verbose --define "_rpmdir $PWD/" ${FIC_SPEC}
 
 QF_RPMFILENAME=$(rpm --eval %_rpmfilename)
 RPMFILENAME=$(rpm --query --queryformat "${QF_RPMFILENAME}" ${PAQUET})

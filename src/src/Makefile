@@ -40,7 +40,7 @@ rpmrebuild.spec: rpmrebuild.spc Version Release Changelog
 install:
 	mkdir --parent $(TARGET_DIR)
 	mkdir --parent $(TARGET_ETC)
-	install --mode=555 $(SCRIPTS) $(TARGET_DIR)
+	install --mode=755 $(SCRIPTS) $(TARGET_DIR)
 	cd $(TARGET_DIR) && ln -sf rpmrebuild.sh rpmrebuild
 	install --mode=444 .popt      $(TARGET_ETC)
 
