@@ -30,7 +30,7 @@ options:
    -D, --define=<define>        defines to be passed to the rpmbuild
    -e, --edit-spec              alias for --edit-whole
    -f, --filter=<command>       alias for --change-spec-whole
-   -F, --change-files=<command> command to modify package's files 
+       --change-files=<command> command to modify package's files 
    -i, --includes=<file>        read options from the file <file>
    -k, --keep-perm              alias for --pug-from-fs
        --pug-from-fs            keep installed files permission, uid and gid
@@ -41,7 +41,7 @@ options:
    -R, --autorequire            force rpm to auto generate 'Require:'
    -s, --spec-only=<specfile>   generate specfile only
                                 (If <specfile> '-' stdout will be used)
-   -S  --change-spec-whole=<command>  command to modify whole specfile
+       --change-spec-whole=<command>  command to modify whole specfile
    -v, --verbose                verbose
    -V, --version                print version
    -w, --warning                print warning if detect filenames with
@@ -855,7 +855,7 @@ function CommandLineParsing
 
 	export LONG_OPTION
 
-	while getopts "a:bc:d:D:ef:F:hi:km:pPRs:S:vVwy:-:" opt; do
+	while getopts "a:bc:d:D:ef:hi:km:pPRs:vVwy:-:" opt; do
 		OPTIND_INCR=""
 		case "$opt" in
 			a) LONG_OPTION=additional;;
@@ -865,7 +865,6 @@ function CommandLineParsing
 			D) LONG_OPTION=define;;
 			e) LONG_OPTION=edit-spec;;
 			f) LONG_OPTION=filter;;
-			F) LONG_OPTION=change-files;;
 			i) LONG_OPTION=include;;
 			k) LONG_OPTION=keep-perm;;
 			m) LONG_OPTION=modify;;    
@@ -873,7 +872,6 @@ function CommandLineParsing
 			P) LONG_OPTION=autoprovide;;
 			R) LONG_OPTION=autorequire;;
 			s) LONG_OPTION=spec-only;;
-			S) LONG_OPTION=change-spec-whole;;
 			h) LONG_OPTION=help;;
 			v) LONG_OPTION=verbose;;
 			V) LONG_OPTION=version;;
