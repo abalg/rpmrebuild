@@ -625,7 +625,7 @@ function SpecGeneration
 {
 	# fabrication fichier spec
 	# build spec file
-	FIC_SPEC=${TMPDIR:-/tmp}/rpmrebuild_$$_${PAQUET_NAME}.spec
+	FIC_SPEC=$RPMREBUILD_TMPDIR/${PAQUET_NAME}.spec.$$
 	rm -f ${FIC_SPEC} || return
 
 	eval SpecGen $filter > ${FIC_SPEC} || return
@@ -653,7 +653,7 @@ function RpmUnpack
 	   Error "Internal '$BUILDROOT' can not be '/'." 
            return 1
 	}
-	CPIO_TEMP=${TMPDIR:-/tmp}/rpmrebuild_$$_${PAQUET_NAME}.cpio
+	CPIO_TEMP=$RPMREBUILD_TMPDIR/${PAQUET_NAME}.cpio.$$
 	rm -f $CPIO_TEMP                                    || return
 	rpm2cpio ${PAQUET} > $CPIO_TEMP                     || return
 	rm    --force --recursive $BUILDROOT                || return
@@ -749,6 +749,9 @@ MY_PLUGIN_DIR=${MY_LIB_DIR}/plugins
 
 PATH=$PATH:$MY_PLUGIN_DIR
 
+RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild}
+mkdir -p $RPMREBUILD_TMPDIR || exit
+
 # suite a des probleme de dates incorrectes
 # to solve problems of bad date
 export LC_TIME=POSIX
@@ -776,7 +779,7 @@ else
       exit 1
    }
    keep_perm=""  # Be sure use perm, owner, group from the pkg query.
-   BUILDROOT=/tmp/${PAQUET_NAME}-root
+   BUILDROOT=$RPMREBUILD_TMPDIR/${PAQUET_NAME}-root
 fi
 
 if [ -n "$spec_only" ]

@@ -1,5 +1,7 @@
 * Mon May 24 2004 <valery_reznic@users.sourceforge.net> 1.4.6-4
 - eliminate 'expr' usage
+- add RPMREBUILD_TMDDIR environment variable.  With default ~/.tmp/rpmrebuild
+  It used instead of /tmp.
 
 * Sun May 23 2004 <valery_reznic@users.sourceforge.net> 1.4.6-4
 - fixed bug with parsing --long-option= 

@@ -1,4 +1,4 @@
-.TH "rpmrebuild" "1" "1.4.5" "Eric Gerbier" "rpm tools"
+.TH "rpmrebuild" "1" "1.4.6" "Eric Gerbier" "rpm tools"
 .SH "NAME"
 .LP 
 rpmrebuild \- a tool to build an rpm package from an installed package
@@ -89,8 +89,8 @@ contains rpm alias used by rpmrebuild
 .SH "ENVIRONMENT"
 .LP 
 .TP 
-\fBTMPDIR\fP
-Directory for temporal files. If not set /tmp is used.
+\fBRPMREBUILD_TMPDIR\fP
+Directory for temporal files. If not set ~/.tmp/rpmrebuild is used.
 .TP 
 \fBVISUAL\fP
 used to specify an editor for specfile. if not set \fBEDITOR\fP variable examined.
