@@ -108,7 +108,7 @@ function processing_spec_change
 		Xedit-obsoletes)
 			SPEC_IN=$SPEC_OBSOLETES.$si_obsoletes
 			si_obsoletes=$[si_obsoletes + 1]
-			SPEC_OUT=$SPEC_OBSOLETES.$si_obsolete
+			SPEC_OUT=$SPEC_OBSOLETES.$si_obsoletes
 		;;
 
 		Xchange-spec-post | \
