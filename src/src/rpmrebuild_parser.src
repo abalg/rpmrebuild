@@ -85,21 +85,21 @@ advanced options:
 
    --edit-whole                             edit whole specfile
 
-   --edit-preamble=<command>
-   --edit-conflicts=<command>
-   --edit-obsoletes=<command>
-   --edit-provides=<command>
-   --edit-requires=<command>
-   --edit-description=<command>
-   --edit-files=<command>
-   --edit-files=<command>
-   --edit-triggers=<command>
-   --edit-pre=<command>
-   --edit-post=<command>
-   --edit-preun=<command>
-   --edit-postun=<command>
-   --edit-verifyscript=<command>
-   --edit-changelog=<command>
+   --edit-preamble
+   --edit-conflicts
+   --edit-obsoletes
+   --edit-provides
+   --edit-requires
+   --edit-description
+   --edit-files
+   --edit-files
+   --edit-triggers
+   --edit-pre
+   --edit-post
+   --edit-preun
+   --edit-postun
+   --edit-verifyscript
+   --edit-changelog
                                             edit appropriative
                                             part of the specfile
 
