@@ -171,9 +171,9 @@ function spec_concatenate
 	# %%pre -> %pre (in begin of line) It'll work for %%preun too.
 	local sed_pre="/^%%pre/s/^%%/%/1"
 	# %%post -> %post (in begin of line) It'll work for %%postun too.
-	local sed_post="/^%%pre/s/^%%/%/1"
+	local sed_post="/^%%post/s/^%%/%/1"
 	# %%verifyscript -> %verifyscript (in begin of line)
-	local sed_verifyscript="/^%%pre/s/^%%/%/1"
+	local sed_verifyscript="/^%%verifyscript/s/^%%/%/1"
 	sed                                         \
 		-e "$sed_double_percent"            \
 		-e "$sed_trigger"                   \
