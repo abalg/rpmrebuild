@@ -3,7 +3,7 @@
 #   rpmrebuild_files.sh 
 #      it's a part of the rpmrebuild project
 #
-#    Copyright (C) 2002 by Valery Reznic
+#    Copyright (C) 2002, 2003 by Valery Reznic
 #    Bug reports to: valery_reznic@users.sourceforge.net
 #      or          : gerbier@users.sourceforge.net
 #    $Id$
@@ -70,6 +70,7 @@ while :; do
    fi
 
    # language handling
+   [ "X$file_lang" = "X(none)" ] && file_lang=""
    lang_str=""
    [ "X$file_lang" = "X" ] || lang_str="%lang($file_lang) "
    
