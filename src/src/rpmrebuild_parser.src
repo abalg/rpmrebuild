@@ -90,381 +90,380 @@ function RequeredArgument
 ###############################################################################
 function CommandLineParsing
 {
-# Default flags' values. To be sure they don't came from environment
-NEED_EXIT=""
-additional=""
-autoprovide=""
-autorequire=""
-batch=""
-filter=""
-rpm_defines=""
-rpmdir=""
-editspec=""
-package_flag=""
-modify=""
-speconly=""
-specfile=""
-verify="1"
-rpm_verbose="--quiet"
-export keep_perm=""
-export comment_missing="0"
-export warning=""
-PAQUET=""
-PAQUET_NAME=""
+	# Default flags' values. To be sure they don't came from environment
+	NEED_EXIT=""
+	additional=""
+	autoprovide=""
+	autorequire=""
+	batch=""
+	filter=""
+	rpm_defines=""
+	rpmdir=""
+	editspec=""
+	package_flag=""
+	modify=""
+	speconly=""
+	specfile=""
+	verify="1"
+	rpm_verbose="--quiet"
+	export keep_perm=""
+	export comment_missing="0"
+	export warning=""
+	PAQUET=""
+	PAQUET_NAME=""
 
-while getopts "a:bc:d:D:ef:hkm:pPRs:vVwy:-:" opt
-do
-	OPTIND_INCR=""
-	case "$opt" in
-		a) LONG_OPTION=additional;;
-		b) LONG_OPTION=batch;;
-		c) LONG_OPTION=comment-missing;;
-		d) LONG_OPTION=dir;;
-		D) LONG_OPTION=define;;
-		e) LONG_OPTION=edit-spec;;
-		f) LONG_OPTION=filter;;
-		k) LONG_OPTION=keep-perm;;
-		m) LONG_OPTION=modify;;    
-		p) LONG_OPTION=package;;
-		P) LONG_OPTION=autoprovide;;
-		R) LONG_OPTION=autorequire;;
-		s) LONG_OPTION=spec-only;;
-		h) LONG_OPTION=help;;
-		v) LONG_OPTION=verbose;;
-		V) LONG_OPTION=version;;
-		w) LONG_OPTION=warning;;
-		y) LONG_OPTION=verify;;
+	while getopts "a:bc:d:D:ef:hkm:pPRs:vVwy:-:" opt; do
+		OPTIND_INCR=""
+		case "$opt" in
+			a) LONG_OPTION=additional;;
+			b) LONG_OPTION=batch;;
+			c) LONG_OPTION=comment-missing;;
+			d) LONG_OPTION=dir;;
+			D) LONG_OPTION=define;;
+			e) LONG_OPTION=edit-spec;;
+			f) LONG_OPTION=filter;;
+			k) LONG_OPTION=keep-perm;;
+			m) LONG_OPTION=modify;;    
+			p) LONG_OPTION=package;;
+			P) LONG_OPTION=autoprovide;;
+			R) LONG_OPTION=autorequire;;
+			s) LONG_OPTION=spec-only;;
+			h) LONG_OPTION=help;;
+			v) LONG_OPTION=verbose;;
+			V) LONG_OPTION=version;;
+			w) LONG_OPTION=warning;;
+			y) LONG_OPTION=verify;;
 
-                -)
-	        	case "x$OPTARG" in
-				x*=*)
-					LONG_OPTION=${OPTARG%%=*}
-					OPTARG=${OPTARG#*=}
-					OPTARG_EXIST=1
-				;;
+                	-)
+	        		case "x$OPTARG" in
+					x*=*)
+						LONG_OPTION=${OPTARG%%=*}
+						OPTARG=${OPTARG#*=}
+						OPTARG_EXIST=1
+					;;
 
-				*)
-                   			LONG_OPTION="$OPTARG"
-                   			if [ $OPTIND -le $# ]; then
-                      				eval OPTARG=\$$OPTIND
-                      				OPTARG_EXIST=1
-						OPTIND_INCR=1
-                   			else
-                      				OPTARG=""
-                      				OPTARG_EXIST=""
-                   			fi
-				;;
-			esac
-               	;;
+					*)
+                   				LONG_OPTION="$OPTARG"
+                   				if [ $OPTIND -le $# ]; then
+                      					eval OPTARG=\$$OPTIND
+                      					OPTARG_EXIST=1
+							OPTIND_INCR=1
+                   				else
+                      					OPTARG=""
+                      					OPTARG_EXIST=""
+                   				fi
+					;;
+				esac
+               		;;
+
+			*)
+				Try_Help
+				return 1
+			;;
+		esac
+
+		SHORT_OPTION="$opt"
+		case "$LONG_OPTION" in
+			a | \
+			au | \
+			aut | \
+			auto )
+				AmbiguousOption
+				return 1
+			;;
+
+			ad | \
+			add | \
+			addi | \
+			addit | \
+			additi | \
+			additio | \
+			addition | \
+			additiona | \
+			additional)
+				RequeredArgument || return
+				additional="$OPTARG"
+			;;
+
+			autop | \
+			autopr | \
+			autopro | \
+			autoprov | \
+			autoprovi | \
+			autoprovid | \
+			autoprovide)
+				autoprovide=y
+			;;
+
+			autor | \
+			autore | \
+			autoreq | \
+			autorequ | \
+			autorequi | \
+			autorequir | \
+			autorequire)
+				autorequire=y
+			;;
+
+			b | \
+			ba | \
+			bat | \
+			batc | \
+			batch)
+				batch=y
+			;;
+
+			c | \
+			co | \
+			com | \
+			comm | \
+			comme | \
+			commen | \
+			comment | \
+			comment- | \
+			comment-m | \
+			comment-mi | \
+			comment-mis | \
+			comment-miss | \
+			comment-missi | \
+			comment-missin | \
+			comment-missing)
+				RequeredArgument || return
+				case "x$OPTARG" in
+			   		x[yY]*) comment_missing="1";;
+                           		*)      comment_missing="0";;
+				esac
+			;;
+
+			d)
+				AmbiguousOption
+				return 1
+			;;
+
+			de | \
+			def | \
+			defi | \
+			defin | \
+			define)
+				RequeredArgument || return
+				rpm_defines="$rpm_defines --define '$OPTARG'"
+			;;
+
+			di | \
+			dir | \
+			dire | \
+			direc | \
+			direct | \
+			directo | \
+			director | \
+			directory)
+				RequeredArgument || return
+				rpmdir="$OPTARG"
+				rpm_defines="$rpm_defines --define '_rpmdir $rpmdir'" 
+				mkdir -p -- "$rpmdir"
+				rpmdir="$(cd $rpmdir && echo $PWD)" || {
+					Error "Can't changedir to '$rpmdir'"
+					return 1
+				}
+			;;
+
+			e | \
+			ed | \
+			edi | \
+			edit | \
+			edit- | \
+			edit-s | \
+			edit-sp | \
+			edit-spe | \
+			edit-spec)
+				editspec=y
+			;;
+
+			f | \
+			fi | \
+			fil | \
+			filt | \
+			filte | \
+			filter)
+				RequeredArgument || return
+				ExtractProgName $OPTARG  # set progname
+
+				# check if executable ?
+				if type -all -path "$progname" 1>/dev/null 2>&1
+				then
+					filter="$filter | $OPTARG"
+				else
+					Error "Can't find '$progname' in '$PATH'"
+					return 1
+				fi
+			;;
+			
+			h | \
+			he | \
+			hel | \
+			help)
+				Usage
+				NEED_EXIT=0
+				return 0
+			;;
+
+			k | \
+			ke | \
+			kee | \
+			keep | \
+			keep- | \
+			keep-p | \
+			keep-pe | \
+			keep-per | \
+			keep-perm)
+				keep_perm=1
+			;;
+
+			m | \
+			mo | \
+			mod | \
+			modi | \
+			modif | \
+			modify)
+				RequeredArgument || return
+				modify="$OPTARG"
+			;;
+
+			p)
+				AmbiguousOption
+				return 1
+			;;
+
+			pa | \
+			pac | \
+			pack | \
+			packa | \
+			packag | \
+			package)
+                   		package_flag="-p"
+                	   	comment_missing=0
+                	;;
+
+			pu | \
+			pug | \
+			pug- | \
+			pug-f | \
+			pug-fr | \
+			pug-fro | \
+			pug-from | \
+			pug-from-)
+				AmbiguousOption
+				return 1
+			;;
+
+			pug-from-d | \
+			pug-from-db)
+				keep_perm=""
+			;;
+
+			pug-from-f | \
+			pug-from-fs) # Alias to keep-perm
+				keep_perm=1
+			;;
+
+			s | \
+			sp | \
+			spe | \
+			spec | \
+			spec- | \
+			spec-o | \
+			spec-on | \
+			spec-onl | \
+			spec-only)
+				RequeredArgument || return
+				spec_only=y
+				specfile="$OPTARG"
+			;;
+
+			v | \
+			ve | \
+			ver )
+				AmbiguousOption
+				return 1
+			;;
+
+			verb | \
+			verbo | \
+			verbos | \
+			verbose)
+				rpm_verbose="--verbose"
+			;;
+
+			veri | \
+			verif | \
+			verify)
+				RequeredArgument || return
+				case "x$OPTARG" in
+			   		x[yY]*) verify="1";;
+                           		*)      verify="0";;
+				esac
+			;;
+
+			vers | \
+			versi | \
+			versio | \
+			version)
+				echo "$VERSION"
+				NEED_EXIT=0
+				return 0
+			;;
+
+			w | \
+			wa | \
+			war | \
+			warn | \
+			warni | \
+			warnin | \
+			warning)
+				warning=y
+			;;
+
+			*)
+				UnrecognizedOption
+				return 1
+			;;
+		esac || return
+	done || return
+
+	# If no rpmdir was specified set variable to the native rpmdir value
+	# (with respect to possible define)
+	if [ -z "$rpmdir" ]; then
+		rpmdir="$(eval rpm $rpm_defines --eval %_rpmdir)" || return
+	fi
+
+	shift $((OPTIND - 1))
+	case $# in
+   		0)
+			Error "package argument missing"
+			Try_Help
+			return 1
+   		;;
+
+   		1) # One argument, it's ok
+      			PAQUET="$1"
+      			if [ "x$package_flag" = "x" ]; then
+         			PAQUET_NAME="$PAQUET"
+      			else
+         			PAQUET_NAME="${PAQUET##*/}"
+         			if [ "x$PAQUET_NAME" = "x" ]; then
+            				Error "Package file '$PAQUET' should not be a directory"
+					return 1
+         			else
+	   				:
+	 			fi
+      			fi
+		;;
 
 		*)
+			Error "multiple package arguments is illegal"
 			Try_Help
 			return 1
 		;;
-	esac
-
-	SHORT_OPTION="$opt"
-	case "$LONG_OPTION" in
-		a | \
-		au | \
-		aut | \
-		auto )
-			AmbiguousOption
-			return 1
-		;;
-
-		ad | \
-		add | \
-		addi | \
-		addit | \
-		additi | \
-		additio | \
-		addition | \
-		additiona | \
-		additional)
-			RequeredArgument || return
-			additional="$OPTARG"
-		;;
-
-		autop | \
-		autopr | \
-		autopro | \
-		autoprov | \
-		autoprovi | \
-		autoprovid | \
-		autoprovide)
-			autoprovide=y
-		;;
-
-		autor | \
-		autore | \
-		autoreq | \
-		autorequ | \
-		autorequi | \
-		autorequir | \
-		autorequire)
-			autorequire=y
-		;;
-
-		b | \
-		ba | \
-		bat | \
-		batc | \
-		batch)
-			batch=y
-		;;
-
-		c | \
-		co | \
-		com | \
-		comm | \
-		comme | \
-		commen | \
-		comment | \
-		comment- | \
-		comment-m | \
-		comment-mi | \
-		comment-mis | \
-		comment-miss | \
-		comment-missi | \
-		comment-missin | \
-		comment-missing)
-			RequeredArgument || return
-			case "x$OPTARG" in
-			   x[yY]*) comment_missing="1";;
-                           *)      comment_missing="0";;
-			esac
-		;;
-
-		d)
-			AmbiguousOption
-			return 1
-		;;
-
-		de | \
-		def | \
-		defi | \
-		defin | \
-		define)
-			RequeredArgument || return
-			rpm_defines="$rpm_defines --define '$OPTARG'"
-		;;
-
-		di | \
-		dir | \
-		dire | \
-		direc | \
-		direct | \
-		directo | \
-		director | \
-		directory)
-			RequeredArgument || return
-			rpmdir="$OPTARG"
-			rpm_defines="$rpm_defines --define '_rpmdir $rpmdir'" 
-			mkdir -p -- "$rpmdir"
-			rpmdir="$(cd $rpmdir && echo $PWD)" || {
-				Error "Can't changedir to '$rpmdir'"
-				exit 1
-			}
-		;;
-
-		e | \
-		ed | \
-		edi | \
-		edit | \
-		edit- | \
-		edit-s | \
-		edit-sp | \
-		edit-spe | \
-		edit-spec)
-			editspec=y
-		;;
-
-		f | \
-		fi | \
-		fil | \
-		filt | \
-		filte | \
-		filter)
-			RequeredArgument || return
-			ExtractProgName $OPTARG  # set progname
-
-			# check if executable ?
-			if type -all -path "$progname" 1>/dev/null 2>&1
-			then
-				filter="$filter | $OPTARG"
-			else
-				Error "Can't find '$progname' in '$PATH'"
-				return 1
-			fi
-		;;
-			
-		h | \
-		he | \
-		hel | \
-		help)
-			Usage
-			NEED_EXIT=0
-			return 0
-		;;
-
-		k | \
-		ke | \
-		kee | \
-		keep | \
-		keep- | \
-		keep-p | \
-		keep-pe | \
-		keep-per | \
-		keep-perm)
-			keep_perm=1
-		;;
-
-		m | \
-		mo | \
-		mod | \
-		modi | \
-		modif | \
-		modify)
-			RequeredArgument || return
-			modify="$OPTARG"
-		;;
-
-		p)
-			AmbiguousOption
-			return 1
-		;;
-
-		pa | \
-		pac | \
-		pack | \
-		packa | \
-		packag | \
-		package)
-                   package_flag="-p"
-                   comment_missing=0
-                ;;
-
-		pu | \
-		pug | \
-		pug- | \
-		pug-f | \
-		pug-fr | \
-		pug-fro | \
-		pug-from | \
-		pug-from-)
-			AmbiguousOption
-			return 1
-		;;
-
-		pug-from-d | \
-		pug-from-db)
-			keep_perm=""
-		;;
-
-		pug-from-f | \
-		pug-from-fs) # Alias to keep-perm
-			keep_perm=1
-		;;
-
-		s | \
-		sp | \
-		spe | \
-		spec | \
-		spec- | \
-		spec-o | \
-		spec-on | \
-		spec-onl | \
-		spec-only)
-			RequeredArgument || return
-			spec_only=y
-			specfile="$OPTARG"
-		;;
-
-		v | \
-		ve | \
-		ver )
-			AmbiguousOption
-			return 1
-		;;
-
-		verb | \
-		verbo | \
-		verbos | \
-		verbose)
-			rpm_verbose="--verbose"
-		;;
-
-		veri | \
-		verif | \
-		verify)
-			RequeredArgument || return
-			case "x$OPTARG" in
-			   x[yY]*) verify="1";;
-                           *)      verify="0";;
-			esac
-		;;
-
-		vers | \
-		versi | \
-		versio | \
-		version)
-			echo "$VERSION"
-			NEED_EXIT=0
-			return 0
-		;;
-
-		w | \
-		wa | \
-		war | \
-		warn | \
-		warni | \
-		warnin | \
-		warning)
-			warning=y
-		;;
-
-		*)
-			UnrecognizedOption
-			return 1
-		;;
-	esac
-done
-
-# If no rpmdir was specified set variable to the native rpmdir value
-# (with respect to possible define)
-if [ -z "$rpmdir" ]
-then
-   rpmdir="$(eval rpm $rpm_defines --eval %_rpmdir)" || return
-fi
-
-shift $((OPTIND - 1))
-case $# in
-   0)
-	Error "package argument missing"
-	Try_Help
-	return 1
-   ;;
-
-   1) # One argument, it's ok
-      PAQUET="$1"
-      if [ "x$package_flag" = "x" ]; then
-         PAQUET_NAME="$PAQUET"
-      else
-         PAQUET_NAME="${PAQUET##*/}"
-         if [ "x$PAQUET_NAME" = "x" ]; then
-            Error "Package file '$PAQUET' should not be a directory"
-            return 1
-         else
-	   :
-	 fi
-      fi
-   ;;
-
-   *)
-	Error "multiple package arguments is illegal"
-	Try_Help
-	return 1
-   ;;
-esac
+	esac || return
+	return 0
 }
