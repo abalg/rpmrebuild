@@ -1,3 +1,24 @@
+* Sun Nov 14 2004 <valery_reznic@users.sourceforge.net> 2.0.0-1
+- rpmrebuild_parser.src - added '--help-pligins' option
+
+* Wed Oct 26 2004 <valery_reznic@users.sourceforge.net> 2.0.0-1
+- processing of /change/modify/edit was moved to the processng_func.src
+- changes to support --change-spec-* ane --edit-* (in the processing_func,
+  rpmrebuild_popt and rpmrebuild_parser)
+- added '--include' option
+
+* Wed Sep 28 2004 <valery_reznic@users.sourceforge.net> 2.0.0-1
+- changed all env variables' names to be prefixed with RPMREBUILD_
+
+* Tue Sep 27 2004 <valery_reznic@users.sourceforge.net> 2.0.0-1
+- change different variables values from empty/non-empty to yes/no
+
+* Tue Sep 20 2004 <valery_reznic@users.sourceforge.net> 2.0.0-1
+- Added support for arbitrary execution order for change/edit/modify
+
+* Sun Sep 19 2004 <valery_reznic@users.sourceforge.net> 2.0.0-1
+- CommandLineParsing functionality moved to the new file rpmrebuild_parser.src
+
 * Mon Aug 16 2004 <gerbier@users.sourceforge.net> 1.4.7-3
 - change dependency from rpm-build package to rpmbuild file for suses distrib
 - some fixes from rmlint
