@@ -34,8 +34,7 @@
 # Environment:
 #   keep_perm - if value is not empty, use permission, owner and group from
 #               filesystem, otherwise - from package query
-#   missing_as_usual - if value not empty do not comment out missing files
-#                      in the spec
+#   comment_missing  - 1 - comment missing files, otherwise - nothing
 ################################################################
 
 FFLAGS="d c s m n g"
@@ -61,7 +60,7 @@ while :; do
    read file
 
    miss_str=""
-   if [ "x$missing_as_usual" = "x" ]; then
+   if [ "x$commenmt_missing" = "x1" ]; then
       if [ -e "$file" ]; then
          miss_str=""
       else 
