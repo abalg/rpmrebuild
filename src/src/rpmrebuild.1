@@ -1,4 +1,4 @@
-.TH "rpmrebuild" "1" "1.2.1" "Eric Gerbier" "rpm tools"
+.TH "rpmrebuild" "1" "1.4.4" "Eric Gerbier" "rpm tools"
 .SH "NAME"
 .LP 
 rpmrebuild \- a tool to build an rpm package from an installed package
@@ -16,8 +16,14 @@ it can be used to build an rpm file from an installed package (lost rpm) or to q
 .SH "OPTIONS"
 .LP 
 .TP 
+\fB\-a|\-\-additional\fR <\fIflags\fP>
+pass additional flags to rpmbuild
+.TP 
 \fB\-b|\-\-batch\fR
 work in batch mode (no interactive query if files change)
+.TP 
+\fB\-D|\-\-define\fR <\fIdefines\fP>
+defines to be passed to rpmbuild.
 .TP 
 \fB\-d|\-\-dir\fR <\fIdirectory\fP>
 rpm package result will be written in  <\fIdirectory\fP>.
@@ -37,14 +43,20 @@ Output help information and exit.
 \fB\-k|\-\-keep\-perm|\-\-pug\-from\-fs\fR
 keep installed files permission, uid and gid (do not force to orginal files permission, uid and gid saved in rpm database)
 .TP 
+\fB\-m|\-\-modify\fR <\fIscript\fP>
+can be used only with \fB\-\-package\fR option. After rpm package converted
+to cpio and unpackaged invoked script \fB<script>\fR to change unpacked files.
+This script got \fBRPM_BUILD_ROOT\fR environment variable pointed to the
+unpacked files root directory.
+.TP 
+\fB\-p|\-\-package\fR
+use package file, not installed rpm (this option is like rpm's \-p option)
+.TP 
 \fB\-\-pug\-from\-db (default)\fR
 set files permission, uid and gid as saved in rpm database
 .TP 
 \fB\-s|\-\-spec\-only\fR <\fIspecfile\fP>
 do not rebuild package. only generate specfile.
-.TP 
-\fB\-p|\-\-package\fR
-use package file, not installed rpm (this option is like rpm's \-p option)
 .TP 
 \fB\-v|\-\-verbose\fR
 verbose output
@@ -69,10 +81,13 @@ contains rpm alias used by rpmrebuild
 Directory for temporal files. If not set /tmp is used.
 .TP 
 \fBVISUAL\fP
-used to specify an editor for specfile
+used to specify an editor for specfile. if not set \fBEDITOR\fP variable examined.
 .TP 
 \fBEDITOR\fP
-used to specify an editor for specfile
+used to specify an editor for specfile. if not set \fBvi\fP used.
+.TP 
+\fBRPM_BUILD_ROOT\fP
+ROOT of unpacked files. Passed to script invoked with \fB\-\-modify\fR
 .SH "PLUGINS"
 .LP 
 rpmrebuild use may be extended with plugins, via the "\-\-filter" option.
@@ -97,20 +112,37 @@ Requires: bash
 Requires: glibc
 .SH "EXAMPLES"
 .LP 
-To build an rpm package as closed as possible to original one:
+Build an rpm package as closed as possible to original one:
 .LP 
-rpm \-\-rpmrebuid \-\-batch package 
+\fBrpm \-\-rpmrebuild \-\-batch package\fP
 .LP 
-to build a modified package :
+Build a modified package:
 .LP 
-rpm \-\-rpmrebuild \-\-keep\-perm package
+\fBrpm \-\-rpmrebuild \-\-keep\-perm package\fP
 .LP 
-to build a rpm from another rpm file :
-rpm \-\-rpmrebuild \-\-package \-\-filter filter /usr/src/redhat/i386/package\-i386.rpm
+Build a rpm from another rpm file:
+.LP 
+\fBrpm \-\-rpmrebuild \-\-package \-\-filter filter /usr/src/redhat/i386/package\-i386.rpm\fP
+.LP
+Rebuild rpm as legacy (rpm[23]) package:
+.LP
+\fBrpm \-\-rpmrebuild \-\-additional "\-\-nodirtokens" bash\fP
+.LP 
+Specify generated rpm name:
+.LP 
+\fBrpm \-\-rpmrebuild \-\-define "_rpmfilename %%{NAME}.rpm" bash\fP
+.LP 
+Change package interactive
+.LP 
+\fBrpm \-\-rpmrebuild \-\-package \-\-modify "/bin/bash" /some/place/bash.rpm\fP
+.LP 
+Change package non-interactive
+.LP 
+\fBrpm \-\-rpmrebuild \-\-package \-\-modify "a.sh && b.sh" /some/place/bash.rpm\fP
 .LP 
 if you have problem with rpm building, and if you know specfile syntax, you can also edit it:
 .LP 
-rpm \-\-rpmrebuild  \-\-edit\-spec package
+\fBrpm \-\-rpmrebuild  \-\-edit\-spec package\fP
 .SH "AUTHORS"
 .LP 
 Eric Gerbier <gerbier@users.sourceforge.net>
