@@ -36,6 +36,17 @@ function Warning
 }
 ###############################################################################
 
+function AskYesNo
+{
+   echo -en "$@ ? (y/N) " 1>&2
+   read Ans
+   case "x$Ans" in
+      x[yY]*) return 0;;
+      *)      return 1;;
+   esac || return 1 # should not happened
+   return 1 # should not happend
+}
+
 function Usage
 {
    Usage_Message="
@@ -348,22 +359,11 @@ function QuestionsToUser
 	[ -n "$batch"     ] && return 0 ## batch mode, continue
 	[ -n "$spec_only" ] && return 0 ## spec only mode, no questions
 
-	echo -n "want to continue (y/n) ? "
-	read rep 
-	case "x$rep" in
-		xy* | xY*)   ;; # Yes, do nothing
-		x*) return 1;; # Otherwise no
-	esac
-
-	echo -n "want to change release number (y/n) ? "
-	read rep
-	case "x$rep" in
-		xy* | xY*)
-			old_release=$(Interrog '%{RELEASE}')
-			echo -n "enter the new release (old: $old_release): "
-			read new_release
-		;;
-	esac
+	AskYesNo "$WantContinue" || return
+	AskYesNo "Do you want to change release number" || return
+	old_release=$(Interrog '%{RELEASE}')
+	echo -n "Enter the new release (old: $old_release): "
+	read new_release
 	return 0
 }
 ###############################################################################
@@ -414,15 +414,9 @@ function SpecEdit
 	if [ -n "$editspec" ]
 	then
 		${VISUAL:-${EDITOR:-vi}} ${FIC_SPEC}
-		echo -n "Do you want to continue (y/n) ? "
-		read Ans
-		case "x$Ans" in
-	   	x[yY]*) return 0;;
-	   	*)
-			Echo "Aborted."
-	        	return 1
-	   	;;
-		esac
+		AskYesNo "$WantContinue" && return
+		Echo "Aborted."
+	        return 1
 	fi
 	return 0
 }
@@ -522,6 +516,8 @@ function my_exit
 ##############################################################
 # shell pour refabriquer un fichier rpm a partir de la base rpm
 # a shell to build an rpm file from the rpm database
+
+WantContinue="Do you want to continue"
 
 MY_LIB_DIR=/usr/lib/rpmrebuild
 MY_PLUGIN_DIR=${MY_LIB_DIR}/plugins
