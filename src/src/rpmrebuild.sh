@@ -414,16 +414,16 @@ function SpecEdit
 	if [ -n "$editspec" ]
 	then
 		${VISUAL:-${EDITOR:-vi}} ${FIC_SPEC}
+		echo -n "Do you want to continue (y/n) ? "
+		read Ans
+		case "x$Ans" in
+	   	x[yY]*) return 0;;
+	   	*)
+			Echo "Aborted."
+	        	return 1
+	   	;;
+		esac
 	fi
-	echo -n "Do you want to continue (y/n) ? "
-	read Ans
-	case "x$Ans" in
-	   x[yY]*) return 0;;
-	   *)
-		Echo "Aborted."
-	        return 1
-	   ;;
-	esac
 	return 0
 }
 ###############################################################################
