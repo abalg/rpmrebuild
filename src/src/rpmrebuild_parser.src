@@ -22,31 +22,34 @@ function Usage
 $0 is a tool to rebuild an rpm file from the rpm database
 Usage: $0 [options] package
 options:
-   -a, --additional <flags>    additional flags to be pass to the rpmbuild
-   -b, --batch                 batch mode
-   -c, --comment-missing <y|n> comment missing files in the specfile.
-                               default - no.
-                               This flag is only meanful with --verify no
-   -d, --directory <dir>       specify the working directory
-   -D, --define <define>       defines to be passed to the rpmbuild
-   -e, --edit-spec             edit specfile
-   -f, --filter <file>         apply an external filter on generated specfile
-   -k, --keep-perm,
-       --pug-from-fs           keep installed files permission, uid and gid
-       --pug-from-db (default) use files permission, uid and gid from rpm db
-   -m  --modify <script>       script (or program) to modify unpacked rpm files
-   -p, --package               use package file, not installed rpm
-   -P, --autoprovide
-   -R, --autorequire
-   -s, --spec-only <spec>      generate specfile only
-                               (If <spec> '-' stdout will be used)
-   -v, --verbose               verbose
-   -V, --version               print version
-   -w, --warning               print warning if detect filenames with
-                               globbing characters (default - no)
-   -y, --verify <yes|no>       need verify package before processing
-                               (default - yes)
-   -h, --help                  print this help
+   -a, --additional=<flags>     additional flags to be pass to the rpmbuild
+   -A, --change-all=<command>   command to modify both package's files
+                                and specfile
+   -b, --batch                  batch mode (ask no questions)
+   -c, --comment-missing=<y|n>  comment missing files in the specfile.
+                                default - no.
+   -d, --directory=<dir>        specify the working directory
+   -D, --define=<define>        defines to be passed to the rpmbuild
+   -e, --edit-spec              edit specfile
+   -f, --filter=<command>       alias for -S/--change-spec
+   -F, --change-files=<command> command to modify package's files 
+   -k, --keep-perm              alias for --pug-from-fs
+       --pug-from-fs            keep installed files permission, uid and gid
+       --pug-from-db (default)  use files permission, uid and gid from rpm db
+   -m  --modify=<command>       alias for -F/--change-files
+   -p, --package                use package file, not installed rpm
+   -P, --autoprovide            force rpm to auto generate 'Provide:'
+   -R, --autorequire            force rpm to auto generate 'Require:'
+   -s, --spec-only=<specfile>   generate specfile only
+                                (If <specfile> '-' stdout will be used)
+   -S, --change-spec=<command>  command to modify specfile
+   -v, --verbose                verbose
+   -V, --version                print version
+   -w, --warning                print warning if detect filenames with
+                                globbing characters (default - no)
+   -y, --verify=<y|n>           need verify package before processing
+                                (default - yes)
+   -h, --help                   print this help
 
 Copyright (C) 2002 by Eric Gerbier
 this program is distributed under GNU General Public License
@@ -480,11 +483,6 @@ function CommandLineParsing
 				RequeredArgument || return
 				rpmdir="$OPTARG"
 				rpm_defines="$rpm_defines --define '_rpmdir $rpmdir'" 
-				mkdir -p -- "$rpmdir"
-				rpmdir="$(cd $rpmdir && echo $PWD)" || {
-					Error "Can't changedir to '$rpmdir'"
-					return 1
-				}
 			;;
 
 			edit-spec)
@@ -581,10 +579,20 @@ function CommandLineParsing
 		;;
 	esac || return
 
-	# If no rpmdir was specified set variable to the native rpmdir value
-	# (with respect to possible define)
-	if [ -z "$rpmdir" ]; then
+	if [ "x$rpmdir" = "x" ]; then
+		# There is no rpmdir specified 
+		# Let us find native rpmdir value
+		# (with respect to defines)
 		rpmdir="$(eval rpm $rpm_defines --eval %_rpmdir)" || return
+	else
+		# There is rpmdir specified.
+		# Let us find it's absolute path.
+		# Yeah, a bit ugly, but simple and seems to work...
+		mkdir --parents -- "$rpmdir" # Not check eit status here
+		rpmdir="$(cd $rpmdir && echo $PWD)" || {
+			Error "Can't changedir to '$rpmdir'"
+			return 1
+		}
 	fi
 	return 0
 }
