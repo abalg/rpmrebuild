@@ -18,7 +18,7 @@
 ###############################################################################
 function Usage
 {
-	Usage_Message="
+	local Usage_Message="
 $0 is a tool to rebuild an rpm file from the rpm database
 Usage: $0 [options] package
 options:
@@ -30,18 +30,16 @@ options:
    -D, --define=<define>        defines to be passed to the rpmbuild
    -e, --edit-spec              alias for --edit-whole
    -f, --filter=<command>       alias for --change-spec-whole
-       --change-files=<command> command to modify package's files 
    -i, --includes=<file>        read options from the file <file>
    -k, --keep-perm              alias for --pug-from-fs
        --pug-from-fs            keep installed files permission, uid and gid
        --pug-from-db (default)  use files permission, uid and gid from rpm db
-   -m  --modify=<command>       alias for -F/--change-files
+   -m  --modify=<command>       alias for --change-files
    -p, --package                use package file, not installed rpm
    -P, --autoprovide            force rpm to auto generate 'Provide:'
    -R, --autorequire            force rpm to auto generate 'Require:'
    -s, --spec-only=<specfile>   generate specfile only
                                 (If <specfile> '-' stdout will be used)
-       --change-spec-whole=<command>  command to modify whole specfile
    -v, --verbose                verbose
    -V, --version                print version
    -w, --warning                print warning if detect filenames with
@@ -49,6 +47,7 @@ options:
    -y, --verify=<y|n>           need verify package before processing
                                 (default - yes)
    -h, --help                   print this help
+       --help-plugins           print help about plugins options
 
 Copyright (C) 2002 by Eric Gerbier
 this program is distributed under GNU General Public License
@@ -56,6 +55,58 @@ this program is distributed under GNU General Public License
 	Echo "$Usage_Message"
 }
 
+function Usage_Plugins
+{
+	local Usage_Message="
+$0 is a tool to rebuild an rpm file from the rpm database
+Usage: $0 [options] package
+advanced options:
+   --change-files=<command>                 command to modify package's files
+
+   --change-spec-whole=<command>            command to modify whole specfile
+
+   --change-spec-preamble=<command>
+   --change-spec-conflicts=<command>
+   --change-spec-obsoletes=<command>
+   --change-spec-provides=<command>
+   --change-spec-requires=<command>
+   --change-spec-description=<command>
+   --change-spec-files=<command>
+   --change-spec-files=<command>
+   --change-spec-triggers=<command>
+   --change-spec-pre=<command>
+   --change-spec-post=<command>
+   --change-spec-preun=<command>
+   --change-spec-postun=<command>
+   --change-spec-verifyscript=<command>
+   --change-spec-changelog=<command>
+                                            command to modify appropriative
+                                            part of the specfile
+
+   --edit-whole                             edit whole specfile
+
+   --edit-preamble=<command>
+   --edit-conflicts=<command>
+   --edit-obsoletes=<command>
+   --edit-provides=<command>
+   --edit-requires=<command>
+   --edit-description=<command>
+   --edit-files=<command>
+   --edit-files=<command>
+   --edit-triggers=<command>
+   --edit-pre=<command>
+   --edit-post=<command>
+   --edit-preun=<command>
+   --edit-postun=<command>
+   --edit-verifyscript=<command>
+   --edit-changelog=<command>
+                                            edit appropriative
+                                            part of the specfile
+
+   -h, --help                               print help about 'regular' options
+"
+	Echo "$Usage_Message"
+}
 ###############################################################################
 function Try_Help
 {
@@ -541,6 +592,17 @@ function ProcessLongOptions
 				LONG_OPTION='help'
 			;;
 
+			help- | \
+			help-p | \
+			help-pl | \
+			help-plu | \
+			help-plug | \
+			help-plugi | \
+			help-plugin | \
+			help-plugins)
+				LONG_OPTION='help-plugins'
+			;;
+
 			i | \
 			in | \
 			inc | \
@@ -755,6 +817,12 @@ function ProcessLongOptions
 				return 0
 			;;
 
+			help-plugins)
+				Usage_Plugins
+				NEED_EXIT=0
+				return 0
+			;;
+
 			include)
 				RequeredArgument || return
 				OPTIND_INCR=""
@@ -812,6 +880,9 @@ function ProcessLongOptions
 			;;
 
 			version)
+				set -e
+					source $D/VERSION
+				set +e
 				echo "$VERSION"
 				NEED_EXIT=0
 				return 0
