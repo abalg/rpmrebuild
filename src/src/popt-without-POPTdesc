@@ -1,0 +1,11 @@
+### RPMREBUILD START. Don't change this string. rpmrebuild use it.###
+#####################################################################
+# rpm-3.0.4 and their popt age buggy
+# (or at least I can't understand their logic)
+# So I can't add some flag after '--' and look for this flag in the run.sh
+
+rpm alias --rpmrebuild --rpmrebuild-int --
+rpm exec --rpmrebuild-int /usr/lib/rpmrebuild/run.sh
+
+########################################################################
+### RPMREBUILD END. Don't change this string. rpmrebuild use it. End ###
