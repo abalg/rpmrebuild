@@ -757,7 +757,7 @@ function ProcessLongOptions
 
 			include)
 				RequeredArgument || return
-				OPTARG_INCR=""
+				OPTIND_INCR=""
 				while :; do 
 					read LONG_OPTION OPTARG || break
 					OPTARG_EXIST="$OPTARG"
