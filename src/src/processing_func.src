@@ -194,7 +194,7 @@ function processing_spec_change
 			cat <<-CMD_CHANGE >> $Output || return
 				# spec
 				( 
-				   PATH="$MY_PLUGIN_DIR/spec:\$PATH" &&
+				   PATH="\$RPMREBUILD_PLUGINS_DIR:\$PATH" &&
 				   $OPTARG; 
 				) < $SPEC_IN > $SPEC_OUT || return
 			
@@ -294,8 +294,8 @@ function CreateProcessing
 			cat <<-CMD_FILES >> $Output || return
 			# files
 			(
-			   PATH="$MY_PLUGIN_DIR/files:\$PATH" &&
-			   export RPM_BUILD_ROOT="$BUILDROOT" &&
+			   PATH="\$RPMREBUILD_PLUGINS_DIR:\$PATH" &&
+			   export RPM_BUILD_ROOT="$BUILDROOT"     &&
 			   $OPTARG; 
 			) || return
 			
