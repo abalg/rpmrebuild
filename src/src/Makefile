@@ -74,6 +74,17 @@ PLUGINS_MANPAGES =       \
    demo.plug.1rrp        \
    uniq.plug.1rrp        \
 
+DOC_FILES :=      \
+   AUTHORS        \
+   Changelog      \
+   COPYING        \
+   COPYRIGHT      \
+   LISEZ.MOI      \
+   News           \
+   README         \
+   rpmrebuild.lsm \
+   Todo           \
+
 SOURCES =                \
    $(SCRIPTS)            \
    $(LIB_SCRIPTS)        \
@@ -83,7 +94,7 @@ SOURCES =                \
    $(MANPAGES)		 \
    $(PLUGINS)		 \
    $(PLUGINS_MANPAGES)   \
-   MANIFEST              \
+   $(DOC_FILES)          \
    Makefile              \
    Changelog             \
    rpmrebuild.spc        \
@@ -140,7 +151,7 @@ install:
 	$(INSTALL_MAN) ${MANPAGES} ${PLUGINS_MANPAGES} $(TARGET_MAN)
 
 tar:	rpmrebuild.spec
-	List=`cat MANIFEST` && tar -cvzf $(TAR_FILE) $(TAR_NAMES) $$List
+	tar -cvzf $(TAR_FILE) $(TAR_NAMES)
 
 rpm rpmbuild:	tar
 	$(MKDIR) $(RPM_BUILD_DIR)
