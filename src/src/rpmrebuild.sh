@@ -326,7 +326,7 @@ function CreateProcessing
 		;;
 
 		Xspec)
-			need_change_spec="y"
+			need_change_spec="yes"
 			SPEC_IN="$FIC_SPEC.$spec_index"
 			spec_index=$[spec_index + 1]
 			SPEC_OUT="$FIC_SPEC.$spec_index"
