@@ -1,3 +1,6 @@
+* Sat Nov 23 2002 <gerbier@users.sourceforge.net> 1.1-0
+- filter "(none)" answer from rpm queries
+
 * Thu Oct 22 2002 <gerbier@users.sourceforge.net> 1.0-0
 - replace vi by %define
 - add command lines options (-h : help, -v : verbose, -V: version)

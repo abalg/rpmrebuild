@@ -65,7 +65,7 @@ function Interrog
 # build general tags
 function SpecFile
 {
-	HOME=$MY_LIB_DIR rpm --query --spec_spec ${PAQUET}
+	HOME=$MY_LIB_DIR rpm --query --spec_spec ${PAQUET} | grep -v "(none)$"
 }
 ###############################################################################
 # build the list of files in package
