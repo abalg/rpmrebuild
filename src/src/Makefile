@@ -52,9 +52,9 @@ PLUGINS      = file2pacDep.plug \
 		uniq.plug \
 		uniq.sh
 
-PLUGINS_MANPAGES = file2pacDep.plug.1 \
-			demo.plug.1 \
-			uniq.plug.1
+PLUGINS_MANPAGES = file2pacDep.plug.1rrp \
+			demo.plug.1rrp \
+			uniq.plug.1rrp
 
 SOURCES =                \
    $(SCRIPTS)            \
