@@ -1,14 +1,5 @@
 rpm alias --spec_preamble --qf \
 '\
-# Do not try autogenerate prereq/conflicts/obsoletes and check files\n\
-\%undefine __check_files\n\
-\%undefine __find_prereq\n\
-\%undefine __find_conflicts\n\
-\%undefine __find_obsoletes\n\
-# Be sure buildpolicy set to do nothing\n\
-\%define __spec_install_post \%\{nil\}\n\
-# Something that need for rpm-4.1\n\
-\%define _missing_doc_files_terminate_build	0\n\
 %|BUILDHOST?{\
 [#BUILDHOST:    %{BUILDHOST}\n]\
 }|\
