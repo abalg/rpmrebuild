@@ -28,6 +28,7 @@
 # <file_user>   - file's user id
 # <file_group>  - file's group id
 # <file_verify> - file's verify flags (as %{FILEVERIFYFLAGS:octal})
+# <file_lang>   - file's language     (as %{FILELANGS})
 # <file>        - file name
 ################################################################
 
@@ -39,7 +40,7 @@ m_val="missingok " # missignok
 n_val="noreplace " # noreplace
 g_val="%ghost "    # ghost
 
-# Should be in tha same order as in rpm.
+# Should be in the same order as in rpm.
 VERIFY_FLAGS="md5 size link user group mtime mode rdev"
 
 while :; do
@@ -50,6 +51,7 @@ while :; do
    read file_user
    read file_group
    read file_verify
+   read file_lang
    read file
 
    if [ -e "$file" ]; then
@@ -58,6 +60,9 @@ while :; do
       miss_str='# MISSING: '
    fi
 
+   # language handling
+   lang_str=""
+   [ "X$file_lang" = "X" ] || lang_str="%lang($file_lang) "
    
    # %dir handling
    dir_str=""
@@ -130,5 +135,5 @@ while :; do
       verify_str="${non_verify_par:+%verify(not ${non_verify_par%?}) }" 
    fi
 
-   echo "${miss_str}${dir_str}${fflags_str}${attr_str}${verify_str}\"${file}\""
+   echo "${miss_str}${lang_str}${dir_str}${fflags_str}${attr_str}${verify_str}\"${file}\""
 done
