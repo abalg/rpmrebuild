@@ -1,4 +1,8 @@
-* Sat Dec  3 2002 <valery_reznic@users.sourceforge.net> 1.2-0
+* Mon Dec 10 2002 <gerbier@users.sourceforge.net> 1.2-1b
+- add man page
+- fix bug with % in changelog
+
+* Sat Dec  3 2002 <valery_reznic@users.sourceforge.net> 1.2-1a
 - added long options
 
 * Sat Dec  2 2002 <valery_reznic@users.sourceforge.net> 1.2-0
