@@ -1,17 +1,21 @@
-* Mon Dec 18 2002 <valery_reznic@users.sourceforge.net> 1.2-1b
+* Mon Dec 18 2002 <valery_reznic@users.sourceforge.net> 1.3-1
 - more simple and robust filter
 
-* Mon Dec 10 2002 <valery_reznic@users.sourceforge.net> 1.2-1b
+* Thu Dec 12 2002 <gerbier@users.sourceforge.net> 1.3.1
+- add filter option for "pluggins"
+- rewrite --resolv-dep as pluggin
+
+* Mon Dec 10 2002 <valery_reznic@users.sourceforge.net> 1.3-0
 - change long options name to be more consistant
 - added support for %%lang
 
-* Mon Dec 10 2002 <gerbier@users.sourceforge.net> 1.2-1b
+* Mon Dec 10 2002 <gerbier@users.sourceforge.net> 1.3.0
 - add man page
 - fix bug with % in changelog
 - add -r|--resolv-dep option
 - add french translation in specfile
 
-* Sat Dec  3 2002 <valery_reznic@users.sourceforge.net> 1.2-1a
+* Sat Dec  3 2002 <valery_reznic@users.sourceforge.net> 1.3.0
 - added long options
 
 * Sat Dec  2 2002 <valery_reznic@users.sourceforge.net> 1.2-0
