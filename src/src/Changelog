@@ -1,3 +1,7 @@
+2002-09-23 Eric Gerbier <gerbier@users.sourceforge.net> 0.6.0
+	* add triggers (thanks to Han Holl <han.holl@prismant.nl>
+	* add many other spec tags (icon, exlude*, serial, provides, conflicts)
+
 2002-09-20 Eric Gerbier <gerbier@users.sourceforge.net> 0.5.0
 	* try to have it work on not-redhat
 	* the rpm package is now signed with my gpg key
