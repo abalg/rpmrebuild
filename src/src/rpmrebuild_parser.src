@@ -108,9 +108,11 @@ function CommandLineParsing
 	specfile=""
 	verify="yes"
 	rpm_verbose="--quiet"
-	export keep_perm="no"
-	export comment_missing="no"
-	export warning="no"
+
+	export RPMREBUILD_COMMENT_MISSING="no"
+	export RPMREBUILD_PUG_FROM_FS="no"
+	export RPMREBUILD_WARNING="no"
+
 	PAQUET=""
 	PAQUET_NAME=""
 
@@ -469,8 +471,13 @@ function CommandLineParsing
 			comment-missing)
 				RequeredArgument || return
 				case "x$OPTARG" in
-			   		x[yY]*) comment_missing="yes";;
-                           		*)      comment_missing="no";;
+			   		x[yY]*)
+						RPMREBUILD_COMMENT_MISSING="yes"
+					;;
+
+                           		*)
+						RPMREBUILD_COMMENT_MISSING="yes"
+					;;
 				esac
 			;;
 
@@ -497,15 +504,14 @@ function CommandLineParsing
 
 			package)
                    		package_flag="-p"
-                	   	comment_missing="no"
                 	;;
 
 			pug-from-db)
-				keep_perm="no"
+				RPMREBUILD_PUG_FROM_FS="no"
 			;;
 
 			pug-from-fs)
-				keep_perm="yes"
+				RPMREBUILD_PUG_FROM_FS="yes"
 			;;
 
 			spec-only)
@@ -533,7 +539,7 @@ function CommandLineParsing
 			;;
 
 			warning)
-				warning="yes"
+				RPMREBUILD_WARNING="yes"
 			;;
 
 			*)

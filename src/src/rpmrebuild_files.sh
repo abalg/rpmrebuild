@@ -32,9 +32,10 @@
 # <file>        - file name
 #
 # Environment:
-#   keep_perm - if value is 'yes', use permission, owner and group from
-#               filesystem, otherwise - from package query
-#   comment_missing  - 'yes' - comment missing files, otherwise - nothing
+#   RPMREBUILD_PUG_FROM_FS - if value is 'yes', use permission, owner and group
+#                            from filesystem, otherwise - from package query
+#   RPMREBUILD_COMMENT_MISSING  - 'yes' - comment missing files,
+#                                  otherwise - nothing
 ################################################################
 
 FFLAGS="d c s m n g"
@@ -70,7 +71,7 @@ while :; do
       x*) ;;
    esac
    miss_str=""
-   if [ "X$comment_missing" = "Xyes" ]; then
+   if [ "X$RPMREBUILD_COMMENT_MISSING" = "Xyes" ]; then
       if [ -e "$file" ]; then
          miss_str=""
       else 
@@ -119,7 +120,7 @@ while :; do
    fi
 
    # %attr handling
-   if [ "X$keep_perm" = "Xyes" ]; then
+   if [ "X$RPMREBUILD_PUG_FROM_FS" = "Xyes" ]; then
    	attr_str=""
    else
    	file_perm="${file_perm#??}"
@@ -155,15 +156,20 @@ while :; do
 
    # test for jokers in file : globing seems not to work
    # for performance reason, just if warning flag
-   if [ "X$warning" = "Xyes" ]; then
+   if [ "X$RPMREBUILD_WARNING" = "Xyes" ]; then
 	case "$file" in
       		*[*?]*)
-		echo -e "\n-------------------------------- WARNING ------------------------------------------" 1>&2
-		echo -e "file named $file contains globbing characters\nrpm building may not work" 1>&2
-		echo -e "-----------------------------------------------------------------------------------" 1>&2
+			cat <<-WARN_TXT 1>&2 || exit
+			
+			-------------------------------- WARNING ------------------------------------------
+			file named $file contains globbing characters
+			rpm building may not work
+			-----------------------------------------------------------------------------------
+			WARN_TXT
 		;;
 	esac
    fi
 
    echo "${miss_str}${lang_str}${dir_str}${fflags_str}${attr_str}${verify_str}\"${file}\""
-done
+done || exit
+exit 0

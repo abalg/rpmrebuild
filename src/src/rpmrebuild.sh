@@ -499,7 +499,7 @@ function Main
 		# to use perm/owner/group from the package.
 		# But because it anyway default and if one has a reason
 		# to change it, one can. I am not force it here anymore.
-		#keep_perm="no"  # Be sure use perm, owner, group from the pkg query.
+		#RPMREBUILD_PUG_FROM_FS="no"  # Be sure use perm, owner, group from the pkg query.
 	fi
 
 	if [ "X$spec_only" = "Xyes" ]; then
