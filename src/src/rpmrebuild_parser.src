@@ -853,6 +853,8 @@ function CommandLineParsing
 	PAQUET=""
 	PAQUET_NAME=""
 
+	export LONG_OPTION
+
 	while getopts "a:bc:d:D:ef:F:hi:km:pPRs:S:vVwy:-:" opt; do
 		OPTIND_INCR=""
 		case "$opt" in
