@@ -147,13 +147,20 @@ function UnrecognizedOption
 	exit 1
 }
 
+function AmbiguousOption
+{
+	Echo "$0: ambiguous option \`--$LONG_OPTION'"
+	Try_Help
+	exit 1
+}
+
 ###############################################################################
 function RequeredArgument
 {
 	[ "x$SHORT_OPTION" = "x-" ] || return 0  # we use short option,
                                                  # do nothing
 	if [ "$OPTARG_EXIST" ]; then
-		OPTIND=`expr $OPTIND + 1`
+		[ "$OPTIND_INCR" ] && OPTIND=`expr $OPTIND + 1`
 	else
 		Echo "$0: option \`$LONG_OPTION' requires an argument"
 		Try_Help
@@ -212,41 +219,93 @@ do
 		y) LONG_OPTION=verify;;
 
                 -)
-                   LONG_OPTION="$OPTARG"
-                   if [ $OPTIND -le $# ]; then
-                      eval OPTARG=\$$OPTIND
-                      OPTARG_EXIST=1
-                   else
-                      OPTARG=""
-                      OPTARG_EXIST=""
-                   fi
-                ;;
+	        	case "x$OPTARG" in
+				x*=*)
+					LONG_OPTION=${OPTARG%%=*}
+					OPTARG=${OPTARG#*=}
+					OPTARG_EXIST=1
+				;;
 
-		*)
-			Try_Help
-			exit 1
-		;;
+				*)
+                   			LONG_OPTION="$OPTARG"
+                   			if [ $OPTIND -le $# ]; then
+                      				eval OPTARG=\$$OPTIND
+                      				OPTARG_EXIST=1
+						OPTIND_INCR=1
+                   			else
+                      				OPTARG=""
+                      				OPTARG_EXIST=""
+                   			fi
+				;;
+			esac
+               	;;
 	esac
 
 	SHORT_OPTION="$opt"
 	case "$LONG_OPTION" in
+		a | \
+		au | \
+		aut | \
+		auto )
+			AmbiguousOption
+		;;
+
+		ad | \
+		add | \
+		addi | \
+		addit | \
+		additi | \
+		additio | \
+		addition | \
+		additiona | \
 		additional)
 			RequeredArgument
 			additional="$OPTARG"
 		;;
 
+		autop | \
+		autopr | \
+		autopro | \
+		autoprov | \
+		autoprovi | \
+		autoprovid | \
 		autoprovide)
 			autoprovide=y
 		;;
 
+		autor | \
+		autore | \
+		autoreq | \
+		autorequ | \
+		autorequi | \
+		autorequir | \
 		autorequire)
 			autorequire=y
 		;;
 
+		b | \
+		ba | \
+		bat | \
+		batc | \
 		batch)
 			batch=y
 		;;
 
+		c | \
+		co | \
+		com | \
+		comm | \
+		comme | \
+		commen | \
+		comment | \
+		comment- | \
+		comment-m | \
+		comment-mi | \
+		comment-mis | \
+		comment-miss | \
+		comment-missi | \
+		comment-missin | \
+		comment-missing | \
 		comment-missing)
 			RequeredArgument
 			case "x$OPTARG" in
@@ -255,7 +314,27 @@ do
 			esac
 		;;
 
-		dir)
+		d)
+			AmbiguousOption
+		;;
+
+		de | \
+		def | \
+		defi | \
+		defin | \
+		define)
+			RequeredArgument
+			rpm_defines="$rpm_defines --define '$OPTARG'"
+		;;
+
+		di | \
+		dir | \
+		dire | \
+		direc | \
+		direct | \
+		directo | \
+		director | \
+		directory)
 			RequeredArgument
 			rpmdir="$OPTARG"
 			rpm_defines="$rpm_defines --define '_rpmdir $rpmdir'" 
@@ -266,15 +345,23 @@ do
 			}
 		;;
 
-		define)
-			RequeredArgument
-			rpm_defines="$rpm_defines --define '$OPTARG'"
-		;;
-
+		e | \
+		ed | \
+		edi | \
+		edit | \
+		edit- | \
+		edit-s | \
+		edit-sp | \
+		edit-spe | \
 		edit-spec)
 			editspec=y
 		;;
 
+		f | \
+		fi | \
+		fil | \
+		filt | \
+		filte | \
 		filter)
 			RequeredArgument
 			ExtractProgName $OPTARG  # set progname
@@ -289,55 +376,124 @@ do
 			fi
 		;;
 			
-		keep-perm | pug-from-fs)
+		h | \
+		he | \
+		hel | \
+		help)
+			Usage
+			exit 0
+		;;
+
+		k | \
+		ke | \
+		kee | \
+		keep | \
+		keep- | \
+		keep-p | \
+		keep-pe | \
+		keep-per | \
+		keep-perm)
 			keep_perm=1
 		;;
 
+		m | \
+		mo | \
+		mod | \
+		modi | \
+		modif | \
 		modify)
 			RequeredArgument
 			modify="$OPTARG"
 		;;
 
-		pug-from-db)
-			keep_perm=""
+		p)
+			AmbiguousOption
 		;;
 
-		package)  
+		pa | \
+		pac | \
+		pack | \
+		packa | \
+		packag | \
+		package)
                    package_flag="-p"
                    comment_missing=0
                 ;;
 
+		pu | \
+		pug | \
+		pug- | \
+		pug-f | \
+		pug-fr | \
+		pug-fro | \
+		pug-from | \
+		pug-from-)
+			AmbiguousOption
+		;;
+
+		pug-from-d | \
+		pug-from-db)
+			keep_perm=""
+		;;
+
+		pug-from-f | \
+		pug-from-fs) Alias to keep-perm
+			keep_perm=1
+		;;
+
+		s | \
+		sp | \
+		spe | \
+		spec | \
+		spec- | \
+		spec-o | \
+		spec-on | \
+		spec-onl | \
 		spec-only)
 			RequeredArgument
 			spec_only=y
 			specfile="$OPTARG"
 		;;
 
-		help)
-			Usage
-			exit 0
+		v | \
+		ve | \
+		ver )
+			AmbiguousOption
 		;;
 
+		verb | \
+		verbo | \
+		verbos | \
 		verbose)
 			rpm_verbose="--verbose"
 		;;
 
-		version)
-			echo "$VERSION"
-			exit 0
-		;;
-
-		warning)
-			warning=y
-		;;
-
-
+		veri | \
+		verif | \
 		verify)
 			RequeredArgument
 			case "x$OPTARG" in
 			   x[yY]*) verify="1";;
                            *)      verify="0";;
 			esac
+		;;
+
+		vers | \
+		versi | \
+		versio | \
+		version)
+			echo "$VERSION"
+			exit 0
+		;;
+
+		w | \
+		wa | \
+		war | \
+		warn | \
+		warni | \
+		warnin | \
+		warning)
+			warning=y
 		;;
 
 		*)
