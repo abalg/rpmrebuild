@@ -101,7 +101,7 @@ do
 		d) 
 			rpmdir="$OPTARG"
 			mkdir -p -- "$rpmdir"
-			rpmdir="$(cd $rpmdir && echo $PWD/)" || {
+			rpmdir="$(cd $rpmdir && echo $PWD)" || {
 				Error "Can't changedir to '$rpmdir'"
 				exit 1
 			}
@@ -148,7 +148,7 @@ do
 	esac
 done
 
-# If no rpmdir was specified set variable to the naitive rpmdir value
+# If no rpmdir was specified set variable to the native rpmdir value
 if [ -z "$rpmdir" ]
 then
    rpmdir="$(rpm --eval %_rpmdir)" || exit
@@ -231,9 +231,7 @@ function SpecGenerationOnly
 		SpecFile && FilesSpecFile 
 		} || return
 	else
-		{ 
-		SpecFile && FilesSpecFile 
-		} > $specfile || return
+		{ SpecFile && FilesSpecFile; } > $specfile || return
 	fi
 	return 0
 }
