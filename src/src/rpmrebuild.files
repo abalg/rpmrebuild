@@ -5,6 +5,7 @@
 /usr/local/bin/rpmrebuild_files.sh
 %dir /etc/rpmrebuild
 %config /etc/rpmrebuild/.popt
+/etc/rpmrebuild/rpmrebuild_popt
 %doc AUTHORS
 %doc COPYING
 %doc COPYRIGHT
