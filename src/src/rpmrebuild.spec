@@ -45,7 +45,7 @@ cp -a . ${RPM_BUILD_ROOT-/}
 
 %changelog
 * Mon Sep 30 2002  <gerbier@users.sourceforge.net> 0.7.0
-- work on local dir (thanks Valery Reznic)
+- work on local dir (thanks Valery Reznic <valery_reznic@users.sourceforge.net>)
 
 * Mon Sep 23 2002  <gerbier@users.sourceforge.net> 0.6.0
 - add triggers (thanks to Han Holl <han.holl@prismant.nl>
