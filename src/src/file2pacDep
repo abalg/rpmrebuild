@@ -1,0 +1,112 @@
+#!/bin/bash
+###############################################################################
+#   file2pac 
+#      it's a part of the rpmrebuild project
+#
+#    Copyright (C) 2002 by Eric Gerbier
+#    Bug reports to: gerbier@users.sourceforge.net
+#      or	   : valery_reznic@users.sourceforge.net
+#    $Id$
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+###############################################################################
+
+# this is a plugin for rpmrebuild
+# it read a specfile on STDIN, change all file dependencies into package dependencies
+# and write all on STDOUT
+
+# first (basic) algo
+#function analyse () {
+#	tag=$1
+#	shift
+#	name=$1
+#	shift
+#	remain=$*
+#	if [ -z "$remain" ]
+#	then
+#		rpm --query --qf 'Requires: %{NAME} = %{VERSION}-%{RELEASE}\n' --whatprovides $name
+#	else
+#		echo "$tag $name $remain"
+#	fi
+#}
+# loop on STDIN
+#while read line
+#do
+#	search for motif
+#	out=$(echo $line | grep "^Requires:")
+#	if [ -z "$out" ]
+#	then
+#		echo "$line"
+#	else
+#		analyse $line
+#	fi
+#done
+# this works, is very simple to understand, but very slow too
+# because of too many calls to rpm (one by matching line)
+
+# so we had another more complicated algo
+# to search all motifs, then transform all with only one call
+# but Requires: tag should only be in first specfile part, before multi-line tags
+
+function analyse ()
+# build the list of file dependencies
+# without any version dependence
+{
+	tag=$1
+	shift
+	name=$1
+	shift
+	remain=$*
+	if [ -z "$remain" ]
+	then
+		liste="$liste $name"
+	else
+		echo "$tag $name $remain"
+	fi
+}
+
+function transform () {
+	# rewrite require to file into require to packages
+	if [ -n "$liste" ]
+	then
+		#echo "liste =\"$liste\""
+		rpm --query --qf 'Requires: %{NAME} = %{VERSION}-%{RELEASE}\n' --whatprovides $liste | sort -u
+	fi
+}
+
+liste=""
+fin=""
+while read line
+do
+	if [ -z "$fin" ]
+	then
+		if [ -z "$line" ]
+		then
+			# multi-line tag
+			transform
+			echo "$line"
+			fin=y
+		else
+			# search motif
+			out=$(echo $line | grep "^Requires:")
+			if [ -z "$out" ]
+			then
+				echo "$line"
+			else
+				analyse $line
+			fi
+		fi
+	else
+		# after blank line no other change
+		echo "$line"
+	fi
+done

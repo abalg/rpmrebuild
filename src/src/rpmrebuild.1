@@ -26,7 +26,10 @@ rpm package result will be written in  <\fIdirectory\fP>.
 open the generated specfile with your favorite editor before rpm build
 .TP 
 \fB\-f|\-\-filter\fR <\fIfile\fP>
-apply an externel filter to the specfile before rpm build (see below PLUGINS)
+.LP 
+\fB\-f|\-\-filter\fR <\fI"file arguments"\fP>
+.br 
+apply an externel filter to the specfile before rpm build (see below PLUGINS). if more than one filter is called, they are concateneted.
 .TP 
 \fB\-k|\-\-keep\-perm|\-\-pug\-from\-fs\fR
 keep installed files permission, uid and gid (do not force to orginal files permission, uid and gid saved in rpm database)

@@ -115,6 +115,17 @@ function RequeredArgument
 	fi
 }
 ###############################################################################
+function ExtractProgName
+{
+	echo $1
+}
+###############################################################################
+function ExtractProgArg
+{
+	shift
+	echo $*
+}
+###############################################################################
 function CommandLineParsing
 {
 # Default flags' values. To be sure they don't came from environment
@@ -181,22 +192,24 @@ do
 
 		filter)
 			RequeredArgument
+			progname=$(ExtractProgName $OPTARG)
+			progarg=$(ExtractProgArg $OPTARG)
 			# search in PATH
-			lookfor=$(type -p $OPTARG)
+			lookfor=$(type -p $progname)
 			if [ "$lookfor" ]
 			then
-				OPTARG=$lookfor
+				progname=$lookfor
 			else
-				Error "can not find plugin $OPTARG in PATH"
-				exit 1
+				# else search in plugin directory
+				progname=${MY_PLUGIN_DIR}/$progname
 			fi
 		
-			# check for execute
-			if [ -f $OPTARG -a -x $OPTARG ]
+			# check if executable ?
+			if [ -f $progname -a -x $progname ]
 			then
-				filter="$filter | $OPTARG"
+				filter="$filter | $progname $progarg"
 			else
-				Error "can not execute plugin $lookfor"
+				Error "can find or execute plugin $progname"
 				exit 1
 			fi
 		;;
@@ -426,6 +439,7 @@ function my_exit
 # a shell to build an rpm file from the rpm database
 
 MY_LIB_DIR=/usr/lib/rpmrebuild
+MY_PLUGIN_DIR=${MY_LIB_DIR}/plugins
 
 CommandLineParsing "$@" || exit
 IsPackageInstalled      || exit

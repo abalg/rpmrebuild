@@ -9,6 +9,8 @@
      /usr/lib/rpmrebuild/run.sh
      /usr/lib/rpmrebuild/popt-without-POPTdesc
      /usr/lib/rpmrebuild/popt-with-POPTdesc
+%dir /usr/lib/rpmrebuild/plugins
+     /usr/lib/rpmrebuild/plugins/file2pacDep
 %dir /usr/local/man/man1
      /usr/local/man/man1/rpmrebuild.1
 
