@@ -1,0 +1,17 @@
+INSTALL_RUN := install --mode=555
+INSTALL_RO  := install --mode=444
+INSTALL_MAN := install --mode=644
+LN          := ln --symbolic --force --no-dereference
+MKDIR       := mkdir --parents
+RM          := rm --force
+RMDIR       := rm --force --recursive
+
+TARGET_DIR    := $(DESTDIR)/usr/bin
+TARGET_LIB    := $(DESTDIR)/usr/lib/rpmrebuild
+TARGET_PLUGIN := $(DESTDIR)/usr/lib/rpmrebuild/plugins
+TARGET_MAN    := $(DESTDIR)/usr/share/man/man1
+
+define MakeManPage
+	@$(RM) $@
+	@read VERSION < $(TOP_DIR)/Version && sed -e "s/@VERSION@/$$VERSION/g" < $<  > $@ || { $(RM) $@; exit 1; }
+endef
