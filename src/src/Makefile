@@ -12,40 +12,63 @@ RPM_DEFINES =                              \
    --define '_srcrpmdir $(RPM_SRPMS_DIR)'  \
    --define '_rpmfilename %%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm'
 
-
 TAR_FILE=$(RPM_SOURCE_DIR)/rpmrebuild.tar.gz
 TARGET_DIR = $(ROOT)/usr/local/bin
 TARGET_ETC = $(ROOT)/etc/rpmrebuild
 TARGET_LIB = $(ROOT)/usr/lib/rpmrebuild
 
-SCRIPTS = rpmrebuild.sh rpmrebuild_files.sh
-SOURCES =           \
-   $(SCRIPTS)       \
-   rpmrebuild_popt  \
-   MANIFEST         \
-   Makefile         \
-   Changelog        \
-   rpmrebuild.spc   \
-   rpmrebuild.files \
-   Version          \
-   Release          \
+SCRIPTS     = rpmrebuild.sh 
+LIB_SCRIPTS = rpmrebuild_files.sh run.sh
+POPTS       = rpmrebuild_popt popt-without-POPTdesc popt-with-POPTdesc
+SPEC_SCRIPTS = spec.scripts.input spec.scripts.make.sh remove_from_popt.make.include
+
+SOURCES =                \
+   $(SCRIPTS)            \
+   $(LIB_SCRIPTS)        \
+   $(POPTS)              \
+   $(SPEC_SCRIPTS)       \
+   MANIFEST              \
+   Makefile              \
+   Changelog             \
+   rpmrebuild.spc        \
+   rpmrebuild.files      \
+   Version               \
+   Release               \
 
 TAR_NAMES = $(SOURCES) rpmrebuild.spec
 
+define Spec
+   Version="`cat Version`"      && \
+   Release="`cat Release`"      && \
+   {                               \
+      echo "Version: $$Version" && \
+      echo "Release: $$Release" && \
+      cat rpmrebuild.spc        && \
+      cat spec.scripts          && \
+      echo "%changelog"         && \
+      cat Changelog             && \
+      :                         ;  \
+   }
+endef
+
 all: rpmrebuild.spec
 
-rpmrebuild.spec: rpmrebuild.spc Version Release Changelog 
+rpmrebuild.spec: rpmrebuild.spc spec.scripts Version Release Changelog 
 	rm --force $@
-	Version="`cat Version`" && Release="`cat Release`" && { echo "Version: $$Version" && echo "Release: $$Release" && cat rpmrebuild.spc && echo "%changelog" && cat Changelog; } > $@ 
+	$(Spec) > $@
+
+spec.scripts:
+	rm --force $@
+	/bin/sh spec.scripts.make.sh < $@.input > $@
 
 install:
 	mkdir --parent                   $(TARGET_DIR)
-	install --mode=555 rpmrebuild.sh $(TARGET_DIR)
+	install --mode=555 $(SCRIPTS)    $(TARGET_DIR)
 	cd $(TARGET_DIR) && ln -sf rpmrebuild.sh rpmrebuild
 
-	mkdir --parent                         $(TARGET_LIB)
-	install --mode=555 rpmrebuild_files.sh $(TARGET_LIB)
-	install --mode=444 rpmrebuild_popt     $(TARGET_LIB)
+	mkdir --parent                                $(TARGET_LIB)
+	install --mode=555 $(LIB_SCRIPTS)             $(TARGET_LIB)
+	install --mode=444 $(POPTS)                   $(TARGET_LIB)
 	cd $(TARGET_LIB) && ln -sf rpmrebuild_popt .popt
 
 tar:	rpmrebuild.spec
@@ -53,8 +76,12 @@ tar:	rpmrebuild.spec
 
 rpm:	tar
 	mkdir --parent $(RPM_BUILD_DIR)
-	rpm -ba -v $(RPM_DEFINES) rpmrebuild.spec
+	rpm -ba $(RPM_DEFINES) rpmrebuild.spec
 	rpm --resign rpmrebuild*.rpm
 
+t:
+	rpm -bb -v $(RPM_DEFINES) a.a
+
 clean:
-	rm -rf $(ROOT) $(RPM_BUILD_DIR) rpmrebuild.spec *.rpm rpmrebuild.tar.gz
+	rm -rf $(ROOT) $(RPM_BUILD_DIR)
+	rm  -f rpmrebuild.spec spec.scripts *.rpm rpmrebuild.tar.gz
