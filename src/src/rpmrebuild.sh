@@ -314,7 +314,6 @@ do
 		comment-miss | \
 		comment-missi | \
 		comment-missin | \
-		comment-missing | \
 		comment-missing)
 			RequeredArgument
 			case "x$OPTARG" in
@@ -764,12 +763,10 @@ then
    BUILDROOT="/"
    IsPackageInstalled      || exit
    if [ "$verify" -eq "1" ]; then
-      comment_missing=0
       out=$(VerifyPackage)    || exit
       if [ -n "$out" ]; then
 	 Warning "some files have been modified:\n$out"
 	 QuestionsToUser || exit
-         comment_missing=1
       fi
    else # NoVerify
       :
