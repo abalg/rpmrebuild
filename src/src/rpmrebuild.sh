@@ -477,7 +477,6 @@ function Main
 	CommandLineParsing "$@" || return
 	[ "x$NEED_EXIT" = "x" ] || return $NEED_EXIT
 
-	[ "X$spec_only" = "Xyes" ] && BUILDROOT="/"
 	if [ "x" = "x$package_flag" ]; then
    		[ "X$modify" = "Xyes" ] || BUILDROOT="/"
    		IsPackageInstalled || return
@@ -499,17 +498,19 @@ function Main
 		#keep_perm="no"  # Be sure use perm, owner, group from the pkg query.
 	fi
 
-	SpecGeneration   || return
-	[ "X$spec_only" = "Xyes" ] || {
+	if [ "X$spec_only" = "Xyes" ]; then
+		BUILDROOT="/"
+		SpecGeneration   || return
+		Processing       || return
+	else
+		SpecGeneration   || return
 		CreateBuildRoot  || return
-	}
-	Processing || return
-	[ "X$spec_only" = "Xyes" ] || {
+		Processing       || return
 		RpmBuild         || return
 		RpmFileName      || return
 		echo "result: ${RPMFILENAME}"
 		InstallationTest || return
-	}
+	fi
 	return 0
 }
 
