@@ -20,7 +20,7 @@ TARGET_ETC = $(ROOT)/etc/rpmrebuild
 SCRIPTS = rpmrebuild.sh rpmrebuild_files.sh
 SOURCES =           \
    $(SCRIPTS)       \
-   .popt            \
+   rpmrebuild_popt  \
    MANIFEST         \
    Makefile         \
    Changelog        \
@@ -38,11 +38,13 @@ rpmrebuild.spec: rpmrebuild.spc Version Release Changelog
 	Version="`cat Version`" && Release="`cat Release`" && { echo "Version: $$Version" && echo "Release: $$Release" && cat rpmrebuild.spc && echo "%changelog" && cat Changelog; } > $@ 
 
 install:
-	mkdir --parent $(TARGET_DIR)
-	mkdir --parent $(TARGET_ETC)
+	mkdir --parent                $(TARGET_DIR)
 	install --mode=755 $(SCRIPTS) $(TARGET_DIR)
 	cd $(TARGET_DIR) && ln -sf rpmrebuild.sh rpmrebuild
-	install --mode=444 .popt      $(TARGET_ETC)
+
+	mkdir --parent                     $(TARGET_ETC)
+	install --mode=444 rpmrebuild_popt $(TARGET_ETC)
+	cd $(TARGET_ETC) && ln -sf rpmrebuild_popt .popt
 
 tar:	rpmrebuild.spec
 	List=`cat MANIFEST` && tar -cvzf $(TAR_FILE) $(TAR_NAMES) $$List
