@@ -1,0 +1,151 @@
+.TH "rpmrebuild_plugins" "1" "2.0.0" "Valery Reznic" "rpm tools"
+.SH "NAME"
+rpmrebuild_plugins \- is an engine to expand \fBrpmrebuild\fP functionality.
+.SH "SYNOPSIS"
+rpmrebuild [\fInon-plugins-option\fP] [\fIplugins-option\fP] <\fIpackagename\fP>
+.br 
+or
+.br 
+rpm \-\-rpmrebuild [\fInon-plugins-option\fP] [\fIplugins-option\fP] <\fIpackagename\fP>
+.SH "DESCRIPTION"
+\fBrpmrebuild\fP itself try to do it's best to reconstruct rpm package as close to original as possible.
+.LP
+rpmrebuild plugins's aim is opposite \- somehow change rebuilded rpm.
+.SH "RPMREBUILD WITHOUT PLUGINS"
+Without plugins process of rpm rebuilding looks like:
+.TP
+\fBquery\fP \-
+Query rpm to be rebuilded for the different pieces of information.
+.TP
+\fBconcatenate\fP \-
+Create from these pieces specfile.
+.TP
+\fBbuild\fP \-
+Use specfile to build rpm.
+.SH "RPMREBUILD WITH PLUGINS"
+With plugins process of rpm rebuilding looks like:
+.TP
+\fBquery\fP \-
+Query rpm to be rebuilded for the different pieces of information.
+.TP
+\fBchange parts\fP \-
+Change parts of the spec created by query.
+.TP
+\fBconcatenate\fP \-
+Create specfile from the pieces.
+.TP
+\fBchange whole\fP \-
+Change concatenated specfile.
+.TP
+\fBbuild\fP \-
+use specfile to build rpm.
+.SH SPECFILE PIECES
+"Query" queries for the following information:
+.RS
+.br
+preamble
+.br
+conflicts
+.br
+obsoletes
+.br
+provides
+.br
+requires
+.br
+description
+.br
+files
+.br
+triggers
+.br
+pre
+.br
+post
+.br
+preun
+.br
+postun
+.br
+verifyscript
+.br
+changelog
+.RE
+.SH SPECFILE CONCATENATION
+"Concatenate" create 'full' specfile from the pieces.
+It do following:
+.LP
+add AutoReq / AutoProv tags 
+.br
+add BuildRoot tag
+.br
+add some defines to adjust rpm's behavour.
+.br
+double all '%' - it'll prevent rpm from attempting expand %something as macro.
+.br
+add '%description' before description
+.br
+add '%files' before files
+.br
+add '%changelog' before changelog
+.SH "PLUGINS TYPES"
+rpm building (or rebuilding) process has two inputs: specfile and
+package's files under buildroot directory. So, there are two plugins type:
+.TP
+\- for specfile modification.
+.TP
+\- for files (under buildrooot) modification.
+.SH "PLUGIN'S INTERFACE"
+Plugins are executed AFTER rpm package is queried and BEFORE new package is
+rebuilded in the order specified on the command line.
+.TP
+Exit status
+Any plugin should exit with status 0 on success, and any other value on failure.
+Failed plugin will immediatly terminate whole rpmrebuild.
+.TP 
+Environment variables
+all plugins get following environment variables:
+.RS
+.TP
+RPMREBUILD_TMPDIR
+directory for plugin's temprary files. plugin no need remove this direcory \- 
+rpmrebuild will care.
+.TP
+RPMREBUILD_PLUGINS_DIR
+directrory with plugins.
+.TP
+RPMREBUILD_COMMENT_MISSING
+if 'yes' missing files commented in the 'files' part of specfile
+.TP
+RPMREBUILD_PUG_FROM_FS
+if 'yes' permission owner and group in the part file were taken from filesystem,
+otherwise \- from rpm's database.
+.TP
+RPMREBUILD_WARNING
+if 'yes' rpmrebuild will produce warning for filenames with glob characters.
+.TP
+PATH
+This variable is set to $RPMREBUILD_PLUGINS_DIR:$PATH
+.TP
+LONG_OPTION
+Contains long option (without \-\-) which was used to invoke plugin.
+.TP
+RPM_BUILD_ROOT
+For plugins modifing files under buildroot set to buildroot.
+For other plugins \- empty.
+.RE
+.TP
+stdin and stdout
+Plugins for specfile modification (i.e., invoked with \-\-spec\-\change\-*)
+got "source" spec file from stdin and have to write resulting spec file to
+stdout.
+.SH "AUTHORS"
+.LP 
+Eric Gerbier <gerbier@users.sourceforge.net>
+.br 
+Valery Reznic <valery_reznic@users.sourceforge.net>
+.TP 
+See <URL:http://rpmrebuild.sourceforge.net/>.
+.SH "SEE ALSO"
+.LP 
+rpm(8), rpmbuild(8), rpmrebuild(1), plugins specific manpages
