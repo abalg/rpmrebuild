@@ -18,11 +18,6 @@ RPM_DEFINES :=                             \
 
 TAR_FILE := $(RPM_SOURCE_DIR)/rpmrebuild.tar.gz
 
-TARGET_DIR    := $(ROOT)/usr/bin
-TARGET_LIB    := $(ROOT)/usr/lib/rpmrebuild
-TARGET_PLUGIN := $(ROOT)/usr/lib/rpmrebuild/plugins
-TARGET_MAN    := $(ROOT)/usr/share/man/man1
-
 SCRIPTS     := rpmrebuild 
 
 LIB_SCRIPTS :=             \
@@ -84,16 +79,16 @@ TAR_NAMES_PLUGINS := $(shell $(MAKE) --quiet -C plugins tar_names)
 TAR_NAMES := $(SOURCES) rpmrebuild.spec $(TAR_NAMES_PLUGINS)
 
 define Spec
-   Version="`cat Version`"      && \
-   Release="`cat Release`"      && \
-   {                               \
-      echo "Version: $$Version" && \
+   Version="`cat Version`"             && \
+   Release="`cat Release`"             && \
+   {                                      \
+      echo "Version: $$Version"        && \
       echo "%define release $$Release" && \
-      cat rpmrebuild.spc        && \
-      cat spec.scripts          && \
-      echo "%changelog"         && \
-      cat Changelog             && \
-      :                         ;  \
+      cat rpmrebuild.spc               && \
+      cat spec.scripts                 && \
+      echo "%changelog"                && \
+      cat Changelog                    && \
+      :                                ;  \
    }
 endef
 
@@ -146,3 +141,4 @@ clean:
 	$(RM)    VERSION rpmrebuild.spec spec.scripts *.rpm rpmrebuild.tar.gz 
 	$(RM)    $(MANPAGES)
 	$(MAKE) -C plugins $@
+
