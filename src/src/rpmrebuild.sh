@@ -25,6 +25,7 @@ function Usage
 	echo "syntaxe : $0 [options] package"
 	echo "options :"
 	echo "-b : batch mode"
+	echo "-d dir : specify the working directory"
 	echo "-f filter : apply an external filter"
 	echo "-h : print this help"
 	echo "-k : keep installed files perm"
@@ -66,10 +67,24 @@ export PATH=$PATH:/usr/local/bin
 
 filter=
 verbose="--quiet"
-while getopts "bf:hkvV" opt
+while getopts "bd:f:hkvV" opt
 do
 	case "$opt" in
 	b) batch=y;;
+	d) workdir=$OPTARG
+	if [ -d $workdir ]
+	then
+		cd $workdir
+	elif [  -e $workdir ]
+	then
+		echo "$workdir is not a directory"
+		Usage
+		exit 1
+	else
+		mkdir -p $workdir
+		cd $workdir
+	fi
+	;;
 	f) lookfor=$(type -p $OPTARG)
 	[ "$lookfor" ] && OPTARG=$lookfor
 	[ -f $OPTARG -a -x $OPTARG ] && filter="$filter | $OPTARG";;
@@ -81,6 +96,7 @@ do
 	esac
 done
 
+echo "working dir : $PWD"
 #echo "filter= $filter"
 #exit
 
@@ -173,5 +189,5 @@ $BUILDCMD -bb $verbose --define "_rpmdir $PWD/" ${FIC_SPEC}
 
 QF_RPMFILENAME=$(rpm --eval %_rpmfilename)
 RPMFILENAME=$(rpm --query --queryformat "${QF_RPMFILENAME}" ${PAQUET})
-echo "result: ${RPMFILENAME}"
+echo "result: ${PWD}/${RPMFILENAME}"
 exit 0
