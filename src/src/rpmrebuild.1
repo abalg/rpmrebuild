@@ -67,6 +67,8 @@ used to specify an editor for specfile
 .SH "PLUGINS"
 .LP 
 rpmrebuild use may be extended with plugins, via the "\-\-filter" option.
+.LP 
+plugins are searched in PATH, then on /usr/lib/rpmrebuild/plugins
 .br 
 A plugin receive on STDIN the generated specfile, make any changes, and rewrite it on STDOUT.
 .TP 
