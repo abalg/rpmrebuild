@@ -83,7 +83,6 @@ function FilesSpecFile
 ###############################################################################
 function ChangeSpecFile
 {
-	echo -e "\n%changelog"
 	HOME=$MY_LIB_DIR rpm --query --spec_change ${PAQUET} | sed 's/%/%%/g'
 }
 
@@ -109,7 +108,7 @@ function RequeredArgument
 	if [ "$OPTARG_EXIST" ]; then
 		OPTIND=`expr $OPTIND + 1`
 	else
-		Echo "$0: option \`$LONG_OPTION' requries an argument"
+		Echo "$0: option \`$LONG_OPTION' requires an argument"
 		Try_Help
 		exit 1
 	fi
@@ -188,12 +187,19 @@ do
 			RequeredArgument
 			ExtractProgName $OPTARG  # set progname
 
-			# search in PATH
-			if type -p $progname > /dev/null
+			# search in PATH and expand for next test
+			lookfor=$(type -p $progname)
+			if [ -n "$lookfor" ]
 			then
-				filter="$filter | $OPTARG"
+				# check if executable ?
+				if [ -f $lookfor -a -x $lookfor ]
+				then
+					filter="$filter | $OPTARG"
+				else
+					Error "Can't execute '$lookfor'"
+				fi
 			else
-				Error "can't find or execute '$progname'"
+				Error "Can't find '$progname' in $PATH"
 				exit 1
 			fi
 		;;

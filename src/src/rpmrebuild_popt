@@ -45,12 +45,6 @@ Release:       \%O_Release\n\
 [Provides:      %{PROVIDES} %{PROVIDEFLAGS:depflags} %{PROVIDEVERSION}\n]\
 [Requires:      %{REQUIRENAME} %{REQUIREFLAGS:depflags} % {REQUIREVERSION}\n]\
 [\n%%description\n %{DESCRIPTION}\n\n]\
-[%%trigger%{TRIGGERTYPE} -p %{TRIGGERSCRIPTPROG} -- %{TRIGGERCONDS}\n%|TRIGGERSCRIPTS?{%{TRIGGERSCRIPTS}\n}|\n]\
-[%%pre -p %{PREINPROG}\n%|PREIN?{%{PREIN}\n}|\n]\
-[%%post -p %{POSTINPROG}\n%|POSTIN?{%{POSTIN}\n}|\n]\
-[%%preun -p %{PREUNPROG}\n%|PREUN?{%{PREUN}\n}|\n]\
-[%%postun -p %{POSTUNPROG}\n%|POSTUN?{%{POSTUN}\n}|\n]\
-[%%verifyscript -p %{VERIFYSCRIPTPROG}\n%|VERIFYSCRIPT?{%{VERIFYSCRIPT}\n}|\n]\
 '
 
 rpm alias --spec_files --qf \
@@ -69,5 +63,11 @@ rpm alias --spec_files --qf \
 
 rpm alias --spec_change --qf \
 '\
-%|CHANGELOGTIME?{[* %{CHANGELOGTIME:day} %{CHANGELOGNAME} \n\n%{CHANGELOGTEXT}\n\n]\n}:{}|\
+[\n%%trigger%{TRIGGERTYPE} -p %{TRIGGERSCRIPTPROG} -- %{TRIGGERCONDS}\n%|TRIGGERSCRIPTS?{%{TRIGGERSCRIPTS}\n}|]\
+[\n%%pre -p %{PREINPROG}\n%|PREIN?{%{PREIN}\n}|]\
+[\n%%post -p %{POSTINPROG}\n%|POSTIN?{%{POSTIN}\n}|]\
+[\n%%preun -p %{PREUNPROG}\n%|PREUN?{%{PREUN}\n}|]\
+[\n%%postun -p %{POSTUNPROG}\n%|POSTUN?{%{POSTUN}\n}|]\
+[\n%%verifyscript -p %{VERIFYSCRIPTPROG}\n%|VERIFYSCRIPT?{%{VERIFYSCRIPT}\n}|]\
+%|CHANGELOGTIME?{\n%%changelog\n[* %{CHANGELOGTIME:day} %{CHANGELOGNAME} \n\n%{CHANGELOGTEXT}\n\n]\n}:{}|\
 '
