@@ -19,22 +19,39 @@
 ###############################################################################
 VERSION="$Id$"
 ###############################################################################
+function Echo
+{
+   echo -e "$@" 1>&2
+}
+function Error
+{
+    Echo "$0: ERROR: $@"
+}
+
+function Warning
+{
+   Echo "$0: WARNING: $@"
+}
+
 function Usage
 {
-	echo -e "\n$0 is a tool to rebuild an rpm file from the rpm database"
-	echo "syntaxe : $0 [options] package"
-	echo "options :"
-	echo "-b : batch mode"
-	echo "-d dir : specify the working directory"
-	echo "-e : edit specfile"
-	#echo "-f filter : apply an external filter"
-	echo "-h : print this help"
-	echo "-k : keep installed files perm"
-	echo "-v : verbose"
-	echo "-V : print version"
-	echo "the spec and rpm result are built on local directory"
-	echo "Copyright (C) 2002 by Eric Gerbier"
-	echo -e "this program is distributed under GNU General Public License\n"
+   Usage_Message="
+$0 is a tool to rebuild an rpm file from the rpm database
+syntaxe: $0 [options] package
+options:
+   -b     : batch mode
+   -d dir : specify the working directory
+   -e     : edit specfile
+   -k     : keep installed files perm
+   -v     : verbose
+   -V     : print version
+   -h     : print this help
+the spec and rpm result are built on local directory
+Copyright (C) 2002 by Eric Gerbier
+this program is distributed under GNU General Public License
+"
+   Echo "$Usage_Message"
+#echo "-f filter : apply an external filter"
 }
 ###############################################################################
 function Interrog
@@ -75,41 +92,68 @@ export keep_perm=""
 while getopts "bd:ef:hkvV" opt
 do
 	case "$opt" in
-	b) batch=y;;
-	d) workdir=$OPTARG
-	if [ -d $workdir ]
-	then
-		cd $workdir
-	elif [  -e $workdir ]
-	then
-		echo "WARNING : $workdir is not a directory"
-		Usage
-		exit 1
-	else
-		mkdir -p $workdir
-		cd $workdir
-	fi
-	;;
-	e) editspec=y;;
-#	f) lookfor=$(type -p $OPTARG)
-#	[ "$lookfor" ] && OPTARG=$lookfor
-#	[ -f $OPTARG -a -x $OPTARG ] && filter="$filter | $OPTARG";;
-	h) Usage; exit 1;;
-	k) export keep_perm=1;;
-	v) rpm_verbose="-v";;
-	V) echo "$VERSION"; exit 0;;
-	*) Usage; exit 1;;
+		b) 
+			batch=y\
+		;;
+
+		d) workdir=$OPTARG
+			if [ -d $workdir ]
+			then
+				cd $workdir
+			elif [  -e $workdir ]
+			then
+				Error "$workdir is not a directory"
+				exit 1
+			else
+				mkdir -p $workdir
+				cd $workdir
+			fi
+		;;
+
+		e) 
+			editspec=y
+		;;
+		#f) 
+		#	lookfor=$(type -p $OPTARG)
+		#
+		#	[ "$lookfor" ] && OPTARG=$lookfor
+		#
+		#	[ -f $OPTARG -a -x $OPTARG ] && filter="$filter | $OPTARG"
+		#;;
+
+		h) 
+			Usage
+			exit 0
+		;;
+
+		k) 
+			keep_perm=1
+		;;
+
+		v) 
+			rpm_verbose="-v"
+		;;
+
+		V)
+			echo "$VERSION"
+			exit 0
+		;;
+
+		*)
+			Usage
+			exit 1
+		;;
 	esac
 done
 
-echo "working dir : $PWD"
+#echo "working dir : $PWD"
 #echo "filter= $filter"
 #exit
 
 shift $((OPTIND - 1))
 if [ $# -ne 1 ]
 then
-	echo "WARNING : package argument missing"
+	Error "package argument missing"
 	Usage
 	exit 1
 fi
@@ -125,7 +169,7 @@ set -- $output
 case $# in
    0)
 	# No package found
-	echo "WARNING : no package '${PAQUET}' in rpm database"
+	Error "no package '${PAQUET}' in rpm database"
 	exit 1
    ;;
 
@@ -134,7 +178,7 @@ case $# in
    ;;
 
    *)
-	echo -e "WARNING : too much packages match '${PAQUET}':\n$output"
+	Error "too much packages match '${PAQUET}':\n$output"
 	exit 1
    ;;
 esac
@@ -144,24 +188,23 @@ esac
 out="$(rpm --verify --nodeps ${PAQUET})"
 if [ -n "$out" ]
 then
-	echo "WARNING : some files have been modified :"
-	echo "$out"
+	Warning "some files have been modified:\n$out"
 	if [ -z "$batch" ]
 	then
-		echo -n "want to continue (y/n) ?"
-		read rep
-		if [ "$rep" = 'n' ]
-		then
-			exit
-		fi
+		echo -n "want to continue (y/n) ? "
+		read rep 
+		case "$rep" in
+			y* | Y*) ;; # Yes, do nothing
+			*) exit 1;; # Otherwise no
+		esac
 		echo -n "want to change release number (y/n) ? "
 		read rep
-		if [ "$rep" = 'y' ]
-		then
-			old_release=$(Interrog '%{RELEASE}')
-			echo -n "enter the new release (old : $old_release) : "
-			read new_release
-		fi
+		case "$rep" in
+			y* | Y*)
+				old_release=$(Interrog '%{RELEASE}')
+				echo -n "enter the new release (old: $old_release): "
+				read new_release
+		esac
 	fi
 fi
 
@@ -171,7 +214,7 @@ FIC_SPEC=./${PAQUET}.spec
 
 if [ -a ${FIC_SPEC} ]
 then
-	echo "file ${FIC_SPEC} exists : renamed"
+	Warning "file ${FIC_SPEC} exists : renamed"
 	mv -f ${FIC_SPEC} ${FIC_SPEC}.sav
 fi
 
@@ -197,7 +240,10 @@ fi
 # for rpm 4.1 : use rpmbuild
 BUILDCMD=rpm
 [ -x /usr/bin/rpmbuild ] && BUILDCMD=rpmbuild
-$BUILDCMD -bb $rpm_verbose --define "_rpmdir $PWD/" ${FIC_SPEC} || { echo "WARNING : build failed"; exit 1; }
+$BUILDCMD -bb $rpm_verbose --define "_rpmdir $PWD/" ${FIC_SPEC} || { 
+   Error "package '${PAQUET}' build failed"
+   exit 1
+}
 
 QF_RPMFILENAME=$(rpm --eval %_rpmfilename)
 RPMFILENAME=$(rpm --query --queryformat "${QF_RPMFILENAME}" ${PAQUET})
@@ -206,7 +252,7 @@ echo "result: ${PWD}/${RPMFILENAME}"
 # installation test
 # force is necessary to avoid the message : already installed
 rpm -U --test --force ${PWD}/${RPMFILENAME} || {
-	echo "WARNING : Testinstall failed"
+	Error "Testinstall for package '${PAQUET}' failed"
 	exit 1
 }
 exit 0
