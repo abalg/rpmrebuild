@@ -76,6 +76,7 @@ function FilesSpecFile
 	HOME=$MY_LIB_DIR rpm --query --spec_files ${PAQUET} | $MY_LIB_DIR/rpmrebuild_files.sh
 }
 
+###############################################################################
 function CommandLineParsing
 {
 # Default flags' values. To be sure they don't came from environment
@@ -159,6 +160,7 @@ fi
 PAQUET="$1"
 }
 
+###############################################################################
 function IsPackageInstalled
 {
    # test if package exists
@@ -183,6 +185,7 @@ function IsPackageInstalled
    return 0
 }
 
+###############################################################################
 function VerifyPackage
 {
 	# verification des changements
@@ -191,6 +194,7 @@ function VerifyPackage
 	return 0
 }
 
+###############################################################################
 function QuestionsToUser
 {
 	[ -n "$batch" ] && return 0 ## batch mode, continue
@@ -213,6 +217,7 @@ function QuestionsToUser
 	esac
 	return 0
 }
+###############################################################################
 function SpecGeneration
 {
 	# fabrication fichier spec
@@ -233,7 +238,7 @@ function SpecGeneration
 	# change release
 	if [ -n "$new_release" ]
 	then
-		sed "s/Release:.*/Release: $new_release/" ${FIC_SPEC} > ${FIC_SPEC}.new
+		sed "s/^Release:.*/Release: $new_release/" ${FIC_SPEC} > ${FIC_SPEC}.new
 		mv -f ${FIC_SPEC}.new ${FIC_SPEC}
 	fi
 	# -e option : edit the spec file
@@ -244,6 +249,7 @@ function SpecGeneration
 	return 0
 }
 
+###############################################################################
 function RpmBuild
 {
 	# reconstruction fichier rpm : le src.rpm est inutile
@@ -258,12 +264,14 @@ function RpmBuild
 	return 0
 }
 
+###############################################################################
 function RpmFileName
 {
 	QF_RPMFILENAME=$(rpm --eval %_rpmfilename)
-	RPMFILENAME=$(rpm --query --queryformat "${QF_RPMFILENAME}" ${PAQUET})
+	RPMFILENAME=$(rpm --specfile --query --queryformat "${QF_RPMFILENAME}" ${FIC_SPEC})
 }
 
+###############################################################################
 function InstallationTest
 {
 	# installation test
