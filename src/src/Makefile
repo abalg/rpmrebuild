@@ -1,12 +1,5 @@
-INSTALL_RUN := install --mode=555
-INSTALL_RO  := install --mode=444
-INSTALL_MAN := install --mode=644
-LN          := ln --symbolic --force --no-dereference
-MKDIR       := mkdir --parents
-RM          := rm --force
-RMDIR       := rm --force --recursive
-
-ROOT := ../build/rpmrebuild
+TOP_DIR := .
+include $(TOP_DIR)/Makefile.include
 
 PWD := $(shell pwd)
 RPM_TOP_DIR    := $(PWD)/BUILD
@@ -58,23 +51,6 @@ MANPAGES :=             \
    rpmrebuild.1         \
    rpmrebuild_plugins.1 \
 
-PLUGINS :=          \
-   demo.plug        \
-   demo.sh          \
-   demofiles.sh     \
-                    \
-   file2pacDep.plug \
-   file2pacDep.sh   \
-                    \
-   uniq.plug        \
-   uniq.sh          \
-                    \
-
-PLUGINS_MANPAGES :=       \
-   file2pacDep.plug.1rrp \
-   demo.plug.1rrp        \
-   uniq.plug.1rrp        \
-
 DOC_FILES :=      \
    AUTHORS        \
    Changelog      \
@@ -92,18 +68,18 @@ SOURCES :=               \
    $(INCLUDE_SCRIPTS)    \
    $(POPTS)              \
    $(SPEC_SCRIPTS)       \
-   $(MANPAGES)		 \
-   $(PLUGINS)		 \
-   $(PLUGINS_MANPAGES)   \
+   $(MANPAGES_SRC)	 \
    $(DOC_FILES)          \
    Makefile              \
+   Makefile.include      \
    Changelog             \
    rpmrebuild.spc        \
    rpmrebuild.files      \
    Version               \
    Release               \
 
-TAR_NAMES := $(SOURCES) rpmrebuild.spec
+TAR_NAMES_PLUGINS := $(shell $(MAKE) --quiet -C plugins tar_names)
+TAR_NAMES := $(SOURCES) rpmrebuild.spec $(TAR_NAMES_PLUGINS)
 
 define Spec
    Version="`cat Version`"      && \
@@ -121,6 +97,7 @@ endef
 
 all: rpmrebuild.spec VERSION
 	$(LN) rpmrebuild_popt .popt
+	$(MAKE) -C plugins $@
 
 rpmrebuild.spec: rpmrebuild.spc spec.scripts Version Release Changelog 
 	$(RM) $@
@@ -145,11 +122,10 @@ install:
 	$(INSTALL_RO)  $(POPTS)                   $(TARGET_LIB)
 	cd $(TARGET_LIB) && $(LN) rpmrebuild_popt .popt
 
-	$(MKDIR)                                  $(TARGET_PLUGIN)
-	$(INSTALL_RUN) $(PLUGINS)		  $(TARGET_PLUGIN)
-
 	$(MKDIR)                                  $(TARGET_MAN)
-	$(INSTALL_MAN) ${MANPAGES} ${PLUGINS_MANPAGES} $(TARGET_MAN)
+	$(INSTALL_MAN) $(MANPAGES)                $(TARGET_MAN)
+
+	$(MAKE) -C plugins $@
 
 tar:	rpmrebuild.spec
 	tar -cvzf $(TAR_FILE) $(TAR_NAMES)
@@ -163,3 +139,4 @@ rpm rpmbuild:	tar
 clean:
 	$(RMDIR) $(ROOT) $(RPM_BUILD_DIR)
 	$(RM)    VERSION rpmrebuild.spec spec.scripts *.rpm rpmrebuild.tar.gz
+	$(MAKE) -C plugins $@
