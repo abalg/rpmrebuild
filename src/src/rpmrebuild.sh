@@ -23,15 +23,18 @@ function Echo
 {
    echo -e "$@" 1>&2
 }
+###############################################################################
 function Error
 {
     Echo "$0: ERROR: $@"
 }
+###############################################################################
 
 function Warning
 {
    Echo "$0: WARNING: $@"
 }
+###############################################################################
 
 function Usage
 {
@@ -164,7 +167,7 @@ export LC_TIME=POSIX
 
 # test if package exists
 PAQUET="$1"
-output="$(rpm --query ${PAQUET})"
+output="$(rpm --query ${PAQUET} | grep -v "is not installed")"
 set -- $output
 case $# in
    0)

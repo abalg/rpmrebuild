@@ -2,13 +2,12 @@
 - replace vi by sed to change release
 - add command lines options (-h : help, -v : verbose, -V: version)
 - add lsm description
-- move .popt to /etc/rpmrebuild
+- move .popt to /usr/lib/rpmrebuild
 - fix some .popt problems with rpm 4.1 (Han Holl)
 - have a link from rpmrebuild.sh to rpmrebuild
 - add option -b for batch processing
 - add option -k to keep installed files perm
 - fix a buggy test for non-installed packages (Han Holl)
-- add option -f to have an external filter (Han Holl)
 - add /usr/local/bin to the PATH and remove dirname
 - use rpmbuild  if it exists (rpm 4.1)  (Han Holl)
 - add -d option to change local dir
