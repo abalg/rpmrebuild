@@ -732,7 +732,7 @@ function CommandLineParsing
 		case "$LONG_OPTION" in
 			additional)
 				RequeredArgument || return
-				additional="$OPTARG"
+				additional="$additional $OPTARG"
 			;;
 
 			autoprovide)
