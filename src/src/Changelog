@@ -12,6 +12,7 @@
 - add /usr/local/bin to the PATH and remove dirname
 - use rpmbuild  if it exists (rpm 4.1)  (Han Holl)
 - add -d option to change local dir
+- add -e  option to edit spec file (Han Holl)
 
 * Mon Oct  7 2002  <valery_reznic@users.sourceforge.net> 0.7.1
 - split the script for a more modular way

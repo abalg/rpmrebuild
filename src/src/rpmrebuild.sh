@@ -26,6 +26,7 @@ function Usage
 	echo "options :"
 	echo "-b : batch mode"
 	echo "-d dir : specify the working directory"
+	echo "-e : edit specfile"
 	echo "-f filter : apply an external filter"
 	echo "-h : print this help"
 	echo "-k : keep installed files perm"
@@ -67,7 +68,7 @@ export PATH=$PATH:/usr/local/bin
 
 filter=
 verbose="--quiet"
-while getopts "bd:f:hkvV" opt
+while getopts "bd:ef:hkvV" opt
 do
 	case "$opt" in
 	b) batch=y;;
@@ -85,6 +86,7 @@ do
 		cd $workdir
 	fi
 	;;
+	e) editspec=y;;
 	f) lookfor=$(type -p $OPTARG)
 	[ "$lookfor" ] && OPTARG=$lookfor
 	[ -f $OPTARG -a -x $OPTARG ] && filter="$filter | $OPTARG";;
@@ -178,6 +180,11 @@ if [ -n "$new_release" ]
 then
 	sed "s/Release:.*/Release: $new_release/" ${FIC_SPEC} > ${FIC_SPEC}.new
 	mv -f ${FIC_SPEC}.new ${FIC_SPEC}
+fi
+# -e option : edit the spec file
+if [ -n "$editspec" ]
+then
+	${VISUAL:-${EDITOR:-vi}} ${FIC_SPEC}
 fi
 
 # reconstruction fichier rpm : le src.rpm est inutile

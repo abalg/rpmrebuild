@@ -13,7 +13,7 @@ Author:         gerbier@users.sourceforge.net (Eric Gerbier)
 		valery_reznic@users.sourceforge.net (Valery Reznic)
 Primary-site:   http://rpmrebuild.sourceforge.net
 		15kb rpmrebuild-0.7-1.noarch.rpm
-Platforms:      linux, works with bash and rpm >= 4.x
+Platforms:      linux, works with bash and rpm >= 3.x
 Copying-policy: GPL
 End
 
