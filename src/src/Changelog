@@ -1,3 +1,9 @@
+* Wed Jul  2 2003 <valery_reznic@users.sourceforge.net> 1.4.5-1
+- switch from 'case' to usinf AskYesNo function
+- added -y/--verify flag
+- added -c/--comment-missing flag
+- added missing -w/--warning to the Usage message
+
 * Thu Jun 12 2003 <valery_reznic@users.sourceforge.net> 1.4.4-1
 - added -m/--modify option - invoke script after rpm's file unpackaging
 - added -a/--additional option - pass additional flags to rpmbuild
