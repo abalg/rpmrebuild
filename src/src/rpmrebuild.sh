@@ -17,17 +17,24 @@
 #    GNU General Public License for more details.
 #
 ###############################################################################
+VERSION="$id$"
+verbose="--quiet"
 ###############################################################################
 function Usage
 {
 	echo -e "\nrpmrebuild.sh is a tool to rebuild an rpm file from the rpm database"
-	echo "syntaxe : $0 package"
+	echo "syntaxe : $0 [options] package"
+	echo "options :"
+	echo "-b : batch mode"
+	echo "-h : print this help"
+	echo "-v : verbose"
+	echo "-V : print version"
 	echo "the spec and rpm result are built on local directory"
 	echo "Copyright (C) 2002 by Eric Gerbier"
 	echo -e "this program is distributed under GNU General Public License\n"
 }
 ###############################################################################
-function interrog
+function Interrog
 {
 	QF=$1
 	rpm --query --queryformat "${QF}" ${PAQUET}
@@ -53,11 +60,24 @@ function FilesSpecFile
 # a shell to build an rpm file from the rpm database
 
 MY_DIR=$(dirname $0)
-# test argument
+
+while getopts "bhvV" opt
+do
+	case "$opt" in
+	b) batch=y;;
+	h) Usage; exit 1;;
+	v) verbose="-v";;
+	V) echo "$VERSION"; exit 0;;
+	*) Usage; exit 1;;
+	esac
+done
+
+shift $((OPTIND - 1))
 if [ $# -ne 1 ]
 then
+	echo "package argument missing"
 	Usage
-	exit 1 
+	exit 1
 fi
 
 # suite a des probleme de dates incorrectes
@@ -87,17 +107,22 @@ if [ -n "$out" ]
 then
 	echo "WARNING : some files have been modified :"
 	echo "$out"
-	echo -n "want to continue (y/n) ?"
-	read rep
-	if [ "$rep" = 'n' ]
+	if [ -z "$batch" ]
 	then
-		exit
-	fi
-	echo -n "want to change release number (y/n) ? "
-	read rep
-	if [ "$rep" = 'y' ]
-	then
-		ch_release=y
+		echo -n "want to continue (y/n) ?"
+		read rep
+		if [ "$rep" = 'n' ]
+		then
+			exit
+		fi
+		echo -n "want to change release number (y/n) ? "
+		read rep
+		if [ "$rep" = 'y' ]
+		then
+			old_release=$(Interrog '%{RELEASE}')
+			echo -n "enter the new release (old : $old_release) : "
+			read new_release
+		fi
 	fi
 fi
 
@@ -117,14 +142,15 @@ QF=""
    FilesSpecFile
 } > ${FIC_SPEC}
 
-if [ -n "$ch_release" ]
+if [ -n "$new_release" ]
 then
-	vi ${FIC_SPEC}
+	sed "s/Release:.*/Release: $new_release/" ${FIC_SPEC} > ${FIC_SPEC}.new
+	mv -f ${FIC_SPEC}.new ${FIC_SPEC}
 fi
 
 # reconstruction fichier rpm : le src.rpm est inutile
 # build rpm file, the src.rpm is not usefull to do
-rpm -bb --quiet --define "_rpmdir $PWD/" ${FIC_SPEC}
+rpm -bb $verbose --define "_rpmdir $PWD/" ${FIC_SPEC}
 
 QF_RPMFILENAME=$(rpm --eval %_rpmfilename)
 RPMFILENAME=$(rpm --query --queryformat "${QF_RPMFILENAME}" ${PAQUET})
