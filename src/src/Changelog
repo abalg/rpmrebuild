@@ -1,3 +1,7 @@
+* Mon Oct  7 2002  <valery_reznic@users.sourceforge.net> 0.7.1
+- split the script for a more modular way
+- recode %file with all new tags (missingok, noreplace...)
+
 * Mon Sep 30 2002  <gerbier@users.sourceforge.net> 0.7.0
 - work on local dir (thanks Valery Reznic <valery_reznic@users.sourceforge.net>)
 
