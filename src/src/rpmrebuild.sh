@@ -161,7 +161,7 @@ function RequeredArgument
 	[ "x$SHORT_OPTION" = "x-" ] || return 0  # we use short option,
                                                  # do nothing
 	if [ "$OPTARG_EXIST" ]; then
-		[ "$OPTIND_INCR" ] && OPTIND=`expr $OPTIND + 1`
+		let OPTIND=$OPTIND+$OPTIND_INCR
 	else
 		Echo "$0: option \`$LONG_OPTION' requires an argument"
 		Try_Help
@@ -199,7 +199,7 @@ PAQUET_NAME=""
 
 while getopts "a:bc:d:D:ef:hkm:pPRs:vVwy:-:" opt
 do
-	OPTIND_INCR=""
+	OPTIND_INCR=0
 	case "$opt" in
 		a) LONG_OPTION=additional;;
 		b) LONG_OPTION=batch;;
@@ -241,6 +241,11 @@ do
 				;;
 			esac
                	;;
+
+		*)
+			Try_Help
+			exit 1
+		;;
 	esac
 
 	SHORT_OPTION="$opt"
