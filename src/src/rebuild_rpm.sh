@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 ###############################################################################
 #   rebuild_rpm.sh 
 #
@@ -44,7 +44,7 @@ ecrire_info() {
 # test argument
 if [ $# -ne 1 ]
 then
-	echo "syntaxe $0 package"
+	echo "syntax :  $0 package"
 	exit 1 
 fi
 
@@ -62,7 +62,7 @@ export PAQUET=$1
 output=$(rpm -q ${PAQUET})
 if [ -z "$output" ]
 then
-	echo "no package ${PAQUET} in database"
+	echo "no package ${PAQUET} in rpm database"
 	exit 1
 else
 	nb=$(echo $output | wc -w | awk '{print $1}')
@@ -85,8 +85,10 @@ out=$(rpm -V ${PAQUET})
 if [ -n "$out" ]
 then
 	echo "some files have been modified :"
+	#echo $out concate all lines in one : not clear
+	# so recall the same command
 	rpm -V ${PAQUET}
-	echo "want to continue (y/n) ?"
+	echo -n "want to continue (y/n) ?"
 	read rep
 	if [ "$rep" = 'n' ]
 	then
@@ -98,7 +100,7 @@ fi
 REPER=/tmp/${NOM_VERSION}
 if [ -a $REPER ]
 then
-	echo "$REPER existe"
+	echo "directory $REPER exists"
 	exit 1
 fi
 mkdir $REPER
@@ -113,7 +115,7 @@ FIC_SPEC=/usr/src/redhat/SPECS/${NOM_COMPLET}.spec
 
 if [ -a ${FIC_SPEC} ]
 then
-	echo "fichier ${FIC_SPEC} existe"
+	echo "file ${FIC_SPEC} exists"
 	rm -f ${FIC_SPEC}
 fi
 
@@ -129,6 +131,9 @@ ecrire_info "Patch: " '%{PATCH}\n'
 ecrire_info "Copyright: " '%{COPYRIGHT}\n'
 ecrire_info "Group: "  '%{GROUP}\n'
 ecrire_info "Packager: " '%{PACKAGER}\n'
+ecrire_info "BuildArch: " '%{ARCH}\n'
+ARCH=$(interrogation '%{ARCH}\n')
+
 
 ecrire_info "Distribution: " '%{DISTRIBUTION}\n'
 ecrire_info "Vendor: " '%{VENDOR}\n'
@@ -201,4 +206,4 @@ rpm -q --changelog ${PAQUET} >> ${FIC_SPEC}
 # reconstruction fichier rpm
 rpm -bb -vv  ${FIC_SPEC}
 
-ls -ltr /usr/src/redhat/RPMS/i386
+ls -l /usr/src/redhat/RPMS/$ARCH/$PAQUET-$VERSION-$RELEASE.$ARCH.rpm
