@@ -37,88 +37,14 @@ function interrog
 # build general tags
 function SpecFile
 {
-   QF="\
-[Name:          %{NAME}\n]\
-[Version:       %{VERSION}\n]\
-[Release:       %{RELEASE}\n]\
-[URL:           %{URL}\n]\
-[Distribution:  %{DISTRIBUTION}\n]\
-[Vendor:        %{VENDOR}\n]\
-[Packager:      %{PACKAGER}\n]\
-[License:       %{LICENSE}\n]\
-[Group:         %{GROUP}\n]\
-[Summary:       %{SUMMARY}\n]\
-[BuildArch:     %{ARCH}\n]\
-[Epoch:         %{EPOCH}\n]\
-[Icon:          %{ICON}\n]\
-[XPM:           %{XPM}\n]\
-[GIF:           %{GIF}\n]\
-[Requires:      %{REQUIRENAME} %{REQUIREFLAGS:depflags} % {REQUIREVERSION}\n]\
-[Conflicts:     %{CONFLICTNAME} %{CONFLICTFLAGS:depflags} % {CONFLICTVERSION}\n]\
-[Obsoletes:     %{OBSOLETES}\n]\
-[Provides:      %{PROVIDES}\n]\
-[ExcludeArch:   %{EXCLUDEARCH}\n]\
-[ExclusiveArch: %{EXCLUSIVEARCH}\n]\
-[ExcludeOs:     %{EXCLUDEOS}\n]\
-[ExclusiveOs:   %{EXCLUSIVEOS}\n]\
-[Prefix:        %{PREFIXES}\n]\
-[\n%%description\n %{DESCRIPTION}\n\n]\
-[%%trigger%{TRIGGERTYPE} -p %{TRIGGERSCRIPTPROG} -- %{TRIGGERCONDS} \n%{TRIGGERSCRIPTS}\n]\
-[%%pre -p %{PREINPROG}\n%{PREIN}\n\n]\
-[%%post -p %{POSTINPROG}\n%{POSTIN}\n\n]\
-[%%preun -p %{PREUNPROG}\n%{PREUN}\n\n]\
-[%%postun -p %{POSTUNPROG}\n%{POSTUN}\n\n]\
-[%%verify -p %{VERIFYSCRIPTPROG}\n%{VERIFYSCRIPT}\n\n]\
-%|CHANGELOGTIME?{%%changelog\n[* %{CHANGELOGTIME:day} %{CHANGELOGNAME} \n\n%{CHANGELOGTEXT}\n\n]\n}:{}|\
-"
-# query of require may duplicate line, so disable automatic
-echo "AutoReq: no"
-echo "AutoProv: no"
-rpm --query --queryformat "${QF}" ${PAQUET}
-
-cat << END
-%prep
-%build
-%install
-%clean
-
-END
+	HOME=$MY_DIR rpm --query --spec_spec ${PAQUET}
 }
 ###############################################################################
 # build the list of files in package
 function FilesSpecFile
 {
-echo "%files"
-
-QF="[%{FILENAMES} %{FILEFLAGS:fileflags}\n]"
-rpm --query --queryformat "${QF}" ${PAQUET} | while read file type
-do
-
-	if [ ! -e $file ]
-	then
-		# skip missing files
-		echo "# $file"
-	elif [ -d $file ]
-	then
-		# special case for directories
-		echo "%dir $file"
-	elif [ "$type" = "d" ]
-	then
-		# test for documentation files
-		echo "%doc $file"
-	elif [ "$type" = "c" ]
-	then
-		# configuration file
-		echo "%config $file"
-	elif [ "$type" = "g" ]
-	then
-		# configuration file
-		echo "%ghost $file"
-	else
-		# default
-		echo "$file"
-	fi
-done
+	echo "%files"
+	HOME=$MY_DIR rpm --query --spec_files ${PAQUET} | $MY_DIR/rpmrebuild_files.sh
 }
 
 ##############################################################
@@ -127,6 +53,7 @@ done
 # shell pour refabriquer un fichier rpm a partir de la base rpm
 # a shell to build an rpm file from the rpm database
 
+MY_DIR=$(dirname $0)
 # test argument
 if [ $# -ne 1 ]
 then
@@ -160,9 +87,7 @@ out=$(rpm -V ${PAQUET})
 if [ -n "$out" ]
 then
 	echo "WARNING : some files have been modified :"
-	#echo $out concate all lines in one : not clear
-	# so recall the same command
-	rpm -V ${PAQUET}
+	echo "$out"
 	echo -n "want to continue (y/n) ?"
 	read rep
 	if [ "$rep" = 'n' ]
