@@ -350,15 +350,15 @@ function QuestionsToUser
 
 	echo -n "want to continue (y/n) ? "
 	read rep 
-	case "$rep" in
-		y* | Y*)   ;; # Yes, do nothing
-		*) return 1;; # Otherwise no
+	case "x$rep" in
+		xy* | xY*)   ;; # Yes, do nothing
+		x*) return 1;; # Otherwise no
 	esac
 
 	echo -n "want to change release number (y/n) ? "
 	read rep
-	case "$rep" in
-		y* | Y*)
+	case "x$rep" in
+		xy* | xY*)
 			old_release=$(Interrog '%{RELEASE}')
 			echo -n "enter the new release (old: $old_release): "
 			read new_release
@@ -415,6 +415,15 @@ function SpecEdit
 	then
 		${VISUAL:-${EDITOR:-vi}} ${FIC_SPEC}
 	fi
+	echo -n "Do you want to continue (y/n) ? "
+	read Ans
+	case "x$Ans" in
+	   x[yY]*) return 0;;
+	   *)
+		Echo "Aborted."
+	        return 1
+	   ;;
+	esac
 	return 0
 }
 ###############################################################################
