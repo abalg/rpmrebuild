@@ -1,5 +1,14 @@
 rpm alias --spec_spec --qf \
 '\
+[#BUILDHOST:    %{BUILDHOST}\n]\
+[#BUILDTIME:    %{BUILDTIME:date}\n]\
+[#SOURCERPM:    %{SOURCERPM}\n]\
+[#RPMVERSION:   %{RPMVERSION}\n]\
+[#COOKIE:       %{COOKIE}\n]\
+[#INSTALLTIME:  %{INSTALLTIME:date}\n]\
+[#INSTPREFIXES: %{INSTPREFIXES}\n]\
+[#OS:           %{OS}\n]\
+[#ARCH:         %{ARCH}\n]\
 \%undefine __check_files\n\
 \%define _missing_doc_files_terminate_build	0\n\
 AutoReq:       no\n\
