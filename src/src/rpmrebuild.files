@@ -1,5 +1,5 @@
 %defattr(-,root,root)
-     /usr/local/bin/rpmrebuild
+     /usr/bin/rpmrebuild
 %dir /usr/lib/rpmrebuild
      /usr/lib/rpmrebuild/.popt
      /usr/lib/rpmrebuild/VERSION
@@ -22,11 +22,11 @@
      /usr/lib/rpmrebuild/plugins/demofiles.sh
      /usr/lib/rpmrebuild/plugins/uniq.plug
      /usr/lib/rpmrebuild/plugins/uniq.sh
-%doc /usr/local/man/man1/rpmrebuild.1*
-%doc /usr/local/man/man1/rpmrebuild_plugins.1*
-%doc /usr/local/man/man1/file2pacDep.plug.1rrp
-%doc /usr/local/man/man1/demo.plug.1rrp
-%doc /usr/local/man/man1/uniq.plug.1rrp
+%doc /usr/share/man/man1/rpmrebuild.1*
+%doc /usr/share/man/man1/rpmrebuild_plugins.1*
+%doc /usr/share/man/man1/file2pacDep.plug.1rrp*
+%doc /usr/share/man/man1/demo.plug.1rrp*
+%doc /usr/share/man/man1/uniq.plug.1rrp*
 
 %doc AUTHORS
 %doc COPYING
