@@ -601,10 +601,11 @@ function QuestionsToUser
 	[ -n "$spec_only" ] && return 0 ## spec only mode, no questions
 
 	AskYesNo "$WantContinue" || return
-	AskYesNo "Do you want to change release number" || return
-	old_release=$(Interrog '%{RELEASE}')
-	echo -n "Enter the new release (old: $old_release): "
-	read new_release
+	AskYesNo "Do you want to change release number" && {
+		old_release=$(Interrog '%{RELEASE}')
+		echo -n "Enter the new release (old: $old_release): "
+		read new_release
+	}
 	return 0
 }
 ###############################################################################
@@ -675,6 +676,8 @@ function RpmUnpack
 	mkdir --parent            $BUILDROOT                || return
 	(cd $BUILDROOT && cpio --quiet -idmu ) < $CPIO_TEMP || return
 	rm -f $CPIO_TEMP                                    || return
+	# Process ghost files
+	/bin/bash $MY_LIB_DIR/rpmrebuild_ghost.sh $BUILDROOT < $FILES_IN || return
 	return 0
 }
 ###############################################################################
@@ -750,7 +753,7 @@ function InstallationTest
 function my_exit
 {
 	st=$?	# save status
-	rm -rf $RPMREBUILD_TMPDIR
+	#rm -rf $RPMREBUILD_TMPDIR
 	exit $st
 }
 ##############################################################
@@ -772,8 +775,9 @@ PATH=$PATH:$MY_PLUGIN_DIR
 export LC_TIME=POSIX
 
 CommandLineParsing "$@" || exit
-RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild.$$}
-#RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild}
+#RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild.$$}
+RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild}
+export RPMREBUILD_TMPDIR
 mkdir -p $RPMREBUILD_TMPDIR || exit
 
 BUILDROOT=$RPMREBUILD_TMPDIR/${PAQUET_NAME}-root
@@ -796,6 +800,7 @@ fi
 
 FIC_SPEC=$RPMREBUILD_TMPDIR/${PAQUET_NAME}.spec
 FILES_IN=$RPMREBUILD_TMPDIR/${PAQUET_NAME}.files.in
+export FIC_SPEC
 
 if [ -n "$spec_only" ]
 then
