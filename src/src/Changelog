@@ -1,3 +1,6 @@
+* Thu May 6 2004 <gerbier@users.sourceforge.net> 1.4.6-2
+- split in 2 packages for rpm <4 and rpm >4 (add rpm-build dependency) 
+
 * Mon Nov 24 2003 <gerbier@users.sourceforge.net> 1.4.6-1
 - added -P/--autoprovide flag
 - added -R/--autorequire flag

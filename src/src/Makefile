@@ -48,7 +48,7 @@ define Spec
    Release="`cat Release`"      && \
    {                               \
       echo "Version: $$Version" && \
-      echo "Release: $$Release" && \
+      echo "%define release $$Release" && \
       cat rpmrebuild.spc        && \
       cat spec.scripts          && \
       echo "%changelog"         && \
@@ -89,10 +89,8 @@ tar:	rpmrebuild.spec
 rpm rpmbuild:	tar
 	mkdir --parent $(RPM_BUILD_DIR)
 	$@ -ba $(RPM_DEFINES) rpmrebuild.spec
+	export RPMOLD=y && $@ -ba $(RPM_DEFINES) rpmrebuild.spec
 	rpm --resign rpmrebuild*.rpm
-
-t:
-	rpm -bb -v $(RPM_DEFINES) a.a
 
 clean:
 	rm -rf $(ROOT) $(RPM_BUILD_DIR)

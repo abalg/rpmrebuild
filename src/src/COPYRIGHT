@@ -1,7 +1,7 @@
  RPMREBUILD - 
  A tool to build rpm file from rpm database
 
- Copyright (c) 2000, Eric Gerbier
+ Copyright (c) 2000,2001,2002,2003,2004 Eric Gerbier
  All rights reserved.
 
  This program is free software; you can redistribute it and/or modify it

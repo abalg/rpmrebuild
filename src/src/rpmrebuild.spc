@@ -1,3 +1,4 @@
+%{expand:%%define rpmold   %(if [ -n "$RPMOLD" ]; then echo 1; else echo 0; fi)}
 # Initial spec file created by autospec ver. 0.6 with rpm 2.5 compatibility
 Summary: a tool to build rpm file from rpm database
 Summary(fr): un outil pour construire un package depuis une base rpm
@@ -12,7 +13,13 @@ Url: http://rpmrebuild.sourceforge.net
 Packager: Eric Gerbier <gerbier@users.sourceforge.net>
 #Distribution: Red Hat Contrib-Net
 BuildArchitectures: noarch
-Requires: rpm
+%if %rpmold
+Requires: rpm < 4.0
+Release: %{release}rpm3
+%else
+Requires: rpm >= 4.0, rpm-build
+Release: %{release}rpm4
+%endif
 
 %description
 you have an installed package on a computer, want to install on other
