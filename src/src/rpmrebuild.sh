@@ -90,13 +90,13 @@ function ChangeSpecFile
 ###############################################################################
 function Try_Help
 {
-	echo "Try \`$0 --help' for more information." 1>&2
+	Echo "Try \`$0 --help' for more information."
 }
 
 ###############################################################################
 function UnrecognizedOption
 {
-	echo "$0: unrecognized option \`--$LONG_OPTION'" 1>&2
+	Echo "$0: unrecognized option \`--$LONG_OPTION'"
 	Try_Help
 	exit 1
 }
@@ -109,7 +109,7 @@ function RequeredArgument
 	if [ "$OPTARG_EXIST" ]; then
 		OPTIND=`expr $OPTIND + 1`
 	else
-		echo "$0: option \`$LONG_OPTION' requries an argument" 1>&2
+		Echo "$0: option \`$LONG_OPTION' requries an argument"
 		Try_Help
 		exit 1
 	fi
@@ -117,13 +117,7 @@ function RequeredArgument
 ###############################################################################
 function ExtractProgName
 {
-	echo $1
-}
-###############################################################################
-function ExtractProgArg
-{
-	shift
-	echo $*
+	progname="$1"
 }
 ###############################################################################
 function CommandLineParsing
@@ -192,24 +186,14 @@ do
 
 		filter)
 			RequeredArgument
-			progname=$(ExtractProgName $OPTARG)
-			progarg=$(ExtractProgArg $OPTARG)
+			ExtractProgName $OPTARG  # set progname
+
 			# search in PATH
-			lookfor=$(type -p $progname)
-			if [ "$lookfor" ]
+			if type -p $progname > /dev/null
 			then
-				progname=$lookfor
+				filter="$filter | $OPTARG"
 			else
-				# else search in plugin directory
-				progname=${MY_PLUGIN_DIR}/$progname
-			fi
-		
-			# check if executable ?
-			if [ -f $progname -a -x $progname ]
-			then
-				filter="$filter | $progname $progarg"
-			else
-				Error "can find or execute plugin $progname"
+				Error "can't find or execute '$progname'"
 				exit 1
 			fi
 		;;
@@ -440,6 +424,8 @@ function my_exit
 
 MY_LIB_DIR=/usr/lib/rpmrebuild
 MY_PLUGIN_DIR=${MY_LIB_DIR}/plugins
+
+PATH=$PATH:$MY_PLUGIN_DIR
 
 CommandLineParsing "$@" || exit
 IsPackageInstalled      || exit

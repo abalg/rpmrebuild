@@ -1,3 +1,6 @@
+* Mon Dec 18 2002 <valery_reznic@users.sourceforge.net> 1.2-1b
+- more simple and robust filter
+
 * Mon Dec 10 2002 <valery_reznic@users.sourceforge.net> 1.2-1b
 - change long options name to be more consistant
 - added support for %%lang
