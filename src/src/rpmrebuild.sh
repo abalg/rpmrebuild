@@ -38,6 +38,7 @@ function Warning
 
 function AskYesNo
 {
+	local Ans
 	echo -en "$@ ? (y/N) " 1>&2
 	read Ans
 	case "x$Ans" in
@@ -50,7 +51,7 @@ function AskYesNo
 ###############################################################################
 function Interrog
 {
-	QF=$1
+	local QF=$1
 	rpm --query --i18ndomains /dev/null $package_flag --queryformat "${QF}" ${PAQUET}
 }
 ###############################################################################
@@ -97,7 +98,7 @@ function SpecFile
 ###############################################################################
 function ChangeSpecFile
 {
-	# first sed is to pervent all macros from expanding
+	# first sed is to pervent all macros from expanding (by doubling each %)
 	# then rollback on tag line
 	HOME=$MY_LIB_DIR rpm --query $package_flag --spec_change ${PAQUET} | \
 	sed                                           \
@@ -120,7 +121,7 @@ function FilesSpecFile
 {
 	rm -f $FILES_IN || return
 	HOME=$MY_LIB_DIR rpm --query $package_flag --spec_files ${PAQUET} > $FILES_IN || return
-	echo "%files"
+	echo "%files" || return
 	/bin/bash $MY_LIB_DIR/rpmrebuild_files.sh < $FILES_IN || return
 	return 0
 }
@@ -179,9 +180,10 @@ function SpecEdit
 		return 1
 	}
 	# -e option : edit the spec file
-	File=$1
+	local File=$1
 	${VISUAL:-${EDITOR:-vi}} $File
 	AskYesNo "$WantContinue" || {
+		Aborted="yes"
 		Echo "Aborted."
 	        return 1
 	}
@@ -189,14 +191,6 @@ function SpecEdit
 }
 ###############################################################################
 
-###############################################################################
-function ExtractProgName
-{
-	progname="$1"
-}
-###############################################################################
-
-###############################################################################
 function VerifyPackage
 {
 	# verification des changements
@@ -222,6 +216,7 @@ function QuestionsToUser
 function IsPackageInstalled
 {
 	# test if package exists
+	local output
 	output="$(rpm --query ${PAQUET} 2>&1 | grep -v 'is not installed')" # Don't return here - use output
 	set -- $output
 	case $# in
@@ -250,48 +245,100 @@ function CreateProcessing
 		return 1
 	}
 
-	operation=$1
+	local operation=$1
+	local SPEC_IN SPEC_OUT
+	local Output="$RPMREBUILD_PROCESSING"
+	local cmd
 	case "X$operation" in
 		Xinit)
+			# This variable should not be local
 			spec_index=1
 		;;
 
 		Xfini)
 			[ "x$need_change_spec" = "x" ] || {
+				SPEC_IN="$FIC_SPEC.$spec_index"
 				case "x$specfile" in
 					x) # No spec-only flag
-						echo "cp -f \$FIC_SPEC.$spec_index \$FIC_SPEC" >> $RPMREBUILD_PROCESSING || return
+						cmd="cp -f $SPEC_IN $FIC_SPEC"
 					;;
 
 					x-) # Spec-only flag, specfile is stdout
-						echo "cat \$FIC_SPEC.$spec_index" >> $RPMREBUILD_PROCESSING || return
+						cmd="cat $SPEC_IN"
 					;;
 
 					*) # Spec-only flag, not specfile not stdout
-						echo "cp -f \$FIC_SPEC.$spec_index $specfile" >> $RPMREBUILD_PROCESSING || return
+						cmd="cp -f $SPEC_IN $specfile"
 					;;
 				esac || return
+				cat <<-CMD_FINI >> $Output || return
+				# fini
+				   $cmd || return
+				CMD_FINI
 			}
 		;;
 
 		Xedit)
 			need_change_spec="y"
-			spec_index_next=$[spec_index + 1]
-			echo "cp -f \$FIC_SPEC.$spec_index \$FIC_SPEC.$spec_index_next" >> $RPMREBUILD_PROCESSING || return
-			echo "SpecEdit \$FIC_SPEC.$spec_index_next" >> $RPMREBUILD_PROCESSING || return
-			spec_index=$spec_index_next
+			SPEC_IN="$FIC_SPEC.$spec_index"
+			spec_index=$[spec_index + 1]
+			SPEC_OUT="$FIC_SPEC.$spec_index"
+			cat <<-CMD_EDIT >> $Output || return
+			# edit
+			   cp -f $SPEC_IN $SPEC_OUT || return
+			   SpecEdit $SPEC_OUT       || return
+
+			CMD_EDIT
 		;;
 
-		Xfilter)
-			need_change_spec="y"
-			spec_index_next=$[spec_index + 1]
-			echo "{ $OPTARG; } < \$FIC_SPEC.$spec_index > \$FIC_SPEC.$spec_index_next" >> $RPMREBUILD_PROCESSING || return
-			spec_index=$spec_index_next
-		;;
-
-		Xmodify)
+		Xall)
 			modify="y"
-			echo "$OPTARG" >> $RPMREBUILD_PROCESSING || return
+			need_change_spec="y"
+			SPEC_IN="$FIC_SPEC.$spec_index"
+			spec_index=$[spec_index + 1]
+			SPEC_OUT="$FIC_SPEC.$spec_index"
+			cat <<-CMD_ALL >> $Output || return
+			# all
+			(
+			   PATH="\$PATH:$MY_PLUGIN_DIR/all"       &&
+			   RPM_BUILD_ROOT="$BUILDROOT"            &&
+			   SPEC_IN="$SPEC_IN"                     &&
+			   SPEC_OUT="$SPEC_OUT"                   &&
+			   export RPM_BUILD_ROOT SPEC_IN SPEC_OUT &&
+			   $OPTARG;
+			) || return
+
+			CMD_ALL
+		;;
+
+		Xfiles)
+			modify="y"
+			cat <<-CMD_FILES >> $Output || return
+			# files
+			(
+			   PATH="\$PATH:$MY_PLUGIN_DIR/files" &&
+			   RPM_BUILD_ROOT="$BUILDROOT"        &&
+			   export RPM_BUILD_ROOT              && 
+			   $OPTARG; 
+			) || return
+			
+			CMD_FILES
+		;;
+
+		Xspec)
+			need_change_spec="y"
+			SPEC_IN="$FIC_SPEC.$spec_index"
+			spec_index=$[spec_index + 1]
+			SPEC_OUT="$FIC_SPEC.$spec_index"
+			cat <<-CMD_SPEC >> $Output || return
+			# spec
+			( 
+			   PATH="\$PATH:$MY_PLUGIN_DIR/spec" &&
+			   $OPTARG; 
+			) < $SPEC_IN > $SPEC_OUT || return
+			
+			CMD_SPEC
+			
 		;;
 
 		*)
@@ -302,14 +349,13 @@ function CreateProcessing
 	return 0
 }
 ###############################################################################
-###############################################################################
 function RpmUnpack
 {
 	[ "x$BUILDROOT" = "x/" ] && {
 	   Error "Internal '$BUILDROOT' can not be '/'." 
            return 1
 	}
-	CPIO_TEMP=$RPMREBUILD_TMPDIR/${PAQUET_NAME}.cpio
+	local CPIO_TEMP=$RPMREBUILD_TMPDIR/${PAQUET_NAME}.cpio
 	rm -f $CPIO_TEMP                                    || return
 	rpm2cpio ${PAQUET} > $CPIO_TEMP                     || return
 	rm    --force --recursive $BUILDROOT                || return
@@ -341,7 +387,7 @@ function RpmBuild
 	# reconstruction fichier rpm : le src.rpm est inutile
 	# build rpm file, the src.rpm is not usefull to do
 	# for rpm 4.1 : use rpmbuild
-	BUILDCMD=rpm
+	local BUILDCMD=rpm
 	[ -x /usr/bin/rpmbuild ] && BUILDCMD=rpmbuild
 	eval $BUILDCMD $rpm_defines -bb $rpm_verbose $additional ${FIC_SPEC} || {
    		Error "package '${PAQUET}' build failed"
@@ -384,11 +430,12 @@ function InstallationTest
 function Processing
 {
 	[ "x$need_change_spec" = "x" -a "x$modify" = "x" ] && return # Nothing to do
-	(
-		set -e
-		source $RPMREBUILD_PROCESSING
-	) || return
-	return 0
+	local Aborted="no"
+	local MsgFail="package '$PAQUET' modification failed."
+
+	source $RPMREBUILD_PROCESSING && return 0
+	[ "X$Aborted" = "Xno" ] && Error "$MsgFail"
+	return 1
 }
 ##############################################################
 # Main Part                                                  #
@@ -404,12 +451,14 @@ function Main
 	RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild}
 	export RPMREBUILD_TMPDIR
 
+	FIC_SPEC=$RPMREBUILD_TMPDIR/spec
+	FILES_IN=$RPMREBUILD_TMPDIR/files.in
+	BUILDROOT=$RPMREBUILD_TMPDIR/root
+
 	D=`dirname $0` || return
 	source $D/rpmrebuild_parser.src || return
 	MY_LIB_DIR="$D"
 	MY_PLUGIN_DIR=${MY_LIB_DIR}/plugins
-
-	PATH=$PATH:$MY_PLUGIN_DIR
 
 	# suite a des probleme de dates incorrectes
 	# to solve problems of bad date
@@ -444,20 +493,12 @@ function Main
 		#keep_perm=""  # Be sure use perm, owner, group from the pkg query.
 	fi
 
-	FIC_SPEC=$RPMREBUILD_TMPDIR/${PAQUET_NAME}.spec
-	FILES_IN=$RPMREBUILD_TMPDIR/${PAQUET_NAME}.files.in
-	export FIC_SPEC
-
 	[ "x$spec_only" = "x" ] || BUILDROOT="/"
-	export RPM_BUILD_ROOT="$BUILDROOT"
 	SpecGeneration   || return
 	if [ "x$spec_only" = "x" ]; then
 		CreateBuildRoot  || return
 	fi
-	Processing || {
-			Error "package '${PAQUET}' build failed due to edit/modify/filter script problems."
-			return 1
-	}
+	Processing || return
 	if [ "x$spec_only" = "x" ]; then
 		RpmBuild         || return
 		RpmFileName      || return
