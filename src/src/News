@@ -1,0 +1,9 @@
+2003-07-10 : release 1.4.5-1 
+- add some flags to improve performances (-y/-c)
+
+2003-06-18 : release 1.4.4-1
+- now can modify an rpm file
+
+2003-06-10 : release 1.4.3-1
+- to work on rpm 4.2 (redhat 9 for exemple)
+

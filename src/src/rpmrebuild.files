@@ -19,6 +19,7 @@
 %doc COPYRIGHT
 %doc Changelog
 %doc LISEZ.MOI
+%doc News
 %doc README
 %doc Todo
 %doc rpmrebuild.lsm
