@@ -55,6 +55,9 @@ Usage: $0 [options] package
 options:
    -a, --additional <flags>    additional flags to be pass to the rpmbuild
    -b, --batch                 batch mode
+   -c, --comment-missing <y|n> comment missing files in the specfile.
+                               default - no.
+                               This flag is only meanful with --verify no
    -d, --dir <dir>             specify the working directory
    -D, --define <define>       defines to be passed to the rpmbuild
    -e, --edit-spec             edit specfile
@@ -69,6 +72,8 @@ options:
                                (If <spec> '-' stdout will be used)
    -v, --verbose               verbose
    -V, --version               print version
+   -y, --verify <yes|no>       need verify package before processing
+                               (default - yes)
    -h, --help                  print this help
 
 Copyright (C) 2002 by Eric Gerbier
@@ -149,18 +154,20 @@ package_flag=""
 modify=""
 speconly=""
 specfile=""
+verify="1"
 rpm_verbose="--quiet"
 export keep_perm=""
-export missing_as_usual=""
+export comment_missing="0"
 export warning=""
 PAQUET=""
 PAQUET_NAME=""
 
-while getopts "a:bd:D:ef:hkm:ps:vVw-:" opt
+while getopts "a:bc:d:D:ef:hkm:ps:vVwy:-:" opt
 do
 	case "$opt" in
 		a) LONG_OPTION=additional;;
 		b) LONG_OPTION=batch;;
+		c) LONG_OPTION=comment-missing;;
 		d) LONG_OPTION=dir;;
 		D) LONG_OPTION=define;;
 		e) LONG_OPTION=edit-spec;;
@@ -173,6 +180,7 @@ do
 		v) LONG_OPTION=verbose;;
 		V) LONG_OPTION=version;;
 		w) LONG_OPTION=warning;;
+		y) LONG_OPTION=verify;;
 
                 -)
                    LONG_OPTION="$OPTARG"
@@ -251,7 +259,7 @@ do
 
 		package)  
                    package_flag="-p"
-                   missing_as_usual=1
+                   comment_missing=0
                 ;;
 
 		spec-only)
@@ -276,6 +284,15 @@ do
 
 		warning)
 			warning=y
+		;;
+
+
+		verify)
+			RequeredArgument
+			case "x$OPTARG" in
+			   x[yY]*) verify="1";;
+                           *)      verify="0";;
+			esac
 		;;
 
 		*)
@@ -533,11 +550,16 @@ if [ "x" = "x$package_flag" ]
 then
    BUILDROOT="/"
    IsPackageInstalled      || exit
-   out=$(VerifyPackage)    || exit
-   if [ -n "$out" ]
-   then
-	Warning "some files have been modified:\n$out"
-	QuestionsToUser || exit
+   if [ "$verify" -eq "1" ]; then
+      comment_missing=0
+      out=$(VerifyPackage)    || exit
+      if [ -n "$out" ]; then
+	 Warning "some files have been modified:\n$out"
+	 QuestionsToUser || exit
+         comment_missing=1
+      fi
+   else # NoVerify
+      :
    fi
 else
    PAQUET_NAME="${PAQUET##*/}"
