@@ -151,6 +151,10 @@ function spec_concatenate
 		$SPEC_PREUN.$si_preun               \
 		$SPEC_POSTUN.$si_postun             \
 		$SPEC_VERIFYSCRIPT.$si_verifyscript \
+	|| return
+
+	echo "%changelog" || return
+	cat                                         \
 		$SPEC_CHANGELOG.$si_changelog       \
 	|| return
 	return 0

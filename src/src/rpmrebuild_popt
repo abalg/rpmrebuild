@@ -186,5 +186,5 @@ rpm alias --spec_verifyscript --qf \
 
 rpm alias --spec_changelog --qf \
 '\
-%|CHANGELOGTIME?{%%changelog\n[* %{CHANGELOGTIME:day} %{CHANGELOGNAME} \n\n%{CHANGELOGTEXT}\n\n]\n}|\
+%|CHANGELOGTIME?{[* %{CHANGELOGTIME:day} %{CHANGELOGNAME}\n\n%{CHANGELOGTEXT}\n\n]}|\
 '
