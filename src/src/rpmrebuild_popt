@@ -35,10 +35,6 @@ Release:       \%O_Release\n\
 [Icon:          %{ICON}\n]\
 [#XPM:           %{XPM}\n]\
 [#GIF:           %{GIF}\n]\
-[Requires:      %{REQUIRENAME} %{REQUIREFLAGS:depflags} % {REQUIREVERSION}\n]\
-[Conflicts:     %{CONFLICTNAME} %{CONFLICTFLAGS:depflags} % {CONFLICTVERSION}\n]\
-[Obsoletes:     %{OBSOLETES}\n]\
-[Provides:      %{PROVIDES} %{PROVIDEFLAGS:depflags} %{PROVIDEVERSION}\n]\
 [ExcludeArch:   %{EXCLUDEARCH}\n]\
 [ExclusiveArch: %{EXCLUSIVEARCH}\n]\
 [ExcludeOs:     %{EXCLUDEOS}\n]\
@@ -66,7 +62,16 @@ rpm alias --spec_files --qf \
 %{FILENAMES}\n\
 ]\
 '
+
 rpm alias --spec_change --qf \
 '\
 %|CHANGELOGTIME?{[* %{CHANGELOGTIME:day} %{CHANGELOGNAME} \n\n%{CHANGELOGTEXT}\n\n]\n}:{}|\
+'
+
+rpm alias --spec_dep --qf \
+'\
+[Requires:      %{REQUIRENAME} %{REQUIREFLAGS:depflags} % {REQUIREVERSION}\n]\
+[Conflicts:     %{CONFLICTNAME} %{CONFLICTFLAGS:depflags} % {CONFLICTVERSION}\n]\
+[Obsoletes:     %{OBSOLETES}\n]\
+[Provides:      %{PROVIDES} %{PROVIDEFLAGS:depflags} %{PROVIDEVERSION}\n]\
 '
