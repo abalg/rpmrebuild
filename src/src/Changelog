@@ -1,6 +1,8 @@
 * Tue Mar  1 2005 <valery_reznic@users.sourceforge.net> 2.0.2-1
-Change from /usr/local/bin to /usr/bin
-       from /usr/local/man to /usr/share/man
+- Change from /usr/local/bin to /usr/bin
+         from /usr/local/man to /usr/share/man
+- plugins moved to the plugins/ directory in the source tree
+- plugins manpages renamed to the .in 
 
 * Tue Feb 22 2005 <valery_reznic@users.sourceforge.net> 2.0.1-1
 - fix for rpm-4.3.[12]
