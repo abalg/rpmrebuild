@@ -13,6 +13,14 @@ Url: http://rpmrebuild.sourceforge.net
 Packager: Eric Gerbier <gerbier@users.sourceforge.net>
 #Distribution: Red Hat Contrib-Net
 BuildArchitectures: noarch
+Requires: bash
+Requires: cpio
+# mkdir ...
+Requires: fileutils
+Requires: grep
+Requires: sed
+# sort
+Requires: textutils
 %if %rpmold
 Requires: rpm < 4.0
 Release: %{release}rpm3
@@ -28,9 +36,9 @@ Or you want to distribute your customization in an rpm format
 this tool is for you.
 
 %description -l fr
-vous avez installé un package sur votre ordinateur, vous voulez 
+Vous avez installé un package sur votre ordinateur, vous voulez 
 l'installer sur d'autres, et vous ne retrouvez plus le fichier rpm.
-ou vous voulez distribuer vos modifications au format rpm. voila l'outil 
+Ou vous voulez distribuer vos modifications au format rpm. voila l'outil 
 qu'il vous faut.
 
 %prep

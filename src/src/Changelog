@@ -1,4 +1,4 @@
-* Mon May 19 2004 <valery_treznic@users.sourceforge.net> 1.4.6-3
+* Wed May 19 2004 <valery_treznic@users.sourceforge.net> 1.4.6-3
 - added long option abbreviation
 - dir option changed to directory
 - add all remaining dependencies (bash, sed, grep ...) to package

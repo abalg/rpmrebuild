@@ -1,4 +1,7 @@
-2004-04-06 : release 1.4.6-2
+2004-05-19 : release 1.4.6-3
+- add remaining dependencies, add long options
+
+2004-05-06 : release 1.4.6-2
 - split in 2 packages for rpm <4 and rpm >4 (add rpm-build dependency)
 
 2004-01-01 : release 1.4.6-1
