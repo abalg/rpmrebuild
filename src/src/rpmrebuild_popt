@@ -15,7 +15,9 @@ AutoReq:       no\n\
 AutoProv:      no\n\
 [Name:          %{NAME}\n]\
 [Version:       %{VERSION}\n]\
-[Release:       %{RELEASE}\n]\
+\%define O_Release \%\{?new_release:\%\{new_release\}\}\%\{!?new_release:\%\{orig_release\}\}\n\
+[\%define orig_release %{RELEASE}\n]\
+Release:       \%O_Release\n\
 [URL:           %{URL}\n]\
 [Distribution:  %{DISTRIBUTION}\n]\
 [Vendor:        %{VENDOR}\n]\
