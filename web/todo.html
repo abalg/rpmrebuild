@@ -14,12 +14,12 @@
     <H2>remaining problems</H2>
     
     <H3>package signing (gpg or pgp)</H3>
-    do not know how to do this : I have not the private key 
+    do not know how to do this : I have not the private key, which is necessary to sign the package 
     
     <H3>globbing characters in file list</H3>
     rpmrebuild can not build packages if the file list contains globbing character (such as *).
     This seems to be a bug in rpm.
-
+    
     <H3>compatibility queries</H3>
     You can see description in /usr/doc/share/rpm-4.0.3/tsort<BR>
     
@@ -45,6 +45,11 @@
       <LI>man-pages-1.48-2 (Redhat 7.3) : bad changelog syntax (interpreted % macro)</LI> 
       <LI>arts, kdegraphics, kdepim (redhat 9) : strange Failed dependencies</LI> 
     </UL> 
+    
+    <HR>
+    <H2>a graphical interface</H2>
+    If we had time, we have the idea to offer in another package a portable graphical interface
+    (to be wrotten in tcl/tk perl/tk, or python/tkinter).
     
     <HR>
     <A href="index.html">back to main page</A>
