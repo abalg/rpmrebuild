@@ -5,6 +5,8 @@
 * Mon Dec 10 2002 <gerbier@users.sourceforge.net> 1.2-1b
 - add man page
 - fix bug with % in changelog
+- add -r|--resolv-dep option
+- add french translation in specfile
 
 * Sat Dec  3 2002 <valery_reznic@users.sourceforge.net> 1.2-1a
 - added long options

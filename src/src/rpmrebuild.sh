@@ -48,6 +48,7 @@ options:
    -k, --keep-perm,
        --pug-from-fs           keep installed files permission, uid and gid
        --pug-from-db (default) use files permission, uid and gid from rpm db
+   -r, --resolve-dep	       change file dependencies in package dependencies
    -s, --spec-only <spec>      generate specfile only
                                (If <spec> '-' stdout will be used)
    -v, --verbose               verbose
@@ -72,6 +73,17 @@ function SpecFile
 	HOME=$MY_LIB_DIR rpm --query --spec_spec ${PAQUET}
 }
 ###############################################################################
+# build dependencies tags
+function DepSpecFile
+{
+	if [ -n "$resolv_dep" ]
+	then
+		HOME=$MY_LIB_DIR rpm --query --spec_dep ${PAQUET} | sort -u | $MY_LIB_DIR/rpmrebuild_dep.sh | sort -u
+	else
+		HOME=$MY_LIB_DIR rpm --query --spec_dep ${PAQUET} | sort -u
+	fi
+}
+###############################################################################
 # build the list of files in package
 function FilesSpecFile
 {
@@ -91,7 +103,6 @@ function Try_Help
 {
 	echo "Try \`$0 --help' for more information." 1>&2
 }
-
 
 ###############################################################################
 function UnrecognizedOption
@@ -128,7 +139,7 @@ rpm_verbose="--quiet"
 export keep_perm=""
 PAQUET=""
 
-while getopts "bd:ef:hks:vV-:" opt
+while getopts "bd:ef:hkrs:vV-:" opt
 do
 	case "$opt" in
 		b) LONG_OPTION=batch;;
@@ -143,6 +154,7 @@ do
 		#;;
 
 		k) LONG_OPTION=keep-perm;;
+		r) LONG_OPTION=resolv-dep;;
 		s) LONG_OPTION=spec-only;;
 		h) LONG_OPTION=help;;
 		v) LONG_OPTION=verbose;;
@@ -192,6 +204,10 @@ do
 
 		pug-from-db)
 			keep_perm=""
+		;;
+
+		resolv-dep)
+			resolv_dep=1
 		;;
 
 		spec-only)
@@ -310,9 +326,9 @@ function SpecGenerationOnly
 {
 	if [ "$specfile" = "-" ]
 	then
-		{ SpecFile && FilesSpecFile && ChangeSpecFile; } || return
+		{ DepSpecFile && SpecFile && FilesSpecFile && ChangeSpecFile; } || return
 	else
-		{ SpecFile && FilesSpecFile && ChangeSpecFile; } > $specfile || return
+		{ DepSpecFile && SpecFile && FilesSpecFile && ChangeSpecFile; } > $specfile || return
 	fi
 	return 0
 }
@@ -331,6 +347,7 @@ function SpecGeneration
                 else
                    :
                 fi       &&
+		DepSpecFile &&
    		SpecFile &&
    		FilesSpecFile &&
 		ChangeSpecFile
