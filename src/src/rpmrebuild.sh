@@ -17,7 +17,7 @@
 #    GNU General Public License for more details.
 #
 ###############################################################################
-VERSION="$id$"
+VERSION="$Id$"
 verbose="--quiet"
 ###############################################################################
 function Usage
@@ -27,6 +27,7 @@ function Usage
 	echo "options :"
 	echo "-b : batch mode"
 	echo "-h : print this help"
+	echo "-k : keep installed files perm"
 	echo "-v : verbose"
 	echo "-V : print version"
 	echo "the spec and rpm result are built on local directory"
@@ -62,11 +63,12 @@ function FilesSpecFile
 MY_CONFIG_DIR=/etc/rpmrebuild
 MY_DIR=$(dirname $0)
 
-while getopts "bhvV" opt
+while getopts "bhkvV" opt
 do
 	case "$opt" in
 	b) batch=y;;
 	h) Usage; exit 1;;
+	k) export keep_perm=1;;
 	v) verbose="-v";;
 	V) echo "$VERSION"; exit 0;;
 	*) Usage; exit 1;;

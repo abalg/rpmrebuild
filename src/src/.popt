@@ -1,5 +1,7 @@
 rpm alias --spec_spec --qf \
 '\
+\%undefine __check_files\n\
+\%define _missing_doc_files_terminate_build	0\n\
 AutoReq:       no\n\
 AutoProv:      no\n\
 [Name:          %{NAME}\n]\

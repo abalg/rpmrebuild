@@ -74,7 +74,12 @@ while :; do
       fflags_str="${d_str}${config_full}${g_str}"
    fi
 
-   file_perm="${file_perm#??}"
-   attr_str="%attr($file_perm $file_user $file_group) "
+   if [ -z "$keep_perm" ]
+   then
+   	file_perm="${file_perm#??}"
+   	attr_str="%attr($file_perm $file_user $file_group) "
+   else
+   	attr_str=""
+   fi
    echo "${miss_str}${dir_str}${fflags_str}${attr_str}${file}"
 done
