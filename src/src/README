@@ -2,6 +2,7 @@ summary
 --------
 rpmrebuild is a tool to build an rpm file from the rpm database
 of installed softwares.
+It can be used to quickly build modified rpm packages.
 
 how does it work
 -----------------
