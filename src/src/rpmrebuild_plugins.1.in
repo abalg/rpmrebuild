@@ -1,4 +1,4 @@
-.TH "rpmrebuild_plugins" "1" "2.0.0" "Valery Reznic" "rpm tools"
+.TH "rpmrebuild_plugins" "1" "@VERSION@" "Valery Reznic" "rpm tools"
 .SH "NAME"
 rpmrebuild_plugins \- is an engine to expand \fBrpmrebuild\fP functionality.
 .SH "SYNOPSIS"

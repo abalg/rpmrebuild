@@ -51,6 +51,8 @@ MANPAGES :=             \
    rpmrebuild.1         \
    rpmrebuild_plugins.1 \
 
+MANPAGES_SRC := $(addsuffix .in,$(MANPAGES))
+
 DOC_FILES :=      \
    AUTHORS        \
    Changelog      \
@@ -95,13 +97,16 @@ define Spec
    }
 endef
 
-all: rpmrebuild.spec VERSION
+all: rpmrebuild.spec VERSION $(MANPAGES)
 	$(LN) rpmrebuild_popt .popt
 	$(MAKE) -C plugins $@
 
 rpmrebuild.spec: rpmrebuild.spc spec.scripts Version Release Changelog 
 	$(RM) $@
 	$(Spec) > $@ || { $(RM) $@; exit 1; }
+
+$(MANPAGES): %: %.in $(TOP_DIR)/Version
+	$(MakeManPage)
 
 spec.scripts:
 	$(RM) $@
@@ -138,5 +143,6 @@ rpm rpmbuild:	tar
 
 clean:
 	$(RMDIR) $(ROOT) $(RPM_BUILD_DIR)
-	$(RM)    VERSION rpmrebuild.spec spec.scripts *.rpm rpmrebuild.tar.gz
+	$(RM)    VERSION rpmrebuild.spec spec.scripts *.rpm rpmrebuild.tar.gz 
+	$(RM)    $(MANPAGES)
 	$(MAKE) -C plugins $@

@@ -1,4 +1,4 @@
-.TH "rpmrebuild" "1" "2.0.0" "Eric Gerbier" "rpm tools"
+.TH "rpmrebuild" "1" "@VERSION@" "Eric Gerbier" "rpm tools"
 .SH "NAME"
 rpmrebuild \- a tool to build an rpm package from an installed package
 .SH "SYNOPSIS"
