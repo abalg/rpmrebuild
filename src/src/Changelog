@@ -1,3 +1,7 @@
+* Fri May 20 2005 <gerbier@users.sourceforge.net> 2.0.3-1
+- add --notest-install option (Christopher Faylor)
+- add --release option (Christopher Faylor)
+
 * Wed Mar  2 2005 <gerbier@users.sourceforge.net> 2.0.2-1
 - fix bug with BuildArch tag (rpmrebuild_popt)
 
