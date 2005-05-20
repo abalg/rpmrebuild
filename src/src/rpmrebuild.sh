@@ -82,6 +82,7 @@ function QuestionsToUser
 
 	AskYesNo "$WantContinue" || return
 	RELEASE_ORIG="$(spec_query_qf '%{RELEASE}')"
+	[ -z "$RELEASE_NEW" ] && \
 	AskYesNo "Do you want to change release number" && {
 		echo -n "Enter the new release (old: $RELEASE_ORIG): "
 		read RELEASE_NEW
@@ -282,7 +283,7 @@ function Main
 		RpmBuild         || return
 		RpmFileName      || return
 		echo "result: ${RPMFILENAME}"
-		InstallationTest || return
+		[ -z "$NOTESTINSTALL" ] && InstallationTest || return
 	fi
 	return 0
 }
