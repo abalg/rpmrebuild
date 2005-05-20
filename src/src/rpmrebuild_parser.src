@@ -34,9 +34,11 @@ options:
    -k, --keep-perm              alias for --pug-from-fs
        --pug-from-fs            keep installed files permission, uid and gid
        --pug-from-db (default)  use files permission, uid and gid from rpm db
-   -m  --modify=<command>       alias for --change-files
+   -m, --modify=<command>       alias for --change-files
+   -n, --notest-install		do not perform a test install
    -p, --package                use package file, not installed rpm
    -P, --autoprovide            force rpm to auto generate 'Provide:'
+   -r, --release=N              force release to N
    -R, --autorequire            force rpm to auto generate 'Require:'
    -s, --spec-only=<specfile>   generate specfile only
                                 (If <specfile> '-' stdout will be used)
@@ -49,7 +51,7 @@ options:
    -h, --help                   print this help
        --help-plugins           print help about plugins options
 
-Copyright (C) 2002 by Eric Gerbier
+Copyright (C) 2002,2003,2004,2005 by Eric Gerbier
 this program is distributed under GNU General Public License
 "
 	Echo "$Usage_Message"
@@ -634,6 +636,23 @@ function ProcessLongOptions
 				LONG_OPTION='change-files' # alias
 			;;
 
+			n | \
+			no | \
+			not | \
+			note | \
+			notes | \
+			notest | \
+			notest- | \
+			notest-i | \
+			notest-in | \
+			notest-ins | \
+			notest-inst | \
+			notest-insta | \
+			notest-instal | \
+			notest-install)
+				LONG_OPTION='notest-install'
+			;;
+
 			p)
 				AmbiguousOption
 				return 1
@@ -668,6 +687,16 @@ function ProcessLongOptions
 			pug-from-f | \
 			pug-from-fs)
 				LONG_OPTION='pug-from-fs' # alias
+			;;
+
+			r | \
+			re | \
+			rel | \
+			rele | \
+			relea | \
+			releas | \
+			release) \
+				LONG_OPTION='release'
 			;;
 
 			s | \
@@ -849,6 +878,10 @@ function ProcessLongOptions
 				done < $OPTARG || return
 			;;
 
+			notest-install)
+				NOTESTINSTALL=1
+			;;
+
 			package)
                    		package_flag="-p"
                 	;;
@@ -859,6 +892,10 @@ function ProcessLongOptions
 
 			pug-from-fs)
 				RPMREBUILD_PUG_FROM_FS="yes"
+			;;
+
+			release)
+				RELEASE_NEW="$OPTARG"
 			;;
 
 			spec-only)
@@ -939,8 +976,10 @@ function CommandLineParsing
 			i) LONG_OPTION=include;;
 			k) LONG_OPTION=keep-perm;;
 			m) LONG_OPTION=modify;;    
+			n) LONG_OPTION=notest-install;;
 			p) LONG_OPTION=package;;
 			P) LONG_OPTION=autoprovide;;
+			r) LONG_OPTION=release;;
 			R) LONG_OPTION=autorequire;;
 			s) LONG_OPTION=spec-only;;
 			h) LONG_OPTION=help;;
