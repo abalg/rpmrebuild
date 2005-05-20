@@ -5,6 +5,7 @@ PLUGINS :=          \
    demo.plug        \
    file2pacDep.plug \
    uniq.plug        \
+   nodoc.plug        \
                     \
 
 SCRIPTS :=        \
@@ -12,12 +13,14 @@ SCRIPTS :=        \
    demofiles.sh   \
    file2pacDep.sh \
    uniq.sh        \
+   nodoc.sh        \
                   \
 
 MANPAGES :=              \
    file2pacDep.plug.1rrp \
    demo.plug.1rrp        \
    uniq.plug.1rrp        \
+   nodoc.plug.1rrp        \
 
 MANPAGES_SRC := $(addsuffix .in,$(MANPAGES))
 

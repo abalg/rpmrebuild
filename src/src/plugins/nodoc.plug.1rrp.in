@@ -1,0 +1,63 @@
+.TH "nodoc.plug" "1" "@VERSION@" "Eric Gerbier" "rpmrebuild plugin"
+.SH "NAME"
+nodoc.plug \- a plugin for rpmrebuild, to remove documentation
+.SH "SYNOPSIS"
+rpmrebuild \-\-include nodoc.plug <\fIpackagename\fP>
+.br 
+or
+.br 
+rpmrebuild  \-\-change\-spec\-files="uniq.sh [\fIoption\fP]" <\fIpackagename\fP>
+.br 
+
+
+the second allow to choose plugin options
+.SH "DESCRIPTION"
+this plugin is to suppress documentation : man pages and package doc
+
+.SH "OPTIONS"
+.TP 
+\fB\-h, \-\-help\fP
+output help information plugins option and exit.
+.TP 
+\fB\-m, \-\-man\fP
+remove only man pages
+.TP 
+\fB\-d, \-\-doc\fP
+remove only doc (/usr/share/doc) files
+.TP 
+\fB\-v, \-\-version\fP
+print plugin version and exit
+.SH "FILES"
+.TP 
+\fBnodoc.plug\fP
+is the 'include file' for a quicker use
+.TP 
+\fBnodoc.sh\fP
+contains the code
+.TP 
+\fBnodoc.plug.1\fP
+is this man page
+.SH "EXAMPLES"
+.LP 
+\fBrpmrebuild \-\-include nodoc.plug rpm\fP
+
+.SH "AUTHORS"
+.LP 
+Eric Gerbier <gerbier@users.sourceforge.net>
+.TP 
+See <URL:http://rpmrebuild.sourceforge.net/>.
+.SH "NOTES"
+.LP 
+.TP 
+this plugin is given as an example of what can be done
+.SH "COPYRIGHT"
+.LP 
+rpmrebuild is copyright (C) 2004 by Eric Gerbier.
+.br 
+this program is distributed under GNU General Public License
+.br 
+It is provided "as is", without any express or implied
+warranties.  See the file COPYING for details.
+.SH "SEE ALSO"
+.LP 
+rpm(8), rpmbuild(8), rpmrebuild_plugins(1), demo.plug(1), file2pacDep.plug(1), 'man \-k rrp' for plugins specific manpages
