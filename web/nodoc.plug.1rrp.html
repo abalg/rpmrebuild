@@ -1,0 +1,118 @@
+<HTML><HEAD><TITLE>Manpage of nodoc.plug</TITLE>
+    </HEAD><BODY>
+    <H1>nodoc.plug</H1>
+    Section: rpmrebuild plugin (1)<BR>Updated: 2.0.3<BR><A HREF="#index">Index</A>
+    
+    <A NAME="lbAB">&nbsp;</A>
+    <H2>NAME</H2>
+    
+    nodoc.plug - a plugin for rpmrebuild, to remove documentation
+    <A NAME="lbAC">&nbsp;</A>
+    <H2>SYNOPSIS</H2>
+    
+    rpmrebuild --include nodoc.plug &lt;<I>packagename</I>&gt;
+    <BR>
+    
+    or
+    <BR>
+    
+    rpmrebuild  --change-spec-files=&quot;uniq.sh [<I>option</I>]&quot; &lt;<I>packagename</I>&gt;
+    <BR>
+    
+    <P>
+    <P>
+    the second allow to choose plugin options
+    <A NAME="lbAD">&nbsp;</A>
+    <H2>DESCRIPTION</H2>
+    
+    this plugin is to suppress documentation : man pages and package doc
+    <P>
+    <A NAME="lbAE">&nbsp;</A>
+    <H2>OPTIONS</H2>
+    
+    <DL COMPACT>
+      <DT><B>-h, --help</B><DD>
+      output help information plugins option and exit.
+      <DT><B>-m, --man</B><DD>
+      remove only man pages
+      <DT><B>-d, --doc</B><DD>
+      remove only doc (/usr/share/doc) files
+      <DT><B>-v, --version</B><DD>
+      print plugin version and exit
+    </DL>
+    <A NAME="lbAF">&nbsp;</A>
+    <H2>FILES</H2>
+    
+    <DL COMPACT>
+      <DT><B>nodoc.plug</B><DD>
+      is the 'include file' for a quicker use
+      <DT><B>nodoc.sh</B><DD>
+      contains the code
+      <DT><B>nodoc.plug.1</B><DD>
+      is this man page
+    </DL>
+    <A NAME="lbAG">&nbsp;</A>
+    <H2>EXAMPLES</H2>
+    
+    <P>
+    
+    <B>rpmrebuild --include nodoc.plug rpm</B>
+    <P>
+    <A NAME="lbAH">&nbsp;</A>
+    <H2>AUTHORS</H2>
+    
+    <P>
+    
+    Eric Gerbier &lt;<A HREF="mailto:gerbier@users.sourceforge.net">gerbier@users.sourceforge.net</A>&gt;
+    <DL COMPACT>
+      <DT>See &lt;URL:<A HREF="http://rpmrebuild.sourceforge.net/">http://rpmrebuild.sourceforge.net/</A>&gt;.<DD>
+    </DL>
+    <A NAME="lbAI">&nbsp;</A>
+    <H2>NOTES</H2>
+    
+    <P>
+    
+    <DL COMPACT>
+      <DT>this plugin is given as an example of what can be done<DD>
+    </DL>
+    <A NAME="lbAJ">&nbsp;</A>
+    <H2>COPYRIGHT</H2>
+    
+    <P>
+    
+    rpmrebuild is copyright (C) 2004 by Eric Gerbier.
+    <BR>
+    
+    this program is distributed under GNU General Public License
+    <BR>
+    
+    It is provided &quot;as is&quot;, without any express or implied
+    warranties.  See the file COPYING for details.
+    <A NAME="lbAK">&nbsp;</A>
+    <H2>SEE ALSO</H2>
+    
+    <P>
+    
+    <A HREF="http://localhost/cgi-bin/man/man2html?8+rpm">rpm</A>(8), <A HREF="http://localhost/cgi-bin/man/man2html?8+rpmbuild">rpmbuild</A>(8), <A HREF="http://localhost/cgi-bin/man/man2html?1+rpmrebuild_plugins">rpmrebuild_plugins</A>(1), <A HREF="http://localhost/cgi-bin/man/man2html?1+demo.plug">demo.plug</A>(1), <A HREF="http://localhost/cgi-bin/man/man2html?1+file2pacDep.plug">file2pacDep.plug</A>(1), 'man -k rrp' for plugins specific manpages
+    <P>
+    
+    <HR>
+    <A NAME="index">&nbsp;</A><H2>Index</H2>
+    <DL>
+      <DT><A HREF="#lbAB">NAME</A><DD>
+      <DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+      <DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+      <DT><A HREF="#lbAE">OPTIONS</A><DD>
+      <DT><A HREF="#lbAF">FILES</A><DD>
+      <DT><A HREF="#lbAG">EXAMPLES</A><DD>
+      <DT><A HREF="#lbAH">AUTHORS</A><DD>
+      <DT><A HREF="#lbAI">NOTES</A><DD>
+      <DT><A HREF="#lbAJ">COPYRIGHT</A><DD>
+      <DT><A HREF="#lbAK">SEE ALSO</A><DD>
+    </DL>
+    <HR>
+    This document was created by man2html
+    using the manual pages.<BR>
+    Time: 08:16:47 GMT, May 26, 2005
+  </BODY>
+</HTML>
