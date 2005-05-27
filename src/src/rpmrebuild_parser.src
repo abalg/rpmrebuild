@@ -963,7 +963,7 @@ function CommandLineParsing
 
 	export LONG_OPTION
 
-	while getopts "a:bc:d:D:ef:hi:km:pPRs:vVwy:-:" opt; do
+	while getopts "a:bc:d:D:ef:hi:km:npPRrs:vVwy:-:" opt; do
 		OPTIND_INCR=""
 		case "$opt" in
 			a) LONG_OPTION=additional;;
