@@ -245,6 +245,8 @@ function Main
 
 	RPMREBUILD_PROCESSING=$TMPDIR_WORK/PROCESSING
 
+	# to ensure tmpdir is really emptied by rm -rf
+	chmod -R 700 $RPMREBUILD_TMPDIR 2>/dev/null
 	rm -rf   $RPMREBUILD_TMPDIR || return
 	# It'll create $RPMREBUILD_TMPDIR too
 	mkdir -p $TMPDIR_WORK       || return
@@ -283,7 +285,7 @@ function Main
 		RpmBuild         || return
 		RpmFileName      || return
 		echo "result: ${RPMFILENAME}"
-		[ -z "$NOTESTINSTALL" ] && InstallationTest || return
+		[ -z "$NOTESTINSTALL" ] && InstallationTest
 	fi
 	return 0
 }
