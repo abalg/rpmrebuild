@@ -285,7 +285,9 @@ function Main
 		RpmBuild         || return
 		RpmFileName      || return
 		echo "result: ${RPMFILENAME}"
-		[ -z "$NOTESTINSTALL" ] && InstallationTest
+		if [ -z "$NOTESTINSTALL" ]; then
+			InstallationTest || return
+		fi
 	fi
 	return 0
 }
