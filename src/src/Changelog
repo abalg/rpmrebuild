@@ -1,3 +1,9 @@
+* Tue May 31 2005 <gerbier@users.sourceforge.net> 2.0.4-1
+- force tmpdir to be empty (Christopher Faylor)
+- fix bug with testinstall return
+- fix bug with short options -r -n
+- improved nodoc plugin
+
 * Fri May 20 2005 <gerbier@users.sourceforge.net> 2.0.3-1
 - add --notest-install option (Christopher Faylor)
 - add --release option (Christopher Faylor)
