@@ -246,8 +246,12 @@ function Main
 	RPMREBUILD_PROCESSING=$TMPDIR_WORK/PROCESSING
 
 	# to ensure tmpdir is really emptied by rm -rf
-	chmod -R 700 $RPMREBUILD_TMPDIR 2>/dev/null
-	rm -rf   $RPMREBUILD_TMPDIR || return
+	rm -rf "$RPMREBUILD_TMPDIR" 2>/dev/null
+	if [ $? -ne 0 ]; then
+		chmod -R 700 "$RPMREBUILD_TMPDIR" 2>/dev/null 
+		rm -rf "$RPMREBUILD_TMPDIR" || return
+	fi
+	
 	# It'll create $RPMREBUILD_TMPDIR too
 	mkdir -p $TMPDIR_WORK       || return
 	CommandLineParsing "$@" || return
