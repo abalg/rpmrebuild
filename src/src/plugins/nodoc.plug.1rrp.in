@@ -6,7 +6,7 @@ rpmrebuild \-\-include nodoc.plug <\fIpackagename\fP>
 .br 
 or
 .br 
-rpmrebuild  \-\-change\-spec\-files="uniq.sh [\fIoption\fP]" <\fIpackagename\fP>
+rpmrebuild  \-\-change\-spec\-files="nodoc.sh [\fIoption\fP]" <\fIpackagename\fP>
 .br 
 
 

@@ -21,7 +21,7 @@
 ###############################################################################
 # code's file of nodoc plugin for rpmrebuild
 
-version=1.0
+version=1.1
 
 ###############################################################################
 function msg () {
@@ -89,22 +89,50 @@ fi
 while read line
 do
 	skip=''
-	if [ -n "$opt_doc" ]
-	then
-		out=$(echo $line | grep "/usr/share/doc")
-		if [ -n "$out" ]
-		then
-			skip=y
-		fi
-	fi
-	if [ -n "$opt_man" ]
-	then
-		out=$(echo $line | grep "/usr/share/man")
-		if [ -n "$out" ]
-		then
-			skip=y
-		fi
-	fi
+	# first code style
+#	if [ -n "$opt_doc" ]
+#	then
+#		out=$(echo $line | grep "^%doc")
+#		if [ -n "$out" ]
+#		then
+#			skip=y
+#		fi
+#	fi
+#	if [ -n "$opt_man" ]
+#	then
+#		out=$(echo $line | egrep "/man/man[[:alnum:]]*/|/man/[[:alpha:]]*/man[[:alnum:]]*/" )
+#		if [ -n "$out" ]
+#		then
+#			skip=y
+#		fi
+#	fi
+	# second code style (avoid call to external grep process)
+	case "$line" in
+   		%doc*)
+			#echo "%doc found"
+      			case "$line" in
+				*/man*/man*/* | */man*/*/man*/*)
+					#echo "man found"
+         				# process manpages
+					if [ -n "$opt_man" ]
+					then
+						skip=y
+					fi
+      					;;
+      				*)
+          				# process docs
+					#echo "doc found"
+					if [ -n "$opt_doc" ]
+					then
+						skip=y
+					fi
+      					;;        
+      			esac
+			;;
+    		*)
+        		# process nodoc
+    			;;
+	esac
 	if [ -z "$skip" ]
 	then
 		echo $line
