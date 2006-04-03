@@ -1,0 +1,6 @@
+<c>
+use
+<q>
+which difference with repackage option in recent rpm releases
+<a>
+when using rpm repackage option, you have to uninstall the package, not with rpmrebuild.
