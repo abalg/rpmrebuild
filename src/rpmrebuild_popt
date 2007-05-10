@@ -108,12 +108,6 @@ rpm alias --spec_preamble --qf '\
 %|EPOCH?{\
 [Epoch:         %{EPOCH}\n]\
 }|\
-%|SERIAL?{\
-[#SERIAL:         %{SERIAL}\n]\
-}|\
-%|ICON?{\
-[Icon:          %{ICON}\n]\
-}|\
 %|XPM?{\
 [#XPM:           %{XPM}\n]\
 }|\
