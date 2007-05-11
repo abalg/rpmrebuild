@@ -1,3 +1,7 @@
+* Tue May 10 2007 <gerbier@users.sourceforge.net> 2.0.5-1
+- remove old deprecated tags ICON and SERIAL
+- comment missing localisation file (lang)
+
 * Tue May 31 2005 <gerbier@users.sourceforge.net> 2.0.4-1
 - force tmpdir to be empty (Christopher Faylor)
 - fix bug with testinstall return
@@ -13,8 +17,7 @@
 - fix bug with BuildArch tag (rpmrebuild_popt)
 
 * Tue Mar  1 2005 <valery_reznic@users.sourceforge.net> 2.0.2-1
-- Change from /usr/local/bin to /usr/bin
-         from /usr/local/man to /usr/share/man
+- Change from /usr/local/bin to /usr/bin from /usr/local/man to /usr/share/man
 - plugins moved to the plugins/ directory in the source tree
 - plugins manpages renamed to the .in 
 
@@ -30,8 +33,7 @@
 
 * Wed Oct 26 2004 <valery_reznic@users.sourceforge.net> 2.0.0-1
 - processing of /change/modify/edit was moved to the processng_func.src
-- changes to support --change-spec-* ane --edit-* (in the processing_func,
-  rpmrebuild_popt and rpmrebuild_parser)
+- changes to support --change-spec-* ane --edit-* (in the processing_func, rpmrebuild_popt and rpmrebuild_parser)
 - added '--include' option
 
 * Wed Sep 28 2004 <valery_reznic@users.sourceforge.net> 2.0.0-1
@@ -57,15 +59,13 @@
 - fixed problem with manpages compression
 
 * Mon Jul 12 2004 <valery_reznic@users.sourceforge.net> 1.4.7-1
-- rpmrebuild.sh can be now run from local directory, without need 
-  to install package (add rpmrebuild_buildroot.sh file).
+- rpmrebuild.sh can be now run from local directory, without need to install package (add rpmrebuild_buildroot.sh file).
 
 * Sun Jul 11 2004 <valery_reznic@users.sourceforge.net> 1.4.7-1
 - Fix a bug: --comment-missing=yes was work only when --verify=no 
 - --modify now work without --package too.
 - fix a bug on sed for redhat 7.2 (rewrite SpecChange)
-- change SpecFile to generate rpm according autorequire/autoprovide (avoid
-  post sed)
+- change SpecFile to generate rpm according autorequire/autoprovide (avoid post sed)
 - add rpmrebuild file (avoid symbolic link)
 
 * Mon May 24 2004 <gerbier@users.sourceforge.net> 1.4.6-4
@@ -73,8 +73,7 @@
 
 * Mon May 24 2004 <valery_reznic@users.sourceforge.net> 1.4.6-4
 - eliminate 'expr' usage
-- add RPMREBUILD_TMDDIR environment variable.  With default ~/.tmp/rpmrebuild
-  It used instead of /tmp.
+- add RPMREBUILD_TMDDIR environment variable.  With default ~/.tmp/rpmrebuild It used instead of /tmp.
 
 * Sun May 23 2004 <valery_reznic@users.sourceforge.net> 1.4.6-4
 - fixed bug with parsing --long-option= 

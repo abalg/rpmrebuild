@@ -82,8 +82,16 @@ while :; do
 
 	# language handling
 	[ "X$file_lang" = "X(none)" ] && file_lang=""
-	lang_str=""
-	[ "X$file_lang" = "X" ] || lang_str="%lang($file_lang) "
+	if [ "X$file_lang" = "X" ]; then
+		lang_str=""
+	else
+		lang_str="%lang($file_lang) "
+		if [ -e "$file" ]; then
+			miss_str=""
+		else 
+			miss_str='# MISSING: '
+		fi
+	fi
    
 	# %dir handling
 	dir_str=""
