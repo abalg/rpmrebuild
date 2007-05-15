@@ -390,7 +390,8 @@ function ProcessLongOptions
 				LONG_OPTION="comment-missing"
 			;;
 
-			d)
+			d | \
+			de)
 				AmbiguousOption
 				return 1
 			;;
