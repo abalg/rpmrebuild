@@ -1,6 +1,9 @@
-* Tue May 10 2007 <gerbier@users.sourceforge.net> 2.0.5-1
+* Tue May 15 2007 <gerbier@users.sourceforge.net> 2.0.5-1
 - remove old deprecated tags ICON and SERIAL
 - comment missing localisation file (lang)
+- remove commnented tag XPM and GIF
+- allow concurrent use : random working directory
+- add new long option --debug
 
 * Tue May 31 2005 <gerbier@users.sourceforge.net> 2.0.4-1
 - force tmpdir to be empty (Christopher Faylor)

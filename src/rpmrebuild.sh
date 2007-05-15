@@ -220,8 +220,8 @@ function Main
 {
 	WantContinue="Do you want to continue"
 
-	#RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild.$$}
-	RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild}
+	RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild.$$}
+	#RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild}
 	export RPMREBUILD_TMPDIR
 	TMPDIR_WORK=$RPMREBUILD_TMPDIR/work
 
@@ -246,11 +246,11 @@ function Main
 	RPMREBUILD_PROCESSING=$TMPDIR_WORK/PROCESSING
 
 	# to ensure tmpdir is really emptied by rm -rf
-	rm -rf "$RPMREBUILD_TMPDIR" 2>/dev/null
-	if [ $? -ne 0 ]; then
-		chmod -R 700 "$RPMREBUILD_TMPDIR" 2>/dev/null 
-		rm -rf "$RPMREBUILD_TMPDIR" || return
-	fi
+	#rm -rf "$RPMREBUILD_TMPDIR" 2>/dev/null
+	#if [ $? -ne 0 ]; then
+	#	chmod -R 700 "$RPMREBUILD_TMPDIR" 2>/dev/null 
+	#	rm -rf "$RPMREBUILD_TMPDIR" || return
+	#fi
 	
 	# It'll create $RPMREBUILD_TMPDIR too
 	mkdir -p $TMPDIR_WORK       || return
@@ -298,7 +298,12 @@ function Main
 
 Main "$@"
 st=$?	# save status
-#rm -rf $RPMREBUILD_TMPDIR
+
+# in debug mode , we do not clean temp files
+if [ -z "$debug" ]
+then
+	rm -rf $RPMREBUILD_TMPDIR
+fi
 exit $st
 
 #####################################

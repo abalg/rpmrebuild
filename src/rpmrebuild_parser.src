@@ -43,6 +43,7 @@ options:
    -s, --spec-only=<specfile>   generate specfile only
                                 (If <specfile> '-' stdout will be used)
    -v, --verbose                verbose
+       --debug                  do not remove temporary working files
    -V, --version                print version
    -w, --warning                print warning if detect filenames with
                                 globbing characters (default - no)
@@ -394,7 +395,12 @@ function ProcessLongOptions
 				return 1
 			;;
 
-			de | \
+			deb | \
+			debu | \
+			debug)
+				LONG_OPTION="debug"
+			;;
+
 			def | \
 			defi | \
 			defin | \
@@ -811,6 +817,10 @@ function ProcessLongOptions
 				esac
 			;;
 
+			debug)
+				debug="yes"
+			;;
+
 			define)
 				RequeredArgument || return
 				rpm_defines="$rpm_defines --define '$OPTARG'"
@@ -944,6 +954,7 @@ function CommandLineParsing
 	autoprovide="no"
 	autorequire="no"
 	batch="no"
+	debug=""
 	need_change_files="no"
 	need_change_spec="no"
 	rpm_defines=""
