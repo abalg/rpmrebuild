@@ -49,6 +49,21 @@ function AskYesNo
 }
 
 ###############################################################################
+function RmDir
+{
+	[ $# -ne 1 -o "x$1" = "x" ] && {
+		Echo "Usage: RmDir <dir>"
+		return 1
+	}
+	# to ensure tmpdir is really emptied by rm -rf
+	local Dir
+	Dir="$1"
+	rm -rf "$Dir" 2>/dev/null && return
+	chmod -R 700 "$Dir" 2>/dev/null  # no return here !!!
+	rm -rf "$Dir" || return
+	return 0
+}
+###############################################################################
 function SpecEdit
 {
 	[ $# -ne 1 -o "x$1" = "x" ] && {
@@ -245,12 +260,7 @@ function Main
 
 	RPMREBUILD_PROCESSING=$TMPDIR_WORK/PROCESSING
 
-	# to ensure tmpdir is really emptied by rm -rf
-	#rm -rf "$RPMREBUILD_TMPDIR" 2>/dev/null
-	#if [ $? -ne 0 ]; then
-	#	chmod -R 700 "$RPMREBUILD_TMPDIR" 2>/dev/null 
-	#	rm -rf "$RPMREBUILD_TMPDIR" || return
-	#fi
+	RmDir "$RPMREBUILD_TMPDIR" || return
 	
 	# It'll create $RPMREBUILD_TMPDIR too
 	mkdir -p $TMPDIR_WORK       || return
@@ -302,7 +312,7 @@ st=$?	# save status
 # in debug mode , we do not clean temp files
 if [ -z "$debug" ]
 then
-	rm -rf $RPMREBUILD_TMPDIR
+	RmDir "$RPMREBUILD_TMPDIR"
 fi
 exit $st
 
