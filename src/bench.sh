@@ -1,7 +1,7 @@
 #!/bin/sh
 # a script test rpmrebuild on all installed packages
 # internal use for developpers
-# $Id:$
+# $Id$
 
 tmpdir=/tmp
 
@@ -49,12 +49,12 @@ do
 		fi
 	fi
 	rm -f ${pac}.spec
-	# remove new rpm files
+	# remove new rpm files to avoid file system full
 	rm -f ${tmpdir}/i386/* ${tmpdir}/i586/* ${tmpdir}/i686/* ${tmpdir}/noarch/* 2> /dev/null
 done
 
 # clean temporary directories
-rmdir ${tmpdir}/i386 ${tmpdir}/i586 ${tmpdir}/i686 ${tmpdir}/noarch
+rmdir ${tmpdir}/i386 ${tmpdir}/i586 ${tmpdir}/i686 ${tmpdir}/noarch 2> /dev/null
 
 echo "-------------------------------------------------------"
 echo "$bad bad build on $total packages"
