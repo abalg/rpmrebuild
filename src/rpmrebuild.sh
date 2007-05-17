@@ -58,9 +58,12 @@ function RmDir
 	# to ensure tmpdir is really emptied by rm -rf
 	local Dir
 	Dir="$1"
-	rm -rf "$Dir" 2>/dev/null && return
-	chmod -R 700 "$Dir" 2>/dev/null  # no return here !!!
-	rm -rf "$Dir" || return
+	if [ -d $Dir ]
+	then
+		rm -rf "$Dir" 2>/dev/null && return
+		chmod -R 700 "$Dir" 2>/dev/null  # no return here !!!
+		rm -rf "$Dir" || return
+	fi
 	return 0
 }
 ###############################################################################
@@ -90,6 +93,7 @@ function VerifyPackage
 	return 0
 }
 
+###############################################################################
 function QuestionsToUser
 {
 	[ "X$batch"     = "Xyes" ] && return 0 ## batch mode, continue
@@ -105,6 +109,7 @@ function QuestionsToUser
 	return 0
 }
 
+###############################################################################
 function IsPackageInstalled
 {
 	# test if package exists
@@ -209,6 +214,7 @@ function InstallationTest
 	return 0
 }
 
+###############################################################################
 function Processing
 {
 	local Aborted="no"
@@ -224,6 +230,59 @@ function Processing
 		Error "$MsgFail"
 	fi
 	return 1
+}
+###############################################################################
+# send informations to developper to allow fix problems
+function SendBugReport
+{
+	[ "X$batch"     = "Xyes" ] && return 0 ## batch mode, continue
+	AskYesNo "Want to send an automatic bug report (mail)" || return
+	( lsb_release -a; rpm -q rpmrebuild; rpm -q rpm; rpm --querytags ) | mail -s "[rpmrebuild] bug report" rpmrebuild-project@lists.sourceforge.net
+	return
+}
+###############################################################################
+# rpm tags change along the time : some are added, some are renamed, some are
+# deprecated, then removed
+# the idea is to check if the tag we use for rpmrebuild still exists
+function CheckTags
+{
+	# get rpm tags
+	rpm_tags=$( rpm --querytags )
+
+	# get tags used in rpmrebuild
+	# rpmrebuild_popt should follow a strict syntaxe
+	# "%|" begin a test line
+	# tr command remove all not alpha characters
+	# the "dummy" query should be filtered too
+	rmrebuild_tags=$( grep "^%|" $MY_LIB_DIR/rpmrebuild_popt |  tr -cs '[:alpha:]' '[\n*]' | grep -v dummy )
+
+	# check for all rpmrebuild tags
+	errors=0
+	for tag in $rmrebuild_tags
+	do
+		ok=''
+		# if it exists in rpm tags
+		for rpm_tag in $rpm_tags
+		do
+			if [ "$tag" = "$rpm_tag" ]
+			then
+				# ok : we find it
+				ok='y'
+				break
+			fi	
+		done
+		if [ -z "$ok" ]
+		then
+			Warning "(CheckTags) can not find rpm tag $tag"
+			let errors="$errors + 1"
+		fi
+	done
+	if [ $errors -ge 1 ] 
+	then
+		Warning "rpmrebuild can not work with the current rpm version"
+		SendBugReport
+		return 1
+	fi
 }
 ##############################################################
 # Main Part                                                  #
@@ -252,6 +311,8 @@ function Main
 	source $D/processing_func.src   || return
 	processing_init || return
 	MY_LIB_DIR="$D"
+	CheckTags || return
+
 	export RPMREBUILD_PLUGINS_DIR=${MY_LIB_DIR}/plugins
 
 	# suite a des probleme de dates incorrectes
@@ -305,6 +366,7 @@ function Main
 	fi
 	return 0
 }
+###############################################################################
 
 Main "$@"
 st=$?	# save status
