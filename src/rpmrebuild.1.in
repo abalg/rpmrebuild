@@ -79,6 +79,9 @@ Can't be used with \fB\-\-change\-files\fP.
 \fB\-v, \-\-verbose\fP
 verbose output
 .TP 
+\fB\-\-debug\fP
+for debugging purposes : do not remove temporary files at end of work
+.TP 
 \fB\-V, \-\-version\fP
 output version information and exit.
 .TP 
