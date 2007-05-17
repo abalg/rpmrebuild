@@ -10,6 +10,12 @@
 # in the at least rpm-4.3.1 and 4.3.2 it doesn't help:
 # i have to add TWO strings with 'dummy'.
 # No idea is it due to rpm change or because Eric add more tags.
+#
+# be careful : this file should follow a strict format,
+# because rpm tags used here will be check against available rpm tags
+# 1) rpm alias definition, ex : rpm alias --spec_preamble --qf
+# 2) query, ex : %|SUMMARY?{\
+# 3) output, ex : [Summary:       %{SUMMARY}\n]\
 
 rpm alias --spec_preamble --qf '\
 %|BUILDHOST?{#dummy}|\
@@ -207,12 +213,14 @@ rpm alias --spec_postun --qf \
 
 rpm alias --spec_verifyscript --qf \
 '\
-%|VERIFYSCRIPTPROG?{%%verifyscript -p %{VERIFYSCRIPTPROG}\n%|VERIFYSCRIPT?{[%{VERIFYSCRIPT}\n]}|}\
+%|VERIFYSCRIPTPROG\
+?{%%verifyscript -p %{VERIFYSCRIPTPROG}\n%|VERIFYSCRIPT?{[%{VERIFYSCRIPT}\n]}|}\
 :{%|VERIFYSCRIPT?{\n%%verifyscript\n[%{VERIFYSCRIPT}\n]}|}|\
 '
 
 rpm alias --spec_changelog --qf \
 '\
-%|CHANGELOGTIME?{[* %{CHANGELOGTIME:day} %{CHANGELOGNAME}\n\n%{CHANGELOGTEXT}\n\n]}|\
+%|CHANGELOGTIME\
+?{[* %{CHANGELOGTIME:day} %{CHANGELOGNAME}\n\n%{CHANGELOGTEXT}\n\n]}|\
 '
 
