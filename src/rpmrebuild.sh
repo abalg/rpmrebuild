@@ -254,11 +254,11 @@ function CheckTags
 	# "%|" begin a test line
 	# tr command remove all not alpha characters
 	# the "dummy" query should be filtered too
-	rmrebuild_tags=$( grep "^%|" $MY_LIB_DIR/rpmrebuild_popt |  tr -cs '[:alpha:]' '[\n*]' | grep -v dummy )
+	rpmrebuild_tags=$( grep "^%|" $MY_LIB_DIR/rpmrebuild_popt |  tr -cs '[:alpha:]' '[\n*]' | grep -v dummy )
 
 	# check for all rpmrebuild tags
 	errors=0
-	for tag in $rmrebuild_tags
+	for tag in $rpmrebuild_tags
 	do
 		ok=''
 		# if it exists in rpm tags
