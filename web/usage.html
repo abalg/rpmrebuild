@@ -1,37 +1,41 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML>
-  <HEAD>
-    <TITLE>rpmrebuild's use</TITLE>
-    <META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-    <META name="Author" content="Gerbier">
-    <META NAME="generator" CONTENT="vim">
-    <LINK rev="made" href="mailto:gerbier@users.sourceforge.net">
-  </HEAD>
-  <BODY>
-    
-    <H1 align=center>rpmrebuild's todo</H1>
-    
-    <H2>just rebuild an rpm package from an installed package</H2>
-    you do not find the rpm file ?<BR>
-    just type <CODE>rpmrebuild package_name</CODE>
-    
-    <H2>changes in a file</H2>
-    you have a changed a configuration file to match your needs, and want to distribute your changes ?<BR>
-    yo will use the same command : <CODE>rpmrebuild package_name</CODE>, because rpmrebuild build the package from
-    the installed files.
-    
-    <H2>add a file</H2>
-    want to add a file to a package ?<BR>
-    you need to know the specfile syntaxe ( read the RPM-HOWTO, or go to <A href="http://www.rpm.org">rpm.org</A>).<BR> 
-    Put the file on the wanted directory. <BR>
-    you will use <CODE>rpmrebuild -e package_name</CODE>. rpmrebuild will open the specfile in your favorite editor
-    and allow you to add the wanted file in the "%files" section.
-    
-    <H2>more documentation</H2> 
-    you can have a look at rpmrebuild man page (EXAMPLES section)
-    
-    <HR>
-    <A href="index.html">back to main page</A>
-    
-  </BODY>
-</HTML>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>rpmrebuild's use</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta name="Author" content="Gerbier" />
+    <meta name="generator" content="vim" />
+    <link rev="made" href="mailto:gerbier@users.sourceforge.net" />
+    <link rel="stylesheet" type="text/css" href="project.css" />
+  </head>
+  <body>
+    <div>
+      <h1>rpmrebuild's use</h1>
+      
+      <h2>just rebuild an rpm package from an installed package</h2>
+      
+      you do not find the rpm file ?<br />
+      just type <code>rpmrebuild package_name</code>
+      
+      <h2>changes in a file</h2>
+      you have changed a configuration file to match your needs, and want to distribute your changes ?<br />
+      yo will use the same command : <code>rpmrebuild package_name</code>, because rpmrebuild build 
+      the package from the installed files.
+      
+      <h2>add a file</h2>
+      want to add a file to a package ?<br />
+      you need to know the specfile syntaxe ( read the RPM-HOWTO, or go to <a href="http://www.rpm.org">rpm.org</a>).<br />
+      Put the file on the wanted directory.<br />
+      you will use <code>rpmrebuild -e package_name</code>. rpmrebuild will open the specfile in your favorite editor and
+      allow you to add the wanted file in the "%files" section.
+      
+      <h2>more documentation</h2>
+      you can have a look at rpmrebuild <a href="rpmrebuild.1.html">man page</a> (EXAMPLES section)
+      
+      <hr />
+      <a href="index.html">back to main page</a>
+    </div>
+  </body>
+</html>
