@@ -241,6 +241,7 @@ function Processing
 ###############################################################################
 function GetInformations
 {
+	echo "from: $1"
 	lsb_release -a
 	cat /etc/issue
 	rpm -q rpmrebuild
@@ -256,16 +257,17 @@ function SendBugReport
 	AskYesNo "Want to send a bug report ( by mail)" || return
 	# build default mail address 
 	from="${USER}@${HOSTNAME}"
-	AskYesNo "Do you want to change mail adress ($from)" && {
-		echo -n "Enter the new email : "
+	AskYesNo "Do you want to change your e-mail address ($from)" && {
+		echo -n "Enter the new email: "
 		read from
 	}
-	echo "from: $from" >> $BUGREPORT
-	GetInformations  >> $BUGREPORT
+	GetInformations  >> $BUGREPORT 2>&1
 	AskYesNo "Do you want view/edit the bug report" && {
 		${VISUAL:-${EDITOR:-vi}} $BUGREPORT
 	}
-	mail -s "[rpmrebuild] bug report" rpmrebuild-devel@lists.sourceforge.net < $BUGREPORT
+	AskYesNo "Do you want to send bug report" && {
+		mail -s "[rpmrebuild] bug report" rpmrebuild-devel@lists.sourceforge.net < $BUGREPORT
+	}
 	return
 }
 ###############################################################################
