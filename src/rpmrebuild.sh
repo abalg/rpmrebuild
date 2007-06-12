@@ -37,7 +37,7 @@ function Warning
 {
 	# screen
 	Echo "$0: WARNING: $@"
-	# for bug report
+	# for optionnal bug report
 	echo -e "$0: WARNING: $@" >> $BUGREPORT
 
 }
@@ -256,7 +256,7 @@ function SendBugReport
 	AskYesNo "Want to send a bug report ( by mail)" || return
 	# build default mail address 
 	from="${USER}@${HOSTNAME}"
-	AskYesNo "Do you want to change mail adresse ($from)" && {
+	AskYesNo "Do you want to change mail adress ($from)" && {
 		echo -n "Enter the new email : "
 		read from
 	}
