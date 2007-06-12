@@ -36,23 +36,11 @@ rpm alias --spec_preamble --qf '\
 %|RPMVERSION?{\
 [#RPMVERSION:   %{RPMVERSION}\n]\
 }|\
-%|PAYLOADFORMAT?{\
-[#PAYLOADFORMAT:   %{PAYLOADFORMAT}\n]\
-}|\
-%|PAYLOADCOMPRESSOR?{\
-[#PAYLOADCOMPRESSOR:   %{PAYLOADCOMPRESSOR}\n]\
-}|\
-%|PAYLOADFLAGS?{\
-[#PAYLOADFLAGS:   %{PAYLOADFLAGS}\n]\
-}|\
 %|COOKIE?{\
 [#COOKIE:       %{COOKIE}\n]\
 }|\
 %|INSTALLTIME?{\
 [#INSTALLTIME:  %{INSTALLTIME:date}\n]\
-}|\
-%|INSTALLTID?{\
-[#INSTALLTID:  %{INSTALLTID:date}\n]\
 }|\
 %|INSTPREFIXES?{\
 [#INSTPREFIXES: %{INSTPREFIXES}\n]\
@@ -60,20 +48,11 @@ rpm alias --spec_preamble --qf '\
 %|OS?{\
 [#OS:           %{OS}\n]\
 }|\
-%|OPTFLAGS?{\
-[#OPTFLAGS:           %{OPTFLAGS}\n]\
-}|\
-%|PLATFORM?{\
-[#PLATFORM:           %{PLATFORM}\n]\
-}|\
 %|SIZE?{\
 [#SIZE:           %{SIZE}\n]\
 }|\
 %|ARCHIVESIZE?{\
 [#ARCHIVESIZE:           %{ARCHIVESIZE}\n]\
-}|\
-%|SIGSIZE?{\
-[#SIGSIZE:           %{SIGSIZE}\n]\
 }|\
 %|ARCH?{\
 [#ARCH:         %{ARCH}\n]\

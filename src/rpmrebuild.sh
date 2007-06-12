@@ -32,7 +32,11 @@ function Error
 
 function Warning
 {
+	# screen
 	Echo "$0: WARNING: $@"
+	# for bug report
+	Echo "$0: WARNING: $@" >> $BUGREPORT
+
 }
 ###############################################################################
 
@@ -235,9 +239,15 @@ function Processing
 # send informations to developper to allow fix problems
 function SendBugReport
 {
-	[ "X$batch"     = "Xyes" ] && return 0 ## batch mode, continue
+	[ "X$batch"     = "Xyes" ] && return 0 ## batch mode, skip report
 	AskYesNo "Want to send an automatic bug report (mail)" || return
-	( lsb_release -a; rpm -q rpmrebuild; rpm -q rpm; rpm --querytags ) | mail -s "[rpmrebuild] bug report" rpmrebuild-project@lists.sourceforge.net
+	# build default mail address 
+	from="${USER}@${HOSTNAME}"
+	AskYesNo "Do you want to change mail adresse ($from)" && {
+		echo -n "Enter the new email : "
+		read from
+	}
+	( echo "from: $from";lsb_release -a;cat /etc/issue; rpm -q rpmrebuild; rpm -q rpm; rpm --querytags; cat $BUGREPORT ) | mail -s "[rpmrebuild] bug report" rpmrebuild-devel@lists.sourceforge.net
 	return
 }
 ###############################################################################
@@ -296,6 +306,8 @@ function Main
 
 	RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild.$$}
 	#RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild}
+	BUGREPORT=$RPMREBUILD_TMPDIR/bugreport
+	export BUGREPORT
 	export RPMREBUILD_TMPDIR
 	TMPDIR_WORK=$RPMREBUILD_TMPDIR/work
 
