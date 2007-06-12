@@ -18,6 +18,9 @@
 #
 ###############################################################################
 VERSION="$Id$"
+
+# debug 
+#set -x 
 ###############################################################################
 function Echo
 {
@@ -35,7 +38,7 @@ function Warning
 	# screen
 	Echo "$0: WARNING: $@"
 	# for bug report
-	Echo "$0: WARNING: $@" >> $BUGREPORT
+	echo -e "$0: WARNING: $@" >> $BUGREPORT
 
 }
 ###############################################################################
@@ -236,18 +239,33 @@ function Processing
 	return 1
 }
 ###############################################################################
+function GetInformations
+{
+	lsb_release -a
+	cat /etc/issue
+	rpm -q rpmrebuild
+	rpm -q rpm
+	rpm --querytags
+	echo " --------------- comments -----------------------"
+}
+###############################################################################
 # send informations to developper to allow fix problems
 function SendBugReport
 {
 	[ "X$batch"     = "Xyes" ] && return 0 ## batch mode, skip report
-	AskYesNo "Want to send an automatic bug report (mail)" || return
+	AskYesNo "Want to send a bug report ( by mail)" || return
 	# build default mail address 
 	from="${USER}@${HOSTNAME}"
 	AskYesNo "Do you want to change mail adresse ($from)" && {
 		echo -n "Enter the new email : "
 		read from
 	}
-	( echo "from: $from";lsb_release -a;cat /etc/issue; rpm -q rpmrebuild; rpm -q rpm; rpm --querytags; cat $BUGREPORT ) | mail -s "[rpmrebuild] bug report" rpmrebuild-devel@lists.sourceforge.net
+	echo "from: $from" >> $BUGREPORT
+	GetInformations  >> $BUGREPORT
+	AskYesNo "Do you want view/edit the bug report" && {
+		${VISUAL:-${EDITOR:-vi}} $BUGREPORT
+	}
+	mail -s "[rpmrebuild] bug report" rpmrebuild-devel@lists.sourceforge.net < $BUGREPORT
 	return
 }
 ###############################################################################
