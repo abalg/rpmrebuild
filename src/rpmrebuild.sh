@@ -239,15 +239,19 @@ function Processing
 	return 1
 }
 ###############################################################################
+# recover system informations on rpmrebuild context
 function GetInformations
 {
 	echo "from: $1"
+	echo "-----------"
 	lsb_release -a
 	cat /etc/issue
+	echo "-----------"
 	rpm -q rpmrebuild
 	rpm -q rpm
+	echo "-----------"
 	rpm --querytags
-	echo " --------------- comments -----------------------"
+	echo " --------------- write your comments below -----------------------"
 }
 ###############################################################################
 # send informations to developper to allow fix problems
@@ -261,11 +265,11 @@ function SendBugReport
 		echo -n "Enter the new email: "
 		read from
 	}
-	GetInformations  >> $BUGREPORT 2>&1
-	AskYesNo "Do you want view/edit the bug report" && {
+	GetInformations $from >> $BUGREPORT 2>&1
+	AskYesNo "Do you want to view/edit the bug report" && {
 		${VISUAL:-${EDITOR:-vi}} $BUGREPORT
 	}
-	AskYesNo "Do you want to send bug report" && {
+	AskYesNo "Do you still want to send bug report" && {
 		mail -s "[rpmrebuild] bug report" rpmrebuild-devel@lists.sourceforge.net < $BUGREPORT
 	}
 	return
