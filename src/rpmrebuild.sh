@@ -270,7 +270,7 @@ function SendBugReport
 		${VISUAL:-${EDITOR:-vi}} $BUGREPORT
 	}
 	AskYesNo "Do you still want to send bug report" && {
-		mail -s "[rpmrebuild] bug report" rpmrebuild-devel@lists.sourceforge.net < $BUGREPORT
+		mail -s "[rpmrebuild] bug report" rpmrebuild-bugreport@lists.sourceforge.net < $BUGREPORT
 	}
 	return
 }
@@ -335,6 +335,10 @@ function Main
 	export RPMREBUILD_TMPDIR
 	TMPDIR_WORK=$RPMREBUILD_TMPDIR/work
 
+	# create tempory directories before any work/test
+	RmDir "$RPMREBUILD_TMPDIR" || return
+	mkdir -p $TMPDIR_WORK       || return
+
 	FIC_SPEC=$TMPDIR_WORK/spec
 	FILES_IN=$TMPDIR_WORK/files.in
 	# I need it here just in case user specify 
@@ -357,10 +361,6 @@ function Main
 
 	RPMREBUILD_PROCESSING=$TMPDIR_WORK/PROCESSING
 
-	RmDir "$RPMREBUILD_TMPDIR" || return
-	
-	# It'll create $RPMREBUILD_TMPDIR too
-	mkdir -p $TMPDIR_WORK       || return
 	CommandLineParsing "$@" || return
 	[ "x$NEED_EXIT" = "x" ] || return $NEED_EXIT
 

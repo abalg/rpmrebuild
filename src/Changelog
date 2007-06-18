@@ -1,7 +1,8 @@
-* Tue Jun 12 2007 <gerbier@users.sourceforge.net> 2.1.1-1
+* Mon Jun 18 2007 <gerbier@users.sourceforge.net> 2.1.1-1
 - remove commented tags (PAYLOAD*, INSTALLTID, OPTFLAGS, PLATFORM, SIGSIZE) to solve bug for rpm 3.x
 - add more info to bugreport (issues, warnings)
 - add choice of email addresse for bug report
+- send bug report to new rpmrebuild-bugreport list
 
 * Tue May 15 2007 <gerbier@users.sourceforge.net> 2.1.0-1
 - remove old deprecated tags ICON and SERIAL
