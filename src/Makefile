@@ -142,3 +142,4 @@ clean:
 	$(RM)    $(MANPAGES)
 	$(MAKE) -C plugins $@
 
+man: $(MANPAGES)
