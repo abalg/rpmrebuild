@@ -1,56 +1,68 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-<HTML>
-  <HEAD>
-    <META name="generator" content= "HTML Tidy for Linux/x86 (vers 1st June 2002), see www.w3.org">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
     
-    <TITLE>rpmrebuild</TITLE>
-    <META http-equiv="Content-Type" content= "text/html; charset=iso-8859-1">
-    <META name="Author" content="Gerbier">
-    <LINK rev="made" href="mailto:gerbier@users.sourceforge.net">
-  </HEAD>
-  
-  <BODY>
-    <H1 align="center">RPMREBUILD features</H1>
-    
-    <BR>
-    
-    <H2>resume</H2>
-    rpmrebuild is a tool to build an RPM file from a package that has already been installed<BR><BR>
-    (On debian, the equivalent product is dpkg-repack)
-    
-    <HR>
-    
-    <H2>use</H2>
-    <UL>
-      <LI>since release 0.5, it should work on any linux distribution using rpm.</LI>
-      <LI>rpmrebuild use do not require any rpm building knowledge</LI>
-    </UL> 
-    
-    <H3>rebuild a lost rpm</H3>
-    It was my first goal : I wanted to a batch rebuild of rpm file from the rpm database, in case of lost files.
-    
-    <H3>build a modified rpm</H3>
-    You have an installed package, you have customised (configuration ...) and want to distribute this one : just use rpmrebuild
-    to build a new rpm ( no need to know anything about rpm building) !
-    
-    <H3>advices</H3>
-    <UL>
-      <LI>rpmrebuild do not need explicitly to be run on root superuser, but you you have to be root if some files are root-protected (600)</LI>
-      <LI>the specfile is deleted after use. If you want to keep it, use -s option</LI>
-      <LI>the rpm files are build on "natural" location (for example, on Redhat, on /usr/src/redhat/RPMS, by default).<BR>
-      but you may change this with -d option or with ~/.rpmmacros file (add "%_topdir your_dir")</LI>
-      <LI>rpmrebuild as numerous options, check them with <EM>man rpmrebuild</EM> or <EM>rpmrebuild --help</EM></LI>
-    </UL> 
-    
-    <H3>any other way</H3>
-    I know there is an "repackage" option in recent rpm releases, but it is not convenient, as you have to uninstall the package ...<BR>
-    (not always possible, because of dependencies)
-    
-    <HR>
-    <ADDRESS><A href="mailto:gerbier@users.sourceforge.net">Eric Gerbier</A></ADDRESS><BR>
-    page changed on 2004/08/16<BR>
-    <A href="index.fr.html"><IMG alt="french" src="lang_french.gif" width="40" height="25" border="0"></A> version
-  </BODY>
-</HTML>
-
+    <title>rpmrebuild</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta name="Author" content="Gerbier" />
+    <link rev="made" href="mailto:gerbier@users.sourceforge.net" />
+    <link rel="stylesheet" type="text/css" href="project.css" />
+  </head>
+  <body>
+    <div>
+      <h1>RPMREBUILD features</h1>
+      
+      <h2>resume</h2>
+      
+      rpmrebuild is a tool to build an RPM file from a package that has already been installed<br />
+      <br />
+      (On debian, the equivalent product is dpkg-repack)
+      <hr />
+      
+      <h2>use</h2>
+      <ul>
+	<li>since release 0.5, it should work on any linux distribution using rpm.</li>
+	<li>basic rpmrebuild use do not require any rpm building knowledge</li>
+      </ul>
+      
+      <h3>rebuild a lost rpm</h3>
+      
+      It was my first goal : I wanted to a batch rebuild of rpm file from the rpm database, in
+      case of lost files. Command : <em>rpmrebuild package_name</em> 
+      
+      <h3>build a modified rpm</h3>
+      
+      You have an installed package, you have customised (configuration ...) and want to
+      distribute this one : just use rpmrebuild to build a new rpm ( no need to know anything about rpm building) !
+      Command : <em>rpmrebuild package_name</em> 
+      
+      <h3>advices</h3>
+      
+      <ul>
+	<li>rpmrebuild do not need explicitly to be run on root superuser, but you you have to be root if some files are root-protected (600)</li>
+	
+	<li>the specfile is deleted after use. If you want to keep it, use -s option</li>
+	
+	<li>the rpm files are build on "natural" location (for example, on Redhat, on /usr/src/redhat/RPMS, by default).<br />
+	but you may change this with -d option or with ~/.rpmmacros file (add "%_topdir your_dir")</li>
+	
+	<li>rpmrebuild has numerous options, check them with <em>man rpmrebuild</em> or <em>rpmrebuild --help</em></li>
+      </ul>
+      
+      <h3>any other way</h3>
+      I know there is an "repackage" option in recent rpm releases, but it is not convenient, as you
+      have to uninstall the package ...<br />
+      (not always possible, because of dependencies)
+      <hr />
+      
+      <address>
+      <a href="mailto:gerbier@users.sourceforge.net">Eric Gerbier</a>
+      </address><br />
+      page changed on 2007-06-11<br />
+      <a href="index.fr.html"><img alt="french" src="lang_french.gif" width="40" height="25" /></a> version
+    </div>
+  </body>
+</html>
