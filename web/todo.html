@@ -1,72 +1,79 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML>
-  <HEAD>
-    <TITLE>rpmrebuild todo</TITLE>
-    <META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-    <META name="Author" content="Gerbier">
-    <META NAME="generator" CONTENT="vim">
-    <LINK rev="made" href="mailto:gerbier@users.sourceforge.net">
-  </HEAD>
-  <BODY>
-    
-    <H1 align=center>rpmrebuild todo</H1>
-    
-    <H2>remaining problems</H2>
-    
-    <H3>package signing (gpg or pgp)</H3>
-    do not know how to do this : I have not the private key, which is necessary to sign the package 
-    
-    <H3>globbing characters in file list</H3>
-    rpmrebuild can not build packages if the file list contains globbing character (such as *).
-    This seems to be a bug in rpm.
-    
-    <H3>compatibility queries</H3>
-    You can see description in /usr/doc/share/rpm-4.0.3/tsort<BR>
-    
-    Here we have two problems:
-    <UL>
-      <LI>Requires(something) does not exist for rpm-3.0.4</LI>
-      <LI>I don't see how it can be done with rpm's
-      queryformat, so we'll need one more rpm query
-      invocation and script to process it - it'll make
-      performance worser.</LI>
-    </UL> 
-    
-    <H2>known "bad" packages</H2>
-    rpmrebuild has been tested on Redhat 6.2 (803 packages), 7.1 (581 packages) 7.3 (714 packages), 9.0 (1396 packages)<BR>
-    we still have problems with :
-    <UL>
-      <LI>AfterStep-1.8.0-1 (Redhat 6.2) : because some files contains "..."</LI>
-      <LI>rpm-utils-1.5-1 : because of a strange %post</LI>
-      <LI>vorbis-1.0beta4-3 (Redhat 7.1) : bad %post syntax</LI>
-      <LI>libogg-1.0beta4-2 (Redhat 7.1) : bad %post syntax</LI> 
-      <LI>mount-2.11b-3 (Redhat 7.1) : strange core on install</LI>
-      <LI>guile-1.3.4-19 (Redhat 7.3, 9) : because a file contains a "*"</LI>
-      <LI>man-pages-1.48-2 (Redhat 7.3) : bad changelog syntax (interpreted % macro)</LI> 
-      <LI>arts, kdegraphics, kdepim (redhat 9) : strange Failed dependencies</LI> 
-    </UL> 
-    
-    <HR>
-    <H2>a graphical interface</H2>
-    If we had time, we have the idea to offer in another package a portable graphical interface
-    (to be wrotten in tcl/tk perl/tk, or python/tkinter).
-
-    <hr> 
-    <h2>localisation</h2>
-    <ul>
-    <li>message translation (french, english ...)</li>
-    <li>web site translation</li>
-    </ul> 
-
-    <hr> 
-    <h2>xhtml</h2>
-    convert all site to xhtml
-
-
-
-    
-    <HR>
-    <A href="index.html">back to main page</A>
-    
-  </BODY>
-</HTML>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>rpmrebuild todo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta name="Author" content="Gerbier" />
+    <meta name="generator" content="vim" />
+    <link rev="made" href="mailto:gerbier@users.sourceforge.net" />
+    <link rel="stylesheet" type="text/css" href="project.css" />
+  </head>
+  
+  <body>
+    <div>
+      <h1>rpmrebuild todo</h1>
+      
+      <h2>remaining problems</h2>
+      
+      <h3>package signing (gpg or pgp)</h3>
+      
+      Do not know how to do this : I have not the private key, which is necessary to
+      sign the package.
+      
+      <h3>globbing characters in file list</h3>
+      
+      rpmrebuild can not build packages if the file list contains globbing
+      character (such as *). This seems to be a bug in rpm.
+      
+      <h3>compatibility queries</h3>
+      
+      You can see description in /usr/doc/share/rpm-4.0.3/tsort<br />
+      Here we have two problems:
+      
+      <ul>
+	<li>Requires(something) does not exist for rpm-3.0.4</li>
+	<li>I don't see how it can be done with rpm's queryformat, so we'll need one more rpm query invocation and script to process it - it'll make performance worser.</li>
+      </ul>
+      
+      <h2>known "bad" packages</h2>
+      
+      rpmrebuild has been tested on Redhat 6.2 (803 packages), 7.1 (581 packages) 
+      7.3 (714 packages), 9.0 (1396 packages)<br />
+      we had problems with :
+      
+      <ul>
+	<li>AfterStep-1.8.0-1 (Redhat 6.2) : because some files contains "..."</li>
+	<li>rpm-utils-1.5-1 : because of a strange %post</li>
+	<li>vorbis-1.0beta4-3 (Redhat 7.1) : bad %post syntax</li>
+	<li>libogg-1.0beta4-2 (Redhat 7.1) : bad %post syntax</li>
+	<li>mount-2.11b-3 (Redhat 7.1) : strange core on install</li>
+	<li>guile-1.3.4-19 (Redhat 7.3, 9) : because a file contains a "*"</li>
+	<li>man-pages-1.48-2 (Redhat 7.3) : bad changelog syntax (interpreted % macro)</li>
+	<li>arts, kdegraphics, kdepim (redhat 9) : strange Failed dependencies</li>
+      </ul>
+      <hr />
+      
+      <h2>a graphical interface</h2>
+      
+      If we had time, we have the idea to offer in another package a portable graphical
+      interface (to be wrotten in an interpreted language).
+      <hr />
+      
+      <h2>localisation</h2>
+      
+      <ul>
+	<li>message translation (french, english ...)</li>
+	<li>web site translation</li>
+      </ul>
+      <hr />
+      
+      <h2>xhtml</h2>
+      convert all site to xhtml
+      
+      <hr />
+      <a href="index.html">back to main page</a>
+    </div>
+  </body>
+</html>
