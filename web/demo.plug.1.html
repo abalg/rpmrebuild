@@ -1,126 +1,142 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML><HEAD><TITLE>Manpage of demo.plug</TITLE>
-</HEAD><BODY>
-<H1 align=center>demo.plug</H1>
-Section: rpmrebuild plugins (1rrp)<BR>Updated: 2.0.0<BR><A HREF="#index">Index</A>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-<A NAME="lbAB">&nbsp;</A>
-<H2>NAME</H2>
-
-demo - a plugin for rpmrebuild, to show how the plugin work
-<A NAME="lbAC">&nbsp;</A>
-<H2>SYNOPSIS</H2>
-
-rpmrebuild --include demo.plug &lt;<I>packagename</I>&gt;
-<BR>
-
-or
-<BR>
-
-rpmrebuild  --change-spec-{type}=&quot;demo.sh [<I>option</I>]&quot; &lt;<I>packagename</I>&gt;
-<BR>
-
-<P>
-the first form apply all changes
-<BR>
-
-the second allow to choose which part to change, and plugin options
-<A NAME="lbAD">&nbsp;</A>
-<H2>DESCRIPTION</H2>
-
-this plugin is to show how the plugin work
-<BR>
-
-it will just add plugin type name begin of line in spec file
-<A NAME="lbAE">&nbsp;</A>
-<H2>OPTIONS</H2>
-
-<DL COMPACT>
-<DT><B>-h, --help</B><DD>
-output help information plugins option and exit.
-<DT><B>-v, --version</B><DD>
-print plugin version and exit
-<DT><B>-n, --null</B><DD>
-do not add anything : just echo spec file 
-</DL>
-<A NAME="lbAF">&nbsp;</A>
-<H2>FILES</H2>
-
-<DL COMPACT>
-<DT><B>demo.plug</B><DD>
-is the 'include file' for a quicker use
-<DT><B>demo.sh</B><DD>
-contains the code for change-spec*
-<DT><B>demofiles.sh</B><DD>
-contains the code for change-files
-<DT><B>demo.plug.1</B><DD>
-is this man page
-</DL>
-<A NAME="lbAG">&nbsp;</A>
-<H2>EXAMPLES</H2>
-
-<P>
-
-<B>rpmrebuild --include demo.plug rpm</B>
-<P>
-will build, apply plugin to spec file, then edit it
-<P>
-<A NAME="lbAH">&nbsp;</A>
-<H2>AUTHORS</H2>
-
-<P>
-
-Eric Gerbier &lt;<A HREF="mailto:gerbier@users.sourceforge.net">gerbier@users.sourceforge.net</A>&gt;
-<DL COMPACT>
-<DT>See &lt;URL:<A HREF="http://rpmrebuild.sourceforge.net/">http://rpmrebuild.sourceforge.net/</A>&gt;.<DD>
-</DL>
-<A NAME="lbAI">&nbsp;</A>
-<H2>NOTES</H2>
-
-<P>
-
-<DL COMPACT>
-<DT>this plugin is given as an example of what can be done<DD>
-</DL>
-<A NAME="lbAJ">&nbsp;</A>
-<H2>COPYRIGHT</H2>
-
-<P>
-
-rpmrebuild is copyright &#169; 2004 by Eric Gerbier.
-<BR>
-
-this program is distributed under GNU General Public License
-<BR>
-
-It is provided &quot;as is&quot;, without any express or implied
-warranties.  See the file COPYING for details.
-<A NAME="lbAK">&nbsp;</A>
-<H2>SEE ALSO</H2>
-
-<P>
-
-rpm(8), rpmbuild(8), <A HREF="rpmrebuild_plugins.1.html">rpmrebuild_plugins</A>(1), plugins specific manpages.
-<P>
-<P>
-
-<HR>
-<A NAME="index">&nbsp;</A><H2>Index</H2>
-<DL>
-<DT><A HREF="#lbAB">NAME</A><DD>
-<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
-<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
-<DT><A HREF="#lbAE">OPTIONS</A><DD>
-<DT><A HREF="#lbAF">FILES</A><DD>
-<DT><A HREF="#lbAG">EXAMPLES</A><DD>
-<DT><A HREF="#lbAH">AUTHORS</A><DD>
-<DT><A HREF="#lbAI">NOTES</A><DD>
-<DT><A HREF="#lbAJ">COPYRIGHT</A><DD>
-<DT><A HREF="#lbAK">SEE ALSO</A><DD>
-</DL>
-<HR>
-This document was created by man2html
-using the manual pages.<BR>
-Time: 08:52:41 GMT, February 10, 2005
-</BODY>
-</HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+    <title>Manpage of demo.plug</title>
+    <style type="text/css">
+    /*<![CDATA[*/
+    p.c2 {font-weight: bold}
+    dt.c1 {font-weight: bold}
+    /*]]>*/
+    </style>
+    <link rel="stylesheet" type="text/css" href="project.css" />
+    
+  </head>
+  
+  <body>
+    <div>
+      <h1>demo.plug</h1>
+      Section: rpmrebuild plugin (1)<br />
+      Updated: 2.1.1<br />
+      <a href="#index">Index</a> <a name="lbAB" id="lbAB"> </a>
+      
+      <h2>NAME</h2>
+      demo.plug - a plugin for rpmrebuild, to show how the plugin work <a name="lbAC" id="lbAC"> </a>
+      
+      <h2>SYNOPSIS</h2>
+      rpmrebuild --include demo.plug &lt;<i>packagename</i>&gt;<br />
+      or<br />
+      rpmrebuild --change-spec-{type}="demo.sh [<i>option</i>]" &lt;<i>packagename</i>&gt;<br />
+      
+      <p>the first form apply all changes<br />
+      the second allow to choose which part to change, and plugin options <a name="lbAD" id="lbAD"> </a></p>
+      
+      <h2>DESCRIPTION</h2>
+      this plugin is to show how the plugin work<br />
+      it will just add plugin type name begin of line in spec file <a name="lbAE" id="lbAE"> </a>
+      
+      <h2>OPTIONS</h2>
+      
+      
+      <dl>
+	<dt class="c1">-h, --help</dt>
+	
+	<dd>output help information plugins option and exit.</dd>
+	
+	<dt class="c1">-v, --version</dt>
+	
+	<dd>print plugin version and exit</dd>
+	
+	<dt class="c1">-n, --null</dt>
+	
+	<dd>do not add anything : just echo spec file</dd>
+      </dl><a name="lbAF" id="lbAF"> </a>
+      
+      <h2>FILES</h2>
+      
+      
+      <dl>
+	<dt class="c1">demo.plug</dt>
+	
+	<dd>is the 'include file' for a quicker use</dd>
+	
+	<dt class="c1">demo.sh</dt>
+	
+	<dd>contains the code for change-spec*</dd>
+	
+	<dt class="c1">demofiles.sh</dt>
+	
+	<dd>contains the code for change-files</dd>
+	
+	<dt class="c1">demo.plug.1</dt>
+	
+	<dd>is this man page</dd>
+      </dl><a name="lbAG" id="lbAG"> </a>
+      
+      <h2>EXAMPLES</h2>
+      
+      
+      <p class="c2">rpmrebuild --include demo.plug rpm</p>
+      
+      <p>will build, apply plugin to spec file, then edit it</p>
+      
+      <p><a name="lbAH" id="lbAH"> </a></p>
+      
+      <h2>AUTHORS</h2>
+      
+      
+      <p>Eric Gerbier &lt;<a href="mailto:gerbier@users.sourceforge.net">gerbier@users.sourceforge.net</a>&gt;</p>
+      
+      <dl>
+	<dt>See &lt;URL:<a href="http://rpmrebuild.sourceforge.net/">http://rpmrebuild.sourceforge.net/</a>&gt;.</dt>
+      </dl><a name="lbAI" id="lbAI"> </a>
+      
+      <h2>NOTES</h2>
+      
+      
+      <dl>
+	<dt>this plugin is given as an example of what can be done</dt>
+      </dl><a name="lbAJ" id="lbAJ"> </a>
+      
+      <h2>COPYRIGHT</h2>
+      
+      
+      <p>rpmrebuild is copyright (C) 2004 by Eric Gerbier.<br />
+	this program is distributed under GNU General Public License<br />
+      It is provided "as is", without any express or implied warranties. See the file COPYING for details. <a name="lbAK" id="lbAK"> </a></p>
+      
+      <h2>SEE ALSO</h2>
+      
+      
+      <p>rpm(8), rpmbuild(8), <a href="rpmrebuild_plugins.1.html">rpmrebuild_plugins</a>(1), 
+	<a href="demo_plug.1.html">demo_plug</a>(1), 
+	<a href="nodoc.plug.1.html">nodoc.plug</a>(1), 
+	<a href="uniq.plug.1.html">uniq.plug</a>(1), 
+      <a href="file2pacDep.plug.1.html">file2pacDep.plug</a>(1), 'man -k rrp' for plugins specific manpages</p>
+      <hr />
+      <a name="index" id="index"> </a>
+      
+      <h2>Index</h2>
+      
+      
+      <dl>
+	<dt><a href="#lbAB">NAME</a></dt>
+	<dt><a href="#lbAC">SYNOPSIS</a></dt>
+	<dt><a href="#lbAD">DESCRIPTION</a></dt>
+	<dt><a href="#lbAE">OPTIONS</a></dt>
+	<dt><a href="#lbAF">FILES</a></dt>
+	<dt><a href="#lbAG">EXAMPLES</a></dt>
+	<dt><a href="#lbAH">AUTHORS</a></dt>
+	<dt><a href="#lbAI">NOTES</a></dt>
+	<dt><a href="#lbAJ">COPYRIGHT</a></dt>
+	<dt><a href="#lbAK">SEE ALSO</a></dt>
+      </dl>
+      <hr />
+      This document was created by man2html, using the manual pages.<br />
+      Time: 11:25:38 GMT, June 26, 2007
+    </div>
+  </body>
+</html>

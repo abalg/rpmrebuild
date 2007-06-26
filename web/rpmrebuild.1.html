@@ -1,409 +1,396 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML>
-  <HEAD>
-    <TITLE>Manpage of rpmrebuild</TITLE>
-  </HEAD>
-  <BODY>
-    
-    <H1 align=center>rpmrebuild</H1>
-    Section: rpm tools (1)<BR>Updated: 2.0.0<BR><A HREF="#index">Index</A>
-    
-    <A NAME="lbAB">&nbsp;</A>
-    <H2>NAME</H2>
-    
-    rpmrebuild - a tool to build an rpm package from an installed package
-    
-    <A NAME="lbAC">&nbsp;</A>
-    <H2>SYNOPSIS</H2>
-    
-    rpmrebuild [<I>option</I>] &lt;<I>packagename</I>&gt;
-    <BR>
-    
-    or
-    <BR>
-    
-    rpm --rpmrebuild [<I>option</I>] &lt;<I>packagename</I>&gt;
-    
-    <A NAME="lbAD">&nbsp;</A>
-    <H2>DESCRIPTION</H2>
-    
-    rpmrebuild is a tool to build easily rpm package.
-    it can be used to build an rpm file from an installed package (lost rpm) or 
-    to quickly make change to a package: 
-    just have your change on installed files and call rpmrebuild.
-    
-    <A NAME="lbAE">&nbsp;</A>
-    <H2>OPTIONS</H2>
-    
-    <DL COMPACT>
-      <DT><B>-a, --additional</B>=&lt;<I>flags</I>&gt;<DD>
-      pass additional flags to <B>rpmbuild</B>
-      <DT><B>-b, --batch</B><DD>
-      work in batch mode (no interactive query if files change)
-      <DT><B>-c, --comment-missing</B>=&lt;<I>yes</I>|<I>no</I>&gt;<DD>
-      comment out in the specfile missing files. Default: <B>no</B>.
-      <DT><B>-D, --define</B>=&lt;<I>defines</I>&gt;<DD>
-      defines to be passed to rpmbuild.
-      <DT><B>-d, --directory</B>=&lt;<I>directory</I>&gt;<DD>
-      rpm package result will be written in <I>directory</I>.
-      <DT><B>-e, --edit-spec</B><DD>
-      alias to --edit-whole.
-      <DT><B>-f, --filter</B>=&lt;<I>command</I>&gt;<DD>
-      alias for <B>--change-spec-whole</B>
-      <DT><B>-h, --help</B><DD>
-      output help information about all, but plugins option and exit.
-      <DT><B>--help-plugins</B><DD>
-      output help information about plugins options and exit.
-      <DT><B>-i, --include</B>=&lt;<I>file</I>&gt;<DD>
-      read more options from the file 'file'.
-      <DT><B>-k, --keep-perm<DD>
-      alias to --pug-from-fs</B>
-      <DT><B>-m, --modify</B>=&lt;<I>command</I>&gt;<DD>
-      alias to <B>--change-files
-      <DT>-p, --package</B><DD>
-      use package file, not installed rpm (this option is like rpm's -p option)
-      <DT><B>--pug-from-db (default)</B><DD>
-      set files permission, uid and gid as saved in rpm database
-      <DT><B>--pug-from-fs</B><DD>
-      keep installed files permission, uid and gid 
-      (do not force to original files permission, uid and gid saved in rpm database)
-      <DT><B>-P, --autoprovide</B><DD>
-      use rpm scripts to compute provides
-      <DT><B>-R, --autorequire</B><DD>
-      use rpm scripts to compute requires
-      <DT><B>-s, --spec-only</B>=&lt;<I>specfile</I>&gt;<DD>
-      do not rebuild package, only generate specfile. 
-      Can't be used with <B>--change-files</B>.
-      <DT><B>-v, --verbose</B><DD>
-      verbose output
-      <DT><B>-V, --version</B><DD>
-      output version information and exit.
-      <DT><B>-w, --warning</B><DD>
-      display some warnings if it detects a potential problem 
-      (for example, spec file which contains filename with globbing char).
-      <DT><B>-y, --verify</B>=&lt;<I>yes</I>|<I>no</I>&gt;<DD>
-      Turn on/off package verifying before processing. 
-      Default: <B>yes</B>. Can be turn off to get better performance.
-    </DL>
-    <P>
-    
-    PLUGINS OPTION
-    <P>
-    
-    rpmrebuild use may be extended with plugins.
-    Plugins are searched in <B>/usr/lib/rpmrebuild/plugins</B> and then in $PATH
-    <DL COMPACT>
-      <DT><B>--change-files</B>=&lt;<I>command</I>&gt;<DD>
-      Invoke plugin which change package's files. Note, that these files are copied
-      before to the temporary location, so installed package's files not changed. 
-      <BR>
-      
-      Can't be used with <B>--spec-only</B>
-    </DL>
-    <P>
-    
-    <B>--change-spec-whole</B>=&lt;<I>command</I>&gt;
-    <BR>
-    
-    <B>--edit-whole
-      <DL COMPACT><DT><DD>
-	Invoke plugin or editor to change specfile.
-      </DL>
-      
-      <P>
-      
-    --change-spec-preamble</B>=&lt;<I>command</I>&gt;
-    <BR>
-    
-    <B>--edit-preamble
-      <P>
-      
-    --change-spec-conflicts</B>=&lt;<I>command</I>&gt;
-    <BR>
-    
-    <B>--edit-conflicts
-      <P>
-      
-    --change-spec-obsoletes</B>=&lt;<I>command</I>&gt;
-    <BR>
-    
-    <B>--edit-obsoletes
-      <P>
-      
-    --change-spec-provides</B>=&lt;<I>command</I>&gt;
-    <BR>
-    
-    <B>--edit-provides
-      <P>
-      
-    --change-spec-requires</B>=&lt;<I>command</I>&gt;
-    <BR>
-    
-    <B>--edit-requires
-      <P>
-      
-    --change-spec-description</B>=&lt;<I>command</I>&gt;
-    <BR>
-    
-    <B>--edit-description
-      <P>
-      
-    --change-spec-files</B>=&lt;<I>command</I>&gt;
-    <BR>
-    
-    <B>--edit-files
-      <P>
-      
-    --change-spec-triggers</B>=&lt;<I>command</I>&gt;
-    <BR>
-    
-    <B>--edit-triggers
-      <P>
-      
-    --change-spec-pre</B>=&lt;<I>command</I>&gt;
-    <BR>
-    
-    <B>--edit-pre
-      <P>
-      
-    --change-spec-post</B>=&lt;<I>command</I>&gt;
-    <BR>
-    
-    <B>--edit-post
-      <P>
-      
-    --change-spec-preun</B>=&lt;<I>command</I>&gt;
-    <BR>
-    
-    <B>--edit-preun
-      <P>
-      
-    --change-spec-postun</B>=&lt;<I>command</I>&gt;
-    <BR>
-    
-    <B>--edit-postun
-      <P>
-      
-    --change-spec-verifyscript</B>=&lt;<I>command</I>&gt;
-    <BR>
-    
-    <B>--edit-verifyscript
-      <P>
-      
-    --change-spec-changelog</B>=&lt;<I>command</I>&gt;
-    <BR>
-    
-    <B>--edit-changelog
-      <P>
-      
-      <DL COMPACT><DT><DD>
-	Invoke plugin or editor to change preamble, conflicts, obsoletes, provides,
-	requires, description, files, triggers, preinstall, postinstall, preuninstall,
-	postuninstall, verifyscript or changelog.
-      </DL>
-      <BR>
-      
-    None of these options can be specified after --change-spec-whole</B>
-    or <B>--edit-whole</B>.
-</DL>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-<A NAME="lbAF">&nbsp;</A>
-<H2>INCLUDE FILES</H2>
-
-Any of the rpmrebuild's LONG option can be specified on the command line or
-in the include file (file specified with -i/--include option).
-<P>
-
-Include files are searched in the <B>/usr/lib/rpmrebuild/plugins</B> directory.
-<P>
-
-Include file has following syntax.
-<DL COMPACT>
-  <DT><B>comments</B><DD>
-  Any line begin with '#' or some number of whitespace and '#'.
-  <DT><B>empty line</B><DD>
-  empty line are ignored.
-  <DT><B>option line</B><DD>
-  option line is very similar to the option written on the command line.
-  the limitation of the option line in the file are:
-  <DL COMPACT><DT><DD>
-    <DL COMPACT>
-      <DT>long option<DD>
-      should be used ONLY long options WITHOUT leading --.
-      <DT>option's argument<DD>
-      option's argument should not be quoted. 
-      <DT>separator<DD>
-      - option's argument should be separated from option by spaces or tabs, not by
-      equal ('=') sign.
-      <DT>non-optional argument(s)<DD>
-      package name (non-optional argument) shouldn't be specified in the include file.
-    </DL>
-  </DL>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+    <title>Manpage of rpmrebuild</title>
+    <style type="text/css">
+    /*<![CDATA[*/
+    p.c3 {font-weight: bold}
+    dd.c2 {font-weight: bold}
+    dt.c1 {font-weight: bold}
+    /*]]>*/
+    </style>
+    <link rel="stylesheet" type="text/css" href="project.css" />
+    
+  </head>
   
-</DL>
-<P>
-
-For example, if command line looks like:
-<DL COMPACT><DT><DD>
-  rpmrebuild --change-files=&quot;pgm1 a b c&quot; --change-spec-pre=&quot;pgm2 bb&quot; pkg
-</DL>
-
-<P>
-
-Then include file should be written like:
-<DL COMPACT><DT><DD>
-  change-files    pgm1 a b c
-  <BR>
-  
-  change-spec-pre pgm2 bb
-  <BR>
-  
-</DL>
-
-<A NAME="lbAG">&nbsp;</A>
-<H2>FILES</H2>
-
-<DL COMPACT>
-  <DT><B>~/.rpmmacros</B> <DD>
-  is used by rpm when building packages (macros)
-  <DT><B>/etc/popt</B><DD>
-  contains rpm alias used by rpmrebuild
-  <DT><B>$RPMREBUILD_TMPDIR/work</B><DD>
-  directory where rpmrebuild put temporary files.
-</DL>
-<A NAME="lbAH">&nbsp;</A>
-<H2>ENVIRONMENT</H2>
-
-<P>
-
-<DL COMPACT>
-  <DT><B>RPMREBUILD_TMPDIR</B><DD>
-  Directory for temporal files. If not set ~/.tmp/rpmrebuild.$$ is used.
-  <DT><B>VISUAL</B><DD>
-  used to specify an editor for specfile. if not set <B>EDITOR</B> variable examined.
-  <DT><B>EDITOR</B><DD>
-  used to specify an editor for specfile. if not set <B>vi</B> used.
-</DL>
-<A NAME="lbAI">&nbsp;</A>
-<H2>EXAMPLES</H2>
-
-<P>
-
-Build an rpm package as closed as possible to original one:
-<P>
-
-<B>rpm --rpmrebuild --batch package</B>
-<P>
-
-Build a modified package:
-<P>
-
-<B>rpm --rpmrebuild --keep-perm package</B>
-<P>
-
-Build a rpm from another rpm file:
-<P>
-
-<B>rpm --rpmrebuild --package --filter filter /usr/src/redhat/i386/package-i386.rpm</B>
-<P>
-
-Rebuild rpm as legacy (rpm[23]) package:
-<P>
-
-<B>rpm --rpmrebuild --additional &quot;--nodirtokens&quot; bash</B>
-<P>
-
-Specify generated rpm name:
-<P>
-
-<B>rpm --rpmrebuild --define &quot;_rpmfilename %%{NAME}.rpm&quot; bash</B>
-<P>
-
-Change package interactive
-<P>
-
-<B>rpm --rpmrebuild --package --change-files &quot;/bin/bash&quot; /some/place/bash.rpm</B>
-<P>
-
-Change package non-interactive
-<P>
-
-<B>rpm --rpmrebuild --package --change-files &quot;a.sh &amp;&amp; b.sh&quot; /some/place/bash.rpm</B>
-<P>
-
-if you have problem with rpm building, and if you know specfile syntax, you can also edit it:
-<P>
-
-<B>rpm --rpmrebuild  --edit-whole package</B>
-<A NAME="lbAJ">&nbsp;</A>
-<H2>AUTHORS</H2>
-
-<P>
-
-Eric Gerbier &lt;<A HREF="mailto:gerbier@users.sourceforge.net">gerbier@users.sourceforge.net</A>&gt;
-<BR>
-
-Valery Reznic &lt;<A HREF="mailto:valery_reznic@users.sourceforge.net">valery_reznic@users.sourceforge.net</A>&gt;
-<DL COMPACT>
-  <DT>See &lt;URL:<A HREF="http://rpmrebuild.sourceforge.net/">http://rpmrebuild.sourceforge.net/</A>&gt;.<DD>
-</DL>
-<A NAME="lbAK">&nbsp;</A>
-<H2>NOTES</H2>
-
-<P>
-
-<DL COMPACT>
-  <DT>rpmrebuild can not reproduce exactly a package, so<DD>
-  <BR>
-  
-  - md5 checksum will not match original ones.
-  <BR>
-  
-  - gpg or pgp signatures are lost
-  <P>
-  <DT>packages which contains file with globbing characters (* .. ? ) will not build<DD>
-</DL>
-<A NAME="lbAL">&nbsp;</A>
-<H2>COPYRIGHT</H2>
-
-<P>
-
-rpmrebuild is copyright &#169; 2002 by Eric Gerbier.
-<BR>
-
-this program is distributed under GNU General Public License
-<BR>
-
-It is provided &quot;as is&quot;, without any express or implied
-warranties.  See the file COPYING for details.
-<A NAME="lbAM">&nbsp;</A>
-<H2>SEE ALSO</H2>
-
-<P>
-
-rpm(8), rpmbuild(8), <A HREF="rpmrebuild_plugins.1.html">rpmrebuild_plugins</A>(1), plugins specific manpages.
-<P>
-<P>
-
-<HR>
-<A NAME="index">&nbsp;</A><H2>Index</H2>
-<DL>
-  <DT><A HREF="#lbAB">NAME</A><DD>
-  <DT><A HREF="#lbAC">SYNOPSIS</A><DD>
-  <DT><A HREF="#lbAD">DESCRIPTION</A><DD>
-  <DT><A HREF="#lbAE">OPTIONS</A><DD>
-  <DT><A HREF="#lbAF">INCLUDE FILES</A><DD>
-  <DT><A HREF="#lbAG">FILES</A><DD>
-  <DT><A HREF="#lbAH">ENVIRONMENT</A><DD>
-  <DT><A HREF="#lbAI">EXAMPLES</A><DD>
-  <DT><A HREF="#lbAJ">AUTHORS</A><DD>
-  <DT><A HREF="#lbAK">NOTES</A><DD>
-  <DT><A HREF="#lbAL">COPYRIGHT</A><DD>
-  <DT><A HREF="#lbAM">SEE ALSO</A><DD>
-</DL>
-<HR>
-This document was created by man2html,
-using the manual pages.<BR>
-Time: 15:13:15 GMT, February 09, 2005
-</BODY>
-</HTML>
+  <body>
+    <div>
+      <h1>rpmrebuild</h1>
+      Section: rpm tools (1)<br />
+      Updated: 2.1.1<br />
+      <a href="#index">Index</a> <a name="lbAB" id="lbAB"> </a>
+      
+      <h2>NAME</h2>
+      rpmrebuild - a tool to build an rpm package from an installed package <a name="lbAC" id="lbAC"> </a>
+      
+      <h2>SYNOPSIS</h2>
+      rpmrebuild [<i>option</i>] &lt;<i>packagename</i>&gt;<br />
+      or<br />
+      rpm --rpmrebuild [<i>option</i>] &lt;<i>packagename</i>&gt; <a name="lbAD" id="lbAD"> </a>
+      
+      <h2>DESCRIPTION</h2>
+      rpmrebuild is a tool to build easily rpm package. it can be used to build an rpm file from an
+      installed package (lost rpm) or to quickly make change to a package: just have your change on installed files and
+      call rpmrebuild. <a name="lbAE" id="lbAE"> </a>
+      
+      <h2>OPTIONS</h2>
+      
+      <dl>
+	<dt><b>-a, --additional</b>=&lt;<i>flags</i>&gt;</dt>
+	
+	<dd>pass additional flags to <b>rpmbuild</b></dd>
+	
+	<dt class="c1">-b, --batch</dt>
+	
+	<dd>work in batch mode (no interactive query if files change)</dd>
+	
+	<dt><b>-c, --comment-missing</b>=&lt;<i>yes</i>|<i>no</i>&gt;</dt>
+	
+	<dd>comment out in the specfile missing files. Default: <b>no</b>.</dd>
+	
+	<dt><b>-D, --define</b>=&lt;<i>defines</i>&gt;</dt>
+	
+	<dd>defines to be passed to rpmbuild.</dd>
+	
+	<dt><b>-d, --directory</b>=&lt;<i>directory</i>&gt;</dt>
+	
+	<dd>rpm package result will be written in <i>directory</i>.</dd>
+	
+	<dt class="c1">-e, --edit-spec</dt>
+	
+	<dd>alias to --edit-whole.</dd>
+	
+	<dt><b>-f, --filter</b>=&lt;<i>command</i>&gt;</dt>
+	
+	<dd>alias for <b>--change-spec-whole</b></dd>
+	
+	<dt class="c1">-h, --help</dt>
+	
+	<dd>output help information about all, but plugins option and exit.</dd>
+	
+	<dt class="c1">--help-plugins</dt>
+	
+	<dd>output help information about plugins options and exit.</dd>
+	
+	<dt><b>-i, --include</b>=&lt;<i>file</i>&gt;</dt>
+	
+	<dd>read more options from the file 'file'.</dd>
+	
+	<dt class="c1">-k, --keep-perm</dt>
+	
+	<dd class="c2">alias to --pug-from-fs</dd>
+	
+	<dt><b>-m, --modify</b>=&lt;<i>command</i>&gt;</dt>
+	
+	<dd>alias to <b>--change-files</b></dd>
+	
+	<dt class="c1">-n, --notest-install</dt>
+	
+	<dd>do not test install at end of rpm building</dd>
+	
+	<dt class="c1">-p, --package</dt>
+	
+	<dd>use package file, not installed rpm (this option is like rpm's -p option)</dd>
+	
+	<dt class="c1">--pug-from-db (default)</dt>
+	
+	<dd>set files permission, uid and gid as saved in rpm database</dd>
+	
+	<dt class="c1">--pug-from-fs</dt>
+	
+	<dd>keep installed files permission, uid and gid (do not force to original files permission, uid and gid saved in
+	rpm database)</dd>
+	
+	<dt class="c1">-P, --autoprovide</dt>
+	
+	<dd>use rpm scripts to compute provides</dd>
+	
+	<dt class="c1">-R, --autorequire</dt>
+	
+	<dd>use rpm scripts to compute requires</dd>
+	
+	<dt><b>-r, --release</b>=&lt;<i>version</i>&gt;</dt>
+	
+	<dd>specify a release</dd>
+	
+	<dt><b>-s, --spec-only</b>=&lt;<i>specfile</i>&gt;</dt>
+	
+	<dd>do not rebuild package, only generate specfile. Can't be used with <b>--change-files</b>.</dd>
+	
+	<dt class="c1">-v, --verbose</dt>
+	
+	<dd>verbose output</dd>
+	
+	<dt class="c1">--debug</dt>
+	
+	<dd>for debugging purposes : do not remove temporary files at end of work</dd>
+	
+	<dt class="c1">-V, --version</dt>
+	
+	<dd>output version information and exit.</dd>
+	
+	<dt class="c1">-w, --warning</dt>
+	
+	<dd>display some warnings if it detects a potential problem (for example, spec file which contains filename with
+	globbing char).</dd>
+	
+	<dt><b>-y, --verify</b>=&lt;<i>yes</i>|<i>no</i>&gt;</dt>
+	
+	<dd>Turn on/off package verifying before processing. Default: <b>yes</b>. Can be turn off to get better
+	performance.</dd>
+      </dl>
+      
+      <p>PLUGINS OPTION</p>
+      
+      <p>rpmrebuild use may be extended with plugins. Plugins are searched in <b>/usr/lib/rpmrebuild/plugins</b> and then
+      in $PATH</p>
+      
+      <dl>
+	<dt><b>--change-files</b>=&lt;<i>command</i>&gt;</dt>
+	
+	<dd>Invoke plugin which change package's files. Note, that these files are copied before to the temporary location,
+	so installed package's files not changed.<br />
+	Can't be used with <b>--spec-only</b></dd>
+      </dl>
+      
+      <p><b>--change-spec-whole</b>=&lt;<i>command</i>&gt;<br />
+      <b>--edit-whole</b></p>
+      
+      <dl>
+	<dd class="c2">Invoke plugin or editor to change specfile.</dd>
+      </dl>
+      
+      <p>--change-spec-preamble=&lt;<i>command</i>&gt;<br />
+      <b>--edit-preamble</b></p>
+      
+      <p><b>--change-spec-conflicts</b>=&lt;<i>command</i>&gt;<br />
+      <b>--edit-conflicts</b></p>
+      
+      <p><b>--change-spec-obsoletes</b>=&lt;<i>command</i>&gt;<br />
+      <b>--edit-obsoletes</b></p>
+      
+      <p><b>--change-spec-provides</b>=&lt;<i>command</i>&gt;<br />
+      <b>--edit-provides</b></p>
+      
+      <p><b>--change-spec-requires</b>=&lt;<i>command</i>&gt;<br />
+      <b>--edit-requires</b></p>
+      
+      <p><b>--change-spec-description</b>=&lt;<i>command</i>&gt;<br />
+      <b>--edit-description</b></p>
+      
+      <p><b>--change-spec-files</b>=&lt;<i>command</i>&gt;<br />
+      <b>--edit-files</b></p>
+      
+      <p><b>--change-spec-triggers</b>=&lt;<i>command</i>&gt;<br />
+      <b>--edit-triggers</b></p>
+      
+      <p><b>--change-spec-pre</b>=&lt;<i>command</i>&gt;<br />
+      <b>--edit-pre</b></p>
+      
+      <p><b>--change-spec-post</b>=&lt;<i>command</i>&gt;<br />
+      <b>--edit-post</b></p>
+      
+      <p><b>--change-spec-preun</b>=&lt;<i>command</i>&gt;<br />
+      <b>--edit-preun</b></p>
+      
+      <p><b>--change-spec-postun</b>=&lt;<i>command</i>&gt;<br />
+      <b>--edit-postun</b></p>
+      
+      <p><b>--change-spec-verifyscript</b>=&lt;<i>command</i>&gt;<br />
+      <b>--edit-verifyscript</b></p>
+      
+      <p><b>--change-spec-changelog</b>=&lt;<i>command</i>&gt;<br />
+      <b>--edit-changelog</b></p>
+      
+      <dl>
+	<dd><b>Invoke plugin or editor to change preamble, conflicts, obsoletes, provides, requires, description, files,
+	  triggers, preinstall, postinstall, preuninstall, postuninstall, verifyscript or changelog.<br />
+	None of these options can be specified after --change-spec-whole</b> or <b>--edit-whole</b>.</dd>
+      </dl><a name="lbAF" id="lbAF"> </a>
+      
+      <h2>INCLUDE FILES</h2>
+      Any of the rpmrebuild's LONG option can be specified on the command line or in the include file
+      (file specified with -i/--include option).
+      
+      <p>Include files are searched in the <b>/usr/lib/rpmrebuild/plugins</b> directory.</p>
+      
+      <p>Include file has following syntax.</p>
+      
+      <dl>
+	<dt class="c1">comments</dt>
+	
+	<dd>Any line begin with '#' or some number of whitespace and '#'.</dd>
+	
+	<dt class="c1">empty line</dt>
+	
+	<dd>empty line are ignored.</dd>
+	
+	<dt class="c1">option line</dt>
+	
+	<dd>
+	option line is very similar to the option written on the command line. the limitation of the option line in the
+	file are:
+	
+	<dl>
+	  <dd>
+	  <dl>
+	    <dt>long option</dt>
+	    
+	    <dd>should be used ONLY long options WITHOUT leading --.</dd>
+	    
+	    <dt>option's argument</dt>
+	    
+	    <dd>option's argument should not be quoted.</dd>
+	    
+	    <dt>separator</dt>
+	    
+	    <dd>- option's argument should be separated from option by spaces or tabs, not by equal ('=') sign.</dd>
+	    
+	    <dt>non-optional argument(s)</dt>
+	    
+	    <dd>package name (non-optional argument) shouldn't be specified in the include file.</dd>
+	  </dl>
+	  </dd>
+	</dl>
+	</dd>
+      </dl>
+      
+      <p>For example, if command line looks like:</p>
+      
+      <dl>
+	<dd>rpmrebuild --change-files="pgm1 a b c" --change-spec-pre="pgm2 bb" pkg</dd>
+      </dl>
+      
+      <p>Then include file should be written like:</p>
+      
+      <dl>
+	<dd>change-files pgm1 a b c<br />
+	change-spec-pre pgm2 bb<br /></dd>
+      </dl><a name="lbAG" id="lbAG"> </a>
+      
+      <h2>FILES</h2>
+      
+      <dl>
+	<dt class="c1">~/.rpmmacros</dt>
+	
+	<dd>is used by rpm when building packages (macros)</dd>
+	
+	<dt class="c1">/etc/popt</dt>
+	
+	<dd>contains rpm alias used by rpmrebuild</dd>
+	
+	<dt class="c1">$RPMREBUILD_TMPDIR/work</dt>
+	
+	<dd>directory where rpmrebuild put temporary files.</dd>
+      </dl><a name="lbAH" id="lbAH"> </a>
+      
+      <h2>ENVIRONMENT</h2>
+      
+      <dl>
+	<dt class="c1">RPMREBUILD_TMPDIR</dt>
+	
+	<dd>Directory for temporal files. If not set ~/.tmp/rpmrebuild.$$ is used.</dd>
+	
+	<dt class="c1">VISUAL</dt>
+	
+	<dd>used to specify an editor for specfile. if not set <b>EDITOR</b> variable examined.</dd>
+	
+	<dt class="c1">EDITOR</dt>
+	
+	<dd>used to specify an editor for specfile. if not set <b>vi</b> used.</dd>
+      </dl><a name="lbAI" id="lbAI"> </a>
+      
+      <h2>EXAMPLES</h2>
+      
+      <p>Build an rpm package as closed as possible to original one:</p>
+      
+      <p class="c3">rpm --rpmrebuild --batch package</p>
+      
+      <p>Build a modified package:</p>
+      
+      <p class="c3">rpm --rpmrebuild --keep-perm package</p>
+      
+      <p>Build a rpm from another rpm file:</p>
+      
+      <p class="c3">rpm --rpmrebuild --package --filter filter /usr/src/redhat/i386/package-i386.rpm</p>
+      
+      <p>Rebuild rpm as legacy (rpm[23]) package:</p>
+      
+      <p class="c3">rpm --rpmrebuild --additional "--nodirtokens" bash</p>
+      
+      <p>Specify generated rpm name:</p>
+      
+      <p class="c3">rpm --rpmrebuild --define "_rpmfilename %%{NAME}.rpm" bash</p>
+      
+      <p>Change package interactive</p>
+      
+      <p class="c3">rpm --rpmrebuild --package --change-files "/bin/bash" /some/place/bash.rpm</p>
+      
+      <p>Change package non-interactive</p>
+      
+      <p class="c3">rpm --rpmrebuild --package --change-files "a.sh &amp;&amp; b.sh" /some/place/bash.rpm</p>
+      
+      <p>if you have problem with rpm building, and if you know specfile syntax, you can also edit it:</p>
+      
+      <p><b>rpm --rpmrebuild --edit-whole package</b> <a name="lbAJ" id="lbAJ"> </a></p>
+      
+      <h2>AUTHORS</h2>
+      
+      <p>Eric Gerbier &lt;<a href="mailto:gerbier@users.sourceforge.net">gerbier@users.sourceforge.net</a>&gt;<br />
+      Valery Reznic &lt;<a href="mailto:valery_reznic@users.sourceforge.net">valery_reznic@users.sourceforge.net</a>&gt;</p>
+      
+      <dl>
+	<dt>See &lt;URL:<a href="http://rpmrebuild.sourceforge.net/">http://rpmrebuild.sourceforge.net/</a>&gt;.</dt>
+      </dl><a name="lbAK" id="lbAK"> </a>
+      
+      <h2>NOTES</h2>
+      
+      <dl>
+	<dt>rpmrebuild can not reproduce exactly a package, so</dt>
+	
+	<dd><br />
+	- md5 checksum will not match original ones.<br />
+	- gpg or pgp signatures are lost</dd>
+	
+	<dt>packages which contains file with globbing characters (* .. ? ) will not build</dt>
+      </dl><a name="lbAL" id="lbAL"> </a>
+      
+      <h2>COPYRIGHT</h2>
+      
+      <p>rpmrebuild is copyright (C) 2002 by Eric Gerbier.<br />
+	this program is distributed under GNU General Public License<br />
+	It is provided "as is", without any express or implied warranties.<br />
+      See the file COPYING for details. <a name="lbAM" id="lbAM"> </a></p>
+      
+      <h2>SEE ALSO</h2>
+      
+      <p>rpm(8), rpmbuild(8), <a href="rpmrebuild_plugins.1.html">rpmrebuild_plugins</a>(1), 'man -k rrp' for plugins specific manpages.</p>
+      <hr />
+      <a name="index" id="index"> </a>
+      
+      <h2>Index</h2>
+      
+      <dl>
+	<dt><a href="#lbAB">NAME</a></dt>
+	<dt><a href="#lbAC">SYNOPSIS</a></dt>
+	<dt><a href="#lbAD">DESCRIPTION</a></dt>
+	<dt><a href="#lbAE">OPTIONS</a></dt>
+	<dt><a href="#lbAF">INCLUDE FILES</a></dt>
+	<dt><a href="#lbAG">FILES</a></dt>
+	<dt><a href="#lbAH">ENVIRONMENT</a></dt>
+	<dt><a href="#lbAI">EXAMPLES</a></dt>
+	<dt><a href="#lbAJ">AUTHORS</a></dt>
+	<dt><a href="#lbAK">NOTES</a></dt>
+	<dt><a href="#lbAL">COPYRIGHT</a></dt>
+	<dt><a href="#lbAM">SEE ALSO</a></dt>
+      </dl>
+      <hr />
+      This document was created by man2html, using the manual pages.<br />
+      Time: 10:48:33 GMT, June 26, 2007
+    </div>
+  </body>
+</html>

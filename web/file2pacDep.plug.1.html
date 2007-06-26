@@ -1,278 +1,201 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML><HEAD><TITLE>Manpage of file2pacDep</TITLE>
-</HEAD><BODY>
-<H1 align=center>file2pacDep</H1>
-Section: rpmrebuild plugins (1rrp)<BR>Updated: 2.0.0<BR><A HREF="#index">Index</A>
-
-<A NAME="lbAB">&nbsp;</A>
-<H2>NAME</H2>
-
-file2pacDep - a plugin for rpmrebuild, to change file dependencies into package dependencies
-<A NAME="lbAC">&nbsp;</A>
-<H2>SYNOPSIS</H2>
-
-rpmrebuild --include file2pacDep.plug &lt;<I>packagename</I>&gt;
-<BR>
-
-or
-<BR>
-
-rpmrebuild  --change-spec-requires=&quot;file2pacDep.sh [<I>option</I>]&quot; &lt;<I>packagename</I>&gt;
-<BR>
-
-the first form apply all changes
-<BR>
-
-the second allow to choose which part to change, and plugin options
-<P>
-<A NAME="lbAD">&nbsp;</A>
-<H2>DESCRIPTION</H2>
-
-this plugin is to replace all package's files dependencies to package dependencies.
-<BR>
-
-For example, a dependency to /bin/bash will be changed to a dependency to bash package, the same for libraries.
-<A NAME="lbAE">&nbsp;</A>
-<H2>OPTIONS</H2>
-
-<DL COMPACT>
-<DT><B>-f, --file</B><DD>
-just apply changes on files with path (ex : /bin/bash)
-<DT><B>-l, --lib</B><DD>
-just apply changes on libraries file (ex : libc.so)
-<DT><B>-h, --help</B><DD>
-output help information about plugins option and exit.
-<DT><B>-v, --version</B><DD>
-print plugin version and exit
-<DT><B>-V, --forceversion</B><DD>
-add a dependency to current version (&gt;=)
-</DL>
-<A NAME="lbAF">&nbsp;</A>
-<H2>FILES</H2>
-
-<DL COMPACT>
-<DT><B>file2pacDep.plug</B> <DD>
-is the 'include file' for a quicker use
-<DT><B>file2pacDep.sh</B><DD>
-contains the code
-<DT><B>file2pacDep.plug.1</B><DD>
-is this man page
-</DL>
-<A NAME="lbAG">&nbsp;</A>
-<H2>EXAMPLES</H2>
-
-<P>
-
-&quot;normal&quot; rpm dependencies are :
-<P>
-
-$ rpm -qR rpm
-<BR>
-
-gawk
-<BR>
-
-fileutils
-<BR>
-
-textutils
-<BR>
-
-mktemp
-<BR>
-
-shadow-utils
-<BR>
-
-popt = 1.6.4
-<BR>
-
-/bin/sh
-<BR>
-
-/bin/sh
-<BR>
-
-/bin/sh
-<BR>
-
-rpmlib(CompressedFileNames) &lt;= 3.0.4-1
-<BR>
-
-ld-linux.so.2
-<BR>
-
-libbz2.so.1
-<BR>
-
-libc.so.6
-<BR>
-
-libpopt.so.0
-<BR>
-
-libpthread.so.0
-<BR>
-
-librpm-4.0.4.so
-<BR>
-
-librpmbuild-4.0.4.so
-<BR>
-
-librpmdb-4.0.4.so
-<BR>
-
-librpmio-4.0.4.so
-<BR>
-
-librt.so.1
-<BR>
-
-libz.so.1
-<BR>
-
-/bin/sh
-<BR>
-
-libc.so.6(GLIBC_2.0)
-<BR>
-
-libc.so.6(GLIBC_2.1)
-<BR>
-
-libc.so.6(GLIBC_2.1.3)
-<BR>
-
-libc.so.6(GLIBC_2.2)
-<BR>
-
-libc.so.6(GLIBC_2.2.3)
-<BR>
-
-libpthread.so.0(GLIBC_2.0)
-<BR>
-
-librt.so.1(GLIBC_2.1)
-<BR>
-
-<P>
-<P>
-
-now build a modified package:
-<P>
-
-<B>rpmrebuild --include file2pacDep.plug rpm</B>
-<P>
-
-and the result is :
-<P>
-
-$ rpm -qpR rpm-4.0.4-7x19.i386.rpm
-<BR>
-
-rpmlib(VersionedDependencies) &lt;= 3.0.3-1
-<BR>
-
-popt = 1.6.4
-<BR>
-
-bash
-<BR>
-
-bzip2-libs
-<BR>
-
-fileutils
-<BR>
-
-gawk
-<BR>
-
-glibc
-<BR>
-
-mktemp
-<BR>
-
-popt
-<BR>
-
-rpm
-<BR>
-
-shadow-utils
-<BR>
-
-textutils
-<BR>
-
-zlib
-<BR>
-
-rpmlib(PayloadFilesHavePrefix) &lt;= 4.0-1
-<BR>
-
-rpmlib(CompressedFileNames) &lt;= 3.0.4-1
-<BR>
-
-<P>
-<P>
-<A NAME="lbAH">&nbsp;</A>
-<H2>AUTHORS</H2>
-
-<P>
-
-Eric Gerbier &lt;<A HREF="mailto:gerbier@users.sourceforge.net">gerbier@users.sourceforge.net</A>&gt;
-<DL COMPACT>
-<DT>See &lt;URL:<A HREF="http://rpmrebuild.sourceforge.net/">http://rpmrebuild.sourceforge.net/</A>&gt;.<DD>
-</DL>
-<A NAME="lbAI">&nbsp;</A>
-<H2>NOTES</H2>
-
-<P>
-
-<DL COMPACT>
-<DT>this plugin is given as an example of what can be done<DD>
-</DL>
-<A NAME="lbAJ">&nbsp;</A>
-<H2>COPYRIGHT</H2>
-
-<P>
-
-rpmrebuild is copyright &#169; 2004 by Eric Gerbier.
-<BR>
-
-this program is distributed under GNU General Public License
-<BR>
-
-It is provided &quot;as is&quot;, without any express or implied
-warranties.  See the file COPYING for details.
-<A NAME="lbAK">&nbsp;</A>
-<H2>SEE ALSO</H2>
-
-<P>
-
-rpm(8), rpmbuild(8), <A HREF="rpmrebuild_plugins.1.html">rpmrebuild_plugins</A>(1), plugins specific manpages.
-<P>
-
-<HR>
-<A NAME="index">&nbsp;</A><H2>Index</H2>
-<DL>
-<DT><A HREF="#lbAB">NAME</A><DD>
-<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
-<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
-<DT><A HREF="#lbAE">OPTIONS</A><DD>
-<DT><A HREF="#lbAF">FILES</A><DD>
-<DT><A HREF="#lbAG">EXAMPLES</A><DD>
-<DT><A HREF="#lbAH">AUTHORS</A><DD>
-<DT><A HREF="#lbAI">NOTES</A><DD>
-<DT><A HREF="#lbAJ">COPYRIGHT</A><DD>
-<DT><A HREF="#lbAK">SEE ALSO</A><DD>
-</DL>
-<HR>
-This document was created by man2html
-using the manual pages.<BR>
-Time: 08:53:16 GMT, February 10, 2005
-</BODY>
-</HTML>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+    <title>Manpage of file2pacDep</title>
+    <style type="text/css">
+    /*<![CDATA[*/
+    p.c2 {font-weight: bold}
+    dt.c1 {font-weight: bold}
+    /*]]>*/
+    </style>
+    <link rel="stylesheet" type="text/css" href="project.css" />
+    
+  </head>
+  
+  <body>
+    <div>
+      <h1>file2pacDep</h1>
+      Section: rpmrebuild plugin (1rrp)<br />
+      Updated: 2.1.1<br />
+      <a href="#index">Index</a> <a name="lbAB" id="lbAB"> </a>
+      
+      <h2>NAME</h2>
+      file2pacDep.plug - a plugin for rpmrebuild, to change file dependencies into package dependencies
+      <a name="lbAC" id="lbAC"> </a>
+      
+      <h2>SYNOPSIS</h2>
+      rpmrebuild --include file2pacDep.plug &lt;<i>packagename</i>&gt;<br />
+      or<br />
+      rpmrebuild --change-spec-requires="file2pacDep.sh [<i>option</i>]" &lt;<i>packagename</i>&gt;<br />
+      the first form apply all changes<br />
+      the second allow to choose which part to change, and plugin options
+      
+      <p><a name="lbAD" id="lbAD"> </a></p>
+      
+      <h2>DESCRIPTION</h2>
+      this plugin is to replace all package's files dependencies to package dependencies.<br />
+      For example, a dependency to /bin/bash will be changed to a dependency to bash package, the same for libraries.
+      <a name="lbAE" id="lbAE"> </a>
+      
+      <h2>OPTIONS</h2>
+      
+      
+      <dl>
+	<dt class="c1">-f, --file</dt>
+	
+	<dd>just apply changes on files with path (ex : /bin/bash)</dd>
+	
+	<dt class="c1">-l, --lib</dt>
+	
+	<dd>just apply changes on libraries file (ex : libc.so)</dd>
+	
+	<dt class="c1">-h, --help</dt>
+	
+	<dd>output help information about plugins option and exit.</dd>
+	
+	<dt class="c1">-v, --version</dt>
+	
+	<dd>print plugin version and exit</dd>
+	
+	<dt class="c1">-V, --forceversion</dt>
+	
+	<dd>add a dependency to current version (&gt;=)</dd>
+      </dl><a name="lbAF" id="lbAF"> </a>
+      
+      <h2>FILES</h2>
+      
+      
+      <dl>
+	<dt class="c1">file2pacDep.plug</dt>
+	
+	<dd>is the 'include file' for a quicker use</dd>
+	
+	<dt class="c1">file2pacDep.sh</dt>
+	
+	<dd>contains the code</dd>
+	
+	<dt class="c1">file2pacDep.plug.1</dt>
+	
+	<dd>is this man page</dd>
+      </dl><a name="lbAG" id="lbAG"> </a>
+      
+      <h2>EXAMPLES</h2>
+      
+      
+      <p>"normal" rpm dependencies are :</p>
+      
+      <p>$ rpm -qR rpm<br />
+	gawk<br />
+	fileutils<br />
+	textutils<br />
+	mktemp<br />
+	shadow-utils<br />
+	popt = 1.6.4<br />
+	/bin/sh<br />
+	/bin/sh<br />
+	/bin/sh<br />
+	rpmlib(CompressedFileNames) &lt;= 3.0.4-1<br />
+	ld-linux.so.2<br />
+	libbz2.so.1<br />
+	libc.so.6<br />
+	libpopt.so.0<br />
+	libpthread.so.0<br />
+	librpm-4.0.4.so<br />
+	librpmbuild-4.0.4.so<br />
+	librpmdb-4.0.4.so<br />
+	librpmio-4.0.4.so<br />
+	librt.so.1<br />
+	libz.so.1<br />
+	/bin/sh<br />
+	libc.so.6(GLIBC_2.0)<br />
+	libc.so.6(GLIBC_2.1)<br />
+	libc.so.6(GLIBC_2.1.3)<br />
+	libc.so.6(GLIBC_2.2)<br />
+	libc.so.6(GLIBC_2.2.3)<br />
+	libpthread.so.0(GLIBC_2.0)<br />
+      librt.so.1(GLIBC_2.1)<br /></p>
+      
+      <p>now build a modified package:</p>
+      
+      <p class="c2">rpmrebuild --include file2pacDep.plug rpm</p>
+      
+      <p>and the result is :</p>
+      
+      <p>$ rpm -qpR rpm-4.0.4-7x19.i386.rpm<br />
+	rpmlib(VersionedDependencies) &lt;= 3.0.3-1<br />
+	popt = 1.6.4<br />
+	bash<br />
+	bzip2-libs<br />
+	fileutils<br />
+	gawk<br />
+	glibc<br />
+	mktemp<br />
+	popt<br />
+	rpm<br />
+	shadow-utils<br />
+	textutils<br />
+	zlib<br />
+	rpmlib(PayloadFilesHavePrefix) &lt;= 4.0-1<br />
+      rpmlib(CompressedFileNames) &lt;= 3.0.4-1<br /></p>
+      
+      <p><a name="lbAH" id="lbAH"> </a></p>
+      
+      <h2>AUTHORS</h2>
+      
+      
+      <p>Eric Gerbier &lt;<a href="mailto:gerbier@users.sourceforge.net">gerbier@users.sourceforge.net</a>&gt;</p>
+      
+      <dl>
+	<dt>See &lt;URL:<a href="http://rpmrebuild.sourceforge.net/">http://rpmrebuild.sourceforge.net/</a>&gt;.</dt>
+      </dl><a name="lbAI" id="lbAI"> </a>
+      
+      <h2>NOTES</h2>
+      
+      
+      <dl>
+	<dt>this plugin is given as an example of what can be done</dt>
+      </dl><a name="lbAJ" id="lbAJ"> </a>
+      
+      <h2>COPYRIGHT</h2>
+      
+      
+      <p>rpmrebuild is copyright (C) 2004 by Eric Gerbier.<br />
+	this program is distributed under GNU General Public License<br />
+      It is provided "as is", without any express or implied warranties. See the file COPYING for details. <a name="lbAK" id="lbAK"> </a></p>
+      
+      <h2>SEE ALSO</h2>
+      
+      
+      <p>rpm(8), rpmbuild(8), <a href="rpmrebuild_plugins.1.html">rpmrebuild_plugins</a>(1), 
+	<a href="demo_plug.1.html">demo_plug</a>(1), 
+	<a href="nodoc.plug.1.html">nodoc.plug</a>(1), 
+	<a href="uniq.plug.1.html">uniq.plug</a>(1), 
+      <a href="file2pacDep.plug.1.html">file2pacDep.plug</a>(1), 'man -k rrp' for plugins specific manpages</p>
+      <hr />
+      <a name="index" id="index"> </a>
+      
+      <h2>Index</h2>
+      
+      
+      <dl>
+	<dt><a href="#lbAB">NAME</a></dt>
+	<dt><a href="#lbAC">SYNOPSIS</a></dt>
+	<dt><a href="#lbAD">DESCRIPTION</a></dt>
+	<dt><a href="#lbAE">OPTIONS</a></dt>
+	<dt><a href="#lbAF">FILES</a></dt>
+	<dt><a href="#lbAG">EXAMPLES</a></dt>
+	<dt><a href="#lbAH">AUTHORS</a></dt>
+	<dt><a href="#lbAI">NOTES</a></dt>
+	<dt><a href="#lbAJ">COPYRIGHT</a></dt>
+	<dt><a href="#lbAK">SEE ALSO</a></dt>
+      </dl>
+      <hr />
+      This document was created by man2html, using the manual pages.<br />
+      Time: 11:23:06 GMT, June 26, 2007
+    </div>
+  </body>
+</html>
