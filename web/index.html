@@ -1,18 +1,170 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML>
-  <HEAD>
-    <META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-    <META name="Author" content="Gerbier">
-    <META NAME="Keywords" CONTENT="security,integrity">
-    <TITLE>rpmrebuild</TITLE>
-    <LINK rev="made" href="mailto:gerbier@users.sourceforge.net">
-    <BASE TARGET="Content"> 
-  </HEAD>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    
+    <title>rpmrebuild</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta name="Author" content="Gerbier" />
+    <link rev="made" href="mailto:gerbier@users.sourceforge.net" />
+    <link rel="stylesheet" type="text/css" href="project.css" />
+  </head>
   
-  <FRAMESET COLS="20%,*">
-    <FRAME NAME="Menu" SRC="menu.html" TITLE="Menu">
-    <FRAME NAME="Content" SRC="main.html" TITLE="Content">
-    <NOFRAMES><A href="main.fr.html">main page</A></NOFRAMES>
-  </FRAMESET>
-  
-</HTML>
+  <body>
+    <div class="header">
+      <table width="100%" summary="title">
+	<tr>
+	  <td valign="top" align="left"><a href="http://sourceforge.net/projects/rpmrebuild">Project Page</a></td>
+	  <td align="center"><h1>RPMREBUILD</h1></td>
+	  <td valign="top" align="right"><a href="mailto:gerbier@users.sourceforge.net">Feedback..</a></td>
+	</tr>
+      </table><br />
+    </div>
+    
+    
+    <div class="sidebar">
+      <h2>Language</h2>
+      <ul>
+	<li><a href="index.fr.html"><img alt="francais" src="lang_french.gif" width="40" height="25" /></a></li>
+	<li><a href= "index.html"><img alt="anglaise" src="lang_english.gif" width="40" height="25" /></a></li>
+      </ul> 
+      <h2>About</h2>
+      <ul>
+	<li><a href="main.html">introduction</a></li>
+	<li><a href="functions.html">functionalities</a></li>
+	<li><a href="screenshots.html">screenshots</a></li>
+	<li><a href="credits.html">credits</a></li>
+	<li><a href="support.html">support</a></li>
+      </ul> 
+      <h2>Get it</h2>
+      <ul>
+	<li><a href="http://sourceforge.net/project/showfiles.php?group_id=57523">rpmrebuild</a></li>
+	<li><a href="http://sourceforge.net/svn/?group_id=57523">svn version</a></li>
+      </ul> 
+      <h2>Changes</h2>
+      <ul>
+	<li><a href="news.html">news</a></li>
+	<li><a href="changelog.html">changelog</a></li>
+	<li><a href="todo.html">todo</a></li>
+      </ul> 
+      <h2>Documentation for use</h2>
+      <ul>
+	<li><a href="install.html">installation</a></li>
+	<li><a href="usage.html">how to use it</a></li>
+	<li><a href="faq.html">faq</a></li>
+	<li><a href="rpmrebuild.1.html">command line manual</a></li>
+	<li><a href="rpmrebuild_plugins.1.html">plugin manual</a></li>
+      </ul> 
+      <h2>Plugins</h2>
+      <ul>
+	<li><a href="rpmrebuild_plugins.1.html">plugin manual</a></li>
+	<li><a href="demo.plug.1.html">demo plugin manual</a></li>
+	<li><a href="uniq.plug.1.html">uniq plugin manual</a></li>
+	<li><a href="file2pacDep.plug.1.html">file2pacDep plugin manual</a></li>
+	<li><a href="nodoc.plug.1.html">nodoc plugin manual</a></li>
+      </ul> 
+      <h2>Externals plugins</h2>
+      <ul>
+	<li><a href="http://statifier.sourceforge.net/rrp_statify/">rrp_statify</a></li>
+      </ul> 
+      <h2>Resources</h2>
+      <ul>
+	<li><a href="http://sourceforge.net/projects/rpmrebuild/">SourceForge main page</a></li>
+	<li><a href="http://lists.sourceforge.net/lists/listinfo/rpmrebuild-project">Mailing list</a></li>
+	<li><a href="http://sourceforge.net/svn/?group_id=57523">svn version</a></li>
+      </ul> 
+      <h2>Relatives projects</h2>
+      <ul>
+	<li><a href="http://pkgrebuild.sourceforge.net">pkgrebuild</a></li>
+      </ul> 
+      <h2>Eric Gerbier others projects</h2>
+      <ul>
+	<li><a href="http://afick.sourceforge.net">afick</a></li>
+	<li><a href="http://projinfo.sourceforge.net">project information recuperator</a></li>
+	<li><a href="http://rpmorphan.sourceforge.net">rpmorphan</a></li>
+	<li><a href="http://rpmrestore.sourceforge.net">rpmrestore</a></li>
+	<li><a href="http://webminstats.sourceforge.net">webminstats</a></li>
+      </ul> 
+      <h2>Valery Reznic others projects</h2>
+      <ul>
+	<li><a href="http://kbde.sourceforge.net/">kbde</a></li>
+	<li><a href="http://ksm.sourceforge.net/">ksm</a></li>
+	<li><a href="http://nfstimesync.sourceforge.net/">nfstimesync</a></li>
+	<li><a href="http://noexec.sourceforge.net/">noexec</a></li>
+	<li><a href="http://statifier.sourceforge.net/">statifier</a></li>
+      </ul> 
+    </div>
+    
+    
+    <div class="main">
+      <h2>what is it ?</h2>
+      
+      rpmrebuild is a tool to build an RPM file from a package that has already been installed<br />
+      in a basic use, rpmrebuild use do not require any rpm building knowledge<br />
+      (On debian, the equivalent product is dpkg-repack)<br />
+      <br />
+      
+      <h2>supported plateforms</h2>
+      
+      any linux distribution using rpm :
+      
+      <ul>
+	<li><a href="http://www.redhat.com">redhat</a></li>
+	<li><a href="http://fedora.redhat.com">fedora</a></li>
+	<li><a href="http://whiteboxlinux.org/">whitebox</a></li>
+	<li><a href="http://www.mandrake.com">mandrake</a></li>
+	<li><a href="http://www.suse.com">suse</a></li>
+	<li>and more</li>
+      </ul>
+      
+      <h2>licence</h2>
+      
+      this software is delivered under the <a href="http://www.gnu.org/copyleft/gpl.html">gpl</a>
+      licence<br />
+      <br />
+      
+      <h2>project members</h2>
+      
+      The project was started on 2002 by <a href="http://sourceforge.net/users/gerbier/">Eric Gerbier</a> 
+      for <a href="history.html">personnals needs</a>. He is still the project administrator, and the
+      developements are now coded with <a href="http://sourceforge.net/users/valery_reznic/">Valery Reznic</a><br />
+      <hr />
+      
+      <h2>releases</h2>
+      
+      <table summary="functions">
+	<tr>
+	  <td>release category</td>
+	  <td>release number</td>
+	  <td>date</td>
+	</tr>
+	
+	<tr>
+	  <td>stable</td>
+	  <td>2.1.1-1</td>
+	  <td>2007-06-22</td>
+	</tr>
+	
+	<tr>
+	  <td>developpement</td>
+	  <td>-</td>
+	  <td>-</td>
+	</tr>
+      </table>
+      <hr />
+      <br />
+      all the rpm packages are signed with my <a href="gpg.asc">gpg key</a>
+      <hr />
+      
+      <address>
+      <a href="mailto:gerbier@users.sourceforge.net">Eric Gerbier</a>
+      </address><br />
+      thanks to <a href="http://sourceforge.net"><img src="http://sourceforge.net/sflogo.php?group_id=57523" width="88" height="31" alt="SourceForge Logo" /></a> to host this project<br />
+      page changed on 2007-06-27<br />
+
+      <p><a href="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a></p>
+    </div>
+  </body>
+</html>
