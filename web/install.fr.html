@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>installation de rpmrebuild</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta name="Author" content="Gerbier" />
+    <meta name="generator" content="vim" />
+    <link rev="made" href="mailto:gerbier@users.sourceforge.net" />
+    <link rel="stylesheet" type="text/css" href="project.css" />
+  </head>
+  <body>
+    <div>
+      <h1>installation de rpmrebuild</h1>
+      
+      Comme rpmrebuild travaille sur les packages rpm, il est fourni naturellement sous ce format.
+      
+      <h2>quel package choisir ?</h2>
+      
+      <ul>
+	<li>rpm4.noarch.rpm : pour les distributions "modernes", qui utilisent rpm version 4.x</li>
+	<li>rpm3.noarch.rpm : pour les "vieilles" distributions, qui utilisent encore rpm en version 3.x</li>
+      </ul>
+      
+      <h2>vérifier le package</h2>
+      
+      Tous les packages rpm sont signés avec ma <a href="gpg.asc">clef gpg</a>. Je vous recommande
+      fortement de vérifier tout package téléchargé avec la commande <code>rpm -K rpmrebuild*.rpm</code>.
+      
+      <h2>installation</h2>
+      
+      Rpmrebuild est codé en shell (bash), donc il ne dépends pas de librairies, ni de l'architecture.
+      Il s'installe avec la commande : <code>rpm -Uvh rpmrebuild-{version}.noarch.rpm</code>.
+      
+      <h2>en cas de problème</h2>
+      
+      <ul>
+	      <li>vous pouvez essayer de fabriquer votre propre package rpm à partir du fichier source rpmrebuild-{version}.src.rpm, avec la commande <code>rpmbuild --rebuild rpmrebuild-{version}.src.rpm</code>, puis installer votre fichier rpm</li>
+	<li>envoyer un <a href="support.fr.html">rapport de bug</a></li>
+      </ul>
+      
+      <hr />
+      <a href="index.fr.html">retour à la page principale</a>
+    </div>
+  </body>
+</html>
