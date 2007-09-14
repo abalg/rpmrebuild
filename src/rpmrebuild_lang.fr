@@ -9,3 +9,5 @@ WantStillSend="Voulez-vous toujours envoyer le rapport d'incident"
 MissingTag='impossible de trouver le tag rpm'
 CannotWork='rpmrebuild ne peut fonctionner avec cette version de rpm'
 FilesModified='des fichiers ont été modifiés:'
+PackageNotInstalled="n'est pas installé"
+PackageTooMuch='plusieurs packages correspondent'

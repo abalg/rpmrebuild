@@ -121,24 +121,27 @@ function IsPackageInstalled
 {
 	# test if package exists
 	local output
-	output="$(rpm --query ${PAQUET} 2>&1 | grep -v 'is not installed')" # Don't return here - use output
-	set -- $output
-	case $# in
-		0)
-			# No package found
-			Error "no package '${PAQUET}' in rpm database"
-			return 1
-		;;
-
-		1)
+	output="$( rpm --query ${PAQUET} 2>&1 )" # Don't return here - use output
+	iret=$?
+	if [ $iret -eq 1 ]
+	then
+		# no such package in rpm database
+		Error "${PAQUET} $PackageNotInstalled"
+		return 1
+	else
+		# find it : one or more ?
+		set -- $output
+		case $# in
+			1)
 			: # Ok, do nothing
-		;;
+			;;
 
-		*)
-			Error "too much packages match '${PAQUET}':\n$output"
+			*)
+			Error "$PackageTooMuch '${PAQUET}':\n$output"
 			return 1
-		;;
-	esac || return
+			;;
+		esac 
+	fi
 	return 0
 }
 
