@@ -1,0 +1,11 @@
+WantContinue='Voulez-vous continuer'
+WantChangeRelease='Voulez-vous modifier le numéro de release'
+EnterRelease='Entrez la nouvelle release (précédente:'
+WantSendBugReport="Voulez-vous envoyer un rapport d'incident (par mail)"
+WantChangeEmail='Voulez-vous modifier cette adresse mail'
+EnterEmail='Entrez la nouvelle adresse mail: '
+WantEditReport="Voulez-vous visualiser/modifier le rapport d'incident"
+WantStillSend="Voulez-vous toujours envoyer le rapport d'incident"
+MissingTag='impossible de trouver le tag rpm'
+CannotWork='rpmrebuild ne peut fonctionner avec cette version de rpm'
+FilesModified='des fichiers ont été modifiés:'
