@@ -109,8 +109,8 @@ function QuestionsToUser
 	AskYesNo "$WantContinue" || return
 	RELEASE_ORIG="$(spec_query_qf '%{RELEASE}')"
 	[ -z "$RELEASE_NEW" ] && \
-	AskYesNo "Do you want to change release number" && {
-		echo -n "Enter the new release (old: $RELEASE_ORIG): "
+	AskYesNo "$WantChangeRelease" && {
+		echo -n "$EnterRelease $RELEASE_ORIG): "
 		read RELEASE_NEW
 	}
 	return 0
@@ -258,18 +258,18 @@ function GetInformations
 function SendBugReport
 {
 	[ "X$batch"     = "Xyes" ] && return 0 ## batch mode, skip report
-	AskYesNo "Want to send a bug report ( by mail)" || return
+	AskYesNo "$WantSendBugReport" || return
 	# build default mail address 
 	from="${USER}@${HOSTNAME}"
-	AskYesNo "Do you want to change your e-mail address ($from)" && {
-		echo -n "Enter the new email: "
+	AskYesNo "$WantChangeEmail ($from)" && {
+		echo -n "$EnterEmail"
 		read from
 	}
 	GetInformations $from >> $BUGREPORT 2>&1
-	AskYesNo "Do you want to view/edit the bug report" && {
+	AskYesNo "$WantEditReport" && {
 		${VISUAL:-${EDITOR:-vi}} $BUGREPORT
 	}
-	AskYesNo "Do you still want to send bug report" && {
+	AskYesNo "$WantStillSend" && {
 		mail -s "[rpmrebuild] bug report" rpmrebuild-bugreport@lists.sourceforge.net < $BUGREPORT
 	}
 	return
@@ -307,13 +307,13 @@ function CheckTags
 		done
 		if [ -z "$ok" ]
 		then
-			Warning "(CheckTags) can not find rpm tag $tag"
+			Warning "(CheckTags) $MissingTag $tag"
 			let errors="$errors + 1"
 		fi
 	done
 	if [ $errors -ge 1 ] 
 	then
-		Warning "rpmrebuild can not work with the current rpm version"
+		Warning "$CannotWork"
 		SendBugReport
 		return 1
 	fi
@@ -326,7 +326,8 @@ function CheckTags
 
 function Main
 {
-	WantContinue="Do you want to continue"
+	
+	#WantContinue="Do you want to continue"
 
 	RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild.$$}
 	#RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild}
@@ -345,12 +346,22 @@ function Main
 	# plugins for fs modification  (--change-files)
 	BUILDROOT=$TMPDIR_WORK/root
 
-	D=`dirname $0` || return
-	source $D/rpmrebuild_parser.src || return
-	source $D/spec_func.src         || return
-	source $D/processing_func.src   || return
+	MY_LIB_DIR=`dirname $0` || return
+	source $MY_LIB_DIR/rpmrebuild_parser.src || return
+	source $MY_LIB_DIR/spec_func.src         || return
+	source $MY_LIB_DIR/processing_func.src   || return
+
+	# check language
+	lang=$( echo $LANG | cut -f 1 -d_)
+	case "$lang" in
+		en) real_lang=en;;
+		fr) real_lang=fr;;
+		*)  real_lang=en;;
+	esac
+	# load translation file
+	source $MY_LIB_DIR/rpmrebuild_lang.$real_lang 
+	
 	processing_init || return
-	MY_LIB_DIR="$D"
 	CheckTags || return
 
 	export RPMREBUILD_PLUGINS_DIR=${MY_LIB_DIR}/plugins
@@ -370,7 +381,7 @@ function Main
    		if [ "X$verify" = "Xyes" ]; then
       			out=$(VerifyPackage) || return
       			if [ -n "$out" ]; then
-		 		Warning "some files have been modified:\n$out"
+		 		Warning "$FilesModified\n$out"
 		 		QuestionsToUser || return
       			fi
    		else # NoVerify
