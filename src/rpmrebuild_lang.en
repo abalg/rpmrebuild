@@ -1,13 +1,114 @@
-WantContinue='Do you want to continue'
-WantChangeRelease='Do you want to change release number'
-EnterRelease='Enter the new release (old:'
-WantSendBugReport='Want to send a bug report ( by mail)'
-WantChangeEmail='Do you want to change your e-mail address'
-EnterEmail='Enter the new email: '
-WantEditReport='Do you want to view/edit the bug report'
-WantStillSend='Do you still want to send bug report'
-MissingTag='can not find rpm tag'
+AmbiguousOption='ambiguous option'
+CannotChdir='Can not changedir to'
 CannotWork='rpmrebuild can not work with the current rpm version'
+EnterEmail='Enter the new email: '
+EnterRelease='Enter the new release (old:'
 FilesModified='some files have been modified:'
+FileNotFound='File not found'
+ForbidenOption='can not be specified after --change-spec-whole/--edit-spec-whole'
+InternalError='Internal error'
+MissingTag='can not find rpm tag'
+MoreInformation='For more information, try '
+NotCompatibleOption='Not compatible options'
+PackageArgumentMissing='package argument missing'
+PackageMultiple='multiple package arguments is not allowed'
 PackageNotInstalled='package in not installed'
 PackageTooMuch='too much packages match'
+RequiredArgument='requires an argument'
+ShouldNotDirectory='should not be a directory'
+UnknownOperation='unknown operation'
+UnrecognizeOption='unrecognized option'
+WantChangeEmail='Do you want to change your e-mail address'
+WantChangeRelease='Do you want to change release number'
+WantContinue='Do you want to continue'
+WantEditReport='Do you want to view/edit the bug report'
+WantSendBugReport='Want to send a bug report ( by mail)'
+WantStillSend='Do you still want to send bug report'
+WriteComments='write your comments below'
+
+Usage_Message="
+$0 is a tool to rebuild an rpm file from the rpm database
+Usage: $0 [options] package
+options:
+   -a, --additional=<flags>     additional flags to be pass to the rpmbuild
+   -b, --batch                  batch mode (ask no questions)
+   -c, --comment-missing=<y|n>  comment missing files in the specfile.
+                                default - no.
+   -d, --directory=<dir>        specify the working directory
+   -D, --define=<define>        defines to be passed to the rpmbuild
+   -e, --edit-spec              alias for --edit-whole
+   -f, --filter=<command>       alias for --change-spec-whole
+   -i, --includes=<file>        read options from the file <file>
+   -k, --keep-perm              alias for --pug-from-fs
+       --pug-from-fs            keep installed files permission, uid and gid
+       --pug-from-db (default)  use files permission, uid and gid from rpm db
+   -m, --modify=<command>       alias for --change-files
+   -n, --notest-install		do not perform a test install
+   -p, --package                use package file, not installed rpm
+   -P, --autoprovide            force rpm to auto generate 'Provide:'
+   -r, --release=N              force release to N
+   -R, --autorequire            force rpm to auto generate 'Require:'
+   -s, --spec-only=<specfile>   generate specfile only
+                                (If <specfile> '-' stdout will be used)
+   -v, --verbose                verbose
+       --debug                  do not remove temporary working files
+   -V, --version                print version
+   -w, --warning                print warning if detect filenames with
+                                globbing characters (default - no)
+   -y, --verify=<y|n>           need verify package before processing
+                                (default - yes)
+   -h, --help                   print this help
+       --help-plugins           print help about plugins options
+
+Copyright (C) 2002,2003,2004,2005 by Eric Gerbier
+this program is distributed under GNU General Public License
+"
+
+Usage_Message_Plugins="
+$0 is a tool to rebuild an rpm file from the rpm database
+Usage: $0 [options] package
+advanced options:
+   --change-files=<command>                 command to modify package's files
+
+   --change-spec-whole=<command>            command to modify whole specfile
+
+   --change-spec-preamble=<command>
+   --change-spec-conflicts=<command>
+   --change-spec-obsoletes=<command>
+   --change-spec-provides=<command>
+   --change-spec-requires=<command>
+   --change-spec-description=<command>
+   --change-spec-files=<command>
+   --change-spec-files=<command>
+   --change-spec-triggers=<command>
+   --change-spec-pre=<command>
+   --change-spec-post=<command>
+   --change-spec-preun=<command>
+   --change-spec-postun=<command>
+   --change-spec-verifyscript=<command>
+   --change-spec-changelog=<command>
+                                            command to modify appropriative
+                                            part of the specfile
+
+   --edit-whole                             edit whole specfile
+
+   --edit-preamble
+   --edit-conflicts
+   --edit-obsoletes
+   --edit-provides
+   --edit-requires
+   --edit-description
+   --edit-files
+   --edit-files
+   --edit-triggers
+   --edit-pre
+   --edit-post
+   --edit-preun
+   --edit-postun
+   --edit-verifyscript
+   --edit-changelog
+                                            edit appropriative
+                                            part of the specfile
+
+   -h, --help                               print help about 'regular' options
+"

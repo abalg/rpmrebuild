@@ -1,13 +1,112 @@
-WantContinue='Voulez-vous continuer'
-WantChangeRelease='Voulez-vous modifier le numéro de release'
-EnterRelease='Entrez la nouvelle release (précédente:'
-WantSendBugReport="Voulez-vous envoyer un rapport d'incident (par mail)"
-WantChangeEmail='Voulez-vous modifier cette adresse mail'
-EnterEmail='Entrez la nouvelle adresse mail: '
-WantEditReport="Voulez-vous visualiser/modifier le rapport d'incident"
-WantStillSend="Voulez-vous toujours envoyer le rapport d'incident"
-MissingTag='impossible de trouver le tag rpm'
+AmbiguousOption='option ambigue'
+CannotChdir='impossible de changer de repertoire vers'
 CannotWork='rpmrebuild ne peut fonctionner avec cette version de rpm'
+EnterEmail='Entrez la nouvelle adresse mail: '
+EnterRelease='Entrez la nouvelle release (précédente:'
 FilesModified='des fichiers ont été modifiés:'
+FileNotFound='Fichier non trouvé'
+ForbidenOption='ne peut être spécifié après les options --change-spec-whole/--edit-spec-whole'
+InternalError='erreur interne'
+MissingTag='impossible de trouver le tag rpm'
+MoreInformation='pour plus d'information, tapez '
+NotCompatibleOption='Options incompatibles'
+PackageArgumentMissing='il manque le nom du package'
+PackageMultiple='un seul package à la fois'
 PackageNotInstalled="n'est pas installé"
 PackageTooMuch='plusieurs packages correspondent'
+RequiredArgument='nécessite un argument'
+ShouldNotDirectory='ne doit pas être un répertoire'
+UnknownOperation='opération inconnue'
+UnrecognizeOption='option inconnue'
+WantContinue='Voulez-vous continuer'
+WantChangeRelease='Voulez-vous modifier le numéro de release'
+WantSendBugReport="Voulez-vous envoyer un rapport d'incident (par mail)"
+WantChangeEmail='Voulez-vous modifier cette adresse mail'
+WantEditReport="Voulez-vous visualiser/modifier le rapport d'incident"
+WantStillSend="Voulez-vous toujours envoyer le rapport d'incident"
+WriteComments='ecrivez vos commentaires sous cette ligne'
+
+Usage_Message="
+$0 est un outil pour contruire un fichier rpm à partir de la base rpm
+Utilisation: $0 [options] package
+options:
+   -a, --additional=<flags>     permet de passer des options à la commande rpmbuild
+   -b, --batch                  mode batch (pas de questions)
+   -c, --comment-missing=<y|n>  commente les fichiers manquants dans le fichier specfile.
+                                défaut - non.
+   -d, --directory=<dir>        répertoire de travail
+   -D, --define=<define>        définitions pour rpmbuild
+   -e, --edit-spec              équivalent de --edit-whole
+   -f, --filter=<command>       équivalent de --change-spec-whole
+   -i, --includes=<file>        lit les options dans le fichier <file>
+   -k, --keep-perm              équivalent de --pug-from-fs
+       --pug-from-fs            conserver les permissions, uid et gid des fichiers installés
+       --pug-from-db (default)  utiliser les permissions,uid, gid  définis dans la base rpm
+   -m, --modify=<command>       équivalent de --change-files
+   -n, --notest-install		ne pas lancer le test d'installation en fin de construction
+   -p, --package                travaille à partir du fichier rpm spécifié, au lieu d'un package installé
+   -P, --autoprovide            force rpmbuild à générer automatiquement les capacités (tags Provide:)
+   -r, --release=N              force le numéro de release à N
+   -R, --autorequire            force rpmbuild à générer automatiquement les dépendances (tags Require:)
+   -s, --spec-only=<specfile>   ne générer que le fichier specfile
+                                (si <specfile> est '-' , la sortie se fait sur stdout)
+   -v, --verbose                mode verbeux
+       --debug                  mode debugage (ne supprime pas les fichiers temporaires)
+   -V, --version                affiche la version du programme
+   -w, --warning                mode avertissement (previent s'il détecte des fichiers contenant des charactères interdits).
+				défaut - non
+   -y, --verify=<y|n>           vérifie (rpm -V) le package avant toute opération
+                                (défaut - oui)
+   -h, --help                   affiche cette aide
+       --help-plugins           affiche une aide sur les options concernant les greffons (plugins)
+
+Copyright (C) 2002,2003,2004,2005,2006,2007 by Eric Gerbier
+ce programme est distribué sous la GNU General Public License
+"
+
+Usage_Message_Plugins="
+$0 est un outil pour contruire un fichier rpm à partir de la base rpm
+Usage: $0 [options] package
+options avancées:
+   --change-files=<command>                 programme pour modifier les fichiers contenus dans le package
+
+   --change-spec-whole=<command>            programme pour modifier l'ensemble du fichier spec
+
+   --change-spec-preamble=<command>
+   --change-spec-conflicts=<command>
+   --change-spec-obsoletes=<command>
+   --change-spec-provides=<command>
+   --change-spec-requires=<command>
+   --change-spec-description=<command>
+   --change-spec-files=<command>
+   --change-spec-files=<command>
+   --change-spec-triggers=<command>
+   --change-spec-pre=<command>
+   --change-spec-post=<command>
+   --change-spec-preun=<command>
+   --change-spec-postun=<command>
+   --change-spec-verifyscript=<command>
+   --change-spec-changelog=<command>
+                                            programme pour modifier les sections spécifiées du fichier spec
+
+   --edit-whole                             pour editer l'ensemble du fichier spec
+
+   --edit-preamble
+   --edit-conflicts
+   --edit-obsoletes
+   --edit-provides
+   --edit-requires
+   --edit-description
+   --edit-files
+   --edit-files
+   --edit-triggers
+   --edit-pre
+   --edit-post
+   --edit-preun
+   --edit-postun
+   --edit-verifyscript
+   --edit-changelog
+                                            pour editer les sections spécifiées du fichier spec
+
+   -h, --help                               affiche l'aide sur les options de base 
+"

@@ -18,114 +18,29 @@
 ###############################################################################
 function Usage
 {
-	local Usage_Message="
-$0 is a tool to rebuild an rpm file from the rpm database
-Usage: $0 [options] package
-options:
-   -a, --additional=<flags>     additional flags to be pass to the rpmbuild
-   -b, --batch                  batch mode (ask no questions)
-   -c, --comment-missing=<y|n>  comment missing files in the specfile.
-                                default - no.
-   -d, --directory=<dir>        specify the working directory
-   -D, --define=<define>        defines to be passed to the rpmbuild
-   -e, --edit-spec              alias for --edit-whole
-   -f, --filter=<command>       alias for --change-spec-whole
-   -i, --includes=<file>        read options from the file <file>
-   -k, --keep-perm              alias for --pug-from-fs
-       --pug-from-fs            keep installed files permission, uid and gid
-       --pug-from-db (default)  use files permission, uid and gid from rpm db
-   -m, --modify=<command>       alias for --change-files
-   -n, --notest-install		do not perform a test install
-   -p, --package                use package file, not installed rpm
-   -P, --autoprovide            force rpm to auto generate 'Provide:'
-   -r, --release=N              force release to N
-   -R, --autorequire            force rpm to auto generate 'Require:'
-   -s, --spec-only=<specfile>   generate specfile only
-                                (If <specfile> '-' stdout will be used)
-   -v, --verbose                verbose
-       --debug                  do not remove temporary working files
-   -V, --version                print version
-   -w, --warning                print warning if detect filenames with
-                                globbing characters (default - no)
-   -y, --verify=<y|n>           need verify package before processing
-                                (default - yes)
-   -h, --help                   print this help
-       --help-plugins           print help about plugins options
-
-Copyright (C) 2002,2003,2004,2005 by Eric Gerbier
-this program is distributed under GNU General Public License
-"
 	Echo "$Usage_Message"
 }
 
 function Usage_Plugins
 {
-	local Usage_Message="
-$0 is a tool to rebuild an rpm file from the rpm database
-Usage: $0 [options] package
-advanced options:
-   --change-files=<command>                 command to modify package's files
-
-   --change-spec-whole=<command>            command to modify whole specfile
-
-   --change-spec-preamble=<command>
-   --change-spec-conflicts=<command>
-   --change-spec-obsoletes=<command>
-   --change-spec-provides=<command>
-   --change-spec-requires=<command>
-   --change-spec-description=<command>
-   --change-spec-files=<command>
-   --change-spec-files=<command>
-   --change-spec-triggers=<command>
-   --change-spec-pre=<command>
-   --change-spec-post=<command>
-   --change-spec-preun=<command>
-   --change-spec-postun=<command>
-   --change-spec-verifyscript=<command>
-   --change-spec-changelog=<command>
-                                            command to modify appropriative
-                                            part of the specfile
-
-   --edit-whole                             edit whole specfile
-
-   --edit-preamble
-   --edit-conflicts
-   --edit-obsoletes
-   --edit-provides
-   --edit-requires
-   --edit-description
-   --edit-files
-   --edit-files
-   --edit-triggers
-   --edit-pre
-   --edit-post
-   --edit-preun
-   --edit-postun
-   --edit-verifyscript
-   --edit-changelog
-                                            edit appropriative
-                                            part of the specfile
-
-   -h, --help                               print help about 'regular' options
-"
-	Echo "$Usage_Message"
+	Echo "$Usage_Message_Plugins"
 }
 ###############################################################################
 function Try_Help
 {
-	Echo "Try \`$0 --help' for more information."
+	Echo "$MoreInformation \`$0 --help'"
 }
 
 ###############################################################################
 function UnrecognizedOption
 {
-	Echo "$0: unrecognized option \`--$LONG_OPTION'"
+	Echo "$0: $UnrecognizeOption \`--$LONG_OPTION'"
 	Try_Help
 }
 
 function AmbiguousOption
 {
-	Echo "$0: ambiguous option \`--$LONG_OPTION'"
+	Echo "$0: $AmbiguousOption \`--$LONG_OPTION'"
 	Try_Help
 }
 
@@ -139,7 +54,7 @@ function RequeredArgument
 		return 0
 	fi
 
-	Echo "$0: option \`$LONG_OPTION' requires an argument"
+	Echo "$0: option \`$LONG_OPTION' $RequiredArgument"
 	Try_Help
 	return 1
 }
@@ -867,7 +782,7 @@ function ProcessLongOptions
 				RequeredArgument || return
 				OPTIND_INCR=""
 				[ -r "$OPTARG" ] || {
-					Error "File '$OPTARG' not found."
+					Error "$FileNotFound : '$OPTARG'"
 					return 1
 				}
 				while :; do 
@@ -941,7 +856,7 @@ function ProcessLongOptions
 			;;
 
 			*)
-				Error "Internal error: LONG_OPTION='$LONG_OPTION'"
+				Error "$InternalError: LONG_OPTION='$LONG_OPTION'"
 				return 1
 			;;
 		esac || return
@@ -1035,14 +950,14 @@ function CommandLineParsing
 
 	CreateProcessing "fini" || return
 	[ "X$spec_only" = "Xyes" -a "X$need_change_files" = "Xyes" ] && {
-		Echo "You can't use both '--spec_only' and '--change-files'"
+		Echo "$NotCompatibleOption '--spec_only' , '--change-files'"
 		return 1
 	}
 
 	shift $((OPTIND - 1))
 	case $# in
    		0)
-			Error "package argument missing"
+			Error "$PackageArgumentMissing"
 			Try_Help
 			return 1
    		;;
@@ -1054,7 +969,7 @@ function CommandLineParsing
       			else
          			PAQUET_NAME="${PAQUET##*/}"
          			if [ "x$PAQUET_NAME" = "x" ]; then
-            				Error "Package file '$PAQUET' should not be a directory"
+            				Error "Package file '$PAQUET' $ShouldNotDirectory"
 					return 1
          			else
 	   				:
@@ -1063,7 +978,7 @@ function CommandLineParsing
 		;;
 
 		*)
-			Error "multiple package arguments is illegal"
+			Error "$PackageMultiple"
 			Try_Help
 			return 1
 		;;
@@ -1080,7 +995,7 @@ function CommandLineParsing
 		# Yeah, a bit ugly, but simple and seems to work...
 		mkdir --parents -- "$rpmdir" # Not check exit status here
 		rpmdir="$(cd $rpmdir && echo $PWD)" || {
-			Error "Can't changedir to '$rpmdir'"
+			Error "$CannotChdir '$rpmdir'"
 			return 1
 		}
 	fi
