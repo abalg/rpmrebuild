@@ -5,6 +5,8 @@
      /usr/lib/rpmrebuild/VERSION
      /usr/lib/rpmrebuild/rpmrebuild_popt
      /usr/lib/rpmrebuild/rpmrebuild.sh
+     /usr/lib/rpmrebuild/rpmrebuild_lang.fr
+     /usr/lib/rpmrebuild/rpmrebuild_lang.en
      /usr/lib/rpmrebuild/processing_func.src
      /usr/lib/rpmrebuild/rpmrebuild_parser.src
      /usr/lib/rpmrebuild/rpmrebuild_files.sh
