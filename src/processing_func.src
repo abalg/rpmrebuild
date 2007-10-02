@@ -183,7 +183,7 @@ function processing_spec_change
 		;;
 
 		*)
-			Error "$Func: unknown operation '$operation'"
+			Error "$Func: $UnknownOperation '$operation'"
 			return 1 
 		;;
 	esac
@@ -283,7 +283,7 @@ function CreateProcessing
 
 		Xchange-spec-* | Xedit-*)
 			if [ "X$spec_concatenated" = "Xyes" ]; then
-				Error "'$LONG_OPTION' can not be specified after --change-spec-whole/--edit-spec-whole"
+				Error "'$LONG_OPTION' $ForbidenOption"
 				return 1
 			fi
 			processing_spec_change "$operation" || return
@@ -304,7 +304,7 @@ function CreateProcessing
 		;;
 
 		*)
-			Error "CreateProcessing: unknown operation '$operation'"
+			Error "CreateProcessing: $UnknownOperation : '$operation'"
 			return 1
 		;;
 	esac || return
