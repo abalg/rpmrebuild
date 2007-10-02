@@ -30,7 +30,11 @@ LIB_SCRIPTS :=             \
 INCLUDE_SCRIPTS :=       \
    processing_func.src   \
    rpmrebuild_parser.src \
-   spec_func.src         \
+   spec_func.src
+
+LANG_DATA :=		\
+    rpmrebuild_lang.en	\
+    rpmrebuild_lang.fr
 
 POPTS :=                 \
    rpmrebuild_popt       \
@@ -63,6 +67,7 @@ SOURCES :=               \
    $(SCRIPTS)            \
    $(LIB_SCRIPTS)        \
    $(INCLUDE_SCRIPTS)    \
+   $(LANG_DATA)		\
    $(POPTS)              \
    $(SPEC_SCRIPTS)       \
    $(MANPAGES_SRC)	 \
@@ -120,6 +125,7 @@ install:
 	$(INSTALL_RUN) $(LIB_SCRIPTS)             $(TARGET_LIB)
 	$(INSTALL_RO)  $(INCLUDE_SCRIPTS) VERSION $(TARGET_LIB)
 	$(INSTALL_RO)  $(POPTS)                   $(TARGET_LIB)
+	$(INSTALL_RO)  $(LANG_DATA)               $(TARGET_LIB)
 	cd $(TARGET_LIB) && $(LN) rpmrebuild_popt .popt
 
 	$(MKDIR)                                  $(TARGET_MAN)
@@ -127,7 +133,7 @@ install:
 
 	$(MAKE) -C plugins $@
 
-tar:	rpmrebuild.spec
+tar:	rpmrebuild.spec man
 	tar -cvzf $(TAR_FILE) $(TAR_NAMES)
 
 rpm rpmbuild:	tar
@@ -143,3 +149,11 @@ clean:
 	$(MAKE) -C plugins $@
 
 man: $(MANPAGES)
+
+help:
+	@echo "list of targets :"
+	@echo "- tar : build tar.gz"
+	@echo "- rpmbuild : build rpm packages with rpm 4.x release"
+	@echo "- rpm : build rpm packages with rpm 3.x release (deprecated)"
+	@echo "- install : install software"
+	@echo "- man : build man pages"
