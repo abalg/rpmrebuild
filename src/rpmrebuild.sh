@@ -149,7 +149,7 @@ function IsPackageInstalled
 function RpmUnpack
 {
 	[ "x$BUILDROOT" = "x/" ] && {
-		Error "Internal '$BUILDROOT' can not be '/'." 
+		Error "$BuildRootError" 
         	return 1
 	}
 	local CPIO_TEMP=$TMPDIR_WORK/${PAQUET_NAME}.cpio
@@ -187,7 +187,7 @@ function RpmBuild
 	local BUILDCMD=rpm
 	[ -x /usr/bin/rpmbuild ] && BUILDCMD=rpmbuild
 	eval $BUILDCMD $rpm_defines -bb $rpm_verbose $additional ${FIC_SPEC} || {
-   		Error "package '${PAQUET}' build failed"
+   		Error "package '${PAQUET}' $BuildFailed"
    		return 1
 	}
 	
@@ -218,7 +218,7 @@ function InstallationTest
 	# installation test
 	# force is necessary to avoid the message : already installed
 	rpm -U --test --force ${RPMFILENAME} || {
-		Error "Testinstall for package '${PAQUET}' failed"
+		Error "package '${PAQUET}' $TestFailed"
 		return 1
 	}
 	return 0
@@ -233,11 +233,9 @@ function Processing
 	source $RPMREBUILD_PROCESSING && return 0
 
 	if [ "X$need_change_spec" = "Xyes" -o "X$need_change_files" = "Xyes" ]; then
-		MsgFail="package '$PAQUET' modification failed."
-		[ "X$Aborted" = "Xyes" ] || Error "$MsgFail"
+		[ "X$Aborted" = "Xyes" ] || Error "package '$PAQUET' $ModificationFailed."
 	else
-		MsgFail="package '$PAQUET' specfile generation failed."
-		Error "$MsgFail"
+		Error "package '$PAQUET' $SpecFailed."
 	fi
 	return 1
 }
@@ -245,16 +243,16 @@ function Processing
 # recover system informations on rpmrebuild context
 function GetInformations
 {
-	echo "from: $1"
-	echo "-----------"
+	Echo "from: $1"
+	Echo "-----------"
 	lsb_release -a
 	cat /etc/issue
-	echo "-----------"
+	Echo "-----------"
 	rpm -q rpmrebuild
 	rpm -q rpm
-	echo "-----------"
+	Echo "-----------"
 	rpm --querytags
-	echo " --------------- write your comments below -----------------------"
+	Echo " --------------- $WriteComments -----------------------"
 }
 ###############################################################################
 # send informations to developper to allow fix problems
