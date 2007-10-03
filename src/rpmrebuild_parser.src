@@ -844,7 +844,7 @@ function ProcessLongOptions
 
 			version)
 				set -e
-					source $D/VERSION
+					source $MY_LIB_DIR/VERSION
 				set +e
 				echo "$VERSION"
 				NEED_EXIT=0
@@ -967,13 +967,27 @@ function CommandLineParsing
       			if [ "x$package_flag" = "x" ]; then
          			PAQUET_NAME="$PAQUET"
       			else
-         			PAQUET_NAME="${PAQUET##*/}"
-         			if [ "x$PAQUET_NAME" = "x" ]; then
-            				Error "Package file '$PAQUET' $ShouldNotDirectory"
+				# argument should be a file
+				if [ -f $PAQUET ]; then
+					PAQUET_NAME="$PAQUET"
+					# check if it is an rpm file
+					tst_rpm=$( file $PAQUET_NAME | grep 'RPM ')
+					if [ -z "$tst_rpm" ]; then
+						Error "$NotAnRpm '$PAQUET'"
+						return 1
+					fi
+
+				else
+					Error "$FileNotFound '$PAQUET'"
 					return 1
-         			else
-	   				:
-	 			fi
+				fi
+         			#PAQUET_NAME="${PAQUET##*/}"
+         			#if [ "x$PAQUET_NAME" = "x" ]; then
+            			#	Error "Package file '$PAQUET' $ShouldNotDirectory"
+					#return 1
+         			#else
+	   			#	:
+	 			#fi
       			fi
 		;;
 
