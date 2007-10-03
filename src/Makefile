@@ -50,7 +50,10 @@ MANPAGES :=             \
    rpmrebuild.1         \
    rpmrebuild_plugins.1 \
 
-MANPAGES_SRC := $(addsuffix .in,$(MANPAGES))
+MANPAGES_FR := $(addsuffix .fr,$(MANPAGES))
+
+MANPAGES_SRC := $(addsuffix .in,$(MANPAGES) $(MANPAGES_FR))
+
 
 DOC_FILES :=      \
    AUTHORS        \
@@ -105,7 +108,7 @@ rpmrebuild.spec: rpmrebuild.spc spec.scripts Version Release Changelog
 	$(RM) $@
 	$(Spec) > $@ || { $(RM) $@; exit 1; }
 
-$(MANPAGES): %: %.in $(TOP_DIR)/Version
+$(MANPAGES) $(MANPAGES_FR): %: %.in $(TOP_DIR)/Version
 	$(MakeManPage)
 
 spec.scripts:
@@ -115,7 +118,6 @@ spec.scripts:
 VERSION: Version
 	$(RM) $@
 	read VERSION < $< && echo "VERSION='$$VERSION'" > $@ || { $(RM) $@; exit 1; }
-
 
 install:
 	$(MKDIR)                                  $(TARGET_DIR)
@@ -130,6 +132,8 @@ install:
 
 	$(MKDIR)                                  $(TARGET_MAN)
 	$(INSTALL_MAN) $(MANPAGES)                $(TARGET_MAN)
+	$(MKDIR)                                  $(TARGET_MAN_FR)
+	$(INSTALL_MAN) $(MANPAGES_FR)             $(TARGET_MAN_FR)
 
 	$(MAKE) -C plugins $@
 
@@ -148,7 +152,7 @@ clean:
 	$(RM)    $(MANPAGES)
 	$(MAKE) -C plugins $@
 
-man: $(MANPAGES)
+man: $(MANPAGES) $(MANPAGES_FR)
 
 help:
 	@echo "list of targets :"
