@@ -134,7 +134,7 @@ install:
 	$(INSTALL_MAN) $(MANPAGES)                $(TARGET_MAN)
 	$(MKDIR)                                  $(TARGET_MAN_FR)
 	$(INSTALL_MAN) $(MANPAGES_FR)             $(TARGET_MAN_FR)
-	cd $(TARGET_MAN_FR) && for m in $(MANPAGES_FR) do; mv $m `basename $m .fr`;done
+	- $(shell cd $(TARGET_MAN_FR); for m in $(MANPAGES_FR) do; mv $m `basename $m .fr`;done)
 
 	$(MAKE) -C plugins $@
 
