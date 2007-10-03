@@ -100,7 +100,7 @@ define Spec
    }
 endef
 
-all: rpmrebuild.spec VERSION $(MANPAGES)
+all: rpmrebuild.spec VERSION $(MANPAGES) $(MANPAGES_FR)
 	$(LN) rpmrebuild_popt .popt
 	$(MAKE) -C plugins $@
 
@@ -134,6 +134,7 @@ install:
 	$(INSTALL_MAN) $(MANPAGES)                $(TARGET_MAN)
 	$(MKDIR)                                  $(TARGET_MAN_FR)
 	$(INSTALL_MAN) $(MANPAGES_FR)             $(TARGET_MAN_FR)
+	cd $(TARGET_MAN_FR) && for m in $(MANPAGES_FR) do; mv $m `basename $m .fr`;done
 
 	$(MAKE) -C plugins $@
 
@@ -149,7 +150,7 @@ rpm rpmbuild:	tar
 clean:
 	$(RMDIR) $(ROOT) $(RPM_BUILD_DIR)
 	$(RM)    VERSION rpmrebuild.spec spec.scripts *.rpm rpmrebuild.tar.gz 
-	$(RM)    $(MANPAGES)
+	$(RM)    $(MANPAGES) $(MANPAGES_FR)
 	$(MAKE) -C plugins $@
 
 man: $(MANPAGES) $(MANPAGES_FR)
