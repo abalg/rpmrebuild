@@ -781,10 +781,18 @@ function ProcessLongOptions
 			include)
 				RequeredArgument || return
 				OPTIND_INCR=""
-				[ -r "$OPTARG" ] || {
+				if [ -r "$OPTARG" ]
+				then
+					# find local file
+					INCLUDE_FILE=$OPTARG
+				elif [ -r "$RPMREBUILD_PLUGINS_DIR/$OPTARG" ]
+				then
+					# find in plugin dir
+					INCLUDE_FILE="$RPMREBUILD_PLUGINS_DIR/$OPTARG"
+				else 
 					Error "$FileNotFound : '$OPTARG'"
 					return 1
-				}
+				fi
 				while :; do 
 					read LONG_OPTION OPTARG || break
 					OPTARG_EXIST="$OPTARG"
@@ -801,7 +809,7 @@ function ProcessLongOptions
 							ProcessLongOptions || return
 						;;
 					esac || return
-				done < $OPTARG || return
+				done < $INCLUDE_FILE || return
 			;;
 
 			notest-install)
