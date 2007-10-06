@@ -178,7 +178,7 @@ or \fB\-\-edit\-whole\fP.
 Any of the rpmrebuild's LONG option can be specified on the command line or
 in the include file (file specified with \-i/\-\-include option).
 .LP 
-Include files are searched in the \fB/usr/lib/rpmrebuild/plugins\fP directory.
+Include files are also searched in the \fB/usr/lib/rpmrebuild/plugins\fP directory.
 .LP 
 Include file has following syntax.
 .TP 
@@ -200,7 +200,7 @@ option's argument
 option's argument should not be quoted. 
 .TP 
 separator
-\- option's argument should be separated from option by spaces or tabs, not by
+option's argument should be separated from option by spaces or tabs, not by
 equal ('=') sign.
 .TP 
 non\-optional argument(s)
