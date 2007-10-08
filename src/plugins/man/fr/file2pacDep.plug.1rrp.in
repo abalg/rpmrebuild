@@ -1,0 +1,170 @@
+.TH "file2pacDep" "1rrp" "@VERSION@" "Eric Gerbier" "rpmrebuild plugin"
+.SH "NAME"
+file2pacDep.plug \- un plugin pour rpmrebuild, qui transforme les dependances vers des fichiers en dependances vers des packages
+.SH "SYNOPSIS"
+rpmrebuild \-\-include file2pacDep.plug <\fIpackagename\fP>
+.br 
+ou
+.br 
+rpmrebuild  \-\-change\-spec\-requires="file2pacDep.sh [\fIoption\fP]" <\fIpackagename\fP>
+.br 
+la première forme s'applique est la plus simple
+.br 
+la deuxième permet de passer des options au plugin
+
+.SH "DESCRIPTION"
+Ce plugin permet de transformer les dependances vers des fichiers en dependances vers des packages.
+.br 
+Par exemple, une dépendance vers le binaire "/bin/bash" sera transformée en dependance vers le package bash.
+idem pour une dépendance vers une librairie.
+.SH "OPTIONS"
+.TP 
+\fB\-f, \-\-file\fP
+n'applique les transformations que sur les fichiers avec un chemin (ex : /bin/bash)
+.TP 
+\fB\-l, \-\-lib\fP
+n'applique les transformations que sur les libraries (ex : libc.so)
+.TP 
+\fB\-h, \-\-help\fP
+affiche une aide et quitte.
+.TP 
+\fB\-v, \-\-version\fP
+affiche la version du plugin et quitte.
+.TP 
+\fB\-V, \-\-forceversion\fP
+ajoute une dépendance sur la version courante (>=)
+.SH "FILES"
+.TP 
+\fBfile2pacDep.plug\fP 
+le fichier à inclure pour une utilisation rapide.
+.TP 
+\fBfile2pacDep.sh\fP
+contient le code proprement dit.
+.TP 
+\fBfile2pacDep.plug.1\fP
+cette page de manuel
+.SH "EXEMPLES"
+.LP 
+les dépendances de mon package rpm sont :
+.LP 
+$ rpm \-qR rpm
+.br 
+gawk
+.br 
+fileutils
+.br 
+textutils
+.br 
+mktemp
+.br 
+shadow\-utils
+.br 
+popt = 1.6.4
+.br 
+/bin/sh
+.br 
+/bin/sh
+.br 
+/bin/sh
+.br 
+rpmlib(CompressedFileNames) <= 3.0.4\-1
+.br 
+ld\-linux.so.2
+.br 
+libbz2.so.1
+.br 
+libc.so.6
+.br 
+libpopt.so.0
+.br 
+libpthread.so.0
+.br 
+librpm\-4.0.4.so
+.br 
+librpmbuild\-4.0.4.so
+.br 
+librpmdb\-4.0.4.so
+.br 
+librpmio\-4.0.4.so
+.br 
+librt.so.1
+.br 
+libz.so.1
+.br 
+/bin/sh
+.br 
+libc.so.6(GLIBC_2.0)
+.br 
+libc.so.6(GLIBC_2.1)
+.br 
+libc.so.6(GLIBC_2.1.3)
+.br 
+libc.so.6(GLIBC_2.2)
+.br 
+libc.so.6(GLIBC_2.2.3)
+.br 
+libpthread.so.0(GLIBC_2.0)
+.br 
+librt.so.1(GLIBC_2.1)
+.br 
+
+.LP 
+en appliquant ce plugin par :
+.LP 
+\fBrpmrebuild \-\-include file2pacDep.plug rpm\fP
+.LP 
+le résultat est :
+.LP 
+$ rpm \-qpR rpm\-4.0.4\-7x19.i386.rpm
+.br 
+rpmlib(VersionedDependencies) <= 3.0.3\-1
+.br 
+popt = 1.6.4
+.br 
+bash
+.br 
+bzip2\-libs
+.br 
+fileutils
+.br 
+gawk
+.br 
+glibc
+.br 
+mktemp
+.br 
+popt
+.br 
+rpm
+.br 
+shadow\-utils
+.br 
+textutils
+.br 
+zlib
+.br 
+rpmlib(PayloadFilesHavePrefix) <= 4.0\-1
+.br 
+rpmlib(CompressedFileNames) <= 3.0.4\-1
+.br 
+
+.SH "AUTHORS"
+.LP 
+Eric Gerbier <gerbier@users.sourceforge.net>
+.TP 
+See <URL:http://rpmrebuild.sourceforge.net/>.
+.SH "NOTES"
+.LP 
+.TP 
+Ce plugin est fourni à titre d'exemple.
+.SH "COPYRIGHT"
+.LP 
+rpmrebuild is copyright (C) 2004 by Eric Gerbier.
+.br 
+Ce programme est distribué sous la licence GNU General Public.
+.br 
+Il est fourni en l'état, sans garanties.
+Consultez le fichier COPYING pour plus de détails.
+.SH "SEE ALSO"
+.LP 
+rpm(8), rpmbuild(8), rpmrebuild_plugins(1), demo_plug(1), nodoc.plug(1), uniq.plug(1), file2pacDep.plug(1), 'man -k rrp' pour la doc sur les plugins.

@@ -16,11 +16,13 @@ SCRIPTS :=        \
    nodoc.sh        \
                   \
 
-MANPAGES :=              \
+MANPAGES_BASE :=         \
    file2pacDep.plug.1rrp \
    demo.plug.1rrp        \
    uniq.plug.1rrp        \
    nodoc.plug.1rrp        \
+
+MANPAGES := $(foreach lang,$(LANGS),$(addprefix man/$(lang)/,$(MANPAGES_BASE)))
 
 MANPAGES_SRC := $(addsuffix .in,$(MANPAGES))
 
@@ -35,13 +37,13 @@ all: $(MANPAGES)
 $(MANPAGES): %: %.in $(TOP_DIR)/Version
 	$(MakeManPage)
 
+man: $(MANPAGES)
+
 install:
 	$(MKDIR)                   $(TARGET_PLUGIN)
 	$(INSTALL_RO)  $(PLUGINS)  $(TARGET_PLUGIN)
 	$(INSTALL_RUN) $(SCRIPTS)  $(TARGET_PLUGIN)
-
-	$(MKDIR)                   $(TARGET_MAN)/man1
-	$(INSTALL_MAN) $(MANPAGES) $(TARGET_MAN)/man1
+	$(InstallManPages)
 
 clean:
 	$(RM) $(MANPAGES)
