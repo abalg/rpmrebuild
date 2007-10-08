@@ -5,7 +5,7 @@ PLUGINS :=          \
    demo.plug        \
    file2pacDep.plug \
    uniq.plug        \
-   nodoc.plug        \
+   nodoc.plug       \
                     \
 
 SCRIPTS :=        \
@@ -13,14 +13,10 @@ SCRIPTS :=        \
    demofiles.sh   \
    file2pacDep.sh \
    uniq.sh        \
-   nodoc.sh        \
+   nodoc.sh       \
                   \
 
-MANPAGES_BASE :=         \
-   file2pacDep.plug.1rrp \
-   demo.plug.1rrp        \
-   uniq.plug.1rrp        \
-   nodoc.plug.1rrp        \
+MANPAGES_BASE := $(addsuffix .1rrp,$(PLUGINS))
 
 MANPAGES := $(foreach lang,$(LANGS),$(addprefix man/$(lang)/,$(MANPAGES_BASE)))
 
