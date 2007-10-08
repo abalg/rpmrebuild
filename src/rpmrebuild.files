@@ -31,9 +31,13 @@
 %doc /usr/share/man/man1/rpmrebuild_plugins.1*
 %doc /usr/share/man/fr/man1/rpmrebuild_plugins.1*
 %doc /usr/share/man/man1/file2pacDep.plug.1rrp*
+%doc /usr/share/man/fr/man1/file2pacDep.plug.1rrp*
 %doc /usr/share/man/man1/demo.plug.1rrp*
+%doc /usr/share/man/fr/man1/demo.plug.1rrp*
 %doc /usr/share/man/man1/uniq.plug.1rrp*
+%doc /usr/share/man/fr/man1/uniq.plug.1rrp*
 %doc /usr/share/man/man1/nodoc.plug.1rrp*
+%doc /usr/share/man/fr/man1/nodoc.plug.1rrp*
 
 %doc AUTHORS
 %doc COPYING
