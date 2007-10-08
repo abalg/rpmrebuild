@@ -9,7 +9,7 @@ ou
 rpm \-\-rpmrebuild [\fIoption\fP] <\fInom_de_package\fP>
 .SH "DESCRIPTION"
 rpmrebuild est un outil pour construire facilement un package rpm.
-Il peut être utilisé pour fabriquer un fichier rpm Ã  partir d'un package installé ou pour modifier un package : modifiez les fichiers installés et lancez rpmrebuild.
+Il peut être utilisé pour fabriquer un fichier rpm à partir d'un package installé ou pour modifier un package : modifiez les fichiers installés et lancez rpmrebuild.
 .SH "OPTIONS"
 .TP 
 \fB\-a, \-\-additional\fP=<\fIflags\fP>
