@@ -146,6 +146,7 @@ rpm rpmbuild:	tar
 clean:
 	$(RMDIR) $(ROOT) $(RPM_BUILD_DIR)
 	$(RM)    VERSION rpmrebuild.spec spec.scripts *.rpm rpmrebuild.tar.gz 
+	$(RM)    .popt
 	$(RM)    $(MANPAGES)
 	$(MAKE) -C plugins $@
 
