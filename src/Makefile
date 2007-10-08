@@ -46,13 +46,13 @@ SPEC_SCRIPTS :=                  \
    spec.scripts.make.sh          \
    remove_from_popt.make.include \
 
-MANPAGES :=             \
+MANPAGES_BASE :=        \
    rpmrebuild.1         \
    rpmrebuild_plugins.1 \
 
-MANPAGES_FR := $(addsuffix .fr,$(MANPAGES))
+MANPAGES := $(foreach lang,$(LANGS),$(addprefix man/$(lang)/,$(MANPAGES_BASE)))
 
-MANPAGES_SRC := $(addsuffix .in,$(MANPAGES) $(MANPAGES_FR))
+MANPAGES_SRC := $(addsuffix .in,$(MANPAGES))
 
 
 DOC_FILES :=      \
@@ -70,7 +70,7 @@ SOURCES :=               \
    $(SCRIPTS)            \
    $(LIB_SCRIPTS)        \
    $(INCLUDE_SCRIPTS)    \
-   $(LANG_DATA)		\
+   $(LANG_DATA)		 \
    $(POPTS)              \
    $(SPEC_SCRIPTS)       \
    $(MANPAGES_SRC)	 \
@@ -100,7 +100,7 @@ define Spec
    }
 endef
 
-all: rpmrebuild.spec VERSION $(MANPAGES) $(MANPAGES_FR)
+all: rpmrebuild.spec VERSION $(MANPAGES)
 	$(LN) rpmrebuild_popt .popt
 	$(MAKE) -C plugins $@
 
@@ -108,7 +108,7 @@ rpmrebuild.spec: rpmrebuild.spc spec.scripts Version Release Changelog
 	$(RM) $@
 	$(Spec) > $@ || { $(RM) $@; exit 1; }
 
-$(MANPAGES) $(MANPAGES_FR): %: %.in $(TOP_DIR)/Version
+$(MANPAGES): %: %.in $(TOP_DIR)/Version
 	$(MakeManPage)
 
 spec.scripts:
@@ -130,11 +130,7 @@ install:
 	$(INSTALL_RO)  $(LANG_DATA)               $(TARGET_LIB)
 	cd $(TARGET_LIB) && $(LN) rpmrebuild_popt .popt
 
-	$(MKDIR)                                  $(TARGET_MAN)
-	$(INSTALL_MAN) $(MANPAGES)                $(TARGET_MAN)
-	$(MKDIR)                                  $(TARGET_MAN_FR)
-	$(INSTALL_MAN) $(MANPAGES_FR)             $(TARGET_MAN_FR)
-	- $(shell cd $(TARGET_MAN_FR); for m in $(MANPAGES_FR) do; mv $m `basename $m .fr`;done)
+	$(InstallManPages)
 
 	$(MAKE) -C plugins $@
 
@@ -150,10 +146,10 @@ rpm rpmbuild:	tar
 clean:
 	$(RMDIR) $(ROOT) $(RPM_BUILD_DIR)
 	$(RM)    VERSION rpmrebuild.spec spec.scripts *.rpm rpmrebuild.tar.gz 
-	$(RM)    $(MANPAGES) $(MANPAGES_FR)
+	$(RM)    $(MANPAGES)
 	$(MAKE) -C plugins $@
 
-man: $(MANPAGES) $(MANPAGES_FR)
+man: $(MANPAGES)
 
 help:
 	@echo "list of targets :"

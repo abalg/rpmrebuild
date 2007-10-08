@@ -40,8 +40,8 @@ install:
 	$(INSTALL_RO)  $(PLUGINS)  $(TARGET_PLUGIN)
 	$(INSTALL_RUN) $(SCRIPTS)  $(TARGET_PLUGIN)
 
-	$(MKDIR)                   $(TARGET_MAN)
-	$(INSTALL_MAN) $(MANPAGES) $(TARGET_MAN)
+	$(MKDIR)                   $(TARGET_MAN)/man1
+	$(INSTALL_MAN) $(MANPAGES) $(TARGET_MAN)/man1
 
 clean:
 	$(RM) $(MANPAGES)
