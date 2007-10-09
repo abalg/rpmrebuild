@@ -360,7 +360,7 @@ function Main
 		*)  real_lang=en;;
 	esac
 	# load translation file
-	source $MY_LIB_DIR/rpmrebuild_lang.$real_lang 
+	source $MY_LIB_DIR/locale/$real_lang/rpmrebuild.lang
 	
 	processing_init || return
 	CheckTags || return
