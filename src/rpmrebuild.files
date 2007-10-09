@@ -5,8 +5,6 @@
      /usr/lib/rpmrebuild/VERSION
      /usr/lib/rpmrebuild/rpmrebuild_popt
      /usr/lib/rpmrebuild/rpmrebuild.sh
-     /usr/lib/rpmrebuild/rpmrebuild_lang.fr
-     /usr/lib/rpmrebuild/rpmrebuild_lang.en
      /usr/lib/rpmrebuild/processing_func.src
      /usr/lib/rpmrebuild/rpmrebuild_parser.src
      /usr/lib/rpmrebuild/rpmrebuild_files.sh
@@ -16,6 +14,11 @@
      /usr/lib/rpmrebuild/spec_func.src
      /usr/lib/rpmrebuild/popt-without-POPTdesc
      /usr/lib/rpmrebuild/popt-with-POPTdesc
+%dir /usr/lib/rpmrebuild/locale
+%dir /usr/lib/rpmrebuild/locale/fr
+     /usr/lib/rpmrebuild/locale/fr/rpmrebuild.lang
+%dir /usr/lib/rpmrebuild/locale/en
+     /usr/lib/rpmrebuild/locale/en/rpmrebuild.lang
 %dir /usr/lib/rpmrebuild/plugins
      /usr/lib/rpmrebuild/plugins/file2pacDep.plug
      /usr/lib/rpmrebuild/plugins/file2pacDep.sh

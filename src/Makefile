@@ -32,10 +32,6 @@ INCLUDE_SCRIPTS :=       \
    rpmrebuild_parser.src \
    spec_func.src
 
-LANG_DATA :=		\
-    rpmrebuild_lang.en	\
-    rpmrebuild_lang.fr
-
 POPTS :=                 \
    rpmrebuild_popt       \
    popt-without-POPTdesc \
@@ -50,7 +46,11 @@ MANPAGES_BASE :=        \
    rpmrebuild.1         \
    rpmrebuild_plugins.1 \
 
+LOCALE_BASE := 	\
+   rpmrebuild.lang
+
 MANPAGES := $(foreach lang,$(LANGS),$(addprefix man/$(lang)/,$(MANPAGES_BASE)))
+LOCALES := $(foreach lang,$(LANGS),$(addprefix locale/$(lang)/,$(LOCALE_BASE)))
 
 MANPAGES_SRC := $(addsuffix .in,$(MANPAGES))
 
@@ -70,10 +70,10 @@ SOURCES :=               \
    $(SCRIPTS)            \
    $(LIB_SCRIPTS)        \
    $(INCLUDE_SCRIPTS)    \
-   $(LANG_DATA)		 \
    $(POPTS)              \
    $(SPEC_SCRIPTS)       \
    $(MANPAGES_SRC)	 \
+   $(LOCALES)		\
    $(DOC_FILES)          \
    Makefile              \
    Makefile.include      \
@@ -127,11 +127,9 @@ install:
 	$(INSTALL_RUN) $(LIB_SCRIPTS)             $(TARGET_LIB)
 	$(INSTALL_RO)  $(INCLUDE_SCRIPTS) VERSION $(TARGET_LIB)
 	$(INSTALL_RO)  $(POPTS)                   $(TARGET_LIB)
-	$(INSTALL_RO)  $(LANG_DATA)               $(TARGET_LIB)
 	cd $(TARGET_LIB) && $(LN) rpmrebuild_popt .popt
-
 	$(InstallManPages)
-
+	$(InstallLocales)
 	$(MAKE) -C plugins $@
 
 tar:	rpmrebuild.spec man
