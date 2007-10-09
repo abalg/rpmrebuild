@@ -32,43 +32,35 @@ WantSendBugReport='Want to send a bug report ( by mail)'
 WantStillSend='Do you still want to send bug report'
 WriteComments='write your comments below'
 
-Usage_Message="
-$0 is a tool to rebuild an rpm file from the rpm database
-Usage: $0 [options] package
-options:
-   -a, --additional=<flags>     additional flags to be pass to the rpmbuild
-   -b, --batch                  batch mode (ask no questions)
-   -c, --comment-missing=<y|n>  comment missing files in the specfile.
-                                default - no.
-   -d, --directory=<dir>        specify the working directory
-   -D, --define=<define>        defines to be passed to the rpmbuild
-   -e, --edit-spec              alias for --edit-whole
-   -f, --filter=<command>       alias for --change-spec-whole
-   -i, --includes=<file>        read options from the file <file>
-   -k, --keep-perm              alias for --pug-from-fs
-       --pug-from-fs            keep installed files permission, uid and gid
-       --pug-from-db (default)  use files permission, uid and gid from rpm db
-   -m, --modify=<command>       alias for --change-files
-   -n, --notest-install		do not perform a test install
-   -p, --package                use package file, not installed rpm
-   -P, --autoprovide            force rpm to auto generate 'Provide:'
-   -r, --release=N              force release to N
-   -R, --autorequire            force rpm to auto generate 'Require:'
-   -s, --spec-only=<specfile>   generate specfile only
-                                (If <specfile> '-' stdout will be used)
-   -v, --verbose                verbose
-       --debug                  do not remove temporary working files
-   -V, --version                print version
-   -w, --warning                print warning if detect filenames with
-                                globbing characters (default - no)
-   -y, --verify=<y|n>           need verify package before processing
-                                (default - yes)
-   -h, --help                   print this help
-       --help-plugins           print help about plugins options
-
-Copyright (C) 2002,2003,2004,2005 by Eric Gerbier
-this program is distributed under GNU General Public License
-"
+UsageTitle="is a tool to rebuild an rpm file from the rpm database"
+UsageUsage='Usage'
+UsageAdditional='additional flags to be pass to the rpmbuild'
+UsageBatch='batch mode (ask no questions)'
+UsageCommentMissing='comment missing files in the specfile. default : no.'
+UsageDirectory='specify the working directory'
+UsageDefine='defines to be passed to the rpmbuild'
+UsageEditSpec='alias for --edit-whole'
+UsageFilter='alias for --change-spec-whole'
+UsageInclude='read options from the file <file>'
+UsageKeepPerm='alias for --pug-from-fs'
+UsagePugFs='keep installed files permission, uid and gid'
+UsagePugDb='use files permission, uid and gid from rpm db'
+UsageModify='alias for --change-files'
+UsageNoTestInstall='do not perform a test install'
+UsagePackage='use package file, not installed rpm'
+UsageAutoProvide='force rpm to auto generate "Provide:"'
+UsageRelease='force release to N'
+UsageAutoRequire='force rpm to auto generate "Require:"'
+UsageSpecOnly='generate specfile only. (If <specfile> "-" stdout will be used)'
+UsageVerbose='verbose'
+UsageDebug='debug mode (do not remove temporary working files)'
+UsageVersion='print rpmrebuild version'
+UsageWarning='print warning if detect filenames with globbing characters (default : no).'
+UsageVerify='verify package (rpm -V) before processing (default : yes).'
+UsageHelp='print this help'
+UsageHelpPlugins='print help about plugins options'
+UsageCopyright='Copyright (C) 2002-2007 by Eric Gerbier (<gerbier@users.sourceforge.net>)'
+UsageLicense='this program is distributed under GNU General Public License'
 
 Usage_Message_Plugins="
 $0 is a tool to rebuild an rpm file from the rpm database

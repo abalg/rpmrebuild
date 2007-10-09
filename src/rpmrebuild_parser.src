@@ -18,7 +18,38 @@
 ###############################################################################
 function Usage
 {
-	Echo "$Usage_Message"
+	Echo "$0 $UsageTitle
+$UsageUsage: $0 [options] package
+options:
+   -a, --additional=<flags>	$UsageAdditional
+   -b, --batch			$UsageBatch
+   -c, --comment-missing=<y|n>	$UsageCommentMissing
+   -d, --directory=<dir>        $UsageDirectory
+   -D, --define=<define>        $UsageDefine
+   -e, --edit-spec              $UsageEditSpec
+   -f, --filter=<command>       $UsageFilter
+   -i, --includes=<file>        $UsageInclude
+   -k, --keep-perm              $UsageKeepPerm
+       --pug-from-fs            $UsagePugFs
+       --pug-from-db (default)  $UsagePugDb
+   -m, --modify=<command>       $UsageModify
+   -n, --notest-install		$UsageNoTestInstall
+   -p, --package                $UsagePackage
+   -P, --autoprovide            $UsageAutoProvide
+   -r, --release=N              $UsageRelease
+   -R, --autorequire            $UsageAutoRequire
+   -s, --spec-only=<specfile>   $UsageSpecOnly
+   -v, --verbose                $UsageVerbose
+       --debug                  $UsageDebug
+   -V, --version                $UsageVersion
+   -w, --warning                $UsageWarning
+   -y, --verify=<y|n>           $UsageVerify
+   -h, --help                   $UsageHelp
+       --help-plugins           $UsageHelpPlugins
+
+$UsageCopyright
+$UsageLicense
+"
 }
 
 function Usage_Plugins
