@@ -62,49 +62,9 @@ UsageHelpPlugins='affiche une aide sur les options concernant les greffons (plug
 UsageCopyright='Copyright (C) 2002-2007 par Eric Gerbier (<gerbier@users.sourceforge.net>)'
 UsageLicense='ce programme est distribué sous la license GNU General Public'
 
-Usage_Message_Plugins="
-$0 est un outil pour contruire un fichier rpm à partir de la base rpm
-Usage: $0 [options] package
-options avancées:
-   --change-files=<command>                 programme pour modifier les fichiers contenus dans le package
-
-   --change-spec-whole=<command>            programme pour modifier l'ensemble du fichier spec
-
-   --change-spec-preamble=<command>
-   --change-spec-conflicts=<command>
-   --change-spec-obsoletes=<command>
-   --change-spec-provides=<command>
-   --change-spec-requires=<command>
-   --change-spec-description=<command>
-   --change-spec-files=<command>
-   --change-spec-files=<command>
-   --change-spec-triggers=<command>
-   --change-spec-pre=<command>
-   --change-spec-post=<command>
-   --change-spec-preun=<command>
-   --change-spec-postun=<command>
-   --change-spec-verifyscript=<command>
-   --change-spec-changelog=<command>
-                                            programme pour modifier les sections spécifiées du fichier spec
-
-   --edit-whole                             pour editer l'ensemble du fichier spec
-
-   --edit-preamble
-   --edit-conflicts
-   --edit-obsoletes
-   --edit-provides
-   --edit-requires
-   --edit-description
-   --edit-files
-   --edit-files
-   --edit-triggers
-   --edit-pre
-   --edit-post
-   --edit-preun
-   --edit-postun
-   --edit-verifyscript
-   --edit-changelog
-                                            pour editer les sections spécifiées du fichier spec
-
-   -h, --help                               affiche l'aide sur les options de base 
-"
+UsagePluginChangeFiles='programme pour modifier les fichiers contenus dans le package'
+UsagePluginChangeSpecWhole="programme pour modifier l'ensemble du fichier spec"
+UsagePluginChangeSpec='programme pour modifier les sections spécifiées du fichier specfile'
+UsagePluginEditWhole="pour editer l'ensemble du fichier specfile"
+UsagePluginEdit='pour editer les sections spécifiées du fichier specfile'
+UsagePluginHelp="affiche l'aide sur les options de base"

@@ -54,7 +54,52 @@ $UsageLicense
 
 function Usage_Plugins
 {
-	Echo "$Usage_Message_Plugins"
+	Echo "$0 $UsageTitle
+$UsageUsage: $0 [options] package
+options:
+   --change-files=<command>                 $UsagePluginChangeFiles
+
+   --change-spec-whole=<command>            $UsagePluginChangeSpecWhole
+
+   --change-spec-preamble=<command>
+   --change-spec-conflicts=<command>
+   --change-spec-obsoletes=<command>
+   --change-spec-provides=<command>
+   --change-spec-requires=<command>
+   --change-spec-description=<command>
+   --change-spec-files=<command>
+   --change-spec-files=<command>
+   --change-spec-triggers=<command>
+   --change-spec-pre=<command>
+   --change-spec-post=<command>
+   --change-spec-preun=<command>
+   --change-spec-postun=<command>
+   --change-spec-verifyscript=<command>
+   --change-spec-changelog=<command>
+                                            $UsagePluginChangeSpec
+
+   --edit-whole                             $UsagePluginEditWhole
+
+   --edit-preamble
+   --edit-conflicts
+   --edit-obsoletes
+   --edit-provides
+   --edit-requires
+   --edit-description
+   --edit-files
+   --edit-files
+   --edit-triggers
+   --edit-pre
+   --edit-post
+   --edit-preun
+   --edit-postun
+   --edit-verifyscript
+   --edit-changelog
+                                            $UsagePluginEdit
+
+   -h, --help                               $UsagePluginHelp
+"
+
 }
 ###############################################################################
 function Try_Help

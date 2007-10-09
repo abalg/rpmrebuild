@@ -62,51 +62,9 @@ UsageHelpPlugins='print help about plugins options'
 UsageCopyright='Copyright (C) 2002-2007 by Eric Gerbier (<gerbier@users.sourceforge.net>)'
 UsageLicense='this program is distributed under GNU General Public License'
 
-Usage_Message_Plugins="
-$0 is a tool to rebuild an rpm file from the rpm database
-Usage: $0 [options] package
-advanced options:
-   --change-files=<command>                 command to modify package's files
-
-   --change-spec-whole=<command>            command to modify whole specfile
-
-   --change-spec-preamble=<command>
-   --change-spec-conflicts=<command>
-   --change-spec-obsoletes=<command>
-   --change-spec-provides=<command>
-   --change-spec-requires=<command>
-   --change-spec-description=<command>
-   --change-spec-files=<command>
-   --change-spec-files=<command>
-   --change-spec-triggers=<command>
-   --change-spec-pre=<command>
-   --change-spec-post=<command>
-   --change-spec-preun=<command>
-   --change-spec-postun=<command>
-   --change-spec-verifyscript=<command>
-   --change-spec-changelog=<command>
-                                            command to modify appropriative
-                                            part of the specfile
-
-   --edit-whole                             edit whole specfile
-
-   --edit-preamble
-   --edit-conflicts
-   --edit-obsoletes
-   --edit-provides
-   --edit-requires
-   --edit-description
-   --edit-files
-   --edit-files
-   --edit-triggers
-   --edit-pre
-   --edit-post
-   --edit-preun
-   --edit-postun
-   --edit-verifyscript
-   --edit-changelog
-                                            edit appropriative
-                                            part of the specfile
-
-   -h, --help                               print help about 'regular' options
-"
+UsagePluginChangeFiles="command to modify package's files"
+UsagePluginChangeSpecWhole='command to modify whole specfile'
+UsagePluginChangeSpec='command to modify appropriative part of the specfile'
+UsagePluginEditWhole='edit whole specfile'
+UsagePluginEdit='edit appropriative part of the specfile'
+UsagePluginHelp='print help about "regular" options'
