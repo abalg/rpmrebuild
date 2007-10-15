@@ -18,8 +18,9 @@
 ###############################################################################
 function Usage
 {
-	Echo "$0 $UsageTitle
-$UsageUsage: $0 [options] package
+	name='rpmrebuild'
+	Echo "$name $UsageTitle
+$UsageUsage: $name [options] package
 options:
    -a, --additional=<flags>	$UsageAdditional
    -b, --batch			$UsageBatch
@@ -54,8 +55,9 @@ $UsageLicense
 
 function Usage_Plugins
 {
-	Echo "$0 $UsageTitle
-$UsageUsage: $0 [options] package
+	name='rpmrebuild'
+	Echo "$name $UsageTitle
+$UsageUsage: $name [options] package
 options:
    --change-files=<command>                 $UsagePluginChangeFiles
 
