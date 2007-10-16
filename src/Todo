@@ -1,9 +1,8 @@
 what now ?
 
 - change release number if some files changes ?
-- sort dependencies to remove duplicates ?
 
-write a graphical interface ?
+- write a graphical interface ?
 
-something about package signature ?
+- something about package signature ?
 (detect passed signature with SIGGPG, ask for new one .)
