@@ -5,7 +5,7 @@ Summary(fr): Un outil pour construire un package depuis une base rpm
 # The Summary: line should be expanded to about here -----^
 Name: rpmrebuild
 License: GPL
-Group: Utilities/System
+Group: Development/Tools
 BuildRoot: %{_topdir}/installroots/%{name}-%{version}-%{release}
 Source: rpmrebuild.tar.gz
 # Following are optional fields
@@ -17,7 +17,6 @@ Requires: bash
 Requires: cpio
 # mkdir ...
 Requires: fileutils
-Requires: grep
 Requires: sed
 # sort
 Requires: textutils
@@ -33,13 +32,11 @@ Release: %{release}rpm4
 you have an installed package on a computer, want to install on other
 one, and do not find the rpm file anymore. 
 Or you want to distribute your customization in an rpm format
-this tool is for you.
 
 %description -l fr
 Vous avez installé un package sur votre ordinateur, vous voulez 
 l'installer sur d'autres, et vous ne retrouvez plus le fichier rpm.
-Ou vous voulez distribuer vos modifications au format rpm. voila l'outil 
-qu'il vous faut.
+Ou vous voulez distribuer vos modifications au format rpm.
 
 %prep
 %setup -c rpmrebuild
