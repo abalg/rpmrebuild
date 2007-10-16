@@ -4,9 +4,13 @@
 # till (include) line 'RPMREBUILD END'
 # in the file /etc/popt
 ########################################
-rm -f /etc/popt.tmp || exit
 
-if [ -f /etc/popt ]; then
+POPT=/etc/popt
+POPT_TMP=$POPT.tmp
+
+rm -f $POPT_TMP || exit
+
+if [ -f $POPT ]; then
    (
       need_copy=1
       while :; do
@@ -19,11 +23,11 @@ if [ -f /etc/popt ]; then
          esac
          [ "$need_copy" ] && { echo "$line" || exit; } || :
       done
-   ) < /etc/popt > /etc/popt.tmp || exit
-   if [ -s /etc/popt.tmp ]; then
-      mv -f /etc/popt.tmp /etc/popt || exit
+   ) < $POPT  > $POPT_TMP || exit
+   if [ -s $POPT_TMP ]; then
+      mv -f $POPT_TMP $POPT || exit
    else
-      rm -f /etc/popt.tmp /etc/popt || exit
+      rm -f $POPT_TMP $POPT || exit
    fi
 else
   :
