@@ -11,19 +11,7 @@ POPT_TMP=$POPT.tmp
 rm -f $POPT_TMP || exit
 
 if [ -f $POPT ]; then
-   (
-      need_copy=1
-      while :; do
-         if ! read -r line; then
-            [ "x$line" = "x" ] && break
-         fi
-         case "x$line" in
-            x*RPMREBUILD*START*) need_copy="" ; continue;;
-            x*RPMREBUILD*END*)   need_copy="1"; continue;;
-         esac
-         [ "$need_copy" ] && { echo "$line" || exit; } || :
-      done
-   ) < $POPT  > $POPT_TMP || exit
+   sed -e '/RPMREBUILD START/,/RPMREBUILD END/d' < $POPT  > $POPT_TMP || exit
    if [ -s $POPT_TMP ]; then
       mv -f $POPT_TMP $POPT || exit
    else
