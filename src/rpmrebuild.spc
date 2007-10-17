@@ -29,14 +29,19 @@ Release: %{release}rpm4
 %endif
 
 %description
-you have an installed package on a computer, want to install on other
-one, and do not find the rpm file anymore. 
-Or you want to distribute your customization in an rpm format
+rpmrebuild allow to build an rpm file from an installed rpm, or from
+another rpm file, with or without changes (batch or interactive).
+It can be extended by a plugin system.
+A typical use is to easy repackage a software after some configuration's
+change.
 
 %description -l fr
-Vous avez installé un package sur votre ordinateur, vous voulez 
-l'installer sur d'autres, et vous ne retrouvez plus le fichier rpm.
-Ou vous voulez distribuer vos modifications au format rpm.
+rpmbuild permet de fabriquer un package rpm à partir d'un 
+package installé ou d'un fichier rpm, avec ou sans modifications 
+(interactives ou batch).
+Un système de plugin permet d'étendre ses fonctionnalités.
+Une utilisation typique est la fabrication d'un package suite à des modifications
+de configuration.
 
 %prep
 %setup -c rpmrebuild
