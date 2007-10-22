@@ -22,6 +22,7 @@
       
       
       <ol>
+	<li><a href="#v2.2.0-1">2.2.0-1</a></li>
 	<li><a href="#v2.1.1-1">2.1.1-1</a></li>
 	<li><a href="#v2.1.0-1">2.1.0-1</a></li>
 	<li><a href="#v2.0.4-1">2.0.4-1</a></li>
@@ -58,6 +59,16 @@
 	<li><a href="#v0.1">0.1</a></li>
       </ol><!-- AS-TOC_END} -->
       <hr />
+      Mon Oct 22 2007  Eric Gerbier &lt;<a href="mailto:gerbier@users.sourceforge.net">gerbier@users.sourceforge.net</a>&gt; <a name="v2.2.0-1">2.2.0-1</a>
+      <ul>
+	<li>add translation system (english and french) with new locale and man directory</li>
+	<li>fix a bug with rpm localisation in PackageInstalled function ( rpm message are localized, so the grep filter does not work everywhere )</li>
+	<li>fix bug : include file are also search in plugin directory</li>
+	<li>fix help : do not show path any more (fedora bug 328641)</li>
+	<li>add tests for --package option (if file exists, if it is an rpm)</li>
+      </ul>
+      
+      <hr />
       Mon Jun 18 2007  Eric Gerbier &lt;<a href="mailto:gerbier@users.sourceforge.net">gerbier@users.sourceforge.net</a>&gt; <a name="v2.1.1-1">2.1.1-1</a>
       <ul>
 	<li>remove commented tags (PAYLOAD*, INSTALLTID, OPTFLAGS, PLATFORM, SIGSIZE) to solve bug for rpm 3.x</li>
@@ -79,7 +90,7 @@
 	<li>check if rpm tags exists (CheckTags)</li>
 	<li>add code to send bug report by mail (SendBugReport)</li>
       </ul>
-
+      
       <hr />
       Tue May 31 2005 Eric Gerbier &lt;<a href="mailto:gerbier@users.sourceforge.net">gerbier@users.sourceforge.net</a>&gt;
       <a name="v2.0.4-1" id="v2.0.4-1">2.0.4-1</a>
@@ -89,7 +100,7 @@
 	<li>fix bug with short options -r -n</li>
 	<li>improved nodoc plugin</li>
       </ul>
-
+      
       <hr />
       Fri May 20 2005 Eric Gerbier &lt;<a href="mailto:gerbier@users.sourceforge.net">gerbier@users.sourceforge.net</a>&gt;
       <a name="v2.0.3-1" id="v2.0.3-1">2.0.3-1</a>
@@ -109,14 +120,14 @@
 	<li>now build man page with good release (reznic)</li>
 	<li>plugins moved to the plugins/ directory in the source tree (reznic)</li>
       </ul>
-
+      
       <hr />
       Tue Feb 22 2005 Valery Reznic &lt;<a href="mailto:valery_reznic@users.sourceforge.net">valery_reznic@users.sourceforge.net</a>&gt; 
       <a name="v2.0.1-1" id="v2.0.1-1">2.0.1-1</a>
       <ul>
 	<li>fix for rpm-4.3.[12] queries</li>
       </ul>
-
+      
       <hr />
       Mon Feb 21 2005 Valery Reznic &lt;<a href="mailto:valery_reznic@users.sourceforge.net">valery_reznic@users.sourceforge.net</a>&gt; 
       <a name="v2.0.0-1" id="v2.0.0-1">2.0.0-1</a>
@@ -392,7 +403,7 @@
       <ul>
 	<li>initial and minimal version</li>
       </ul>
-
+      
       <hr />
       <a href="index.html">back to main page</a>
     </div>
