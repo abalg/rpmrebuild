@@ -1,9 +1,13 @@
-* Wed Oct 17 2007 <gerbier@users.sourceforge.net> 2.2.0-1
+* Mon Oct 22 2007 <gerbier@users.sourceforge.net> 2.2.0-1
 - add translation system (english and french) with new locale and man directory
 - fix a bug with rpm localisation in PackageInstalled function ( rpm message are localized, so the grep filter does not work everywhere )
 - fix bug : include file are also search in plugin directory
 - fix help : do not show path any more (fedora bug 328641)
 - add tests for --package option (if file exists, if it is an rpm)
+- move package to Development/Tools group
+- remove all calls to grep
+- replace code in remove_from_popt.make.include by sed call (cf fedora specfile)
+- update specfile description tag
 
 * Mon Jun 18 2007 <gerbier@users.sourceforge.net> 2.1.1-1
 - remove commented tags (PAYLOAD*, INSTALLTID, OPTFLAGS, PLATFORM, SIGSIZE) to solve bug for rpm 3.x

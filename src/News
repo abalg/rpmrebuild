@@ -1,3 +1,8 @@
+* 2007-10-22 : release 2.2.0-1, internationalisation message system
+* 2007-06-26 : release 2.1.1-1, solve bug for rpm 3.x, better bug report
+* 2007-05-15 : release 2.1.0-1, allow concurrent use, check tags, bug report
+* 2005-05-31 : release 2.0.4-1, fix some problems (tmpdir), improved nodoc plugin
+* 2005-05-20 : release 2.0.3-1, new options --release, --notest_install
 * 2005-03-04 : release 2.0.2-1, bug fix for 2.x releases (BuildArch)
 * 2005-02-25 : release 2.0.1-1, fix for rpm-4.3
 * 2005-02-21 : release 2.0.0-1, major code rewrite to be more modular, allow change in specific spec sections
