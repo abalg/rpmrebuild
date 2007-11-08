@@ -1,0 +1,59 @@
+.TH "uniq.plug" "1" "@VERSION@" "Eric Gerbier" "rpmrebuild plugin"
+.SH "NAME"
+uniq.plug \- un plugin pour rpmrebuild, qui supprimes les doublons dans le fichier specfile.
+.SH "SYNOPSIS"
+rpmrebuild \-\-include uniq.plug <\fIpackagename\fP>
+.br 
+ou
+.br 
+rpmrebuild  \-\-change\-spec\-requires|\-\-change\-spec\-provides|\-\-change\-spec\-conflicts|\-\-change\-spec\-obsoletes="uniq.sh [\fIoption\fP]" <\fIpackagename\fP>
+.br 
+
+la première forme s'applique à toutes les sections concernées.
+.br 
+la deuxième forme permet de choisir la section, et de passer des options au plugin.
+.SH "DESCRIPTION"
+Ce plugin permet de supprimer les doublons dans le fichier specfile
+.br 
+Par exemple, un package qui contient plusieurs scripts shell contient par défaut (AutoRequire) plusieurs dependances identiques à ce shell !
+.SH "OPTIONS"
+.TP 
+\fB\-h, \-\-help\fP
+affiche une aide, puis quitte.
+.TP 
+\fB\-v, \-\-version\fP
+affiche la version du plugin, puis quitte.
+.SH "FILES"
+.TP 
+\fBuniq.plug\fP
+le fichier à inclure, pour une utilisation rapide.
+.TP 
+\fBuniq.sh\fP
+le code proprement dit.
+.TP 
+\fBuniq.plug.1\fP
+les pages de manuel.
+.SH "EXEMPLES"
+.LP 
+\fBrpmrebuild \-\-include uniq.plug rpm\fP
+
+.SH "AUTHORS"
+.LP 
+Eric Gerbier <gerbier@users.sourceforge.net>
+.TP 
+See <URL:http://rpmrebuild.sourceforge.net/>.
+.SH "NOTES"
+.LP 
+.TP 
+Ce plugin est donné à titre d'exemple.
+.SH "COPYRIGHT"
+.LP 
+rpmrebuild is copyright (C) 2004 by Eric Gerbier.
+.br 
+Ce programme est distribué sous la licence GNU General Public.
+.br 
+Il est fourni en l'état, sans garanties.
+Consultez le fichier COPYING pour plus de détails.
+.SH "SEE ALSO"
+.LP 
+rpm(8), rpmbuild(8), rpmrebuild_plugins(1), demo_plug(1), nodoc.plug(1), uniq.plug(1), file2pacDep.plug(1), 'man -k rrp' pour la doc sur les plugins.
