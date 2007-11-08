@@ -15,8 +15,10 @@
      /usr/lib/rpmrebuild/popt-without-POPTdesc
      /usr/lib/rpmrebuild/popt-with-POPTdesc
 %dir /usr/lib/rpmrebuild/locale
-%dir /usr/lib/rpmrebuild/locale/fr
-     /usr/lib/rpmrebuild/locale/fr/rpmrebuild.lang
+%dir /usr/lib/rpmrebuild/locale/fr_FR
+     /usr/lib/rpmrebuild/locale/fr_FR/rpmrebuild.lang
+%dir /usr/lib/rpmrebuild/locale/fr_FR.UTF-8
+     /usr/lib/rpmrebuild/locale/fr_FR.UTF-8/rpmrebuild.lang
 %dir /usr/lib/rpmrebuild/locale/en
      /usr/lib/rpmrebuild/locale/en/rpmrebuild.lang
 %dir /usr/lib/rpmrebuild/plugins
@@ -30,17 +32,23 @@
      /usr/lib/rpmrebuild/plugins/nodoc.plug
      /usr/lib/rpmrebuild/plugins/nodoc.sh
 %doc /usr/share/man/man1/rpmrebuild.1*
-%doc /usr/share/man/fr/man1/rpmrebuild.1*
+%doc /usr/share/man/fr_FR/man1/rpmrebuild.1*
+%doc /usr/share/man/fr_FR.UTF-8/man1/rpmrebuild.1*
 %doc /usr/share/man/man1/rpmrebuild_plugins.1*
-%doc /usr/share/man/fr/man1/rpmrebuild_plugins.1*
+%doc /usr/share/man/fr_FR/man1/rpmrebuild_plugins.1*
+%doc /usr/share/man/fr_FR.UTF-8/man1/rpmrebuild_plugins.1*
 %doc /usr/share/man/man1/file2pacDep.plug.1rrp*
-%doc /usr/share/man/fr/man1/file2pacDep.plug.1rrp*
+%doc /usr/share/man/fr_FR/man1/file2pacDep.plug.1rrp*
+%doc /usr/share/man/fr_FR.UTF-8/man1/file2pacDep.plug.1rrp*
 %doc /usr/share/man/man1/demo.plug.1rrp*
-%doc /usr/share/man/fr/man1/demo.plug.1rrp*
+%doc /usr/share/man/fr_FR/man1/demo.plug.1rrp*
+%doc /usr/share/man/fr_FR.UTF-8/man1/demo.plug.1rrp*
 %doc /usr/share/man/man1/uniq.plug.1rrp*
-%doc /usr/share/man/fr/man1/uniq.plug.1rrp*
+%doc /usr/share/man/fr_FR/man1/uniq.plug.1rrp*
+%doc /usr/share/man/fr_FR.UTF-8/man1/uniq.plug.1rrp*
 %doc /usr/share/man/man1/nodoc.plug.1rrp*
-%doc /usr/share/man/fr/man1/nodoc.plug.1rrp*
+%doc /usr/share/man/fr_FR/man1/nodoc.plug.1rrp*
+%doc /usr/share/man/fr_FR.UTF-8/man1/nodoc.plug.1rrp*
 
 %doc AUTHORS
 %doc COPYING
