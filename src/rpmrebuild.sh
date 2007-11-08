@@ -353,10 +353,10 @@ function Main
 	source $MY_LIB_DIR/processing_func.src   || return
 
 	# check language
-	lang=$( echo $LANG | cut -f 1 -d_)
-	case "$lang" in
-		en) real_lang=en;;
-		fr) real_lang=fr;;
+	case "$LANG" in
+		en*) real_lang=en;;
+		fr_FR) real_lang=$LANG;;
+		fr_FR.UTF-8) real_lang=$LANG;;
 		*)  real_lang=en;;
 	esac
 	# load translation file
