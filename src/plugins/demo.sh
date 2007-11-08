@@ -66,7 +66,7 @@ fi
 case $LONG_OPTION in
 	change-spec*)
 		;;
-	*)	msg "bad option : $1";
+	*)	msg "bad option : $LONG_OPTION (should be called from change-spec*)";
 		syntaxe
 	;;
 esac
