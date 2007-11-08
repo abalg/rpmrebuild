@@ -270,6 +270,11 @@ Modification batch du package :
 Si vous connaissez la syntaxe des fichier specfile, vous pouvez les éditer "au vol" :
 .LP 
 \fBrpm \-\-rpmrebuild  \-\-edit\-whole package\fP
+.LP
+changement en mode batch de la version
+.LP
+\fBrpm \-\-rpmrebuild  \-\-change\-spec\-preamble='sed \-e "s/^Version:.*/Version: VotreVersion/"' Package\fP
+
 .SH "AUTHORS"
 .LP 
 Eric Gerbier <gerbier@users.sourceforge.net>

@@ -273,6 +273,10 @@ Change package non\-interactive
 if you have problem with rpm building, and if you know specfile syntax, you can also edit it:
 .LP 
 \fBrpm \-\-rpmrebuild  \-\-edit\-whole package\fP
+.LP 
+batch change of version tag
+.LP
+\fBrpm \-\-rpmrebuild  \-\-change\-spec\-preamble='sed \-e "s/^Version:.*/Version: YourVersion/"' YourPackage\fP
 .SH "AUTHORS"
 .LP 
 Eric Gerbier <gerbier@users.sourceforge.net>
