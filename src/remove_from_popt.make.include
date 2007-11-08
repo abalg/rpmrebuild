@@ -6,17 +6,7 @@
 ########################################
 
 POPT=/etc/popt
-POPT_TMP=$POPT.tmp
-
-rm -f $POPT_TMP || exit
 
 if [ -f $POPT ]; then
-   sed -e '/RPMREBUILD START/,/RPMREBUILD END/d' < $POPT  > $POPT_TMP || exit
-   if [ -s $POPT_TMP ]; then
-      mv -f $POPT_TMP $POPT || exit
-   else
-      rm -f $POPT_TMP $POPT || exit
-   fi
-else
-  :
+   sed -i -e '/RPMREBUILD START/,/RPMREBUILD END/d' $POPT
 fi
