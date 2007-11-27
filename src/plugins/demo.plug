@@ -21,10 +21,7 @@
 # include file for demo plugin
 # allow a quicker use with : rpmrebuild --include demo.plug
 
-# first a demo on files
-change-files demofiles.sh
-
-# then demo on each spec part
+# demo on each spec part
 change-spec-preamble demo.sh
 change-spec-conflicts demo.sh
 change-spec-obsoletes demo.sh
@@ -40,6 +37,8 @@ change-spec-postun demo.sh
 change-spec-verifyscript demo.sh
 change-spec-changelog demo.sh
 
-# apply on whole and edit it
+# apply on whole spec (add another tag)
 change-spec-whole demo.sh
+
+# let you see which part is changed
 edit-whole
