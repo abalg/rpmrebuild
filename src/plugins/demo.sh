@@ -79,7 +79,8 @@ do
 		# do nothing : just repeat
 		echo "$line"
 	else
-		# add the plugin type
+		# add the plugin type on each spec line
+		# it will not work any more, but let see which part is modified
 		echo "$LONG_OPTION $line"
 	fi
 done 
