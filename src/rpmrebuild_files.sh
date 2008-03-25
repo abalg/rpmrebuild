@@ -130,7 +130,8 @@ while :; do
 
 	# %attr handling
 	if [ "X$RPMREBUILD_PUG_FROM_FS" = "Xyes" ]; then
-		attr_str=""
+		# get attribute from file system
+		attr_str="%attr(-,-,-) "
 	else
 		file_perm="${file_perm#??}"
 		attr_str="%attr($file_perm $file_user $file_group) "
