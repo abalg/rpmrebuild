@@ -15,7 +15,8 @@ the second allow to choose which part to change, and plugin options
 .SH "DESCRIPTION"
 this plugin is to show how the plugin work
 .br 
-it will just add plugin type name begin of line in spec file
+it will just add plugin type name begin of line in spec file.
+The spec file will not work any more but will show which parts can be modified
 .SH "OPTIONS"
 .TP 
 \fB\-h, \-\-help\fP

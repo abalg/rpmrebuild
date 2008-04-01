@@ -15,7 +15,8 @@ la seconde permet de choisir la ou les sections, ainsi que les options du plugin
 .SH "DESCRIPTION"
 ce plugin permet de montrer le fonctionnement des plugins
 .br 
-il ajoute en début de fichier specfile un prefixe correspondant au nom + type du plugin
+il ajoute en début de fichier specfile un prefixe correspondant au nom + type du plugin.
+Le fichier spec n'est plus fonctionnel, mais il montre bien ce qui peut être modifié.
 .SH "OPTIONS"
 .TP 
 \fB\-h, \-\-help\fP
