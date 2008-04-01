@@ -152,6 +152,8 @@ uniq.plug:  un plugin pour trier les lignes et éliminer les doublons sur certain
 file2pacDep.plug: permet de convertir les dependances vers des fichiers en dependances vers des packages
 .TP 
 nodoc.plug : permet de supprimer la documentation d'un package
+.TP 
+set_tag.plug : permet de modifier la valeur d'un tag du fichier de spec
 .SH "PLUGINS' CONVENTION DE NOMMAGE DES PAGES MAN"
 Si vous écrivez des plugin, vous êtes encouragés à suffixer les pages de
 manuel en \fB.1rrp\fP, afin que la commande \fB'man \-k rrp'\fP fournisse

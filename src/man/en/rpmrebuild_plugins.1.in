@@ -140,7 +140,7 @@ Plugins for specfile modification (i.e., invoked with \-\-spec\-\change\-*)
 got "source" spec file from stdin and have to write resulting spec file to
 stdout.
 .SH "PLUGIN'S EXAMPLES"
-Three plugins are given as examples :
+Some plugins are given as examples :
 .TP 
 demo.plug: a "dummy" plugin to show how plugins works
 .TP 
@@ -149,6 +149,8 @@ uniq.plug: a very simple plugin to sort and clean duplicate spec lines
 file2pacDep.plug: a "real" plugin to convert file dependencies to package dependencies
 .TP 
 nodoc.plug : a plugin to remove documentation from a package
+.TP 
+set_tag.plus : a plugin to change a tag in spec file
 .SH "PLUGINS' MANPAGES FILENAME CONVENTION"
 If you are going to write plugin (and manpage for it) it's strongly
 recommended than manpage's file looks like \fBname.1rrp\fP \- this way
