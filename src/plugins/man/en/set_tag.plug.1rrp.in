@@ -3,8 +3,15 @@
 set_tag.plug \- a plugin for rpmrebuild, to replace a tag value in spec file
 .SH "SYNOPSIS"
 .br 
-rpmrebuild  \-\-change\-spec\-preamble="set_tag.sh \fI\-t tag value\fP" <\fIpackagename\fP>
+rpmrebuild  \-\-change\-spec\-preamble="set_tag.sh \fI\-t tag value" \fP<\fIpackagename\fP>
 .br 
+or
+.br 
+TAG_ID=tag
+.br 
+TAG_VAL=value
+.br 
+rpmrebuild  \-\-include set_tag.plug <\fIpackagename\fP>
 
 .SH "DESCRIPTION"
 this plugin allow to replace a tag value in spec file
@@ -22,15 +29,27 @@ replace the value of tag yourtag by yourvalue
 .SH "FILES"
 .TP 
 \fBset_tag.sh\fP
-contains the code for change\-spec*
+contains the code for change\-spec\-preamble
+.TP 
+\fBset_tag.plug\fP
+
 .TP 
 \fBset_tag.plug.1\fP
 is this man page
 .SH "EXAMPLES"
 .LP 
-\fBrpmrebuild \-\-change\-spec\-preamble="set_tag.sh \-t Release 2test" rpmrebuild\fP
+\fBrpmrebuild \-\-change\-spec\-preamble="set_tag.sh \-t Release 2test" apache\fP
 
-to change the Release tag to "2test"
+to change the Release tag to "2test" for the package apache
+.br 
+you can do the same with the following syntax 
+.br 
+
+TAG_ID=Release
+.br 
+TAG_VAL="2test"
+.br 
+rpmrebuild \-\-include set_tag.plug apache
 
 .SH "AUTHORS"
 .LP 
@@ -51,6 +70,6 @@ It is provided "as is", without any express or implied
 warranties.  See the file COPYING for details.
 .SH "SEE ALSO"
 .LP 
-rpm(8), rpmbuild(8), rpmrebuild_plugins(1), demo_plug(1), nodoc.plug(1), uniq.plug(1), file2pacDep.plug(1), 'man \-k rrp' for plugins specific manpages
+rpm(8), rpmbuild(8), rpmrebuild_plugins(1), demo.plug(1), demofiles.plug(1),  nodoc.plug(1), uniq.plug(1), file2pacDep.plug(1), 'man \-k rrp' for plugins specific manpages
 
 
