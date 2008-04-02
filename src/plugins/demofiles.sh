@@ -72,6 +72,7 @@ esac
 # in the same tree as the installed files :
 # if the package contains /etc/cron.daily files, you will find etc/cron.daily directory here
 cd $RPM_BUILD_ROOT
+pwd
 
 # you can now do what you want on the files : 
 # add, remove, move, rename files (be carefull, you have to change the %files section too)
@@ -79,3 +80,6 @@ cd $RPM_BUILD_ROOT
 
 # for this demo, we do not change anything, just display what we can see
 find . -ls
+
+# we can also change some files
+# find . -type f | xargs touch
