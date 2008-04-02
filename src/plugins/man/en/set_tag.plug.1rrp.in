@@ -36,6 +36,10 @@ contains the code for change\-spec\-preamble
 .TP 
 \fBset_tag.plug.1\fP
 is this man page
+.SH "ENVIRONMENT"
+TAG_ID : name of the spec tag to change
+.br 
+TAG_VAL : new value for the TAG_ID tag
 .SH "EXAMPLES"
 .LP 
 \fBrpmrebuild \-\-change\-spec\-preamble="set_tag.sh \-t Release 2test" apache\fP
