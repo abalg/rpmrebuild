@@ -1,11 +1,14 @@
+# $Id$
 TOP_DIR := ..
 include $(TOP_DIR)/Makefile.include
 
 PLUGINS :=          \
    demo.plug        \
+   demofiles.plug   \
    file2pacDep.plug \
    uniq.plug        \
    nodoc.plug       \
+   set_tag.plug     \
                     \
 
 SCRIPTS :=        \
@@ -14,6 +17,7 @@ SCRIPTS :=        \
    file2pacDep.sh \
    uniq.sh        \
    nodoc.sh       \
+   set_tag.sh     \
                   \
 
 MANPAGES_BASE := $(addsuffix .1rrp,$(PLUGINS))
