@@ -32,6 +32,7 @@ function syntaxe () {
 	msg "-t|--tag yourtag value: set value to tag yourtag"
 	msg "-h|--help : this help"
 	msg "-v|--version : print plugin version"
+	msg "you can also provide the tag id by the TAG_ID environment variable and the value by the TAG_VAL"
 	exit 1
 
 }
@@ -61,7 +62,14 @@ then
 	;;
 	esac
 else
-	syntaxe
+	# we can also provide value by environment
+	if [ -n "$TAG_ID" ]
+	then
+		opt_tag=$TAG_ID
+		opt_val=$TAG_VAL
+	else
+		syntaxe
+	fi
 fi
 
 # test the way to be called
