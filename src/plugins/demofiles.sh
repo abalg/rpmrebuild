@@ -23,6 +23,50 @@
 
 # just a demo script to show what can be done
 # with a file plugin
+version=1.0
+###############################################################################
+function msg () {
+	echo >&2 $*
+}
+###############################################################################
+function syntaxe () {
+	msg "this plugin just show how to modifiy files"
+	msg "it must be called with --change-files option"
+	msg "-h|--help : this help"
+	msg "-v|--version : print plugin version"
+	exit 1
+
+}
+###############################################################################
+
+# test for arguments
+if [ $# -eq 1 ]
+then
+	case $1 in
+	-h | --help )
+		syntaxe
+	;;
+
+        -v | --version )
+                msg "$0 version $version";
+                exit 1;
+        ;;
+
+	*)
+		msg "bad option : $1";
+		syntaxe
+	;;
+	esac
+fi
+
+# test the way to be called
+case $LONG_OPTION in
+	change-files)
+		;;
+		*)	msg "bad option : $LONG_OPTION (should be called from change-files)";
+		syntaxe
+	;;
+esac
 
 # go to the directory which contains all package's files
 # in the same tree as the installed files :
