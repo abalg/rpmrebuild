@@ -22,33 +22,42 @@
 %dir /usr/lib/rpmrebuild/locale/en
      /usr/lib/rpmrebuild/locale/en/rpmrebuild.lang
 %dir /usr/lib/rpmrebuild/plugins
-     /usr/lib/rpmrebuild/plugins/file2pacDep.plug
-     /usr/lib/rpmrebuild/plugins/file2pacDep.sh
      /usr/lib/rpmrebuild/plugins/demo.plug
      /usr/lib/rpmrebuild/plugins/demo.sh
+     /usr/lib/rpmrebuild/plugins/demofiles.plug
      /usr/lib/rpmrebuild/plugins/demofiles.sh
-     /usr/lib/rpmrebuild/plugins/uniq.plug
-     /usr/lib/rpmrebuild/plugins/uniq.sh
+     /usr/lib/rpmrebuild/plugins/file2pacDep.plug
+     /usr/lib/rpmrebuild/plugins/file2pacDep.sh
      /usr/lib/rpmrebuild/plugins/nodoc.plug
      /usr/lib/rpmrebuild/plugins/nodoc.sh
+     /usr/lib/rpmrebuild/plugins/set_tag.plug
+     /usr/lib/rpmrebuild/plugins/set_tag.sh
+     /usr/lib/rpmrebuild/plugins/uniq.plug
+     /usr/lib/rpmrebuild/plugins/uniq.sh
 %doc /usr/share/man/man1/rpmrebuild.1*
 %doc /usr/share/man/fr_FR/man1/rpmrebuild.1*
 %doc /usr/share/man/fr_FR.UTF-8/man1/rpmrebuild.1*
 %doc /usr/share/man/man1/rpmrebuild_plugins.1*
 %doc /usr/share/man/fr_FR/man1/rpmrebuild_plugins.1*
 %doc /usr/share/man/fr_FR.UTF-8/man1/rpmrebuild_plugins.1*
-%doc /usr/share/man/man1/file2pacDep.plug.1rrp*
-%doc /usr/share/man/fr_FR/man1/file2pacDep.plug.1rrp*
-%doc /usr/share/man/fr_FR.UTF-8/man1/file2pacDep.plug.1rrp*
 %doc /usr/share/man/man1/demo.plug.1rrp*
 %doc /usr/share/man/fr_FR/man1/demo.plug.1rrp*
 %doc /usr/share/man/fr_FR.UTF-8/man1/demo.plug.1rrp*
-%doc /usr/share/man/man1/uniq.plug.1rrp*
-%doc /usr/share/man/fr_FR/man1/uniq.plug.1rrp*
-%doc /usr/share/man/fr_FR.UTF-8/man1/uniq.plug.1rrp*
+%doc /usr/share/man/man1/file2pacDep.plug.1rrp*
+%doc /usr/share/man/man1/demofiles.plug.1rrp*
+%doc /usr/share/man/fr_FR/man1/demofiles.plug.1rrp*
+%doc /usr/share/man/fr_FR.UTF-8/man1/demofiles.plug.1rrp*
+%doc /usr/share/man/fr_FR/man1/file2pacDep.plug.1rrp*
+%doc /usr/share/man/fr_FR.UTF-8/man1/file2pacDep.plug.1rrp*
 %doc /usr/share/man/man1/nodoc.plug.1rrp*
 %doc /usr/share/man/fr_FR/man1/nodoc.plug.1rrp*
 %doc /usr/share/man/fr_FR.UTF-8/man1/nodoc.plug.1rrp*
+%doc /usr/share/man/man1/set_tag.plug.1rrp*
+%doc /usr/share/man/fr_FR/man1/set_tag.plug.1rrp*
+%doc /usr/share/man/fr_FR.UTF-8/man1/set_tag.plug.1rrp*
+%doc /usr/share/man/man1/uniq.plug.1rrp*
+%doc /usr/share/man/fr_FR/man1/uniq.plug.1rrp*
+%doc /usr/share/man/fr_FR.UTF-8/man1/uniq.plug.1rrp*
 
 %doc AUTHORS
 %doc COPYING

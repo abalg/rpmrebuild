@@ -1,3 +1,11 @@
+* Wed Apr 2 2008 <gerbier@users.sourceforge.net> 2.2.1-1
+- fix bug on uid/gid with --pug-from-fs option
+- demo plugin : better error message
+- do not remove /etc/popt : it does not belong our package
+- add new set_tag plugin
+- new demofiles plugin
+- add utf-8 for french localisation
+
 * Mon Oct 22 2007 <gerbier@users.sourceforge.net> 2.2.0-1
 - add translation system (english and french) with new locale and man directory
 - fix a bug with rpm localisation in PackageInstalled function ( rpm message are localized, so the grep filter does not work everywhere )
