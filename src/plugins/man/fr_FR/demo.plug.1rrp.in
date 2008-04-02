@@ -1,6 +1,6 @@
 .TH "demo.plug" "1" "@VERSION@" "Eric Gerbier" "rpmrebuild plugin"
 .SH "NAME"
-demo.plug \- un plugin pour rpmrebuild, pour montrer le fonctionnement des plugins
+demo.plug \- un plugin de démo pour rpmrebuild, pour montrer le fonctionnement des plugins sur les fichier spec
 .SH "SYNOPSIS"
 rpmrebuild \-\-include demo.plug <\fIpackagename\fP>
 .br 
@@ -35,14 +35,11 @@ le fichier à inclure, pour une utilisation rapide
 \fBdemo.sh\fP
 contient le code pour l'option change\-spec*
 .TP 
-\fBdemofiles.sh\fP
-contient le code pour l'option change\-files
-.TP 
 \fBdemo.plug.1\fP
 les pages de doc
 .SH "EXEMPLES"
 .LP 
-\fBrpmrebuild \-\-include demo.plug rpm\fP
+\fBrpmrebuild \-\-include demo.plug apache\fP
 
 permet de lancer la fabrication du fichier specfile modifié,
 puis l'édite
@@ -66,4 +63,4 @@ Il est fourni en l'état, sans garanties.
 Consultez le fichier COPYING pour plus de détails.
 .SH "SEE ALSO"
 .LP 
-rpm(8), rpmbuild(8), rpmrebuild_plugins(1), demo_plug(1), nodoc.plug(1), uniq.plug(1), file2pacDep.plug(1), 'man -k rrp' pour la doc sur les plugins.
+rpm(8), rpmbuild(8), rpmrebuild_plugins(1), demo.plug(1), demofiles.plug(1), nodoc.plug(1), uniq.plug(1), file2pacDep.plug(1), set_tag.plug(1), 'man \-k rrp' pour la doc sur les plugins.
