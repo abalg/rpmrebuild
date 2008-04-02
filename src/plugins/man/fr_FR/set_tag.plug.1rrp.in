@@ -5,6 +5,13 @@ set_tag.plug \- un plugin pour rpmrebuild, qui permet de remplacer la valeur d'u
 .br 
 rpmrebuild  \-\-change\-spec\-preamble="set_tag.sh \fI\-t tag valeur\fP" <\fInom_de_package\fP>
 .br 
+ou
+.br 
+TAG_ID=tag
+.br 
+TAG_VAL=valeur
+.br 
+rpmrebuild  \-\-include set_tag.plug \fInom_de_package\fP
 
 .SH "DESCRIPTION"
 Ce plugin permet de remplacer la valeur d'un tag dans le fichier spec
@@ -26,11 +33,22 @@ contient le code du plugin
 .TP 
 \fBset_tag.plug.1\fP
 la page de manuel
+.SH "ENVIRONMENT"
+TAG_ID : nom du tag à changer dans le fichier spec
+.br 
+TAG_VAL : nouvelle valeur du tag TAG_ID
 .SH "EXAMPLES"
 .LP 
-\fBrpmrebuild \-\-change\-spec\-preamble="set_tag.sh \-t Release 2test" rpmrebuild\fP
-
-pour changer le tag Release du package rpmrebuild à "2test"
+\fBrpmrebuild \-\-change\-spec\-preamble="set_tag.sh \-t Release 2test" apache\fP
+.br 
+ou
+.br 
+TAG_ID=Release
+.br 
+TAG_VAL="2test"
+\fBrpmrebuild \-\-include set_tag.plug apache\fP
+.br 
+pour changer le tag Release du package apache à "2test"
 
 
 .SH "AUTHORS"
@@ -41,18 +59,18 @@ See <URL:http://rpmrebuild.sourceforge.net/>.
 .SH "NOTES"
 .LP 
 .TP 
-ce plugin ne fournit pas de fichier set_tag.plug, car cette forme ne permet pas de passer des arguments au plugin
+ce plugin est donné en l'état à titre d'exemple
 .SH "COPYRIGHT"
 .LP 
 rpmrebuild is copyright (C) 2008 by Eric Gerbier.
 .br 
 Ce programme est distribué sous la licence GNU General Public.
-.br
+.br 
 Il est fourni en l'état, sans garanties.
 Consultez le fichier COPYING pour plus de détails.
 .SH "SEE ALSO"
 .LP 
-rpm(8), rpmbuild(8), rpmrebuild_plugins(1), demo_plug(1), nodoc.plug(1), uniq.plug(1), file2pacDep.plug(1), 'man \-k rrp' pour la doc sur les plugins.
+rpm(8), rpmbuild(8), rpmrebuild_plugins(1), demo.plug(1), demofiles.plug(1), nodoc.plug(1), uniq.plug(1), file2pacDep.plug(1), set_tag.plug(1), 'man \-k rrp' pour la doc sur les plugins.
 
 
 
