@@ -10,7 +10,7 @@ rpm \-\-rpmrebuild [\fInon\-plugins\-option\fP] [\fIplugins\-option\fP] <\fIpack
 .SH "DESCRIPTION"
 \fBrpmrebuild\fP essaie de reconstruire le package rpm le plus proche de l'original possible.
 .LP 
-dans certains cas, cela ne correspond pas au besoins de modification des rpm.
+dans certains cas, cela ne correspond pas au besoins de modification des rpm, il faut utiliser pour cela les plugins.
 .SH "RPMREBUILD SANS PLUGINS"
 Sans plugin, le processus de construction est le suivant :
 .TP 
@@ -93,9 +93,9 @@ la fabrication de package utilise deux entrées :
 un fichier specfile, et des fichiers dans l'arborescence buildroot.
 Il y a donc deux types de plugins :
 .TP 
-\- ceux qui modifient le fichier specfile.
+\- ceux qui modifient le fichier specfile (example : demo.plug).
 .TP 
-\- ceux qui modifient les fichiers (dans buildroot).
+\- ceux qui modifient les fichiers (dans buildroot) (example : demofiles.plug).
 .SH "INTERFACE DES PLUGIN"
 Les plugin sont exécuté après les interrogations rpm et avant la fabrication
 du package, dans l'ordre spécifié dans la ligne de commande.
@@ -144,16 +144,18 @@ lisent le specfile sur stdin et écrivent le résultat sur stdout.
 stdout.
 .SH "EXEMPLES DE PLUGINS"
 Plusieurs plugins sont fournis à titre d'exemples :
+.TP
+demofiles.plug (change\-files) : un plugin de "démo" pour montrer ce que l'on peut faire sur les fichiers
 .TP 
-demo.plug: un plugin qui ne fait aucune modification, afin de juste montrer le fonctionnement 
+demo.plug (change\-spec\-*) : un plugin de "démo", pour montrer ce que l'on peut faire sur le fichier spec 
 .TP 
-uniq.plug:  un plugin pour trier les lignes et éliminer les doublons sur certaines sections (require, provide ... )
+uniq.plug (change\-spec) :  un "vrai" plugin pour trier les lignes et éliminer les doublons sur certaines sections (require, provide ... )
 .TP 
-file2pacDep.plug: permet de convertir les dependances vers des fichiers en dependances vers des packages
+file2pacDep.plug (change\-spec\-requires) : un "vrai" plugin pour convertir les dependances vers des fichiers en dependances vers des packages
 .TP 
-nodoc.plug : permet de supprimer la documentation d'un package
+nodoc.plug (change\-spec\-files) : un "vrai" plugin pour supprimer la documentation d'un package
 .TP 
-set_tag.plug : permet de modifier la valeur d'un tag du fichier de spec
+set_tag.plug (change\-spec\-preamble) : un "vrai" plugin pour modifier la valeur d'un tag du fichier de spec
 .SH "PLUGINS' CONVENTION DE NOMMAGE DES PAGES MAN"
 Si vous écrivez des plugin, vous êtes encouragés à suffixer les pages de
 manuel en \fB.1rrp\fP, afin que la commande \fB'man \-k rrp'\fP fournisse
@@ -169,5 +171,5 @@ Valery Reznic <valery_reznic@users.sourceforge.net>
 See <URL:http://rpmrebuild.sourceforge.net/>.
 .SH "SEE ALSO"
 .LP 
-rpm(8), rpmbuild(8), rpmrebuild(1), demo_plug(1), nodoc.plug(1), uniq.plug(1), file2pacDep.plug(1), 'man -k rrp' pour la doc sur les plugins fournis.
+rpm(8), rpmbuild(8), rpmrebuild(1), demofiles.plug(1), demo.plug(1), nodoc.plug(1), uniq.plug(1), file2pacDep.plug(1), set_tag.plug(1), 'man -k rrp' pour la doc sur les plugins fournis.
 
