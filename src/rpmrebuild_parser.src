@@ -1051,13 +1051,13 @@ function CommandLineParsing
    		1) # One argument, it's ok
       			PAQUET="$1"
       			if [ "x$package_flag" = "x" ]; then
-         			PAQUET_NAME="$PAQUET"
+         			PAQUET_NAME=$( basename $PAQUET )
       			else
 				# argument should be a file
 				if [ -f $PAQUET ]; then
-					PAQUET_NAME="$PAQUET"
+					PAQUET_NAME=$( basename $PAQUET)
 					# check if it is an rpm file
-					tst_rpm=$( file $PAQUET_NAME )
+					tst_rpm=$( file $PAQUET )
 					case "x$tst_rpm" in
 						x*RPM\ *)
 							#ok
