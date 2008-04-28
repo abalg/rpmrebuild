@@ -1,3 +1,6 @@
+* Mon Apr 28 2008 <gerbier@users.sourceforge.net> 2.2.2-1
+- fix a bug when working on package file with path
+
 * Wed Apr 2 2008 <gerbier@users.sourceforge.net> 2.2.1-1
 - fix bug on uid/gid with --pug-from-fs option
 - demo plugin : better error message

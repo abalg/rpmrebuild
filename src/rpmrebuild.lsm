@@ -1,7 +1,7 @@
 Begin4
 Title:          rpmrebuild
-Version:        2.2.1-1
-Entered-date:   2008-04-02
+Version:        2.2.2-1
+Entered-date:   2008-04-28
 Description:    rpmrebuild creates spec files used by the Red Hat Package Manager
                 in building RPM packages.  It uses the information it can
                 determine (from the rpm database) to fill in the proper spec file fields. 
@@ -12,7 +12,7 @@ Keywords:       RPM, spec file, package, packaging, automated build,
 Author:         gerbier@users.sourceforge.net (Eric Gerbier)
 		valery_reznic@users.sourceforge.net (Valery Reznic)
 Primary-site:   http://rpmrebuild.sourceforge.net
-		90 ko rpmrebuild-2.2.0-1rpm4.noarch.rpm
+		90 ko rpmrebuild-2.2.2-1rpm4.noarch.rpm
 Platforms:      linux, works with bash and rpm >= 3.x
 Copying-policy: GPL
 End
