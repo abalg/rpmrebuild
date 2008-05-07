@@ -66,15 +66,25 @@ function select_installed() {
 
 echo "wait for rpm list"
 
-#liste_rpm=$( rpm -qa --qf '%{NAME} "%{SUMMARY}" \n' | sort | sed -e "s/'/ /g" -e 's/`/ /g' )
-liste_rpm=$( rpm -qa --qf '%{NAME}-%{VERSION}-%{RELEASE} \n' | sort )
+liste_rpm=$( rpm -qa --qf '%{NAME}-%{VERSION}-%{RELEASE} "%{SUMMARY}" \n' | sort | sed -e "s/'/ /g" -e 's/`/ /g' )
+#liste_rpm=$( rpm -qa --qf '%{NAME}-%{VERSION}-%{RELEASE} \n' | sort )
 
-target=$( $DIALOG --stdout --clear --title "MENU BOX" \
-        --menu " Choose the installed package you want ot work on :" 20 80 15 \
-	` echo "$liste_rpm" | while read name ; do echo -n "$name $name "; done ` )
+tmpfile=/tmp/xrpmrebuild.$$
+
+echo "$DIALOG --stdout --clear --title \"MENU BOX\" --menu \" Choose the installed package you want ot work on :\" 20 70 15 \\" > $tmpfile
+echo "$liste_rpm" | while read name summary; do echo  "$name $summary \\"; done >> $tmpfile
+chmod +x $tmpfile
+target=$( $tmpfile )
+
+# TODO
+#target=$( $DIALOG --stdout --clear --title "MENU BOX" \
+#        --menu " Choose the installed package you want ot work on :" 20 80 15 \
+#	` echo "$liste_rpm" | while read name ; do echo -n "$name $name "; done ` )
 #	` echo "$liste_rpm" | while read name summary; do echo -n "$name $summary "; done ` )
 
 retval=$?
+
+rm $tmpfile
 
 case $retval in
   $DIALOG_OK)
