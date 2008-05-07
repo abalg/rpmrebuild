@@ -66,12 +66,13 @@ function select_installed() {
 
 echo "wait for rpm list"
 
-#liste_rpm=$( rpm -qa --qf '%{NAME} "%{SUMMARY}" \n' | sort | sed "s/'/ /g" )
-liste_rpm=$( rpm -qa --qf '%{NAME}  \n' | sort )
+#liste_rpm=$( rpm -qa --qf '%{NAME} "%{SUMMARY}" \n' | sort | sed -e "s/'/ /g" -e 's/`/ /g' )
+liste_rpm=$( rpm -qa --qf '%{NAME}-%{VERSION}-%{RELEASE} \n' | sort )
 
 target=$( $DIALOG --stdout --clear --title "MENU BOX" \
-        --menu " Choose the installed package you want ot work on :" 20 51 14 \
-	` echo "$liste_rpm" | while read nom ; do echo -n "$nom $nom "; done ` )
+        --menu " Choose the installed package you want ot work on :" 20 80 15 \
+	` echo "$liste_rpm" | while read name ; do echo -n "$name $name "; done ` )
+#	` echo "$liste_rpm" | while read name summary; do echo -n "$name $summary "; done ` )
 
 retval=$?
 
@@ -122,6 +123,7 @@ esac
 
 function main_menu() {
 
+option=""
 
 choose_type
 
