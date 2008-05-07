@@ -23,20 +23,13 @@
 : ${DIALOG_CANCEL=1}
 : ${DIALOG_ESC=255}
 
-
-tempfile=/tmp/xrpmrebuild$$
-trap "rm -f $tempfile" 0 1 2 5 15
-
 ##################################################################
 function choose_type() {
-$DIALOG --clear --title "XRPMREBUILD" \
+choice=` $DIALOG --stdout --clear --title "XRPMREBUILD" \
         --menu " Choose the type of package you want ot work on :" 20 51 4 \
 	"file"  "rpm file" \
-        "database" "installed package (rpm database)"  2> $tempfile
-
+        "database" "installed package (rpm database)"  `
 retval=$?
-
-choice=`cat $tempfile`
 
 case $retval in
   $DIALOG_OK)
@@ -76,13 +69,11 @@ echo "wait for rpm list"
 #liste_rpm=$( rpm -qa --qf '%{NAME} "%{SUMMARY}" \n' | sort | sed "s/'/ /g" )
 liste_rpm=$( rpm -qa --qf '%{NAME}  \n' | sort )
 
-$DIALOG --clear --title "MENU BOX" \
+target=$( $DIALOG --stdout --clear --title "MENU BOX" \
         --menu " Choose the installed package you want ot work on :" 20 51 14 \
-	` echo "$liste_rpm" | while read nom ; do echo -n "$nom $nom "; done ` 2> $tempfile
+	` echo "$liste_rpm" | while read nom ; do echo -n "$nom $nom "; done ` )
 
 retval=$?
-
-target=`cat $tempfile`
 
 case $retval in
   $DIALOG_OK)
@@ -97,7 +88,8 @@ esac
 }
 ##################################################################
 function select_options() {
-$DIALOG --title "XRPMREBUILD" \
+
+choice=` $DIALOG --stdout --title "XRPMREBUILD" \
         --checklist " Choose the rpmrebuild options :" 20 51 10 \
 	"autoprovide"  "autoprovide" off \
 	"autorequire"  "autorequire" off \
@@ -105,11 +97,9 @@ $DIALOG --title "XRPMREBUILD" \
 	"edit-spec"  "edit-spec" off \
         "pug-from-fs" "pug-from-fs" off \
 	"verbose"  "verbose" off \
-	"verify"  "verify" off 2> $tempfile
+	"verify"  "verify" off `
 
 retval=$?
-
-choice=`cat $tempfile`
 
 for c in $choice
 do
