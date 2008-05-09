@@ -66,13 +66,14 @@ function select_installed() {
 
 echo "wait for rpm list"
 
-liste_rpm=$( rpm -qa --qf '%{NAME}-%{VERSION}-%{RELEASE} "%{SUMMARY}" \n' | sort | sed -e "s/'/ /g" -e 's/`/ /g' )
+liste_rpm=$( rpm -qa --qf '%{NAME}-%{VERSION}-%{RELEASE} "%{SUMMARY}" \\\n' | sort | sed -e "s/'/ /g" -e 's/`/ /g' )
 #liste_rpm=$( rpm -qa --qf '%{NAME}-%{VERSION}-%{RELEASE} \n' | sort )
 
 tmpfile=/tmp/xrpmrebuild.$$
 
 echo "$DIALOG --stdout --clear --title \"MENU BOX\" --menu \" Choose the installed package you want ot work on :\" 20 70 15 \\" > $tmpfile
-echo "$liste_rpm" | while read name summary; do echo  "$name $summary \\"; done >> $tmpfile
+#echo "$liste_rpm" | while read name summary; do echo  "$name $summary \\"; done >> $tmpfile
+echo "$liste_rpm" >> $tmpfile
 chmod +x $tmpfile
 target=$( $tmpfile )
 
