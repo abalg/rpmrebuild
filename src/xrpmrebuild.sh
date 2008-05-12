@@ -71,10 +71,7 @@ liste_rpm=$( rpm -qa --qf '%{NAME}-%{VERSION}-%{RELEASE} "%{SUMMARY}" \\\n' | so
 
 
 target=$(
-	{ 
-		echo "$DIALOG --stdout --clear --title \"MENU BOX\" --menu \" Choose the installed package you want ot work on :\" 20 70 15 \\"
-	echo "$liste_rpm"
-	} | /bin/sh -
+	echo "$DIALOG --stdout --clear --title \"MENU BOX\" --menu \" Choose the installed package you want ot work on :\" 20 70 15 $liste_rpm" | /bin/sh - 
 )
 retval=$?
 
