@@ -1,6 +1,6 @@
 #!/bin/bash
 ###############################################################################
-#   rpmrebuild 
+#   grpmrebuild
 #
 #    Copyright (C) 2002 by Eric Gerbier
 #    Bug reports to: gerbier@users.sourceforge.net
@@ -25,121 +25,137 @@
 
 ##################################################################
 function choose_type() {
-choice=` $DIALOG --stdout --clear --title "XRPMREBUILD" \
-        --menu " Choose the type of package you want ot work on :" 20 51 4 \
+	choice=$( $DIALOG --stdout --clear --title "XRPMREBUILD" \
+	--menu " Choose the type of package you want ot work on :" 20 51 4 \
 	"file"  "rpm file" \
-        "database" "installed package (rpm database)"  `
-retval=$?
+	"database" "installed package (rpm database)"  )
+	retval=$?
 
-case $retval in
-  $DIALOG_OK)
-    echo "'$choice' chosen.";;
-  $DIALOG_CANCEL)
-    echo "Cancel pressed.";
-    exit;;
-  $DIALOG_ESC)
-    echo "ESC pressed.";
-    exit;;
-esac
+	case $retval in
+	$DIALOG_OK)
+		echo "'$choice' chosen."
+	;;
+	$DIALOG_CANCEL)
+		echo "Cancel pressed.";
+		exit
+	;;
+	$DIALOG_ESC)
+		echo "ESC pressed.";
+		exit
+	;;
+	esac
 }
 ##################################################################
 function select_file() {
 
-option="-p"
+	option="-p"
 
-local=`pwd`
+	local=`pwd`
 
-target=` $DIALOG --stdout --clear --title "XRPMREBUILD" --fselect $local 25 60  `
+	target=$( $DIALOG --stdout --clear --title "XRPMREBUILD" --fselect $local 25 60  )
 
-case $? in
-        $DIALOG_OK)
-	echo "file \"$target\" chosen";;
-        $DIALOG_CANCEL) 
-                echo "Cancel pressed.";
-		main_menu;;
-        $DIALOG_ESC)
-                echo "Box closed.";;
-esac
+	case $? in
+	$DIALOG_OK)
+		echo "file \"$target\" chosen"
+	;;
+	$DIALOG_CANCEL)
+		echo "Cancel pressed.";
+		main_menu
+	;;
+	$DIALOG_ESC)
+		echo "Box closed."
+	;;
+	esac
 }
 ##################################################################
 function select_installed() {
 
-echo "wait for rpm list"
+	echo "wait for rpm list"
 
-liste_rpm=$( rpm -qa --qf '%{NAME}-%{VERSION}-%{RELEASE} "%{SUMMARY}" \\\n' | sort | sed -e "s/'/ /g" -e 's/`/ /g' )
-#liste_rpm=$( rpm -qa --qf '%{NAME}-%{VERSION}-%{RELEASE} \n' | sort )
-
-
-target=$(
-	echo "$DIALOG --stdout --clear --title \"MENU BOX\" --menu \" Choose the installed package you want ot work on :\" 20 70 15 $liste_rpm" | /bin/sh - 
-)
-retval=$?
+	liste_rpm=$( rpm -qa --qf '%{NAME}-%{VERSION}-%{RELEASE} "%{SUMMARY}" \\\n' | sort | sed -e "s/'/ /g" -e 's/`/ /g' )
 
 
-case $retval in
-  $DIALOG_OK)
-    echo "rpm '$target' chosen.";;
-  $DIALOG_CANCEL)
-    echo "Cancel pressed.";
-    main_menu;;
-  $DIALOG_ESC)
-    echo "ESC pressed.";
-    exit;;
-esac
+	target=$(
+		echo "$DIALOG --stdout --clear --title \"MENU BOX\" --menu \" Choose the installed package you want ot work on :\" 20 70 15 $liste_rpm" | /bin/sh -
+	)
+	retval=$?
+
+
+	case $retval in
+	$DIALOG_OK)
+		echo "rpm '$target' chosen."
+	;;
+	$DIALOG_CANCEL)
+		echo "Cancel pressed.";
+		main_menu
+	;;
+	$DIALOG_ESC)
+		echo "ESC pressed.";
+		exit
+	;;
+	esac
 }
 ##################################################################
 function select_options() {
 
-choice=` $DIALOG --stdout --title "XRPMREBUILD" \
-        --checklist " Choose the rpmrebuild options :" 20 51 10 \
-	"autoprovide"  "autoprovide" off \
-	"autorequire"  "autorequire" off \
-	"comment-missing"  "comment-missing" off \
-	"edit-spec"  "edit-spec" off \
-        "pug-from-fs" "pug-from-fs" off \
-	"verbose"  "verbose" off \
-	"verify"  "verify" off `
+	choice=$(
+		$DIALOG --stdout --title "XRPMREBUILD" \
+		--checklist " Choose the rpmrebuild options :" 20 51 10 \
+		"autoprovide"  "autoprovide" off \
+		"autorequire"  "autorequire" off \
+		"comment-missing"  "comment-missing" off \
+		"edit-spec"  "edit-spec" off \
+		"pug-from-fs" "pug-from-fs" off \
+		"verbose"  "verbose" off \
+		"verify"  "verify" off \
+	)
 
-retval=$?
+	retval=$?
 
-for c in $choice
-do
-	option="$option --$c"
+	for c in $choice
+	do
+		# remove quotes
+		cc=$( echo $c | sed 's/"//g' )
+		option="$option --$cc"
 
-done
+	done
 
-case $retval in
-  $DIALOG_OK)
-    echo "'$choice' chosen. : $option";;
-  $DIALOG_CANCEL)
-    echo "Cancel pressed.";
-    main_menu;;
-  $DIALOG_ESC)
-    echo "ESC pressed.";
-    exit;;
-esac
+	case $retval in
+	$DIALOG_OK)
+		echo "'$choice' chosen. : $option"
+	;;
+	$DIALOG_CANCEL)
+		echo "Cancel pressed.";
+		main_menu
+	;;
+	$DIALOG_ESC)
+		echo "ESC pressed.";
+		exit
+	;;
+	esac
 }
 ##################################################################
 
 function main_menu() {
 
-option=""
+	option=""
 
-choose_type
+	choose_type
 
-case $choice in
+	case $choice in
 	file)
-	select_file
+		select_file
 	;;
 	database)
-	select_installed
+		select_installed
 	;;
 	*)
 	;;
-esac
+	esac
 
-select_options
+	select_options
 }
 ##################################################################
 main_menu
+
 rpmrebuild $option $target
