@@ -285,7 +285,7 @@ function CheckTags
 	rpm_tags=$( rpm --querytags )
 
 	# rem : rpmrebuild.usedtags is builf by extract_tags.pl during package build (cf Makefile)
-	rpmrebuild_tags=$( cat rpmrebuild.usedtags )
+	rpmrebuild_tags=$( cat $MY_LIB_DIR/rpmrebuild.usedtags )
 
 	# check for all rpmrebuild tags
 	errors=0
