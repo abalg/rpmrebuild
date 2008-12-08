@@ -107,7 +107,7 @@ function QuestionsToUser
 	[ "X$spec_only" = "Xyes" ] && return 0 ## spec only mode, no questions
 
 	AskYesNo "$WantContinue" || return
-	RELEASE_ORIG="$(spec_query_qf qf_spec_release )"
+	RELEASE_ORIG="$(spec_query qf_spec_release )"
 	[ -z "$RELEASE_NEW" ] && \
 	AskYesNo "$WantChangeRelease" && {
 		echo -n "$EnterRelease $RELEASE_ORIG): "
