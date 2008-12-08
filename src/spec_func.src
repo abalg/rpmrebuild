@@ -2,6 +2,7 @@
 ###############################################################################
 #    Copyright (C) 2004 by Valery Reznic
 #    This file is a part of the rpmrebuild project
+#    $Id$
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -38,14 +39,9 @@ function spec_auto_prov
 ###############################################################################
 function spec_query
 {
-	local RPM_QUERY="rpm --query --i18ndomains /dev/null $package_flag"
-	HOME=$MY_LIB_DIR $RPM_QUERY $1 $PAQUET || return
-	return 0
-}
-
-function spec_query_qf
-{
-	spec_query "--queryformat '$1'" || return
+	rpm_qf=$( $1 )
+	local RPM_QUERY="rpm --query --i18ndomains /dev/null $package_flag --queryformat "
+	$RPM_QUERY "$rpm_qf" $PAQUET || return
 	return 0
 }
 
@@ -53,7 +49,7 @@ function spec_query_qf
 function spec_files
 {
 	rm -f $FILES_IN || return
-	spec_query --spec_files > $FILES_IN || return
+	spec_query qf_spec_files > $FILES_IN || return
 	/bin/bash $MY_LIB_DIR/rpmrebuild_files.sh < $FILES_IN || return
 	return 0
 }
@@ -66,9 +62,9 @@ Release:       $RELEASE_NEW
 	}"
 
 	if [ "x$RELEASE_NEW" = "x" ]; then
-		spec_query --spec_preamble                         || return
+		spec_query qf_spec_preamble                         || return
 	else
-		spec_query --spec_preamble | sed -e "$sed_release" || return
+		spec_query qf_spec_preamble | sed -e "$sed_release" || return
 	fi
 }
 
@@ -80,7 +76,7 @@ function spec_provides
 	# Comment out Provides with pgp()
 	local sed_provides='/Provides[[:space:]]*:[[:space:]]*gpg(.*)/s/^/#/'
 	[ "X$autoprovide" = "Xyes" ] && sed_provides="$sed_provides$sed_comment"
-	spec_query --spec_provides | sed -e "$sed_provides" || return
+	spec_query qf_spec_provides | sed -e "$sed_provides" || return
 	return 0
 }
 
@@ -92,7 +88,7 @@ function spec_requires
 	# Comment out Requires with rpmlib()
 	local sed_requires='/Requires[[:space:]]*:[[:space:]]*rpmlib(.*)/s/^/#/'
 	[ "X$autorequire" = "Xyes" ] && sed_requires="$sed_requires$sed_comment"
-	spec_query --spec_requires | sed -e "$sed_requires" || return
+	spec_query qf_spec_requires | sed -e "$sed_requires" || return
 	return 0
 }
 
@@ -103,19 +99,19 @@ function SpecGeneration
 
 	local i=1
 	spec_preamble                  > $SPEC_PREAMBLE.$i     || return
-	spec_query --spec_conflicts    > $SPEC_CONFLICTS.$i    || return
-	spec_query --spec_obsoletes    > $SPEC_OBSOLETES.$i    || return
+	spec_query qf_spec_conflicts    > $SPEC_CONFLICTS.$i    || return
+	spec_query qf_spec_obsoletes    > $SPEC_OBSOLETES.$i    || return
 	spec_provides                  > $SPEC_PROVIDES.$i     || return
 	spec_requires                  > $SPEC_REQUIRES.$i     || return
-	spec_query --spec_description  > $SPEC_DESCRIPTION.$i  || return
+	spec_query qf_spec_description  > $SPEC_DESCRIPTION.$i  || return
 	spec_files                     > $SPEC_FILES.$i        || return
-	spec_query --spec_triggers     > $SPEC_TRIGGERS.$i     || return
-	spec_query --spec_pre          > $SPEC_PRE.$i          || return
-	spec_query --spec_post         > $SPEC_POST.$i         || return
-	spec_query --spec_preun        > $SPEC_PREUN.$i        || return
-	spec_query --spec_postun       > $SPEC_POSTUN.$i       || return
-	spec_query --spec_verifyscript > $SPEC_VERIFYSCRIPT.$i || return
-	spec_query --spec_changelog    > $SPEC_CHANGELOG.$i    || return
+	spec_query qf_spec_triggers     > $SPEC_TRIGGERS.$i     || return
+	spec_query qf_spec_pre          > $SPEC_PRE.$i          || return
+	spec_query qf_spec_post         > $SPEC_POST.$i         || return
+	spec_query qf_spec_preun        > $SPEC_PREUN.$i        || return
+	spec_query qf_spec_postun       > $SPEC_POSTUN.$i       || return
+	spec_query qf_spec_verifyscript > $SPEC_VERIFYSCRIPT.$i || return
+	spec_query qf_spec_changelog    > $SPEC_CHANGELOG.$i    || return
 
 	return 0
 }
