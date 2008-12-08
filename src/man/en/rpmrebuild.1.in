@@ -3,10 +3,6 @@
 rpmrebuild \- a tool to build an rpm package from an installed package
 .SH "SYNOPSIS"
 rpmrebuild [\fIoption\fP] <\fIpackagename\fP>
-.br 
-or
-.br 
-rpm \-\-rpmrebuild [\fIoption\fP] <\fIpackagename\fP>
 .SH "DESCRIPTION"
 rpmrebuild is a tool to build easily rpm package.
 it can be used to build an rpm file from an installed package (lost rpm) or 
@@ -224,9 +220,6 @@ change\-spec\-pre pgm2 bb
 \fB~/.rpmmacros\fP 
 is used by rpm when building packages (macros)
 .TP 
-\fB/etc/popt\fP
-contains rpm alias used by rpmrebuild
-.TP 
 \fB$RPMREBUILD_TMPDIR/work\fP
 directory where rpmrebuild put temporary files.
 .SH "ENVIRONMENT"
@@ -244,39 +237,39 @@ used to specify an editor for specfile. if not set \fBvi\fP used.
 .LP 
 Build an rpm package as closed as possible to original one:
 .LP 
-\fBrpm \-\-rpmrebuild \-\-batch package\fP
+\fBrpmrebuild \-\-batch package\fP
 .LP 
 Build a modified package:
 .LP 
-\fBrpm \-\-rpmrebuild \-\-keep\-perm package\fP
+\fBrpmrebuild \-\-keep\-perm package\fP
 .LP 
 Build a rpm from another rpm file:
 .LP 
-\fBrpm \-\-rpmrebuild \-\-package \-\-filter filter /usr/src/redhat/i386/package\-i386.rpm\fP
+\fBrpmrebuild \-\-package \-\-filter filter /usr/src/redhat/i386/package\-i386.rpm\fP
 .LP 
 Rebuild rpm as legacy (rpm[23]) package:
 .LP 
-\fBrpm \-\-rpmrebuild \-\-additional "\-\-nodirtokens" bash\fP
+\fBrpmrebuild \-\-additional "\-\-nodirtokens" bash\fP
 .LP 
 Specify generated rpm name:
 .LP 
-\fBrpm \-\-rpmrebuild \-\-define "_rpmfilename %%{NAME}.rpm" bash\fP
+\fBrpmrebuild \-\-define "_rpmfilename %%{NAME}.rpm" bash\fP
 .LP 
 Change package interactive
 .LP 
-\fBrpm \-\-rpmrebuild \-\-package \-\-change\-files "/bin/bash" /some/place/bash.rpm\fP
+\fBrpmrebuild \-\-package \-\-change\-files "/bin/bash" /some/place/bash.rpm\fP
 .LP 
 Change package non\-interactive
 .LP 
-\fBrpm \-\-rpmrebuild \-\-package \-\-change\-files "a.sh && b.sh" /some/place/bash.rpm\fP
+\fBrpmrebuild \-\-package \-\-change\-files "a.sh && b.sh" /some/place/bash.rpm\fP
 .LP 
 if you have problem with rpm building, and if you know specfile syntax, you can also edit it:
 .LP 
-\fBrpm \-\-rpmrebuild  \-\-edit\-whole package\fP
+\fBrpmrebuild  \-\-edit\-whole package\fP
 .LP 
 batch change of version tag
-.LP
-\fBrpm \-\-rpmrebuild  \-\-change\-spec\-preamble='sed \-e "s/^Version:.*/Version: YourVersion/"' YourPackage\fP
+.LP 
+\fBrpmrebuild  \-\-change\-spec\-preamble='sed \-e "s/^Version:.*/Version: YourVersion/"' YourPackage\fP
 .SH "AUTHORS"
 .LP 
 Eric Gerbier <gerbier@users.sourceforge.net>
@@ -303,7 +296,7 @@ this program is distributed under GNU General Public License
 .br 
 It is provided "as is", without any express or implied
 warranties.  
-.br
+.br 
 See the file COPYING for details.
 .SH "SEE ALSO"
 .LP 

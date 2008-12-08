@@ -3,10 +3,6 @@
 rpmrebuild \- un outil pour construire un package rpm à partir d'un package installé
 .SH "SYNOPSIS"
 rpmrebuild [\fIoption\fP] <\fInom_de_package\fP>
-.br 
-ou
-.br 
-rpm \-\-rpmrebuild [\fIoption\fP] <\fInom_de_package\fP>
 .SH "DESCRIPTION"
 rpmrebuild est un outil pour construire facilement un package rpm.
 Il peut être utilisé pour fabriquer un fichier rpm à partir d'un package installé ou pour modifier un package : modifiez les fichiers installés et lancez rpmrebuild.
@@ -221,9 +217,6 @@ change\-spec\-pre pgm2 bb
 \fB~/.rpmmacros\fP 
 ce fichier est utilisé par rpm lors de la construction de packages (macros)
 .TP 
-\fB/etc/popt\fP
-contient des alias rpm utilisés par rpmrebuild
-.TP 
 \fB$RPMREBUILD_TMPDIR/work\fP
 répertoire des fichiers temporaires.
 .SH "ENVIRONMENT"
@@ -241,39 +234,39 @@ peut aussi être utilisé pour spécifier un editeur de fichier, si \fBVISUAL\fP n'
 .LP 
 Construire un package rpm aussi proche que possible de l'original :
 .LP 
-\fBrpm \-\-rpmrebuild \-\-batch package\fP
+\fBrpmrebuild \-\-batch package\fP
 .LP 
 Construire un package modifié :
 .LP 
-\fBrpm \-\-rpmrebuild \-\-keep\-perm package\fP
+\fBrpmrebuild \-\-keep\-perm package\fP
 .LP 
 Construire un rpm à partir d'un fichier rpm en y appliquant un filtre :
 .LP 
-\fBrpm \-\-rpmrebuild \-\-package \-\-filter filter /some/place/package.rpm\fP
+\fBrpmrebuild \-\-package \-\-filter filter /some/place/package.rpm\fP
 .LP 
 Passez des options pour rpm:
 .LP 
-\fBrpm \-\-rpmrebuild \-\-additional "\-\-nodirtokens" package\fP
+\fBrpmrebuild \-\-additional "\-\-nodirtokens" package\fP
 .LP 
 Donner un nom pour le fichier rpm généré:
 .LP 
-\fBrpm \-\-rpmrebuild \-\-define "_rpmfilename %%{NAME}.rpm" bash\fP
+\fBrpmrebuild \-\-define "_rpmfilename %%{NAME}.rpm" bash\fP
 .LP 
 Modification interactive du package:
 .LP 
-\fBrpm \-\-rpmrebuild \-\-package \-\-change\-files="/bin/bash" /some/place/package.rpm\fP
+\fBrpmrebuild \-\-package \-\-change\-files="/bin/bash" /some/place/package.rpm\fP
 .LP 
 Modification batch du package :
 .LP 
-\fBrpm \-\-rpmrebuild \-\-package \-\-change\-files "a.sh && b.sh" /some/place/package.rpm\fP
+\fBrpmrebuild \-\-package \-\-change\-files "a.sh && b.sh" /some/place/package.rpm\fP
 .LP 
 Si vous connaissez la syntaxe des fichier specfile, vous pouvez les éditer "au vol" :
 .LP 
-\fBrpm \-\-rpmrebuild  \-\-edit\-whole package\fP
-.LP
+\fBrpmrebuild  \-\-edit\-whole package\fP
+.LP 
 changement en mode batch de la version
-.LP
-\fBrpm \-\-rpmrebuild  \-\-change\-spec\-preamble='sed \-e "s/^Version:.*/Version: VotreVersion/"' Package\fP
+.LP 
+\fBrpmrebuild  \-\-change\-spec\-preamble='sed \-e "s/^Version:.*/Version: VotreVersion/"' Package\fP
 
 .SH "AUTHORS"
 .LP 
