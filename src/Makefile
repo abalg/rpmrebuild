@@ -25,22 +25,19 @@ LIB_SCRIPTS :=             \
    rpmrebuild_files.sh     \
    rpmrebuild_buildroot.sh \
    rpmrebuild_ghost.sh     \
-   run.sh
 
 INCLUDE_SCRIPTS :=       \
    processing_func.src   \
+   rpmrebuild_rpmqf.src  \
    rpmrebuild_parser.src \
    spec_func.src
 
-POPTS :=                 \
-   rpmrebuild_popt       \
-   popt-without-POPTdesc \
-   popt-with-POPTdesc    \
+DATA :=                 \
+   rpmrebuild.usedtags       \
 
-SPEC_SCRIPTS :=                  \
-   spec.scripts.input            \
-   spec.scripts.make.sh          \
-   remove_from_popt.make.include \
+#SPEC_SCRIPTS :=                  \
+#	spec.scripts.input	\
+#   spec.scripts.make.sh          \
 
 MANPAGES_BASE :=        \
    rpmrebuild.1         \
@@ -70,7 +67,7 @@ SOURCES :=               \
    $(SCRIPTS)            \
    $(LIB_SCRIPTS)        \
    $(INCLUDE_SCRIPTS)    \
-   $(POPTS)              \
+   $(DATA)              \
    $(SPEC_SCRIPTS)       \
    $(MANPAGES_SRC)	 \
    $(LOCALES)		\
@@ -93,7 +90,6 @@ define Spec
       echo "Version: $$Version"        && \
       echo "%define release $$Release" && \
       cat rpmrebuild.spc               && \
-      cat spec.scripts                 && \
       echo "%changelog"                && \
       cat Changelog                    && \
       :                                ;  \
@@ -101,19 +97,21 @@ define Spec
 endef
 
 all: rpmrebuild.spec VERSION $(MANPAGES)
-	$(LN) rpmrebuild_popt .popt
 	$(MAKE) -C plugins $@
 
-rpmrebuild.spec: rpmrebuild.spc spec.scripts Version Release Changelog 
+rpmrebuild.usedtags: rpmrebuild_rpmqf.src
+	./extract_tags.pl > rpmrebuild.usedtags
+
+rpmrebuild.spec: rpmrebuild.spc Version Release Changelog 
 	$(RM) $@
 	$(Spec) > $@ || { $(RM) $@; exit 1; }
 
 $(MANPAGES): %: %.in $(TOP_DIR)/Version
 	$(MakeManPage)
 
-spec.scripts:
-	$(RM) $@
-	/bin/sh spec.scripts.make.sh < $@.input > $@ || { $(RM) $@; exit 1; }
+#spec.scripts:
+#	$(RM) $@
+#	/bin/sh spec.scripts.make.sh < $@.input > $@ || { $(RM) $@; exit 1; }
 
 VERSION: Version
 	$(RM) $@
@@ -125,9 +123,7 @@ install:
 
 	$(MKDIR)                                  $(TARGET_LIB)
 	$(INSTALL_RUN) $(LIB_SCRIPTS)             $(TARGET_LIB)
-	$(INSTALL_RO)  $(INCLUDE_SCRIPTS) VERSION $(TARGET_LIB)
-	$(INSTALL_RO)  $(POPTS)                   $(TARGET_LIB)
-	cd $(TARGET_LIB) && $(LN) rpmrebuild_popt .popt
+	$(INSTALL_RO) $(INCLUDE_SCRIPTS) $(DATA) VERSION $(TARGET_LIB)
 	$(InstallManPages)
 	$(InstallLocales)
 	$(MAKE) -C plugins $@
@@ -143,8 +139,7 @@ rpm rpmbuild:	tar
 
 clean:
 	$(RMDIR) $(ROOT) $(RPM_BUILD_DIR)
-	$(RM)    VERSION rpmrebuild.spec spec.scripts *.rpm rpmrebuild.tar.gz 
-	$(RM)    .popt
+	$(RM)    VERSION rpmrebuild.spec *.rpm rpmrebuild.tar.gz 
 	$(RM)    $(MANPAGES)
 	$(MAKE) -C plugins $@
 
