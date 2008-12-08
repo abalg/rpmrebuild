@@ -3,10 +3,6 @@
 rpmrebuild_plugins \- is an engine to expand \fBrpmrebuild\fP functionality.
 .SH "SYNOPSIS"
 rpmrebuild [\fInon\-plugins\-option\fP] [\fIplugins\-option\fP] <\fIpackagename\fP>
-.br 
-or
-.br 
-rpm \-\-rpmrebuild [\fInon\-plugins\-option\fP] [\fIplugins\-option\fP] <\fIpackagename\fP>
 .SH "DESCRIPTION"
 \fBrpmrebuild\fP itself try to do it's best to reconstruct rpm package as close to original as possible.
 .LP 
