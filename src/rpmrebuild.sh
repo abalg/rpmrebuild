@@ -107,7 +107,7 @@ function QuestionsToUser
 	[ "X$spec_only" = "Xyes" ] && return 0 ## spec only mode, no questions
 
 	AskYesNo "$WantContinue" || return
-	RELEASE_ORIG="$(spec_query_qf '%{RELEASE}')"
+	RELEASE_ORIG="$(spec_query_qf qf_spec_release )"
 	[ -z "$RELEASE_NEW" ] && \
 	AskYesNo "$WantChangeRelease" && {
 		echo -n "$EnterRelease $RELEASE_ORIG): "
@@ -284,12 +284,8 @@ function CheckTags
 	# get rpm tags
 	rpm_tags=$( rpm --querytags )
 
-	# get tags used in rpmrebuild
-	# rpmrebuild_popt should follow a strict syntaxe
-	# "%|" begin a test line
-	# tr command remove all not alpha characters
-	# the "dummy" query should be filtered too
-	rpmrebuild_tags=$( grep "^%|" $MY_LIB_DIR/rpmrebuild_popt |  tr -cs '[:alpha:]' '[\n*]' | grep -v dummy )
+	# rem : rpmrebuild.usedtags is builf by extract_tags.pl during package build (cf Makefile)
+	rpmrebuild_tags=$( cat rpmrebuild.usedtags )
 
 	# check for all rpmrebuild tags
 	errors=0
@@ -351,6 +347,7 @@ function Main
 	source $MY_LIB_DIR/rpmrebuild_parser.src || return
 	source $MY_LIB_DIR/spec_func.src         || return
 	source $MY_LIB_DIR/processing_func.src   || return
+	source $MY_LIB_DIR/rpmrebuild_rpmqf.src   || return
 
 	# check language
 	case "$LANG" in
