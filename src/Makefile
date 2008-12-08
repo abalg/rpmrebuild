@@ -32,6 +32,9 @@ INCLUDE_SCRIPTS :=       \
    rpmrebuild_parser.src \
    spec_func.src
 
+PERLS :=           \
+   extract_tags.pl \
+
 DATA :=                 \
    rpmrebuild.usedtags       \
 
@@ -67,7 +70,7 @@ SOURCES :=               \
    $(SCRIPTS)            \
    $(LIB_SCRIPTS)        \
    $(INCLUDE_SCRIPTS)    \
-   $(DATA)              \
+   $(PERLS)             \
    $(SPEC_SCRIPTS)       \
    $(MANPAGES_SRC)	 \
    $(LOCALES)		\
@@ -96,11 +99,12 @@ define Spec
    }
 endef
 
-all: rpmrebuild.spec VERSION $(MANPAGES)
+all: rpmrebuild.spec VERSION $(MANPAGES) $(DATA)
 	$(MAKE) -C plugins $@
 
-rpmrebuild.usedtags: rpmrebuild_rpmqf.src
-	./extract_tags.pl > rpmrebuild.usedtags
+rpmrebuild.usedtags: extract_tags.pl rpmrebuild_rpmqf.src
+	$(RM) $@
+	perl $^ > $@ || { $(RM) $@; exit 1; }
 
 rpmrebuild.spec: rpmrebuild.spc Version Release Changelog 
 	$(RM) $@
@@ -141,6 +145,7 @@ clean:
 	$(RMDIR) $(ROOT) $(RPM_BUILD_DIR)
 	$(RM)    VERSION rpmrebuild.spec *.rpm rpmrebuild.tar.gz 
 	$(RM)    $(MANPAGES)
+	$(RM)    $(DATA)
 	$(MAKE) -C plugins $@
 
 man: $(MANPAGES)
