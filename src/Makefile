@@ -30,17 +30,13 @@ INCLUDE_SCRIPTS :=       \
    processing_func.src   \
    rpmrebuild_rpmqf.src  \
    rpmrebuild_parser.src \
-   spec_func.src
+   spec_func.src         \
 
 PERLS :=           \
    extract_tags.pl \
 
 DATA :=                 \
-   rpmrebuild.usedtags       \
-
-#SPEC_SCRIPTS :=                  \
-#	spec.scripts.input	\
-#   spec.scripts.make.sh          \
+   rpmrebuild.usedtags  \
 
 MANPAGES_BASE :=        \
    rpmrebuild.1         \
@@ -70,10 +66,10 @@ SOURCES :=               \
    $(SCRIPTS)            \
    $(LIB_SCRIPTS)        \
    $(INCLUDE_SCRIPTS)    \
-   $(PERLS)             \
+   $(PERLS)              \
    $(SPEC_SCRIPTS)       \
    $(MANPAGES_SRC)	 \
-   $(LOCALES)		\
+   $(LOCALES)		 \
    $(DOC_FILES)          \
    Makefile              \
    Makefile.include      \
@@ -113,10 +109,6 @@ rpmrebuild.spec: rpmrebuild.spc Version Release Changelog
 $(MANPAGES): %: %.in $(TOP_DIR)/Version
 	$(MakeManPage)
 
-#spec.scripts:
-#	$(RM) $@
-#	/bin/sh spec.scripts.make.sh < $@.input > $@ || { $(RM) $@; exit 1; }
-
 VERSION: Version
 	$(RM) $@
 	read VERSION < $< && echo "VERSION='$$VERSION'" > $@ || { $(RM) $@; exit 1; }
@@ -125,8 +117,8 @@ install:
 	$(MKDIR)                                  $(TARGET_DIR)
 	$(INSTALL_RUN) $(SCRIPTS)                 $(TARGET_DIR)
 
-	$(MKDIR)                                  $(TARGET_LIB)
-	$(INSTALL_RUN) $(LIB_SCRIPTS)             $(TARGET_LIB)
+	$(MKDIR)                                         $(TARGET_LIB)
+	$(INSTALL_RUN) $(LIB_SCRIPTS)                    $(TARGET_LIB)
 	$(INSTALL_RO) $(INCLUDE_SCRIPTS) $(DATA) VERSION $(TARGET_LIB)
 	$(InstallManPages)
 	$(InstallLocales)
@@ -137,8 +129,8 @@ tar:	rpmrebuild.spec man
 
 rpm rpmbuild:	tar
 	$(MKDIR) $(RPM_BUILD_DIR)
-	$@ -ba $(RPM_DEFINES) rpmrebuild.spec
-	export RPMOLD=y && $@ -ba $(RPM_DEFINES) rpmrebuild.spec
+	export RPMOLD="" && $@ -ba $(RPM_DEFINES) rpmrebuild.spec
+	export RPMOLD=y  && $@ -ba $(RPM_DEFINES) rpmrebuild.spec
 	rpm --resign rpmrebuild*.rpm
 
 clean:
