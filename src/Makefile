@@ -129,10 +129,9 @@ install:
 tar:	rpmrebuild.spec man
 	tar -cvzf $(TAR_FILE) $(TAR_NAMES)
 
-rpm rpmbuild:	tar
+rpmbuild:	tar
 	$(MKDIR) $(RPM_BUILD_DIR)
-	export RPMOLD="" && $@ -ba $(RPM_DEFINES) rpmrebuild.spec
-	export RPMOLD=y  && $@ -ba $(RPM_DEFINES) rpmrebuild.spec
+	$@ -ba $(RPM_DEFINES) rpmrebuild.spec
 	rpm --resign rpmrebuild*.rpm
 
 clean:
@@ -148,6 +147,5 @@ help:
 	@echo "list of targets :"
 	@echo "- tar : build tar.gz"
 	@echo "- rpmbuild : build rpm packages with rpm 4.x release"
-	@echo "- rpm : build rpm packages with rpm 3.x release (deprecated)"
 	@echo "- install : install software"
 	@echo "- man : build man pages"

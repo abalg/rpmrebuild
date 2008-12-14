@@ -1,4 +1,3 @@
-%{expand:%%define rpmold   %(if [ -n "$RPMOLD" ]; then echo 1; else echo 0; fi)}
 # Initial spec file created by autospec ver. 0.6 with rpm 2.5 compatibility
 Summary: A tool to build rpm file from rpm database
 Summary(fr): Un outil pour construire un package depuis une base rpm
@@ -20,13 +19,8 @@ Requires: fileutils
 Requires: sed
 # sort
 Requires: textutils
-%if %rpmold
-Requires: rpm < 4.0
-Release: %{release}rpm3
-%else
 Requires: rpm >= 4.0, /usr/bin/rpmbuild
-Release: %{release}rpm4
-%endif
+Release: %{release}
 
 %description
 rpmrebuild allow to build an rpm file from an installed rpm, or from
