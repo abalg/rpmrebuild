@@ -186,7 +186,18 @@ function RpmBuild
 	# for rpm 4.1 : use rpmbuild
 	local BUILDCMD=rpm
 	[ -x /usr/bin/rpmbuild ] && BUILDCMD=rpmbuild
-	eval $BUILDCMD $rpm_defines -bb $rpm_verbose $additional ${FIC_SPEC} || {
+
+	# rpm 4.4.6 ignore BuildRoot in the spec file, 
+	# so I have to provide define on the command line
+	# Worse, it disallow buildroot "/", so I have to trick it.
+	if [ "x$BUILDROOT" = "x/" ]; then
+		BUILDROOT="$RPMREBUILD_TMPDIR/my_root"
+		# Just in case previous link is here
+		rm -f $BUILDROOT || return
+		# Trick rpm (I hope :)
+		ln -s / $BUILDROOT || return
+	fi
+	eval $BUILDCMD --define "'buildroot $BUILDROOT'" $rpm_defines -bb $rpm_verbose $additional ${FIC_SPEC} || {
    		Error "package '${PAQUET}' $BuildFailed"
    		return 1
 	}
