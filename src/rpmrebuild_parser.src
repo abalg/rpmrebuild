@@ -1060,8 +1060,7 @@ function CommandLineParsing
 					tst_rpm=$( file $PAQUET )
 					case "x$tst_rpm" in
 						x*RPM\ *)
-							#ok
-							return
+							: #ok
 						;;
 						*)
 						Error "$NotAnRpm '$PAQUET'"
