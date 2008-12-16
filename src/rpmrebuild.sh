@@ -184,8 +184,7 @@ function RpmBuild
 	# reconstruction fichier rpm : le src.rpm est inutile
 	# build rpm file, the src.rpm is not usefull to do
 	# for rpm 4.1 : use rpmbuild
-	local BUILDCMD=rpm
-	[ -x /usr/bin/rpmbuild ] && BUILDCMD=rpmbuild
+	local BUILDCMD=rpmbuild
 
 	# rpm 4.4.6 ignore BuildRoot in the spec file, 
 	# so I have to provide define on the command line
