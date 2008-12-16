@@ -186,7 +186,7 @@ function RpmBuild
 	# for rpm 4.1 : use rpmbuild
 	local BUILDCMD=rpmbuild
 
-	# rpm 4.4.6 ignore BuildRoot in the spec file, 
+	# rpm 4.6 ignore BuildRoot in the spec file, 
 	# so I have to provide define on the command line
 	# Worse, it disallow buildroot "/", so I have to trick it.
 	if [ "x$BUILDROOT" = "x/" ]; then
