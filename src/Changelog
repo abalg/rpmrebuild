@@ -1,8 +1,11 @@
-* Tue Dec 16 2008 <valery_reznic@users.sourceforge.net> 2.2.4-1
+* Tue Dec 16 2008 <valery_reznic@users.sourceforge.net>
 - fix a problem: installation test failed when repackaged rpm file (with -p)
-* Tue Dec 16 2008 <valery_reznic@users.sourceforge.net> 2.2.4-1
-- fix for rpm 4.4.6, that ignore BuildRoot in the spec file
-flag
+
+* Tue Dec 16 2008 <valery_reznic@users.sourceforge.net>
+- fix for rpm 4.4.6, that ignore BuildRoot in the spec file flag
+
+* Wed Dec 05 2008 <gerbier@users.sourceforge.net> 
+- do not use popt any more
 
 * Wed Aug 06 2008 <gerbier@users.sourceforge.net> 2.2.3-1
 - fix a problem with new rpm security on mandriva (defaultbuildroot)
