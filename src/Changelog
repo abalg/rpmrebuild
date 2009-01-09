@@ -1,8 +1,11 @@
+* Wed Jan 09 2009 <gerbier@users.sourceforge.net> 2.3
+- release version 2.3
+
 * Tue Dec 16 2008 <valery_reznic@users.sourceforge.net>
 - fix a problem: installation test failed when repackaged rpm file (with -p)
 
 * Tue Dec 16 2008 <valery_reznic@users.sourceforge.net>
-- fix for rpm 4.4.6, that ignore BuildRoot in the spec file flag
+- fix for rpm 4.6 (fedora 10), that ignore BuildRoot in the spec file flag
 
 * Wed Dec 05 2008 <gerbier@users.sourceforge.net> 
 - do not use popt any more
