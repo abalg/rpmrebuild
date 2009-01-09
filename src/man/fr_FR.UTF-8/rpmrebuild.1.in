@@ -244,7 +244,12 @@ Construire un rpm à partir d'un fichier rpm en y appliquant un filtre :
 .LP 
 \fBrpmrebuild \-\-package \-\-filter filter /some/place/package.rpm\fP
 .LP 
-Passez des options pour rpm:
+Passer des options pour rpm:
+recontruire et signer le package bash 
+.LP  
+\fBrpmrebuild \-\-additional "\-\-sign" bash\fP
+.LP 
+reconstruire un package compatible avec rpm version 3 (legacy)
 .LP 
 \fBrpmrebuild \-\-additional "\-\-nodirtokens" package\fP
 .LP 

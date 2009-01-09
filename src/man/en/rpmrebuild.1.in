@@ -247,6 +247,10 @@ Build a rpm from another rpm file:
 .LP 
 \fBrpmrebuild \-\-package \-\-filter filter /usr/src/redhat/i386/package\-i386.rpm\fP
 .LP 
+rebuild and sign the bash package
+.LP 
+\fBrpmrebuild \-\-additional "\-\-sign" bash\fP
+.LP 
 Rebuild rpm as legacy (rpm[23]) package:
 .LP 
 \fBrpmrebuild \-\-additional "\-\-nodirtokens" bash\fP
