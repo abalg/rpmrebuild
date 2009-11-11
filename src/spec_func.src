@@ -171,12 +171,15 @@ function spec_concatenate
 	local sed_post="/^%%post/s/^%%/%/1"
 	# %%verifyscript -> %verifyscript (in begin of line)
 	local sed_verifyscript="/^%%verifyscript/s/^%%/%/1"
+	# %%global
+	local sed_global="/^%%global/s/^%%/%/1"
 	sed                                         \
 		-e "$sed_double_percent"            \
 		-e "$sed_trigger"                   \
 		-e "$sed_pre"                       \
 		-e "$sed_post"                      \
 		-e "$sed_verifyscript"              \
+		-e "$sed_global" 	             \
 		$SPEC_TRIGGERS.$si_triggers         \
 		$SPEC_PRE.$si_pre                   \
 		$SPEC_POST.$si_post                 \
