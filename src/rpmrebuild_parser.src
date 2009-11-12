@@ -22,6 +22,7 @@ function Usage
 	Echo "$name $UsageTitle
 $UsageUsage: $name [options] package
 options:
+   -5  --md5-compat-digest      $UsageMd5CompatDigest
    -a, --additional=<flags>	$UsageAdditional
    -b, --batch			$UsageBatch
    -c, --comment-missing=<y|n>	$UsageCommentMissing
@@ -627,7 +628,29 @@ function ProcessLongOptions
 				LONG_OPTION='pug-from-fs' # alias
 			;;
 
-			m | \
+			m)
+				AmbiguousOption
+				return 1
+			;;
+			md | \
+			md5 | \
+			md5- | \
+			md5-c | \
+			md5-co | \
+			md5-com | \
+			md5-comp | \
+			md5-compa | \
+			md5-compat | \
+			md5-compat- | \
+			md5-compat-d | \
+			md5-compat-di | \
+			md5-compat-dig | \
+			md5-compat-dige | \
+			md5-compat-diges | \
+			md5-compat-digest)
+				LONG_OPTION='md5-compat-digest'
+			;;
+
 			mo | \
 			mod | \
 			modi | \
@@ -890,6 +913,9 @@ function ProcessLongOptions
 				done < $INCLUDE_FILE || return
 			;;
 
+			md5-compat-digest)
+				md5_compat_digest="yes"
+			;;	
 			notest-install)
 				NOTESTINSTALL=1
 			;;
@@ -957,6 +983,7 @@ function CommandLineParsing
 	autorequire="no"
 	batch="no"
 	debug=""
+	md5_compat_digest="no"
 	need_change_files="no"
 	need_change_spec="no"
 	rpm_defines=""
@@ -976,9 +1003,10 @@ function CommandLineParsing
 
 	export LONG_OPTION
 
-	while getopts "a:bc:d:D:ef:hi:km:npPRrs:vVwy:-:" opt; do
+	while getopts "5a:bc:d:D:ef:hi:km:npPRrs:vVwy:-:" opt; do
 		OPTIND_INCR=""
 		case "$opt" in
+			5) LONG_OPTION=md5-compat-digest;;
 			a) LONG_OPTION=additional;;
 			b) LONG_OPTION=batch;;
 			c) LONG_OPTION=comment-missing;;

@@ -45,6 +45,7 @@ UsageInclude='lit les options dans le fichier <file>'
 UsageKeepPerm='équivalent de --pug-from-fs'
 UsagePugFs='conserver les permissions, uid et gid des fichiers installés'
 UsagePugDb='utiliser les permissions,uid, gid  définis dans la base rpm'
+UsageMd5CompatDigest='use rpm 4.4 compatible digest (md5)'
 UsageModify='équivalent de --change-files'
 UsageNoTestInstall="ne pas lancer le test d'installation en fin de construction"
 UsagePackage="travaille à partir du fichier rpm spécifié, au lieu d'un package installé"
