@@ -63,7 +63,7 @@ See <URL:http://rpmrebuild.sourceforge.net/>.
 .SH "NOTES"
 .LP 
 .TP 
-this plugin does not provide a set_tag.plug, because this form does not allow to pass arguments to the plugin
+a very simple but real plugin
 .SH "COPYRIGHT"
 .LP 
 rpmrebuild is copyright (C) 2008 by Eric Gerbier.
