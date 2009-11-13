@@ -21,7 +21,7 @@
 ###############################################################################
 # code's file of demo plugin for rpmrebuild
 
-version=1.0
+version=1.1
 ###############################################################################
 function msg () {
 	echo >&2 $*
@@ -71,7 +71,6 @@ case $LONG_OPTION in
 	;;
 esac
 
-liste=""
 while read line
 do
 	if [ -n "$opt_null" ]
