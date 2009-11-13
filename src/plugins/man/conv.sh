@@ -1,4 +1,5 @@
 #!/bin/sh
+# conversion des fichier man d'iso-latin en utf8
 
 fic=$1
 
