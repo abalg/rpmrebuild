@@ -154,6 +154,27 @@ function RequeredArgument
 	return 1
 }
 ###############################################################################
+function Include
+{
+	while :; do 
+		read LONG_OPTION OPTARG || break
+		OPTARG_EXIST="$OPTARG"
+		case "x$LONG_OPTION" in
+			x#*)
+				: # comment, do nothing 
+				;;
+
+			x)
+				: # empty, do nothing
+				;;
+
+			*)
+				ProcessLongOptions || return
+				;;
+		esac || return
+	done < $INCLUDE_FILE
+}
+###############################################################################
 function ProcessLongOptions
 {
 		# Get "full" long option
@@ -924,23 +945,7 @@ function ProcessLongOptions
 					Error "$FileNotFound : '$OPTARG'"
 					return 1
 				fi
-				while :; do 
-					read LONG_OPTION OPTARG || break
-					OPTARG_EXIST="$OPTARG"
-					case "x$LONG_OPTION" in
-						x#*)
-							: # comment, do nothing 
-						;;
-
-						x)
-							: # empty, do nothing
-						;;
-
-						*)
-							ProcessLongOptions || return
-						;;
-					esac || return
-				done < $INCLUDE_FILE || return
+				Include || return
 			;;
 
 			list-plugin)
@@ -951,6 +956,9 @@ function ProcessLongOptions
 
 			md5-compat-digest)
 				md5_compat_digest="yes"
+				# or by plugin :
+				#INCLUDE_FILE="$RPMREBUILD_PLUGINS_DIR/compat_digest.plug"
+				#Include || return
 			;;	
 			notest-install)
 				NOTESTINSTALL=1
