@@ -34,6 +34,7 @@ options:
    -k, --keep-perm              $UsageKeepPerm
        --pug-from-fs            $UsagePugFs
        --pug-from-db (default)  $UsagePugDb
+   -l, --list-plugin		$UsageListPlug
    -m, --modify=<command>       $UsageModify
    -n, --notest-install		$UsageNoTestInstall
    -p, --package                $UsagePackage
@@ -103,6 +104,21 @@ options:
    -h, --help                               $UsagePluginHelp
 "
 
+}
+function List_Plugins
+{
+	plugindir=$( dirname $0)/plugins
+	for f in $plugindir/*.plug
+	do
+		plug=$(basename $f)
+		text=$(man $plug | awk 'NR==6{print}' )
+		if [ -n "$text" ]
+		then
+			echo "$text"
+		else
+			echo "$plug"
+		fi
+	done
 }
 ###############################################################################
 function Try_Help
@@ -628,6 +644,20 @@ function ProcessLongOptions
 				LONG_OPTION='pug-from-fs' # alias
 			;;
 
+			l | \
+			li | \
+			lis | \
+			list | \
+			list- | \
+			list-p | \
+			list-pl | \
+			list-plu | \
+			list-plug | \
+			list-plugi | \
+			list-plugin) \
+				LONG_OPTION='list-plugin'
+			;;
+
 			m)
 				AmbiguousOption
 				return 1
@@ -1003,7 +1033,7 @@ function CommandLineParsing
 
 	export LONG_OPTION
 
-	while getopts "5a:bc:d:D:ef:hi:km:npPRrs:vVwy:-:" opt; do
+	while getopts "5a:bc:d:D:ef:hi:klm:npPRrs:vVwy:-:" opt; do
 		OPTIND_INCR=""
 		case "$opt" in
 			5) LONG_OPTION=md5-compat-digest;;
@@ -1016,6 +1046,7 @@ function CommandLineParsing
 			f) LONG_OPTION=filter;;
 			i) LONG_OPTION=include;;
 			k) LONG_OPTION=keep-perm;;
+			l) LONG_OPTION=list-plugin;;
 			m) LONG_OPTION=modify;;    
 			n) LONG_OPTION=notest-install;;
 			p) LONG_OPTION=package;;
