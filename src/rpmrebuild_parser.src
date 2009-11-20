@@ -943,6 +943,12 @@ function ProcessLongOptions
 				done < $INCLUDE_FILE || return
 			;;
 
+			list-plugin)
+				List_Plugins
+				NEED_EXIT=0
+				return 0
+			;;
+
 			md5-compat-digest)
 				md5_compat_digest="yes"
 			;;	
