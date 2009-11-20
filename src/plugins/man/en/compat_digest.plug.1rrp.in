@@ -1,20 +1,16 @@
 .TH "compat_digest.plug" "1" "@VERSION@" "Eric Gerbier" "rpmrebuild plugin"
 .SH "NAME"
-compat_digest.plug \- a plugin for rpmrebuild, to replace a tag value in spec file
+compat_digest.plug \- a plugin for rpmrebuild, for digest compatibility with rpm 4.4x
 .SH "SYNOPSIS"
 .br 
-rpmrebuild  \-\-change\-spec\-preamble="compat_digest.sh \fI\-t tag value" \fP<\fIpackagename\fP>
+rpmrebuild  \-\-change\-spec\-preamble="compat_digest.sh <\fIpackagename\fP>
 .br 
 or
-.br 
-TAG_ID=tag
-.br 
-TAG_VAL=value
 .br 
 rpmrebuild  \-\-include compat_digest.plug <\fIpackagename\fP>
 
 .SH "DESCRIPTION"
-this plugin allow to replace a tag value in spec file
+this plugin force the rpm internal digest to be compatible with rpm 4.4.x
 .SH "OPTIONS"
 .TP 
 \fB\-h, \-\-help\fP
@@ -22,10 +18,6 @@ output help information plugins option and exit.
 .TP 
 \fB\-v, \-\-version\fP
 print plugin version and exit
-.TP 
-\fB\-t, \-\-tag\fP yourtag yourvalue
-replace the value of tag yourtag by yourvalue
- 
 .SH "FILES"
 .TP 
 \fBcompat_digest.sh\fP
@@ -37,21 +29,13 @@ contains the code for change\-spec\-preamble
 \fBcompat_digest.plug.1\fP
 is this man page
 .SH "ENVIRONMENT"
-TAG_ID : name of the spec tag to change
 .br 
-TAG_VAL : new value for the TAG_ID tag
 .SH "EXAMPLES"
 .LP 
-\fBrpmrebuild \-\-change\-spec\-preamble="compat_digest.sh \-t Release 2test" apache\fP
+\fBrpmrebuild \-\-change\-spec\-preamble="compat_digest.sh apache\fP
 
-to change the Release tag to "2test" for the package apache
-.br 
 you can do the same with the following syntax 
-.br 
 
-TAG_ID=Release
-.br 
-TAG_VAL="2test"
 .br 
 rpmrebuild \-\-include compat_digest.plug apache
 
@@ -63,6 +47,7 @@ See <URL:http://rpmrebuild.sourceforge.net/>.
 .SH "NOTES"
 .LP 
 .TP 
+interesting when building a noarch package on fedora 11 for a fedora 10
 
 .SH "COPYRIGHT"
 .LP 
@@ -74,6 +59,8 @@ It is provided "as is", without any express or implied
 warranties.  See the file COPYING for details.
 .SH "SEE ALSO"
 .LP 
-rpm(8), rpmbuild(8), rpmrebuild_plugins(1), demo.plug(1), demofiles.plug(1),  nodoc.plug(1), uniq.plug(1), file2pacDep.plug(1), 'man \-k rrp' for plugins specific manpages
+rpm(8), rpmbuild(8), rpmrebuild_plugins(1), demo.plug(1), demofiles.plug(1),  nodoc.plug(1), uniq.plug(1), file2pacDep.plug(1), 
+.br 
+man \-k rrp for plugins specific manpages
 
 
