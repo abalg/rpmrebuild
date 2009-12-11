@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
   <head>
     <title>rpmrebuild todo</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="Author" content="Gerbier" />
     <meta name="generator" content="vim" />
     <link rev="made" href="mailto:gerbier@users.sourceforge.net" />
@@ -15,40 +15,40 @@
     <div>
       <h1>a faire</h1>
       
-      <h2>problèmes résiduels</h2>
+      <h2>problÃ¨mes rÃ©siduels</h2>
       
       <h3>signature des packages (gpg or pgp)</h3>
       
       c'est la fonction impossible : il est par conception impossible de signer un
-      paquet modifié avec la signature d'origine (sauf à disposer de la clef privée)
+      paquet modifiÃ© avec la signature d'origine (sauf Ã  disposer de la clef privÃ©e)
       
-      <h3>méta-charactères dans la liste des fichiers</h3>
+      <h3>mÃ©ta-charactÃ¨res dans la liste des fichiers</h3>
       
       rpmrebuild ne sait pas re-construire des packages dont la liste de fichier
-      contient des "méta" charactères (par exemple "*" ). Cela semble du à un bug de rpm.
+      contient des "mÃ©ta" charactÃ¨res (par exemple "*" ). Cela semble du Ã  un bug de rpm.
       
-      <h3>compatibilité des requètes rpm</h3>
+      <h3>compatibilitÃ© des requÃ¨tes rpm</h3>
       
       Voir la description dans les fichier /usr/share/doc/rpm-*/tsort<br />
-      Cela pose 2 problèmes :
+      Cela pose 2 problÃ¨mes :
       
       <ul>
 	<li>Requires(quelquechose) n'existe pas pour rpm version 3</li>
-	<li>C'est impossible à écrire dans le format d'interrogation queryformat, il faut donc passer par du code intermédiaire, ce qui dégrade fortement les performances.</li>
+	<li>C'est impossible Ã  Ã©crire dans le format d'interrogation queryformat, il faut donc passer par du code intermÃ©diaire, ce qui dÃ©grade fortement les performances.</li>
       </ul>
       
       <h3>"mauvais" packages</h3>
       
-      rpmrebuild a été testé sur l'ensemble de la Redhat 6.2 (803 packages), 7.1 (581 packages) 
+      rpmrebuild a Ã©tÃ© testÃ© sur l'ensemble de la Redhat 6.2 (803 packages), 7.1 (581 packages) 
       7.3 (714 packages), 9.0 (1396 packages), sur la mandriva 2006, 2007 ...<br />
       
-      voici une liste réduite des packages qui ne marchent pas avec rpmrebuild :
+      voici une liste rÃ©duite des packages qui ne marchent pas avec rpmrebuild :
       <ul>
 	<li>AfterStep-1.8.0-1 (Redhat 6.2) : contient des fichiers avec des noms bizarres "..."</li>
-	<li>rpm-utils-1.5-1 : étrange section %post</li>
+	<li>rpm-utils-1.5-1 : Ã©trange section %post</li>
 	<li>vorbis-1.0beta4-3 (Redhat 7.1) : mauvaise syntaxe dans la section %post</li>
 	<li>libogg-1.0beta4-2 (Redhat 7.1) : mauvaise syntaxe dans la section %post</li>
-	<li>mount-2.11b-3 (Redhat 7.1) : core à l'installation</li>
+	<li>mount-2.11b-3 (Redhat 7.1) : core Ã  l'installation</li>
 	<li>guile-1.3.4-19 (Redhat 7.3, 9) : nom de fichier contenant "*"</li>
 	<li>man-pages-1.48-2 (Redhat 7.3) : mauvaise syntaxe de la section changelog (interpretation abusive d'une macro % )</li>
 	<li>arts, kdegraphics, kdepim (redhat 9) : mauvaises dependances</li>
@@ -58,13 +58,13 @@
       
       <h2>une interface graphique</h2>
       
-      Si nous (les développeurs) avons un jour du temps (et une demande), nous envisageons
+      Si nous (les dÃ©veloppeurs) avons un jour du temps (et une demande), nous envisageons
       de fournir une interface graphique optionnelle (dans un autre package), toujours dans 
-      un langage interprété.
+      un langage interprÃ©tÃ©.
       <hr />
       
       <hr />
-      <a href="index.fr.html">retour à la page principale</a>
+      <a href="index.fr.html">retour Ã  la page principale</a>
     </div>
   </body>
 </html>
