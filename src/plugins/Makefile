@@ -3,6 +3,7 @@ TOP_DIR := ..
 include $(TOP_DIR)/Makefile.include
 
 PLUGINS :=          \
+   compat_digest.plug \
    demo.plug        \
    demofiles.plug   \
    file2pacDep.plug \
@@ -12,6 +13,7 @@ PLUGINS :=          \
                     \
 
 SCRIPTS :=        \
+   compat_digest.sh \
    demo.sh        \
    demofiles.sh   \
    file2pacDep.sh \
