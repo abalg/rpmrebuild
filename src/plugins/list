@@ -1,5 +1,7 @@
+# $Id$
 plugin		: type of change
 -------------------------------
+compat_digest.plug : change-spec-preamble
 demofiles.plug	: change-files
 demo.plug	: change-spec-*
 file2pacDep.plug : change-spec-requires
