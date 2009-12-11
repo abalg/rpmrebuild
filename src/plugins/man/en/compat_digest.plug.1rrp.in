@@ -47,9 +47,7 @@ See <URL:http://rpmrebuild.sourceforge.net/>.
 .SH "NOTES"
 .LP 
 .TP 
-interesting when building a noarch package on fedora 11 for a fedora 10
-.br
-this can also be done by the --md5-compat-digest core option
+this can also be done by the \-\-md5\-compat\-digest core option
 
 .SH "COPYRIGHT"
 .LP 
