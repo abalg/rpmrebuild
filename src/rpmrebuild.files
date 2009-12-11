@@ -19,6 +19,8 @@
 %dir /usr/lib/rpmrebuild/locale/en
      /usr/lib/rpmrebuild/locale/en/rpmrebuild.lang
 %dir /usr/lib/rpmrebuild/plugins
+     /usr/lib/rpmrebuild/plugins/compat_digest.plug
+     /usr/lib/rpmrebuild/plugins/compat_digest.sh
      /usr/lib/rpmrebuild/plugins/demo.plug
      /usr/lib/rpmrebuild/plugins/demo.sh
      /usr/lib/rpmrebuild/plugins/demofiles.plug
