@@ -1,3 +1,9 @@
+* Fri Dec 11 2009 <gerbier@users.sourceforge.net> 2.4
+- add -l / --list-plugin option
+
+* Tue Nov 12 2009 <valery_reznic@users.sourceforge.net>
+- add -5 / --md5-compat-digest option
+
 * Wed Jan 09 2009 <gerbier@users.sourceforge.net> 2.3
 - release version 2.3
 
