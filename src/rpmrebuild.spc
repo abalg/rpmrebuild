@@ -22,6 +22,9 @@ Requires: textutils
 Requires: rpm >= 4.0, /usr/bin/rpmbuild
 Release: %{release}
 
+%global _binary_filedigest_algorithm 1
+%global _source_filedigest_algorithm 1
+
 %description
 rpmrebuild allow to build an rpm file from an installed rpm, or from
 another rpm file, with or without changes (batch or interactive).
@@ -30,11 +33,11 @@ A typical use is to easy repackage a software after some configuration's
 change.
 
 %description -l fr
-rpmbuild permet de fabriquer un package rpm à partir d'un 
-package installé ou d'un fichier rpm, avec ou sans modifications 
+rpmbuild permet de fabriquer un package rpm Ã  partir d'un 
+package installÃ© ou d'un fichier rpm, avec ou sans modifications 
 (interactives ou batch).
-Un système de plugin permet d'étendre ses fonctionnalités.
-Une utilisation typique est la fabrication d'un package suite à des modifications
+Un systÃ¨me de plugin permet d'Ã©tendre ses fonctionnalitÃ©s.
+Une utilisation typique est la fabrication d'un package suite Ã  des modifications
 de configuration.
 
 %prep
