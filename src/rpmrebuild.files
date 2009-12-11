@@ -37,6 +37,9 @@
 %doc /usr/share/man/man1/rpmrebuild_plugins.1*
 %doc /usr/share/man/fr_FR/man1/rpmrebuild_plugins.1*
 %doc /usr/share/man/fr_FR.UTF-8/man1/rpmrebuild_plugins.1*
+%doc /usr/share/man/man1/compat_digest.plug.1rrp*
+%doc /usr/share/man/fr_FR/man1/compat_digest.plug.1rrp*
+%doc /usr/share/man/fr_FR.UTF-8/man1/compat_digest.plug.1rrp*
 %doc /usr/share/man/man1/demo.plug.1rrp*
 %doc /usr/share/man/fr_FR/man1/demo.plug.1rrp*
 %doc /usr/share/man/fr_FR.UTF-8/man1/demo.plug.1rrp*
