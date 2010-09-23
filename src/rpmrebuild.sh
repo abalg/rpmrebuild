@@ -156,7 +156,7 @@ function RpmUnpack
 	rm --force $CPIO_TEMP                               || return
 	rpm2cpio ${PAQUET} > $CPIO_TEMP                     || return
 	rm    --force --recursive $BUILDROOT                || return
-	mkdir --parent            $BUILDROOT                || return
+	mkdir -p                  $BUILDROOT                || return
 	(cd $BUILDROOT && cpio --quiet -idmu ) < $CPIO_TEMP || return
 	rm --force $CPIO_TEMP                               || return
 	# Process ghost files

@@ -3,7 +3,7 @@ INSTALL_RO  := install --mode=444
 INSTALL_MAN := install --mode=644
 INSTALL_LOCALE := install --mode=644
 LN          := ln --symbolic --force --no-dereference
-MKDIR       := mkdir --parents
+MKDIR       := mkdir -p
 RM          := rm --force
 RMDIR       := rm --force --recursive
 

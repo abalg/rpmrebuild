@@ -1163,7 +1163,7 @@ function CommandLineParsing
 		# There is rpmdir specified.
 		# Let us find it's absolute path.
 		# Yeah, a bit ugly, but simple and seems to work...
-		mkdir --parents -- "$rpmdir" # Not check exit status here
+		mkdir -p -- "$rpmdir" # Not check exit status here
 		rpmdir="$(cd $rpmdir && echo $PWD)" || {
 			Error "$CannotChdir '$rpmdir'"
 			return 1

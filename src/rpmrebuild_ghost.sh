@@ -67,10 +67,10 @@ while :; do
 	[ -e "$File" ] && continue # File/directory already exist, do nothing
 
 	if [ "X$file_type" = "Xd" ]; then # Directory. Ghost directory ?
-		mkdir --parents $File || exit
+		mkdir -p $File || exit
 	else # Not directory
 		DirName=${File%/*} # Just in case dir for gjost file not exist
-		mkdir --parents $DirName || exit
+		mkdir -p $DirName || exit
 		# Create file itself
 		> $File || exit
 	fi
