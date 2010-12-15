@@ -69,7 +69,7 @@ echo '%|CONFLICTNAME?{[Conflicts:     %{CONFLICTNAME} %{CONFLICTFLAGS:depflags} 
 }
 
 function qf_spec_obsoletes {
-echo '%|OBSOLETES?{[Obsoletes:     %{OBSOLETES}\n]}|'
+echo '%|OBSOLETES?{[Obsoletes:     %{OBSOLETES} %{OBSOLETEFLAGS:depflags} %{OBSOLETEVERSION}\n]}|'
 }
 
 function qf_spec_provides {
