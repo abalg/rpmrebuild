@@ -4,7 +4,7 @@
 #
 #    Copyright (C) 2002 by Eric Gerbier
 #    Bug reports to: gerbier@users.sourceforge.net
-#    $Id: rpmrebuild 270 2004-07-12 11:48:02Z valery_reznic $
+#    $Id$
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
