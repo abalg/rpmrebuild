@@ -73,11 +73,12 @@ function select_installed() {
 
 	echo "wait for rpm list"
 
-	liste_rpm=$( rpm -qa --qf '%{NAME}-%{VERSION}-%{RELEASE} "%{SUMMARY}" \\\n' | sort | sed -e "s/'/ /g" -e 's/`/ /g' )
+	# we have to supress quotes to keep only 2 words by line
+	liste_rpm=$( rpm -qa --queryformat '%{NAME}-%{VERSION}-%{RELEASE} ___%{SUMMARY}___ \\\n' | sort | sed -e "s/'/ /g" -e 's/`/ /g' -e 's/"/ /g' -e 's/___/"/g' )
 
 
 	target=$(
-		echo "$DIALOG --stdout --clear --title \"MENU BOX\" --menu \" Choose the installed package you want ot work on :\" 20 70 15 $liste_rpm" | /bin/sh -
+		echo "$DIALOG --stdout --clear --title \"MENU BOX\" --menu \" Choose the installed package you want to work on :\" 20 70 15 $liste_rpm" | /bin/sh -
 	)
 	retval=$?
 
