@@ -23,9 +23,10 @@
 : ${DIALOG_CANCEL=1}
 : ${DIALOG_ESC=255}
 
+title='GRPMREBUILD'
 ##################################################################
 function choose_type() {
-	choice=$( $DIALOG --stdout --clear --title "XRPMREBUILD" \
+	choice=$( $DIALOG --stdout --clear --title $title \
 	--menu " Choose the type of package you want ot work on :" 20 51 4 \
 	"file"  "rpm file" \
 	"database" "installed package (rpm database)"  )
@@ -52,7 +53,7 @@ function select_file() {
 
 	local=`pwd`
 
-	target=$( $DIALOG --stdout --clear --title "XRPMREBUILD" --fselect $local 25 60  )
+	target=$( $DIALOG --stdout --clear --title $title --fselect $local 25 60  )
 
 	case $? in
 	$DIALOG_OK)
@@ -99,7 +100,7 @@ function select_installed() {
 function select_options() {
 
 	choice=$(
-		$DIALOG --stdout --title "XRPMREBUILD" \
+		$DIALOG --stdout --title $title \
 		--checklist " Choose the rpmrebuild options :" 20 51 10 \
 		"autoprovide"  "autoprovide" off \
 		"autorequire"  "autorequire" off \
