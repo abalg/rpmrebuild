@@ -8,6 +8,9 @@ rpmrebuild est un outil pour construire facilement un package rpm.
 Il peut être utilisé pour fabriquer un fichier rpm à partir d'un package installé ou pour modifier un package : modifiez les fichiers installés et lancez rpmrebuild.
 .SH "OPTIONS"
 .TP 
+\fB\-5  \-\-md5\-compat\-digest\fP
+passe en mode compatible avec les checksum de rpm 4.4 (md5)
+.TP 
 \fB\-a, \-\-additional\fP=<\fIflags\fP>
 passe des options (flags) spécifiques pour \fBrpmbuild\fP
 .TP 

@@ -10,6 +10,9 @@ to quickly make change to a package:
 just have your change on installed files and call rpmrebuild.
 .SH "OPTIONS"
 .TP 
+\fB\-5  \-\-md5\-compat\-digest\fP
+use rpm 4.4 compatible digest (md5)
+.TP 
 \fB\-a, \-\-additional\fP=<\fIflags\fP>
 pass additional flags to \fBrpmbuild\fP
 .TP 
