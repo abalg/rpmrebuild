@@ -57,12 +57,12 @@ while :; do
 		# I don't use --mode here, because it doesn't work
 		# when directory already exist.
 		file_perm="${file_perm#??}"
-		mkdir -p $BuildRoot/$file || exit
+		Mkdir_p $BuildRoot/$file || exit
 		chmod $file_perm $BuildRoot/$file || exit
 
 	else # Not directory
 		DirName=${file%/*}
-		mkdir -p $BuildRoot/$DirName || exit
+		Mkdir_p $BuildRoot/$DirName || exit
 		cp --preserve --no-dereference $file $BuildRoot/$file || exit
 	fi
 done || exit

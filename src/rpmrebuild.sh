@@ -178,7 +178,7 @@ function RpmUnpack
 	rm --force $CPIO_TEMP                               || return
 	rpm2cpio ${PAQUET} > $CPIO_TEMP                     || return
 	rm    --force --recursive $BUILDROOT                || return
-	mkdir -p                  $BUILDROOT                || return
+	Mkdir_p                   $BUILDROOT                || return
 	(cd $BUILDROOT && cpio --quiet -idmu ) < $CPIO_TEMP || return
 	rm --force $CPIO_TEMP                               || return
 	# Process ghost files
@@ -367,7 +367,7 @@ function Main
 
 	# create tempory directories before any work/test
 	RmDir "$RPMREBUILD_TMPDIR" || return
-	mkdir -p $TMPDIR_WORK       || return
+	Mkdir_p $TMPDIR_WORK       || return
 
 	FIC_SPEC=$TMPDIR_WORK/spec
 	FILES_IN=$TMPDIR_WORK/files.in
