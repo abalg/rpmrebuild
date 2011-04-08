@@ -74,6 +74,28 @@ function RmDir
 	return 0
 }
 ###############################################################################
+# on AIX the  --parents does not exists for mkdir command, so use -p option
+# which exists on all unix os
+# but Non-GNU mkdir -p may have slightly different semantic and return status
+# is not allways the same
+function Mkdir_p
+{
+	[ $# -ne 1 -o "x$1" = "x" ] && {
+		Echo "Usage: Mkdir_p <dir>"
+		return 1
+	}
+	local Dir
+	Dir="$1"
+	mkdir -p $Dir
+	# test result
+	if [ -d $Dir ]
+	then
+		return 0
+	else
+		return 1
+	fi
+}
+###############################################################################
 function SpecEdit
 {
 	[ $# -ne 1 -o "x$1" = "x" ] && {
