@@ -46,6 +46,9 @@ read more options from the file 'file'.
 \fB\-k, \-\-keep\-perm
 alias to \fB\-\-pug\-from\-fs\fP
 .TP 
+\fB\-l, \-\-list\-plugin\fP
+list installed plugins
+.TP 
 \fB\-m, \-\-modify\fP=<\fIcommand\fP>
 alias to \fB\-\-change\-files
 .TP 
