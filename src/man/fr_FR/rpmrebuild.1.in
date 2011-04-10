@@ -44,6 +44,9 @@ lit les options dans le fichier 'file' indiqué.
 \fB\-k, \-\-keep\-perm
 alias de l'option \fB\-\-pug\-from\-fs\fP
 .TP 
+\fB\-l, \-\-list\-plugin\fP
+liste les plugins installés
+.TP 
 \fB\-m, \-\-modify\fP=<\fIcommand\fP>
 alias de l'option \fB\-\-change\-files
 .TP 
@@ -240,24 +243,24 @@ Construire un package rpm aussi proche que possible de l'original :
 \fBrpmrebuild \-\-batch package\fP
 .LP 
 Construire un package modifié :
-.LP 
+.LP
 \fBrpmrebuild \-\-keep\-perm package\fP
-.LP 
+.LP
 Construire un rpm à partir d'un fichier rpm en y appliquant un filtre :
-.LP 
+.LP
 \fBrpmrebuild \-\-package \-\-filter filter /some/place/package.rpm\fP
 .LP 
 Passer des options pour rpm:
-recontruire et signer le package bash
-.LP 
+reconstruire et signer le package bash
+.LP
 \fBrpmrebuild \-\-additional "\-\-sign" bash\fP
-.LP 
+.LP
 reconstruire un package compatible avec rpm version 3 (legacy)
-.LP 
+.LP
 \fBrpmrebuild \-\-additional "\-\-nodirtokens" package\fP
-.LP 
+.LP
 Donner un nom pour le fichier rpm généré:
-.LP 
+.LP
 \fBrpmrebuild \-\-define "_rpmfilename %%{NAME}.rpm" bash\fP
 .LP 
 Modification interactive du package:
