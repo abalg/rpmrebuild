@@ -44,6 +44,9 @@ lit les options dans le fichier 'file' indiqué.
 \fB\-k, \-\-keep\-perm
 alias de l'option \fB\-\-pug\-from\-fs\fP
 .TP 
+\fB\-l, \-\-list\-plugin\fP
+liste les plugins installés
+.TP 
 \fB\-m, \-\-modify\fP=<\fIcommand\fP>
 alias de l'option \fB\-\-change\-files
 .TP 
