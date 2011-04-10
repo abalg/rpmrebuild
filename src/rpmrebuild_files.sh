@@ -89,7 +89,9 @@ while :; do
 		if [ -e "$file" ]; then
 			miss_str=""
 		else 
+                    if [ ! -h "$file" ]; then
 			miss_str='# MISSING: '
+                    fi
 		fi
 	fi
    
