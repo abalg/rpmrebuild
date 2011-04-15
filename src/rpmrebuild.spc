@@ -1,3 +1,5 @@
+%define is_rpm4 %( rpm_version="`rpm -q --queryformat='%{VERSION}' rpm | cut -f 1 -d.`"; if test $rpm_version == 4; then echo 1; else echo 0; fi)
+
 # The Summary: line should be expanded to about here -----^
 Summary: A tool to build rpm file from rpm database
 Summary(fr): Un outil pour construire un package depuis une base rpm
@@ -18,7 +20,13 @@ Requires: fileutils
 Requires: sed
 # sort
 Requires: textutils
+
+%if %{is_rpm4}
 Requires: rpm >= 4.0, /usr/bin/rpmbuild
+%else
+Requires: rpm < 4.0
+%endif
+
 Release: %{release}
 
 # compatibility with old digest format
