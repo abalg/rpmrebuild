@@ -1,3 +1,11 @@
+* Fri Apr 15 2011 <gerbier@users.sourceforge.net> 2.5
+- add -5/-l options in man pages
+- Added support for obsolete version and flags (bugfix by Valery Reznic)
+- shell compatibility (mkdir) for AIX : use -p option instead --parents
+- new Mkdir_p function to check for mkdir result
+- apply patch from ndyankov : support for broken symlinks
+- specfile will allow build package for rpm version 4 or 3
+
 * Fri Dec 11 2009 <gerbier@users.sourceforge.net> 2.4
 - add -l / --list-plugin option
 
