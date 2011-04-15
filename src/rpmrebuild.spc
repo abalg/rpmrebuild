@@ -1,7 +1,6 @@
-# Initial spec file created by autospec ver. 0.6 with rpm 2.5 compatibility
+# The Summary: line should be expanded to about here -----^
 Summary: A tool to build rpm file from rpm database
 Summary(fr): Un outil pour construire un package depuis une base rpm
-# The Summary: line should be expanded to about here -----^
 Name: rpmrebuild
 License: GPL
 Group: Development/Tools
@@ -10,7 +9,7 @@ Source: rpmrebuild.tar.gz
 # Following are optional fields
 Url: http://rpmrebuild.sourceforge.net
 Packager: Eric Gerbier <gerbier@users.sourceforge.net>
-#Distribution: Red Hat Contrib-Net
+#Distribution: 
 BuildArchitectures: noarch
 Requires: bash
 Requires: cpio
@@ -22,6 +21,7 @@ Requires: textutils
 Requires: rpm >= 4.0, /usr/bin/rpmbuild
 Release: %{release}
 
+# compatibility with old digest format
 %global _binary_filedigest_algorithm 1
 %global _source_filedigest_algorithm 1
 
