@@ -203,10 +203,16 @@ function CreateBuildRoot
 
 function RpmBuild
 {
-	# reconstruction fichier rpm : le src.rpm est inutile
-	# build rpm file, the src.rpm is not usefull to do
-	# for rpm 4.1 : use rpmbuild
-	local BUILDCMD=rpmbuild
+	# rpmrebuild package dependency
+	# for rpm 3.x : use rpm
+	# for rpm 4.x : use rpmbuild
+	if [ -x /usr/bin/rpmbuild ]
+	then
+		local BUILDCMD=/usr/bin/rpmbuild
+	else
+
+		local BUILDCMD=rpm
+	fi
 
 	# rpm 4.6 ignore BuildRoot in the spec file, 
 	# so I have to provide define on the command line
