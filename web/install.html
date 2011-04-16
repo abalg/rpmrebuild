@@ -16,17 +16,23 @@
       
       As rpmrebuild is designed to work with rpm, it is packaged in rpm format.
       
-      <h2>which package to choose</h2>
+      <h2>which file to choose</h2>
       
       <ul>
-	<li>rpm4.noarch.rpm : is for current linux distributions, which use rpm 4.x releases</li>
-	<li>rpm3.noarch.rpm : is for very old linux distributions, which still use rpm 3.x releases</li>
+	<li>rpmrebuild-{version}.noarch.rpm : is an rpm package for current linux distributions, which use rpm 4.x releases. this is the method to use at first</li>
+	<li>rpmrebuild-{version}.src.rpm : is a source package</li>
+	<li>rpmrebuild-{version}.tgz : contains the software code</li>
+	<li>rpmrebuild-{version}.tgz.sig : will allow to check the origin of the code</li>
       </ul>
       
       <h2>check packages</h2>
       
       all the rpm packages are signed with my <a href="gpg.asc">gpg key</a>, so you should verify
-      the downloaded package with <code>rpm -K rpmrebuild*.rpm</code>
+      the downloaded files with :
+      <ul>
+	<li>for rpm packages, the command <code>rpm -K rpmrebuild*.rpm</code></li>
+	<li>for sources, the command <code>gpg --verify rpmrebuild-{version}.tgz.sig rpmrebuild-{version}.tgz</code></li>
+      </ul>
       
       <h2>how to install</h2>
       
@@ -35,9 +41,12 @@
       
       <h2>what if dependencies problem occurs</h2>
       
+      you can build a package for your own distribution, using one of the following method :
       <ul>
-	<li>you can try to build your own package from src.rpm, with the following command :<code>rpmbuild --rebuild rpmrebuild-{version}.src.rpm</code>, then install the rpmrebuild-{version}.noarch.rpm file</li>
-	<li>please send a <a href="support.html">bug report</a></li>
+	<li><code>rpmbuild --rebuild rpmrebuild-{version}.src.rpm</code> (for rpm 4)</li>
+	<li><code>rpmbuild -tb rpmrebuild-{version}.tgz</code> (for rpm 4)</li>
+	<li><code>rpm -tb rpmrebuild-{version}.tgz</code>, (for rpm 3)</li>
+	<li>if nothing is working, please send a <a href="support.html">bug report</a></li>
       </ul>
       
       <hr />

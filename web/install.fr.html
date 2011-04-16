@@ -16,17 +16,23 @@
       
       Comme rpmrebuild travaille sur les packages rpm, il est fourni naturellement sous ce format.
       
-      <h2>quel package choisir ?</h2>
+      <h2>quel fichier choisir ?</h2>
       
       <ul>
-	<li>rpm4.noarch.rpm : pour les distributions "modernes", qui utilisent rpm version 4.x</li>
-	<li>rpm3.noarch.rpm : pour les "vieilles" distributions, qui utilisent encore rpm en version 3.x</li>
+	<li>rpmrebuild-{version}.noarch.rpm : est un package prêt à installer, conçu pour les distributions qui utilisent rpm version 4.x : à utiliser de préférence</li>
+	<li>rpmrebuild-{version}.src.rpm : est un package source, pour ceux qui voudraient refabriquer le package rpm</li>
+	<li>rpmrebuild-{version}.tgz : les sources du logiciel</li>
+	<li>rpmrebuild-{version}.tgz.sig : la signature des sources</li>
       </ul>
       
       <h2>vérifier le package</h2>
       
       Tous les packages rpm sont signés avec ma <a href="gpg.asc">clef gpg</a>. Je vous recommande
-      fortement de vérifier tout package téléchargé avec la commande <code>rpm -K rpmrebuild*.rpm</code>.
+      fortement de vérifier tout fichier téléchargé avec :
+      <ul>
+	<li>pour les packages rpm, la commande <code>rpm -K rpmrebuild*.rpm</code></li>
+	<li>pour les sources, la commande <code>gpg --verify rpmrebuild-{version}.tgz.sig rpmrebuild-{version}.tgz</code></li>
+      </ul>
       
       <h2>installation</h2>
       
@@ -35,9 +41,12 @@
       
       <h2>en cas de problème</h2>
       
+      vous pouvez fabriquer un package rpm pour votre distribution avec l'une des méthodes suivantes :
       <ul>
-	      <li>vous pouvez essayer de fabriquer votre propre package rpm à partir du fichier source rpmrebuild-{version}.src.rpm, avec la commande <code>rpmbuild --rebuild rpmrebuild-{version}.src.rpm</code>, puis installer votre fichier rpm</li>
-	<li>envoyer un <a href="support.fr.html">rapport de bug</a></li>
+	<li><code>rpmbuild --rebuild rpmrebuild-{version}.src.rpm</code> (rpm version 4)</li>
+	<li><code>rpmbuild -tb rpmrebuild-{version}.tgz</code> (rpm version 4)</li> 
+	<li><code>rpm -tb rpmrebuild-{version}.tgz</code> (rpm version 3</li>
+	<li>si ça ne marche toujours pas, envoyez-nous un <a href="support.fr.html">rapport de bug</a></li>
       </ul>
       
       <hr />
