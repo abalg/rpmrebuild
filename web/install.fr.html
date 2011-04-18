@@ -37,8 +37,14 @@
       <h2>installation</h2>
       
       Rpmrebuild est codé en shell (bash), donc il ne dépends pas de librairies, ni de l'architecture.
+      <h3>avec rpm version 4</h3>
       Il s'installe avec la commande : <code>rpm -Uvh rpmrebuild-{version}.noarch.rpm</code>.
-      
+
+      <h3>avec rpm version 3</h3>
+      Nous n'avons pas de machine utilisant cette version de rpm. Il vous faudra donc fabriquer votre propre package rpm
+      à partir du fichier source en utilisant la commande : <code>rpm -tb rpmrebuild-{version}.tgz</code>, puis l'installer
+      avec une commande <code>rpm -Uvh rpmrebuild-{version}.noarch.rpm</code>.
+
       <h2>en cas de problème</h2>
       
       vous pouvez fabriquer un package rpm pour votre distribution avec l'une des méthodes suivantes :

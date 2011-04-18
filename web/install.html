@@ -35,10 +35,15 @@
       </ul>
       
       <h2>how to install</h2>
+      It is coded in shell script, so it does not depends from an os architecture or libraries
+
+      <h3>if you are using rpm version 4</h3> 
+      It should install anywhere with the following command : <code>rpm -Uvh rpmrebuild-{version}.noarch.rpm</code>
       
-      It is coded in shell script, so it does not depends from an os architecture or libraries, and
-      should install anywhere with the following command : <code>rpm -Uvh rpmrebuild-{version}.noarch.rpm</code>
-      
+      <h3>if you are using rpm version 3</h3> 
+      You will have to build your rpm package, with the command : <code>rpm -tb rpmrebuild-{version}.tgz</code>, 
+      then install the package with <code>rpm -Uvh rpmrebuild-{version}.noarch.rpm</code>
+
       <h2>what if dependencies problem occurs</h2>
       
       you can build a package for your own distribution, using one of the following method :
