@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta name="generator" content="HTML Tidy for Linux (vers 14 June 2007), see www.w3.org" />
+    <meta name="generator" content="HTML Tidy for Linux (vers 25 March 2009), see www.w3.org" />
     
     <title>Manpage of rpmrebuild</title>
     <style type="text/css">
@@ -21,7 +21,7 @@
   <body>
     <h1>rpmrebuild</h1>
     Section: rpm tools (1)<br />
-    Updated: 2.4<br />
+    Updated: 2.5<br />
     <a href="#index">Index</a> <a name="lbAB" id="lbAB"> </a>
     
     <h2>NAME</h2>
@@ -39,6 +39,10 @@
     
     
     <dl>
+      <dt class="c1">-5 --md5-compat-digest</dt>
+      
+      <dd>use rpm 4.4 compatible digest (md5)</dd>
+      
       <dt><b>-a, --additional</b>=&lt;<i>flags</i>&gt;</dt>
       
       <dd>pass additional flags to <b>rpmbuild</b></dd>
@@ -82,6 +86,10 @@
       <dt class="c1">-k, --keep-perm</dt>
       
       <dd class="c2">alias to --pug-from-fs</dd>
+      
+      <dt class="c1">-l, --list-plugin</dt>
+      
+      <dd>list installed plugins</dd>
       
       <dt><b>-m, --modify</b>=&lt;<i>command</i>&gt;</dt>
       
@@ -343,75 +351,77 @@
     <p>batch change of version tag</p>
     
     <p><b>rpmrebuild --change-spec-preamble='sed -e "s/^Version:.*/Version: YourVersion/"' YourPackage</b> <a name="lbAJ" id="lbAJ"> </a></p>
-
-<h2>AUTHORS</h2>
-
-
-<p>Eric Gerbier &lt;<a href="mailto:gerbier@users.sourceforge.net">gerbier@users.sourceforge.net</a>&gt;<br />
-  Valery Reznic &lt;<a href="mailto:valery_reznic@users.sourceforge.net">valery_reznic@users.sourceforge.net</a>&gt;</p>
-
-<dl>
-  <dt>See &lt;URL:<a href="http://rpmrebuild.sourceforge.net/">http://rpmrebuild.sourceforge.net/</a>&gt;.</dt>
-</dl><a name="lbAK" id="lbAK"> </a>
-
-<h2>NOTES</h2>
-
-
-<dl>
-  <dt>rpmrebuild can not reproduce exactly a package, so</dt>
-  
-  <dd><br />
-  - md5 checksum will not match original ones.<br />
-  - gpg or pgp signatures are lost</dd>
-  
-  <dt>packages which contains file with globbing characters (* .. ? ) will not build</dt>
-</dl><a name="lbAL" id="lbAL"> </a>
-
-<h2>COPYRIGHT</h2>
-
-
-<p>rpmrebuild is copyright (C) 2002 by Eric Gerbier.<br />
-  this program is distributed under GNU General Public License<br />
-  It is provided "as is", without any express or implied warranties.<br />
-See the file COPYING for details. <a name="lbAM" id="lbAM"> </a></p>
-
-<h2>SEE ALSO</h2>
-
-
-<p><a href="?8+rpm">rpm</a>(8), <a href="?8+rpmbuild">rpmbuild</a>(8), <a href="rpmrebuild_plugins">rpmrebuild_plugins</a>(1), 'man -k rrp' for plugins specific manpages.</p>
-<hr />
-<a name="index" id="index"> </a>
-
-<h2>Index</h2>
-
-
-<dl>
-  <dt><a href="#lbAB">NAME</a></dt>
-  
-  <dt><a href="#lbAC">SYNOPSIS</a></dt>
-  
-  <dt><a href="#lbAD">DESCRIPTION</a></dt>
-  
-  <dt><a href="#lbAE">OPTIONS</a></dt>
-  
-  <dt><a href="#lbAF">INCLUDE FILES</a></dt>
-  
-  <dt><a href="#lbAG">FILES</a></dt>
-  
-  <dt><a href="#lbAH">ENVIRONMENT</a></dt>
-  
-  <dt><a href="#lbAI">EXAMPLES</a></dt>
-  
-  <dt><a href="#lbAJ">AUTHORS</a></dt>
-  
-  <dt><a href="#lbAK">NOTES</a></dt>
-  
-  <dt><a href="#lbAL">COPYRIGHT</a></dt>
-  
-  <dt><a href="#lbAM">SEE ALSO</a></dt>
-</dl>
-<hr />
-This document was created by man2html, using the manual pages.<br />
-Time: 09:01:07 GMT, December 11, 2009
-</body>
+    
+    <h2>AUTHORS</h2>
+    
+    
+    <p>Eric Gerbier &lt;<a href="mailto:gerbier@users.sourceforge.net">gerbier@users.sourceforge.net</a>&gt;<br />
+    Valery Reznic &lt;<a href="mailto:valery_reznic@users.sourceforge.net">valery_reznic@users.sourceforge.net</a>&gt;</p>
+    
+    <dl>
+      <dt>See &lt;URL:<a href="http://rpmrebuild.sourceforge.net/">http://rpmrebuild.sourceforge.net/</a>&gt;.</dt>
+    </dl><a name="lbAK" id="lbAK"> </a>
+    
+    <h2>NOTES</h2>
+    
+    
+    <dl>
+      <dt>rpmrebuild can not reproduce exactly a package, so</dt>
+      
+      <dd><br />
+      - md5 checksum will not match original ones.<br />
+      - gpg or pgp signatures are lost</dd>
+      
+      <dt>packages which contains file with globbing characters (* .. ? ) will not build</dt>
+    </dl><a name="lbAL" id="lbAL"> </a>
+    
+    <h2>COPYRIGHT</h2>
+    
+    
+    <p>rpmrebuild is copyright (C) 2002 by Eric Gerbier.<br />
+      this program is distributed under GNU General Public License<br />
+      It is provided "as is", without any express or implied warranties.<br />
+    See the file COPYING for details. <a name="lbAM" id="lbAM"> </a></p>
+    
+    <h2>SEE ALSO</h2>
+    
+    
+    <p><a href="?8+rpm">rpm</a>(8), 
+      <a href="?8+rpmbuild">rpmbuild</a>(8), 
+    <a href="rpmrebuild_plugins">rpmrebuild_plugins</a>(1), 'man -k rrp' for plugins specific manpages.</p>
+    <hr />
+    <a name="index" id="index"> </a>
+    
+    <h2>Index</h2>
+    
+    
+    <dl>
+      <dt><a href="#lbAB">NAME</a></dt>
+      
+      <dt><a href="#lbAC">SYNOPSIS</a></dt>
+      
+      <dt><a href="#lbAD">DESCRIPTION</a></dt>
+      
+      <dt><a href="#lbAE">OPTIONS</a></dt>
+      
+      <dt><a href="#lbAF">INCLUDE FILES</a></dt>
+      
+      <dt><a href="#lbAG">FILES</a></dt>
+      
+      <dt><a href="#lbAH">ENVIRONMENT</a></dt>
+      
+      <dt><a href="#lbAI">EXAMPLES</a></dt>
+      
+      <dt><a href="#lbAJ">AUTHORS</a></dt>
+      
+      <dt><a href="#lbAK">NOTES</a></dt>
+      
+      <dt><a href="#lbAL">COPYRIGHT</a></dt>
+      
+      <dt><a href="#lbAM">SEE ALSO</a></dt>
+    </dl>
+    <hr />
+    This document was created by man2html, using the manual pages.<br />
+    Time: 12:07:03 GMT, April 18, 2011
+  </body>
 </html>
