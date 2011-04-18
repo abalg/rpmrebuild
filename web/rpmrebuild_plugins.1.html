@@ -13,250 +13,252 @@
   
   <body>
     <h1>rpmrebuild_plugins</h1>
-    Section: rpm tools (1)<br />
-    Updated: 2.5<br />
-    <a href="#index">Index</a> <a name="lbAB" id="lbAB"> </a>
-    
-    <h2>NAME</h2>
-    rpmrebuild_plugins - is an engine to expand <b>rpmrebuild</b> functionality. <a name="lbAC" id="lbAC">
-    </a>
-    
-    <h2>SYNOPSIS</h2>
-    rpmrebuild [<i>non-plugins-option</i>] [<i>plugins-option</i>] &lt;<i>packagename</i>&gt; <a name="lbAD" id="lbAD"> </a>
-
-<h2>DESCRIPTION</h2>
-<b>rpmrebuild</b> itself try to do it's best to reconstruct rpm package as close to original as
-possible.
-
-<p>rpmrebuild plugins's aim is opposite - somehow change rebuilded rpm. <a name="lbAE" id="lbAE"> </a></p>
-
-<h2>RPMREBUILD WITHOUT PLUGINS</h2>
-Without plugins process of rpm rebuilding looks like:
-
-<dl>
-  <dt><b>query</b> -</dt>
-  
-  <dd>Query rpm to be rebuilded for the different pieces of information.</dd>
-  
-  <dt><b>concatenate</b> -</dt>
-  
-  <dd>Create from these pieces specfile.</dd>
-  
-  <dt><b>build</b> -</dt>
-  
-  <dd>Use specfile to build rpm.</dd>
-</dl><a name="lbAF" id="lbAF"> </a>
-
-<h2>RPMREBUILD WITH PLUGINS</h2>
-With plugins process of rpm rebuilding looks like:
-
-<dl>
-  <dt><b>query</b> -</dt>
-  
-  <dd>Query rpm to be rebuilded for the different pieces of information.</dd>
-  
-  <dt><b>change parts</b> -</dt>
-  
-  <dd>Change parts of the spec created by query.</dd>
-  
-  <dt><b>concatenate</b> -</dt>
-  
-  <dd>Create specfile from the pieces.</dd>
-  
-  <dt><b>change whole</b> -</dt>
-  
-  <dd>Change concatenated specfile.</dd>
-  
-  <dt><b>build</b> -</dt>
-  
-  <dd>use specfile to build rpm.</dd>
-</dl><a name="lbAG" id="lbAG"> </a>
-
-<h2>SPECFILE PIECES</h2>
-Query" queries for the following information:
-
-<dl>
-  <dd><br />
-  preamble<br />
-  conflicts<br />
-  obsoletes<br />
-  provides<br />
-  requires<br />
-  description<br />
-  files<br />
-  triggers<br />
-  pre<br />
-  post<br />
-  preun<br />
-  postun<br />
-  verifyscript<br />
-  changelog</dd>
-</dl><a name="lbAH" id="lbAH"> </a>
-
-<h2>SPECFILE CONCATENATION</h2>
-Concatenate" create 'full' specfile from the pieces. It do following:
-
-<p>add AutoReq / AutoProv tags<br />
-  add BuildRoot tag<br />
-  add some defines to adjust rpm's behaviour.<br />
-  double all '%' - it'll prevent rpm from attempting expand %something as macro.<br />
-  add '%description' before description<br />
-  add '%files' before files<br />
-add '%changelog' before changelog <a name="lbAI" id="lbAI"> </a></p>
-
-<h2>PLUGINS TYPES</h2>
-rpm building (or rebuilding) process has two inputs: specfile and package's files under
-buildroot directory. So, there are two plugins type:
-
-<dl>
-  <dt>- for specfile modification (exemple : demo.plug).</dt>
-  
-  <dt>- for files (under buildroot) modification (exemple : demofiles.plug).</dt>
-</dl><a name="lbAJ" id="lbAJ"> </a>
-
-<h2>PLUGIN'S INTERFACE</h2>
-Plugins are executed AFTER rpm package is queried and BEFORE new package is rebuilded in
-the order specified on the command line.
-
-<dl>
-  <dt>Exit status</dt>
-  
-  <dd>Any plugin should exit with status 0 on success, and any other value on failure. Failed plugin will immediately
-  terminate whole rpmrebuild.</dd>
-  
-  <dt>Environment variables</dt>
-  
-  <dd>
-  all plugins get following environment variables:
-  
-  <dl>
-    <dd>
-    <dl>
-      <dt>RPMREBUILD_TMPDIR</dt>
+    <div>
+      Section: rpm tools (1)<br />
+      Updated: 2.5<br />
+      <a href="#index">Index</a> <a name="lbAB" id="lbAB"> </a>
       
-      <dd>directory for plugin's temporaries files. plugin no need remove this directory - rpmrebuild will
-      care.</dd>
+      <h2>NAME</h2>
+      rpmrebuild_plugins - is an engine to expand <b>rpmrebuild</b> functionality. <a name="lbAC" id="lbAC">
+      </a>
       
-      <dt>RPMREBUILD_PLUGINS_DIR</dt>
+      <h2>SYNOPSIS</h2>
+      rpmrebuild [<i>non-plugins-option</i>] [<i>plugins-option</i>] &lt;<i>packagename</i>&gt; <a name="lbAD" id="lbAD"> </a>
       
-      <dd>directory with plugins.</dd>
+      <h2>DESCRIPTION</h2>
+      <b>rpmrebuild</b> itself try to do it's best to reconstruct rpm package as close to original as
+      possible.
       
-      <dt>RPMREBUILD_COMMENT_MISSING</dt>
+      <p>rpmrebuild plugins's aim is opposite - somehow change rebuilded rpm. <a name="lbAE" id="lbAE"> </a></p>
       
-      <dd>if 'yes' missing files commented in the 'files' part of specfile</dd>
+      <h2>RPMREBUILD WITHOUT PLUGINS</h2>
+      Without plugins process of rpm rebuilding looks like:
       
-      <dt>RPMREBUILD_PUG_FROM_FS</dt>
+      <dl>
+	<dt><b>query</b> -</dt>
+	
+	<dd>Query rpm to be rebuilded for the different pieces of information.</dd>
+	
+	<dt><b>concatenate</b> -</dt>
+	
+	<dd>Create from these pieces specfile.</dd>
+	
+	<dt><b>build</b> -</dt>
+	
+	<dd>Use specfile to build rpm.</dd>
+      </dl><a name="lbAF" id="lbAF"> </a>
       
-      <dd>if 'yes' permission owner and group in the part file were taken from filesystem, otherwise - from rpm's
-      database.</dd>
+      <h2>RPMREBUILD WITH PLUGINS</h2>
+      With plugins process of rpm rebuilding looks like:
       
-      <dt>RPMREBUILD_WARNING</dt>
+      <dl>
+	<dt><b>query</b> -</dt>
+	
+	<dd>Query rpm to be rebuilded for the different pieces of information.</dd>
+	
+	<dt><b>change parts</b> -</dt>
+	
+	<dd>Change parts of the spec created by query.</dd>
+	
+	<dt><b>concatenate</b> -</dt>
+	
+	<dd>Create specfile from the pieces.</dd>
+	
+	<dt><b>change whole</b> -</dt>
+	
+	<dd>Change concatenated specfile.</dd>
+	
+	<dt><b>build</b> -</dt>
+	
+	<dd>use specfile to build rpm.</dd>
+      </dl><a name="lbAG" id="lbAG"> </a>
       
-      <dd>if 'yes' rpmrebuild will produce warning for filenames with glob characters.</dd>
+      <h2>SPECFILE PIECES</h2>
+      Query" queries for the following information:
       
-      <dt>PATH</dt>
+      <dl>
+	<dd><br />
+	preamble<br />
+	conflicts<br />
+	obsoletes<br />
+	provides<br />
+	requires<br />
+	description<br />
+	files<br />
+	triggers<br />
+	pre<br />
+	post<br />
+	preun<br />
+	postun<br />
+	verifyscript<br />
+	changelog</dd>
+      </dl><a name="lbAH" id="lbAH"> </a>
       
-      <dd>This variable is set to $RPMREBUILD_PLUGINS_DIR:$PATH</dd>
+      <h2>SPECFILE CONCATENATION</h2>
+      Concatenate" create 'full' specfile from the pieces. It do following:
       
-      <dt>LONG_OPTION</dt>
+      <p>add AutoReq / AutoProv tags<br />
+	add BuildRoot tag<br />
+	add some defines to adjust rpm's behaviour.<br />
+	double all '%' - it'll prevent rpm from attempting expand %something as macro.<br />
+	add '%description' before description<br />
+	add '%files' before files<br />
+      add '%changelog' before changelog <a name="lbAI" id="lbAI"> </a></p>
       
-      <dd>Contains long option (without --) which was used to invoke plugin.</dd>
+      <h2>PLUGINS TYPES</h2>
+      rpm building (or rebuilding) process has two inputs: specfile and package's files under
+      buildroot directory. So, there are two plugins type:
       
-      <dt>RPM_BUILD_ROOT</dt>
+      <dl>
+	<dt>- for specfile modification (exemple : demo.plug).</dt>
+	
+	<dt>- for files (under buildroot) modification (exemple : demofiles.plug).</dt>
+      </dl><a name="lbAJ" id="lbAJ"> </a>
       
-      <dd>For plugins modifying files under buildroot set to buildroot. For other plugins - empty.</dd>
-    </dl>
-    </dd>
-  </dl>
-  </dd>
-  
-  <dt>stdin and stdout</dt>
-  
-  <dd>Plugins for specfile modification (i.e., invoked with --spec-hange-*)got "source" spec file from stdin and have
-  to write resulting spec file to stdout.</dd>
-</dl><a name="lbAK" id="lbAK"> </a>
-
-<h2>PLUGIN'S EXAMPLES</h2>
-Some plugins are given as examples :
-
-<dl>
-  <dt>demofiles.plug (change-files) : a "dummy" plugin to show what can be done with a file plugin</dt>
-  
-  <dt>demo.plug (change-spec-*) : a "dummy" plugin to show how spec plugins work</dt>
-  
-  <dt>uniq.plug (change-spec) : a very simple "real" plugin to sort and clean duplicate spec lines</dt>
-  
-  <dt>file2pacDep.plug (change-spec-requires) : a "real" plugin to convert file dependencies to package
-  dependencies</dt>
-  
-  <dt>nodoc.plug (change-spec-files): a "real" plugin to remove documentation from a package</dt>
-  
-  <dt>set_tag.plus (change-spec-preamble) : a "real" plugin to change a tag in spec file</dt>
-</dl><a name="lbAL" id="lbAL"> </a>
-
-<h2>PLUGINS' MANPAGES FILENAME CONVENTION</h2>
-If you are going to write plugin (and manpage for it) it's strongly
-recommended than manpage's file looks like <b>name.1rrp</b> - this way command <b>'man -k rrp'</b> will provide list
-of all rpmrebuild's plugins installed. Please note, that <b>makewhatis</b> should be run before newly installed
-manpages will be available for <b>'man -k rrp'</b> <a name="lbAM" id="lbAM"> </a>
-
-<h2>AUTHORS</h2>
-
-
-<p>Eric Gerbier &lt;<a href="mailto:gerbier@users.sourceforge.net">gerbier@users.sourceforge.net</a>&gt;<br />
-  Valery Reznic &lt;<a href="mailto:valery_reznic@users.sourceforge.net">valery_reznic@users.sourceforge.net</a>&gt;</p>
-
-<dl>
-  <dt>See &lt;URL:<a href="http://rpmrebuild.sourceforge.net/">http://rpmrebuild.sourceforge.net/</a>&gt;.</dt>
-</dl><a name="lbAN" id="lbAN"> </a>
-
-<h2>SEE ALSO</h2>
-
-
-<p><a href="?8+rpm">rpm</a>(8), 
-<a href="?8+rpmbuild">rpmbuild</a>(8), 
-<a href="rpmrebuild">rpmrebuild</a>(1),
-<a href="demofiles.plug">demofiles.plug</a>(1), 
-<a href="demo.plug">demo.plug</a>(1), 
-<a href="nodoc.plug">nodoc.plug</a>(1), 
-<a href="uniq.plug">uniq.plug</a>(1), 
-<a href="file2pacDep.plug">file2pacDep.plug</a>(1), 
-<a href="set_tag.plug">set_tag.plug</a>(1), 'man -k rrp' for plugins specific manpages</p>
-<hr />
-<a name="index" id="index"> </a>
-
-<h2>Index</h2>
-
-
-<dl>
-  <dt><a href="#lbAB">NAME</a></dt>
-  
-  <dt><a href="#lbAC">SYNOPSIS</a></dt>
-  
-  <dt><a href="#lbAD">DESCRIPTION</a></dt>
-  
-  <dt><a href="#lbAE">RPMREBUILD WITHOUT PLUGINS</a></dt>
-  
-  <dt><a href="#lbAF">RPMREBUILD WITH PLUGINS</a></dt>
-  
-  <dt><a href="#lbAG">SPECFILE PIECES</a></dt>
-  
-  <dt><a href="#lbAH">SPECFILE CONCATENATION</a></dt>
-  
-  <dt><a href="#lbAI">PLUGINS TYPES</a></dt>
-  
-  <dt><a href="#lbAJ">PLUGIN'S INTERFACE</a></dt>
-  
-  <dt><a href="#lbAK">PLUGIN'S EXAMPLES</a></dt>
-  
-  <dt><a href="#lbAL">PLUGINS' MANPAGES FILENAME CONVENTION</a></dt>
-  
-  <dt><a href="#lbAM">AUTHORS</a></dt>
-  
-  <dt><a href="#lbAN">SEE ALSO</a></dt>
-</dl>
-<hr />
-This document was created by man2html, using the manual pages.<br />
-Time: 12:07:53 GMT, April 18, 2011
-</body>
+      <h2>PLUGIN'S INTERFACE</h2>
+      Plugins are executed AFTER rpm package is queried and BEFORE new package is rebuilded in
+      the order specified on the command line.
+      
+      <dl>
+	<dt>Exit status</dt>
+	
+	<dd>Any plugin should exit with status 0 on success, and any other value on failure. Failed plugin will immediately
+	terminate whole rpmrebuild.</dd>
+	
+	<dt>Environment variables</dt>
+	
+	<dd>
+	all plugins get following environment variables:
+	
+	<dl>
+	  <dd>
+	  <dl>
+	    <dt>RPMREBUILD_TMPDIR</dt>
+	    
+	    <dd>directory for plugin's temporaries files. plugin no need remove this directory - rpmrebuild will
+	    care.</dd>
+	    
+	    <dt>RPMREBUILD_PLUGINS_DIR</dt>
+	    
+	    <dd>directory with plugins.</dd>
+	    
+	    <dt>RPMREBUILD_COMMENT_MISSING</dt>
+	    
+	    <dd>if 'yes' missing files commented in the 'files' part of specfile</dd>
+	    
+	    <dt>RPMREBUILD_PUG_FROM_FS</dt>
+	    
+	    <dd>if 'yes' permission owner and group in the part file were taken from filesystem, otherwise - from rpm's
+	    database.</dd>
+	    
+	    <dt>RPMREBUILD_WARNING</dt>
+	    
+	    <dd>if 'yes' rpmrebuild will produce warning for filenames with glob characters.</dd>
+	    
+	    <dt>PATH</dt>
+	    
+	    <dd>This variable is set to $RPMREBUILD_PLUGINS_DIR:$PATH</dd>
+	    
+	    <dt>LONG_OPTION</dt>
+	    
+	    <dd>Contains long option (without --) which was used to invoke plugin.</dd>
+	    
+	    <dt>RPM_BUILD_ROOT</dt>
+	    
+	    <dd>For plugins modifying files under buildroot set to buildroot. For other plugins - empty.</dd>
+	  </dl>
+	  </dd>
+	</dl>
+	</dd>
+	
+	<dt>stdin and stdout</dt>
+	
+	<dd>Plugins for specfile modification (i.e., invoked with --spec-hange-*)got "source" spec file from stdin and have
+	to write resulting spec file to stdout.</dd>
+      </dl><a name="lbAK" id="lbAK"> </a>
+      
+      <h2>PLUGIN'S EXAMPLES</h2>
+      Some plugins are given as examples :
+      
+      <dl>
+	<dt>demofiles.plug (change-files) : a "dummy" plugin to show what can be done with a file plugin</dt>
+	
+	<dt>demo.plug (change-spec-*) : a "dummy" plugin to show how spec plugins work</dt>
+	
+	<dt>uniq.plug (change-spec) : a very simple "real" plugin to sort and clean duplicate spec lines</dt>
+	
+	<dt>file2pacDep.plug (change-spec-requires) : a "real" plugin to convert file dependencies to package
+	dependencies</dt>
+	
+	<dt>nodoc.plug (change-spec-files): a "real" plugin to remove documentation from a package</dt>
+	
+	<dt>set_tag.plus (change-spec-preamble) : a "real" plugin to change a tag in spec file</dt>
+      </dl><a name="lbAL" id="lbAL"> </a>
+      
+      <h2>PLUGINS' MANPAGES FILENAME CONVENTION</h2>
+      If you are going to write plugin (and manpage for it) it's strongly
+      recommended than manpage's file looks like <b>name.1rrp</b> - this way command <b>'man -k rrp'</b> will provide list
+      of all rpmrebuild's plugins installed. Please note, that <b>makewhatis</b> should be run before newly installed
+      manpages will be available for <b>'man -k rrp'</b> <a name="lbAM" id="lbAM"> </a>
+      
+      <h2>AUTHORS</h2>
+      
+      
+      <p>Eric Gerbier &lt;<a href="mailto:gerbier@users.sourceforge.net">gerbier@users.sourceforge.net</a>&gt;<br />
+      Valery Reznic &lt;<a href="mailto:valery_reznic@users.sourceforge.net">valery_reznic@users.sourceforge.net</a>&gt;</p>
+      
+      <dl>
+	<dt>See &lt;URL:<a href="http://rpmrebuild.sourceforge.net/">http://rpmrebuild.sourceforge.net/</a>&gt;.</dt>
+      </dl><a name="lbAN" id="lbAN"> </a>
+      
+      <h2>SEE ALSO</h2>
+      
+      
+      <p><a href="?8+rpm">rpm</a>(8), 
+	<a href="?8+rpmbuild">rpmbuild</a>(8), 
+	<a href="rpmrebuild">rpmrebuild</a>(1),
+	<a href="demofiles.plug">demofiles.plug</a>(1), 
+	<a href="demo.plug">demo.plug</a>(1), 
+	<a href="nodoc.plug">nodoc.plug</a>(1), 
+	<a href="uniq.plug">uniq.plug</a>(1), 
+	<a href="file2pacDep.plug">file2pacDep.plug</a>(1), 
+      <a href="set_tag.plug">set_tag.plug</a>(1), 'man -k rrp' for plugins specific manpages</p>
+      <hr />
+      <a name="index" id="index"> </a>
+      
+      <h2>Index</h2>
+      
+      
+      <dl>
+	<dt><a href="#lbAB">NAME</a></dt>
+	
+	<dt><a href="#lbAC">SYNOPSIS</a></dt>
+	
+	<dt><a href="#lbAD">DESCRIPTION</a></dt>
+	
+	<dt><a href="#lbAE">RPMREBUILD WITHOUT PLUGINS</a></dt>
+	
+	<dt><a href="#lbAF">RPMREBUILD WITH PLUGINS</a></dt>
+	
+	<dt><a href="#lbAG">SPECFILE PIECES</a></dt>
+	
+	<dt><a href="#lbAH">SPECFILE CONCATENATION</a></dt>
+	
+	<dt><a href="#lbAI">PLUGINS TYPES</a></dt>
+	
+	<dt><a href="#lbAJ">PLUGIN'S INTERFACE</a></dt>
+	
+	<dt><a href="#lbAK">PLUGIN'S EXAMPLES</a></dt>
+	
+	<dt><a href="#lbAL">PLUGINS' MANPAGES FILENAME CONVENTION</a></dt>
+	
+	<dt><a href="#lbAM">AUTHORS</a></dt>
+	
+	<dt><a href="#lbAN">SEE ALSO</a></dt>
+      </dl>
+      <hr />
+      This document was created by man2html, using the manual pages.<br />
+      Time: 12:07:53 GMT, April 18, 2011
+    </div>
+  </body>
 </html>
