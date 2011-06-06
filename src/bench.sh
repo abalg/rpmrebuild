@@ -22,7 +22,7 @@ function bench {
 			echo "ok"
 		else
 
-			# todo : parse output to remove false problems
+			# parse output to remove false problems
 			# dependencies problem ...
 			# and only keep real rpmrebuild errors
 
@@ -45,16 +45,16 @@ function bench {
 				let bad="$bad + 1"
 			fi
 		fi
-		rm -f $pac.spec
+		#rm -f ${pac}.spec
 		# remove new rpm files to avoid file system full
-		rm -f $tmpdir/i386/* $tmpdir/i586/* $tmpdir/i686/* $tmpdir/noarch/* 2> /dev/null
+		rm -f $tmpdir/i386/* $tmpdir/i586/* $tmpdir/i686/* $tmpdir/noarch/* $tmpdir/x86_64/* 2> /dev/null
 	done
 
 	# clean temporary directories
-	rmdir $tmpdir/i386 $tmpdir/i586 $tmpdir/i686 $tmpdir/noarch 2> /dev/null
+	rm -rf $tmpdir 2> /dev/null
 
 	echo "-------------------------------------------------------"
-	echo "$bad bad build on $total packages"
+	echo "$bad bad build on $seen packages"
 	echo "$notok failed build"
 	echo "full log on $LOG"
 	echo "-------------------------------------------------------"
