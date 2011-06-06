@@ -10,6 +10,9 @@ function bench {
 	seen=0
 	notok=0
 	bad=0
+	pbmagic=0
+	pbdep=0
+	list_bad=''
 
 	for pac in $list
 	do
@@ -25,24 +28,33 @@ function bench {
 			# parse output to remove false problems
 			# dependencies problem ...
 			# and only keep real rpmrebuild errors
+			# todo : pubkey ?
 
 			depend=$( echo "$output" | grep "Failed dependencies" )
 			changelog=$( echo "$output" | grep "changelog not in descending chronological order" )
+			cpio=$( echo "$output" | grep "cpio: Bad magic" )
 			if [ -n "$depend" ]
 			then
-				echo "notok (Failed dependencies)"
-				echo "$output"
+				echo "NOTOK (Failed dependencies)"
+				echo "  $output"
 				let notok="$notok + 1"
-
+				let pbdep="$pbdep + 1"
 			elif [ -n "$changelog" ]
 			then
-				echo "notok (changelog not in descending chronological order)"
-				echo "$output"
+				echo "NOTOK (changelog not in descending chronological order)"
+				echo "  $output"
 				let notok="$notok + 1"
+			elif [ -n "$cpio" ]
+			then
+				echo "NOTOK (cpio: Bad magic)"
+				echo "  $output"
+				let notok="$notok + 1"
+				let pbmagic="$pbmagic + 1"
 			else
 				echo "KO"
-				echo "$output"
+				echo "  $output"
 				let bad="$bad + 1"
+				list_bad="$list_bad $pac"
 			fi
 		fi
 		#rm -f ${pac}.spec
@@ -55,7 +67,10 @@ function bench {
 
 	echo "-------------------------------------------------------"
 	echo "$bad bad build on $seen packages"
+	echo "list of failed : $list_bad"
 	echo "$notok failed build"
+	echo "  pb cpio : $pbmagic"
+	echo "  pb dep : $pbdep"
 	echo "full log on $LOG"
 	echo "-------------------------------------------------------"
 
