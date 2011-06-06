@@ -4,16 +4,17 @@
 # $Id$
 
 function bench {
-	list=$(rpm -qa | sort)
+	list=$( rpm -qa | sort )
+	max=$( echo "$list" | wc -l )
 
-	total=0
+	seen=0
 	notok=0
 	bad=0
 
 	for pac in $list
 	do
-		echo -n "$pac : "
-		let total="$total + 1"
+		let seen="$seen + 1"
+		echo -n "$seen/$max $pac "
 		output=$( nice rpmrebuild -b -k  -y no -c yes -d $tmpdir $pac  2>&1 )
 		irep=$?
 		if [ $irep -eq 0 ]
