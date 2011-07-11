@@ -5,6 +5,7 @@
      /usr/lib/rpmrebuild/processing_func.src
      /usr/lib/rpmrebuild/rpmrebuild.sh
      /usr/lib/rpmrebuild/rpmrebuild.usedtags
+     /usr/lib/rpmrebuild/rpmrebuild_lib.src
      /usr/lib/rpmrebuild/rpmrebuild_parser.src
      /usr/lib/rpmrebuild/rpmrebuild_rpmqf.src
      /usr/lib/rpmrebuild/rpmrebuild_files.sh

@@ -29,6 +29,7 @@ LIB_SCRIPTS :=             \
    rpmrebuild_ghost.sh     \
 
 INCLUDE_SCRIPTS :=       \
+   rpmrebuild_lib.src   \
    processing_func.src   \
    rpmrebuild_rpmqf.src  \
    rpmrebuild_parser.src \
