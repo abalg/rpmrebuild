@@ -39,6 +39,9 @@
 	exit 1
 }
 
+MY_LIB_DIR=`dirname $0` || return
+source $MY_LIB_DIR/rpmrebuild_lib.src    || return
+
 BuildRoot="$1"
 
 while :; do
