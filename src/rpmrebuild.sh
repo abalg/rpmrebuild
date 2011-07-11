@@ -22,80 +22,6 @@ VERSION="$Id$"
 # debug 
 #set -x 
 ###############################################################################
-function Echo
-{
-	echo -e "$@" 1>&2
-}
-###############################################################################
-function Error
-{
-	Echo "$0: ERROR: $@"
-}
-###############################################################################
-
-function Warning
-{
-	# screen
-	Echo "$0: WARNING: $@"
-	# for optionnal bug report
-	echo -e "$0: WARNING: $@" >> $BUGREPORT
-
-}
-###############################################################################
-
-function AskYesNo
-{
-	local Ans
-	echo -en "$@ ? (y/N) " 1>&2
-	read Ans
-	case "x$Ans" in
-		x[yY]*) return 0;;
-		*)      return 1;;
-	esac || return 1 # should not happened
-	return 1 # should not happend
-}
-
-###############################################################################
-function RmDir
-{
-	[ $# -ne 1 -o "x$1" = "x" ] && {
-		Echo "Usage: RmDir <dir>"
-		return 1
-	}
-	# to ensure tmpdir is really emptied by rm -rf
-	local Dir
-	Dir="$1"
-	if [ -d $Dir ]
-	then
-		rm -rf "$Dir" 2>/dev/null && return
-		chmod -R 700 "$Dir" 2>/dev/null  # no return here !!!
-		rm -rf "$Dir" || return
-	fi
-	return 0
-}
-###############################################################################
-# on AIX the  --parents does not exists for mkdir command, so use -p option
-# which exists on all unix os
-# but Non-GNU mkdir -p may have slightly different semantic and return status
-# is not allways the same
-function Mkdir_p
-{
-	[ $# -ne 1 -o "x$1" = "x" ] && {
-		Echo "Usage: Mkdir_p <dir>"
-		return 1
-	}
-	local Dir
-	Dir="$1"
-	mkdir -p $Dir
-	# test result
-	if [ -d $Dir ]
-	then
-		return 0
-	else
-		return 1
-	fi
-}
-###############################################################################
 function SpecEdit
 {
 	[ $# -ne 1 -o "x$1" = "x" ] && {
@@ -371,6 +297,9 @@ function Main
 	export RPMREBUILD_TMPDIR
 	TMPDIR_WORK=$RPMREBUILD_TMPDIR/work
 
+	MY_LIB_DIR=`dirname $0` || return
+	source $MY_LIB_DIR/rpmrebuild_lib.src	 || return
+
 	# create tempory directories before any work/test
 	RmDir "$RPMREBUILD_TMPDIR" || return
 	Mkdir_p $TMPDIR_WORK       || return
@@ -381,7 +310,6 @@ function Main
 	# plugins for fs modification  (--change-files)
 	BUILDROOT=$TMPDIR_WORK/root
 
-	MY_LIB_DIR=`dirname $0` || return
 	source $MY_LIB_DIR/rpmrebuild_parser.src || return
 	source $MY_LIB_DIR/spec_func.src         || return
 	source $MY_LIB_DIR/processing_func.src   || return
