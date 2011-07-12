@@ -1,5 +1,5 @@
 * Tue Jul 12 2011 <gerbier@users.sourceforge.net> 2.6
-- fix bug when working on source packages
+- fix bug when working on source packages, ghost files
 
 * Fri Apr 15 2011 <gerbier@users.sourceforge.net> 2.5
 - add -5/-l options in man pages
