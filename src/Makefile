@@ -129,6 +129,7 @@ install:
 
 tar:	rpmrebuild.spec man
 	tar -cvzf $(TAR_FILE) $(TAR_NAMES)
+	~/bin/gensign.sh $(TAR_FILE)
 
 rpmbuild:	tar
 	$(MKDIR) $(RPM_BUILD_DIR)
