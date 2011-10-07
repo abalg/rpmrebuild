@@ -57,6 +57,8 @@ warranties.  See the file COPYING for details.
 
 .SH "SEE ALSO"
 .LP 
-rpm(8), rpmbuild(8), rpmrebuild_plugins(1), demo.plug(1), demofiles.plug(1),  nodoc.plug(1), uniq.plug(1), file2pacDep.plug(1) set_tag.plug(1) unset_tag.plug(1)
+rpm(8), rpmbuild(8), rpmrebuild_plugins(1)
+.br
+compat_digest.plug(1), demo.plug(1), demofiles.plug(1),  nodoc.plug(1), uniq.plug(1), file2pacDep.plug(1) set_tag.plug(1) unset_tag.plug(1)
 .br 
 man \-k rrp for plugins specific manpages
