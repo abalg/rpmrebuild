@@ -32,6 +32,8 @@
      /usr/lib/rpmrebuild/plugins/nodoc.sh
      /usr/lib/rpmrebuild/plugins/set_tag.plug
      /usr/lib/rpmrebuild/plugins/set_tag.sh
+     /usr/lib/rpmrebuild/plugins/unset_tag.plug
+     /usr/lib/rpmrebuild/plugins/unset_tag.sh
      /usr/lib/rpmrebuild/plugins/uniq.plug
      /usr/lib/rpmrebuild/plugins/uniq.sh
 %doc /usr/share/man/man1/rpmrebuild.1*
@@ -58,6 +60,9 @@
 %doc /usr/share/man/man1/set_tag.plug.1rrp*
 %doc /usr/share/man/fr_FR/man1/set_tag.plug.1rrp*
 %doc /usr/share/man/fr_FR.UTF-8/man1/set_tag.plug.1rrp*
+%doc /usr/share/man/man1/unset_tag.plug.1rrp*
+%doc /usr/share/man/fr_FR/man1/unset_tag.plug.1rrp*
+%doc /usr/share/man/fr_FR.UTF-8/man1/unset_tag.plug.1rrp*
 %doc /usr/share/man/man1/uniq.plug.1rrp*
 %doc /usr/share/man/fr_FR/man1/uniq.plug.1rrp*
 %doc /usr/share/man/fr_FR.UTF-8/man1/uniq.plug.1rrp*
