@@ -152,6 +152,8 @@ file2pacDep.plug (change\-spec\-requires) : un "vrai" plugin pour convertir les 
 nodoc.plug (change\-spec\-files) : un "vrai" plugin pour supprimer la documentation d'un package
 .TP 
 set_tag.plug (change\-spec\-preamble) : un "vrai" plugin pour modifier la valeur d'un tag du fichier de spec
+.TP 
+unset_tag.plug (change\-spec\-preamble) : un "vrai" plugin pour commnter un tag du fichier de spec
 .SH "PLUGINS' CONVENTION DE NOMMAGE DES PAGES MAN"
 Si vous écrivez des plugin, vous êtes encouragés à suffixer les pages de
 manuel en \fB.1rrp\fP, afin que la commande \fB'man \-k rrp'\fP fournisse
@@ -167,5 +169,5 @@ Valery Reznic <valery_reznic@users.sourceforge.net>
 See <URL:http://rpmrebuild.sourceforge.net/>.
 .SH "SEE ALSO"
 .LP 
-rpm(8), rpmbuild(8), rpmrebuild(1), demofiles.plug(1), demo.plug(1), nodoc.plug(1), uniq.plug(1), file2pacDep.plug(1), set_tag.plug(1), 'man \-k rrp' pour la doc sur les plugins fournis.
-
+rpm(8), rpmbuild(8), rpmrebuild(1), demofiles.plug(1), demo.plug(1), nodoc.plug(1), uniq.plug(1), file2pacDep.plug(1), set_tag.plug(1), unset_tag.plug(1),
+ 'man \-k rrp' pour la doc sur les plugins fournis.

@@ -148,7 +148,9 @@ file2pacDep.plug (change\-spec\-requires) : a "real" plugin to convert file depe
 .TP 
 nodoc.plug (change\-spec\-files): a "real" plugin to remove documentation from a package
 .TP 
-set_tag.plus (change\-spec\-preamble) : a "real" plugin to change a tag in spec file
+set_tag.plug (change\-spec\-preamble) : a "real" plugin to change a tag in spec file
+.TP 
+unset_tag.plug (change\-spec\-preamble) : a "real" plugin to comment a tag in spec file
 .SH "PLUGINS' MANPAGES FILENAME CONVENTION"
 If you are going to write plugin (and manpage for it) it's strongly
 recommended than manpage's file looks like \fBname.1rrp\fP \- this way
@@ -164,5 +166,5 @@ Valery Reznic <valery_reznic@users.sourceforge.net>
 See <URL:http://rpmrebuild.sourceforge.net/>.
 .SH "SEE ALSO"
 .LP 
-rpm(8), rpmbuild(8), rpmrebuild(1), demofiles.plug(1), demo.plug(1), nodoc.plug(1), uniq.plug(1), file2pacDep.plug(1), set_tag.plug(1), 'man \-k rrp' for plugins specific manpages
-
+rpm(8), rpmbuild(8), rpmrebuild(1), demofiles.plug(1), demo.plug(1), nodoc.plug(1), uniq.plug(1), file2pacDep.plug(1), set_tag.plug(1), unset_tag.plug(1)
+ 'man \-k rrp' for plugins specific manpages
