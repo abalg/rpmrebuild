@@ -1,20 +1,18 @@
-.TH "set_tag.plug" "1" "@VERSION@" "Eric Gerbier" "rpmrebuild plugin"
+.TH "unset_tag.plug" "1" "@VERSION@" "Eric Gerbier" "rpmrebuild plugin"
 .SH "NAME"
-set_tag.plug \- a plugin for rpmrebuild, to replace a tag value in spec file
+unset_tag.plug \- a plugin for rpmrebuild, to comment a tag key in spec file
 .SH "SYNOPSIS"
 .br 
-rpmrebuild  \-\-change\-spec\-preamble="set_tag.sh \fI\-t tag value" \fP<\fIpackagename\fP>
+rpmrebuild  \-\-change\-spec\-preamble="unset_tag.sh \fI\-t tagkey " \fP<\fIpackagename\fP>
 .br 
 or
 .br 
-TAG_ID=tag
+TAG_ID=tagkey
 .br 
-TAG_VAL=value
-.br 
-rpmrebuild  \-\-include set_tag.plug <\fIpackagename\fP>
+rpmrebuild  \-\-include unset_tag.plug <\fIpackagename\fP>
 
 .SH "DESCRIPTION"
-this plugin allow to replace a tag value in spec file
+this plugin allow to comment a tag key in spec file
 .SH "OPTIONS"
 .TP 
 \fB\-h, \-\-help\fP
@@ -23,37 +21,31 @@ output help information plugins option and exit.
 \fB\-v, \-\-version\fP
 print plugin version and exit
 .TP 
-\fB\-t, \-\-tag\fP yourtag yourvalue
-replace the value of tag yourtag by yourvalue
+\fB\-t, \-\-tag\fP tagkey 
+comment the tagkey line
  
 .SH "FILES"
 .TP 
-\fBset_tag.sh\fP
+\fBunset_tag.sh\fP
 contains the code for change\-spec\-preamble
 .TP 
-\fBset_tag.plug\fP
+\fBunset_tag.plug\fP
 
 .TP 
-\fBset_tag.plug.1\fP
+\fBunset_tag.plug.1\fP
 is this man page
 .SH "ENVIRONMENT"
-TAG_ID : name of the spec tag to change
-.br 
-TAG_VAL : new value for the TAG_ID tag
+TAG_ID : name of the spec tag to comment
 .SH "EXAMPLES"
 .LP 
-\fBrpmrebuild \-\-change\-spec\-preamble="set_tag.sh \-t Release 2test" apache\fP
-
-to change the Release tag to "2test" for the package apache
+\fBrpmrebuild \-\-change\-spec\-preamble="unset_tag.sh \-t BuildArch" apache\fP
 .br 
 you can do the same with the following syntax 
 .br 
-
-TAG_ID=Release
+TAG_ID=BuildArch
+rpmrebuild \-\-include unset_tag.plug apache
 .br 
-TAG_VAL="2test"
-.br 
-rpmrebuild \-\-include set_tag.plug apache
+to comment the BuildArch tag for the package apache
 
 .SH "AUTHORS"
 .LP 
@@ -67,7 +59,7 @@ a very simple but real plugin
 
 .SH "COPYRIGHT"
 .LP 
-rpmrebuild is copyright (C) 2008 by Eric Gerbier.
+rpmrebuild is copyright (C) 2011 by Eric Gerbier.
 .br 
 this program is distributed under GNU General Public License
 .br 
