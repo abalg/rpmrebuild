@@ -10,6 +10,7 @@ PLUGINS :=          \
    uniq.plug        \
    nodoc.plug       \
    set_tag.plug     \
+   unset_tag.plug     \
                     \
 
 SCRIPTS :=        \
@@ -20,6 +21,7 @@ SCRIPTS :=        \
    uniq.sh        \
    nodoc.sh       \
    set_tag.sh     \
+   unset_tag.sh     \
                   \
 
 MANPAGES_BASE := $(addsuffix .1rrp,$(PLUGINS))
