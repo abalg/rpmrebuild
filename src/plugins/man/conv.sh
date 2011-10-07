@@ -26,5 +26,5 @@ if [ -f $fsrc ]
 then
 	fdest="$dest/$fic"
 	iconv -t $type -o $fdest $fsrc
-	diff $fsrc $fdest
+	vimdiff $fsrc $fdest
 fi
