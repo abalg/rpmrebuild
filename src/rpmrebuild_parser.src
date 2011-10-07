@@ -1130,16 +1130,16 @@ function CommandLineParsing
 				if [ -f $PAQUET ]; then
 					PAQUET_NAME=$( basename $PAQUET)
 					# check if it is an rpm file
-					tst_rpm=$( file $PAQUET )
-					case "x$tst_rpm" in
-						x*RPM\ *)
+					# rem : 'file' sometimes does not return 
+					# "RPM" because some other magic triggers
+					# before the RPM magic check runs
+					tst_rpm=$( rpm -qp $PAQUET  2>/dev/null )
+					if [ $? -eq 0 ]; then
 							: #ok
-						;;
-						*)
+					else
 						Error "$NotAnRpm '$PAQUET'"
 						return 1
-						;;
-					esac
+					fi
 				else
 					Error "$FileNotFound '$PAQUET'"
 					return 1
