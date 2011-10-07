@@ -15,12 +15,13 @@ TARGET_MAN    := $(DESTDIR)/usr/share/man
 
 LANGS := en fr_FR fr_FR.UTF-8
 
+# add current version in man pages
 define MakeManPage
 	@$(RM) $@
 	@read VERSION < $(TOP_DIR)/Version && sed -e "s/@VERSION@/$$VERSION/g" < $<  > $@ || { $(RM) $@; exit 1; }
 endef
 
-
+# install man pages
 define InstallManPages
 	for lang in $(LANGS); do                                               \
 		if [ "$$lang" = "en" ]; then                                   \
@@ -34,6 +35,7 @@ define InstallManPages
 	:
 endef
 
+# install translations
 define InstallLocales
 	for lang in $(LANGS); do                                               \
 		d=$(TARGET_LOCALE)/$$lang	                    || exit;\
