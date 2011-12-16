@@ -15,7 +15,7 @@
 #    GNU General Public License for more details.
 #
 ###############################################################################
-# this script is used to extract all rpm tags used in rpmrebuild_rpmqf.src 
+# this script is used to extract all rpm tags used in rpmrebuild_rpmqf.src
 # and to display a sorted list
 ###############################################################################
 use strict;
@@ -23,22 +23,24 @@ use warnings;
 
 my %tags;
 
+my $fic = $ARGV[0];
 my $fh;
-if (open $fh, '<', 'rpmrebuild_rpmqf.src') {
+if ( open $fh, '<', $fic ) {
 	while (<$fh>) {
 		chomp;
-		while ( m/\%\{([\w:]+)\}/g ) {
-			my ($tag, undef) = split /:/, $1;
+		while (m/\%\{([\w:]+)\}/g) {
+			my ( $tag, undef ) = split /:/, $1;
 			$tags{$tag} = 1;
 		}
 	}
 
 	close $fh;
 
-} else {
-	die "can not open rpmrebuild_rpmqf.src : $!\n";
+}
+else {
+	die "can not open $fic : $!\n";
 }
 
-foreach my $k (sort keys %tags ) {
+foreach my $k ( sort keys %tags ) {
 	print "$k\n";
 }
