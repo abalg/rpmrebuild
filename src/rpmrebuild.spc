@@ -22,16 +22,22 @@ Packager: Eric Gerbier <gerbier@users.sourceforge.net>
 BuildArchitectures: noarch
 Requires: bash
 Requires: cpio
-# mkdir ...
-Requires: fileutils
 Requires: sed
-# sort
-Requires: textutils
 
-%if %{is_rpm4}
-Requires: rpm >= 4.0, /usr/bin/rpmbuild
-%else
+# mkdir 
+# sort
+%if %is_rpm3
 Requires: rpm < 4.0
+Requires: fileutils
+Requires: textutils
+%endif
+%if %is_rpm4
+Requires: rpm >= 4.0, /usr/bin/rpmbuild
+Requires: coreutils
+%endif
+%if %is_rpm5
+Requires: rpm >= 5.0, /usr/bin/rpmbuild
+Requires: coreutils
 %endif
 
 Release: %{release}
