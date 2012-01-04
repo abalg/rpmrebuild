@@ -31,7 +31,8 @@ LIB_SCRIPTS :=             \
 INCLUDE_SCRIPTS :=       \
    rpmrebuild_lib.src   \
    processing_func.src   \
-   rpmrebuild_rpmqf.src  \
+   rpmrebuild_rpmqf4.src  \
+   rpmrebuild_rpmqf5.src  \
    rpmrebuild_parser.src \
    spec_func.src         \
 
@@ -39,7 +40,8 @@ PERLS :=           \
    extract_tags.pl \
 
 DATA :=                 \
-   rpmrebuild.usedtags  \
+   rpmrebuild.usedtags4  \
+   rpmrebuild.usedtags5  \
 
 MANPAGES_BASE :=        \
    rpmrebuild.1         \
@@ -101,7 +103,11 @@ endef
 all: rpmrebuild.spec VERSION $(MANPAGES) $(DATA)
 	$(MAKE) -C plugins $@
 
-rpmrebuild.usedtags: extract_tags.pl rpmrebuild_rpmqf.src
+rpmrebuild.usedtags4: extract_tags.pl rpmrebuild_rpmqf4.src
+	$(RM) $@
+	perl $^ > $@ || { $(RM) $@; exit 1; }
+
+rpmrebuild.usedtags5: extract_tags.pl rpmrebuild_rpmqf5.src
 	$(RM) $@
 	perl $^ > $@ || { $(RM) $@; exit 1; }
 
@@ -120,8 +126,8 @@ install:
 	$(MKDIR)                                  $(TARGET_DIR)
 	$(INSTALL_RUN) $(SCRIPTS)                 $(TARGET_DIR)
 
-	$(MKDIR)                                         $(TARGET_LIB)
-	$(INSTALL_RUN) $(LIB_SCRIPTS)                    $(TARGET_LIB)
+	$(MKDIR)                                 $(TARGET_LIB)
+	$(INSTALL_RUN) $(LIB_SCRIPTS)            $(TARGET_LIB)
 	$(INSTALL_RO) $(INCLUDE_SCRIPTS) $(DATA) VERSION $(TARGET_LIB)
 	$(InstallManPages)
 	$(InstallLocales)
@@ -129,6 +135,8 @@ install:
 
 tar:	rpmrebuild.spec man
 	tar -cvzf $(TAR_FILE) $(TAR_NAMES)
+
+dist:	tar
 	~/bin/gensign.sh $(TAR_FILE)
 
 rpmbuild:	tar
@@ -138,7 +146,7 @@ rpmbuild:	tar
 
 clean:
 	$(RMDIR) $(ROOT) $(RPM_BUILD_DIR)
-	$(RM)    VERSION rpmrebuild.spec *.rpm rpmrebuild.tar.gz 
+	$(RM)    VERSION rpmrebuild.spec *.rpm rpmrebuild.tar.gz rpmrebuild.tar.gz.sig
 	$(RM)    $(MANPAGES)
 	$(RM)    $(DATA)
 	$(MAKE) -C plugins $@
@@ -148,6 +156,7 @@ man: $(MANPAGES)
 help:
 	@echo "list of targets :"
 	@echo "- tar : build tar.gz"
-	@echo "- rpmbuild : build rpm packages with rpm 4.x release"
+	@echo "- dist : build signed tar.gz"
+	@echo "- rpmbuild : build rpm packages"
 	@echo "- install : install software"
 	@echo "- man : build man pages"
