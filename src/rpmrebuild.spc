@@ -1,4 +1,11 @@
-%define is_rpm4 %( rpm_version="`rpm -q --queryformat='%{VERSION}' rpm | cut -f 1 -d.`"; if test $rpm_version == 4; then echo 1; else echo 0; fi)
+# get rpm version
+%define rpm_ver %( rpm -q --queryformat='%{VERSION}' rpm | cut -f 1 -d.)
+# test for an rpm version
+%define test_ver() %(if test %1 == %2; then echo 1; else echo 0;fi )
+# define binary flags
+%define is_rpm3 %test_ver %rpm_ver 3
+%define is_rpm4 %test_ver %rpm_ver 4
+%define is_rpm5 %test_ver %rpm_ver 5
 
 # The Summary: line should be expanded to about here -----^
 Summary: A tool to build rpm file from rpm database
