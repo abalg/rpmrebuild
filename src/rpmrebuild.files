@@ -4,10 +4,12 @@
      /usr/lib/rpmrebuild/VERSION
      /usr/lib/rpmrebuild/processing_func.src
      /usr/lib/rpmrebuild/rpmrebuild.sh
-     /usr/lib/rpmrebuild/rpmrebuild.usedtags
+     /usr/lib/rpmrebuild/rpmrebuild.usedtags4
+     /usr/lib/rpmrebuild/rpmrebuild.usedtags5
      /usr/lib/rpmrebuild/rpmrebuild_lib.src
      /usr/lib/rpmrebuild/rpmrebuild_parser.src
-     /usr/lib/rpmrebuild/rpmrebuild_rpmqf.src
+     /usr/lib/rpmrebuild/rpmrebuild_rpmqf4.src
+     /usr/lib/rpmrebuild/rpmrebuild_rpmqf5.src
      /usr/lib/rpmrebuild/rpmrebuild_files.sh
      /usr/lib/rpmrebuild/rpmrebuild_buildroot.sh
      /usr/lib/rpmrebuild/rpmrebuild_ghost.sh
