@@ -30,17 +30,21 @@ Requires: sed
 Requires: rpm < 4.0
 Requires: fileutils
 Requires: textutils
+%define release_suffix rpm3
 %endif
 %if %is_rpm4
 Requires: rpm >= 4.0, /usr/bin/rpmbuild
+Requires: rpm < 5.0, /usr/bin/rpmbuild
 Requires: coreutils
+%define release_suffix rpm4
 %endif
 %if %is_rpm5
 Requires: rpm >= 5.0, /usr/bin/rpmbuild
 Requires: coreutils
+%define release_suffix rpm5
 %endif
 
-Release: %{release}
+Release: %{release}%{release_suffix}
 
 # compatibility with old digest format
 %global _binary_filedigest_algorithm 1
