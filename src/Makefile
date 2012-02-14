@@ -27,6 +27,7 @@ LIB_SCRIPTS :=             \
    rpmrebuild_files.sh     \
    rpmrebuild_buildroot.sh \
    rpmrebuild_ghost.sh     \
+   rpmrebuild_extract_tags.sh \
 
 INCLUDE_SCRIPTS :=       \
    rpmrebuild_lib.src   \
@@ -35,13 +36,6 @@ INCLUDE_SCRIPTS :=       \
    rpmrebuild_rpmqf5.src  \
    rpmrebuild_parser.src \
    spec_func.src         \
-
-PERLS :=           \
-   extract_tags.pl \
-
-DATA :=                 \
-   rpmrebuild.usedtags4  \
-   rpmrebuild.usedtags5  \
 
 MANPAGES_BASE :=        \
    rpmrebuild.1         \
@@ -54,7 +48,6 @@ MANPAGES := $(foreach lang,$(LANGS),$(addprefix man/$(lang)/,$(MANPAGES_BASE)))
 LOCALES := $(foreach lang,$(LANGS),$(addprefix locale/$(lang)/,$(LOCALE_BASE)))
 
 MANPAGES_SRC := $(addsuffix .in,$(MANPAGES))
-
 
 DOC_FILES :=      \
    AUTHORS        \
@@ -71,7 +64,6 @@ SOURCES :=               \
    $(SCRIPTS)            \
    $(LIB_SCRIPTS)        \
    $(INCLUDE_SCRIPTS)    \
-   $(PERLS)              \
    $(SPEC_SCRIPTS)       \
    $(MANPAGES_SRC)	 \
    $(LOCALES)		 \
@@ -100,16 +92,8 @@ define Spec
    }
 endef
 
-all: rpmrebuild.spec VERSION $(MANPAGES) $(DATA)
+all: rpmrebuild.spec VERSION $(MANPAGES) 
 	$(MAKE) -C plugins $@
-
-rpmrebuild.usedtags4: extract_tags.pl rpmrebuild_rpmqf4.src
-	$(RM) $@
-	perl $^ > $@ || { $(RM) $@; exit 1; }
-
-rpmrebuild.usedtags5: extract_tags.pl rpmrebuild_rpmqf5.src
-	$(RM) $@
-	perl $^ > $@ || { $(RM) $@; exit 1; }
 
 rpmrebuild.spec: rpmrebuild.spc Version Release Changelog 
 	$(RM) $@
@@ -128,7 +112,7 @@ install:
 
 	$(MKDIR)                                 $(TARGET_LIB)
 	$(INSTALL_RUN) $(LIB_SCRIPTS)            $(TARGET_LIB)
-	$(INSTALL_RO) $(INCLUDE_SCRIPTS) $(DATA) VERSION $(TARGET_LIB)
+	$(INSTALL_RO) $(INCLUDE_SCRIPTS) VERSION $(TARGET_LIB)
 	$(InstallManPages)
 	$(InstallLocales)
 	$(MAKE) -C plugins $@
@@ -148,7 +132,6 @@ clean:
 	$(RMDIR) $(ROOT) $(RPM_BUILD_DIR)
 	$(RM)    VERSION rpmrebuild.spec *.rpm rpmrebuild.tar.gz rpmrebuild.tar.gz.sig
 	$(RM)    $(MANPAGES)
-	$(RM)    $(DATA)
 	$(MAKE) -C plugins $@
 
 man: $(MANPAGES)
