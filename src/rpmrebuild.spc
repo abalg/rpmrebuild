@@ -83,16 +83,15 @@ make DESTDIR="$RPM_BUILD_ROOT" install
 %post
 %if %is_rpm3
 ln -s /usr/lib/rpmrebuild/rpmrebuild_rpmqf4.src /usr/lib/rpmrebuild/rpmrebuild_rpmqf.src
-ln -s /usr/lib/rpmrebuild/rpmrebuild.usedtags4 /usr/lib/rpmrebuild/rpmrebuild.usedtags
 %endif
 %if %is_rpm4
 ln -s /usr/lib/rpmrebuild/rpmrebuild_rpmqf4.src /usr/lib/rpmrebuild/rpmrebuild_rpmqf.src
-ln -s /usr/lib/rpmrebuild/rpmrebuild.usedtags4 /usr/lib/rpmrebuild/rpmrebuild.usedtags
 %endif
 %if %is_rpm5
 ln -s /usr/lib/rpmrebuild/rpmrebuild_rpmqf5.src /usr/lib/rpmrebuild/rpmrebuild_rpmqf.src
-ln -s /usr/lib/rpmrebuild/rpmrebuild.usedtags5 /usr/lib/rpmrebuild/rpmrebuild.usedtags
 %endif
+/usr/lib/rpmrebuild/rpmrebuild_extract_tags.sh /usr/lib/rpmrebuild/rpmrebuild_rpmqf.src > /usr/lib/rpmrebuild/rpmrebuild.usedtags
+
 
 %postun
 rm /usr/lib/rpmrebuild/rpmrebuild_rpmqf.src
