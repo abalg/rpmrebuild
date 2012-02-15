@@ -85,6 +85,10 @@ make DESTDIR="$RPM_BUILD_ROOT" install
 %files -f rpmrebuild.files
 
 %post
+if [ -f /usr/lib/rpmrebuild/rpmrebuild_rpmqf.src ]
+then
+	rm /usr/lib/rpmrebuild/rpmrebuild_rpmqf.src
+fi
 %if %is_rpm3
 ln -s /usr/lib/rpmrebuild/rpmrebuild_rpmqf4.src /usr/lib/rpmrebuild/rpmrebuild_rpmqf.src
 %endif
@@ -94,9 +98,18 @@ ln -s /usr/lib/rpmrebuild/rpmrebuild_rpmqf4.src /usr/lib/rpmrebuild/rpmrebuild_r
 %if %is_rpm5
 ln -s /usr/lib/rpmrebuild/rpmrebuild_rpmqf5.src /usr/lib/rpmrebuild/rpmrebuild_rpmqf.src
 %endif
+if [ -f /usr/lib/rpmrebuild/rpmrebuild.usedtags ]
+then
+	rm /usr/lib/rpmrebuild/rpmrebuild.usedtags
+fi
+#echo "build rpmrebuild.usedtags"
 /usr/lib/rpmrebuild/rpmrebuild_extract_tags.sh /usr/lib/rpmrebuild/rpmrebuild_rpmqf.src > /usr/lib/rpmrebuild/rpmrebuild.usedtags
 
-
 %postun
-rm /usr/lib/rpmrebuild/rpmrebuild_rpmqf.src
-rm /usr/lib/rpmrebuild/rpmrebuild.usedtags
+if [ "$1" = "0" ]
+then
+	# last uninstall
+	#echo "delete rpmrebuild.usedtags and rpmrebuild_rpmqf.src"
+	rm /usr/lib/rpmrebuild/rpmrebuild_rpmqf.src
+	rm /usr/lib/rpmrebuild/rpmrebuild.usedtags
+fi
