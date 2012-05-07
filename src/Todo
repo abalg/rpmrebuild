@@ -9,3 +9,13 @@ what now ?
 
 prelink
 doc spec_only , rpmbuild
+
+2.7
+----
+capabilities
+FILECAPS tag
+ %attr(0755,root,root) %caps(cap_net_raw=ep) /bin/ping
+
+rpm5
+
+prelink ?
