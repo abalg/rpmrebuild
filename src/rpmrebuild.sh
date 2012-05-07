@@ -287,11 +287,7 @@ function CheckTags
 
 function Main
 {
-	
-	#WantContinue="Do you want to continue"
-
 	RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild.$$}
-	#RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild}
 	BUGREPORT=$RPMREBUILD_TMPDIR/bugreport
 	export BUGREPORT
 	export RPMREBUILD_TMPDIR
