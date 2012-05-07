@@ -111,7 +111,11 @@ function List_Plugins
 	for f in $plugindir/*.plug
 	do
 		plug=$(basename $f)
-		text=$(man $plug | awk 'NR==6{print}' )
+		# use man to force localisation
+		# line number may vary
+		#text=$(man $plug | awk 'NR==7{print}' )
+		# filter by name of plugin
+		text=$(man $plug | awk "/$plug +- /{print}" )
 		if [ -n "$text" ]
 		then
 			echo "$text"
