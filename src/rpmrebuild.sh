@@ -254,14 +254,34 @@ function SearchTag
 	done
 	return 1
 }
+###############################################################################
+# generate rpm query file according current rpm tags
+function GenRpmQf
+{
+	export RPM_TAGS=$( rpm --querytags )
+
+	# base code
+	cp $MY_LIB_DIR/rpmrebuild_rpmqf.src $TMPDIR_WORK/rpmrebuild_rpmqf.src
+
+	# then changes according rpm tags
+	# rpm5 uses FILEPATHS instead FILENAMES
+	SearchTag FILENAMES || sed -i 's/FILENAMES/FILEPATHS/g' $TMPDIR_WORK/rpmrebuild_rpmqf.src
+
+	# no TRIGGERTYPE
+	SearchTag TRIGGERTYPE || sed -i 's/%{TRIGGERTYPE}//g' $TMPDIR_WORK/rpmrebuild_rpmqf.src
+
+	# FILECAPS exists on fedora
+	# ex : iputils package (ping)
+	#SearchTag FILECAPS || sed -i 's/%{FILECAPS}//g' $TMPDIR_WORK/rpmrebuild_rpmqf.src
+
+	return 0
+}
+###############################################################################
 # rpm tags change along the time : some are added, some are renamed, some are
 # deprecated, then removed
 # the idea is to check if the tag we use for rpmrebuild still exists
 function CheckTags
 {
-	# get rpm tags
-	export RPM_TAGS=$( rpm --querytags )
-
 	# list of used tags
 	rpmrebuild_tags=$( $MY_LIB_DIR/rpmrebuild_extract_tags.sh $TMPDIR_WORK/rpmrebuild_rpmqf.src )
 
@@ -311,7 +331,6 @@ function Main
 	source $MY_LIB_DIR/rpmrebuild_parser.src || return
 	source $MY_LIB_DIR/spec_func.src         || return
 	source $MY_LIB_DIR/processing_func.src   || return
-	source $MY_LIB_DIR/rpmrebuild_rpmqf.src   || return
 
 	# check language
 	case "$LANG" in
@@ -324,11 +343,16 @@ function Main
 	source $MY_LIB_DIR/locale/$real_lang/rpmrebuild.lang
 	
 	processing_init || return
+
+	# generate rpm query file 
+	GenRpmQf
+	# check it
 	CheckTags || return
+	# and load it
+	source $TMPDIR_WORK/rpmrebuild_rpmqf.src   || return
 
 	export RPMREBUILD_PLUGINS_DIR=${MY_LIB_DIR}/plugins
 
-	# suite a des probleme de dates incorrectes
 	# to solve problems of bad date
 	export LC_TIME=POSIX
 
