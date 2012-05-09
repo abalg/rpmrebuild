@@ -6,8 +6,7 @@
      /usr/lib/rpmrebuild/rpmrebuild.sh
      /usr/lib/rpmrebuild/rpmrebuild_lib.src
      /usr/lib/rpmrebuild/rpmrebuild_parser.src
-     /usr/lib/rpmrebuild/rpmrebuild_rpmqf4.src
-     /usr/lib/rpmrebuild/rpmrebuild_rpmqf5.src
+     /usr/lib/rpmrebuild/rpmrebuild_rpmqf.src
      /usr/lib/rpmrebuild/rpmrebuild_files.sh
      /usr/lib/rpmrebuild/rpmrebuild_buildroot.sh
      /usr/lib/rpmrebuild/rpmrebuild_ghost.sh
