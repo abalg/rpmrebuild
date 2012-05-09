@@ -32,8 +32,7 @@ LIB_SCRIPTS :=             \
 INCLUDE_SCRIPTS :=       \
    rpmrebuild_lib.src   \
    processing_func.src   \
-   rpmrebuild_rpmqf4.src  \
-   rpmrebuild_rpmqf5.src  \
+   rpmrebuild_rpmqf.src  \
    rpmrebuild_parser.src \
    spec_func.src         \
 
