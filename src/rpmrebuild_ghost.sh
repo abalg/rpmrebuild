@@ -29,6 +29,7 @@
 # <file_group>  - file's group id
 # <file_verify> - file's verify flags (as %{FILEVERIFYFLAGS:octal})
 # <file_lang>   - file's language     (as %{FILELANGS})
+# <file_caps>   - file's capablities  (as %{FILECAPS})
 # <file>        - file name
 #
 # And it should create all (non-exist) ghost files under buildroot
@@ -56,6 +57,7 @@ while :; do
 	read file_group
 	read file_verify
 	read file_lang
+	read file_cap
 	read file
 
 	case "X$file_flags" in

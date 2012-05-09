@@ -29,6 +29,7 @@
 # <file_group>  - file's group id
 # <file_verify> - file's verify flags (as %{FILEVERIFYFLAGS:octal})
 # <file_lang>   - file's language     (as %{FILELANGS})
+# <file_caps>   - file's capablities  (as %{FILECAPS})
 # <file>        - file name
 #
 # Environment:
@@ -61,6 +62,7 @@ while :; do
 	read file_group
 	read file_verify
 	read file_lang
+	read file_cap
 	read file
 
 	# bash 2 syntaxe
@@ -141,6 +143,13 @@ while :; do
 		attr_str="%attr($file_perm $file_user $file_group) "
 	fi
 
+	# %caps handling
+	if [ -n "$file_cap" ]; then
+		caps_str="%caps($file_cap) "
+	else
+		caps_str=""
+	fi
+
 	# Verify handling
 	verify_str=""
 	verify_par=""
@@ -185,6 +194,6 @@ while :; do
 		esac
 	fi
 
-	echo "${miss_str}${lang_str}${dir_str}${fflags_str}${attr_str}${verify_str}\"${file}\""
+	echo "${miss_str}${lang_str}${dir_str}${fflags_str}${attr_str}${caps_str}${verify_str}\"${file}\""
 done || exit
 exit 0

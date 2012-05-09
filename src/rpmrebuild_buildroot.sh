@@ -29,6 +29,7 @@
 # <file_group>  - file's group id
 # <file_verify> - file's verify flags (as %{FILEVERIFYFLAGS:octal})
 # <file_lang>   - file's language     (as %{FILELANGS})
+# <file_caps>   - file's capablities  (as %{FILECAPS})
 # <file>        - file name
 #
 # this format is used in the 3 scripts : 
@@ -54,6 +55,7 @@ while :; do
 	read file_group
 	read file_verify
 	read file_lang
+	read file_cap
 	read file
 
 	[ -e "$file" ] || continue # File/directory not exist, do nothing

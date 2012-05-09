@@ -270,9 +270,9 @@ function GenRpmQf
 	# no TRIGGERTYPE
 	SearchTag TRIGGERTYPE || sed -i 's/%{TRIGGERTYPE}//g' $TMPDIR_WORK/rpmrebuild_rpmqf.src
 
-	# FILECAPS exists on fedora
+	# FILECAPS exists on fedora/Suse/Mageia
 	# ex : iputils package (ping)
-	#SearchTag FILECAPS || sed -i 's/%{FILECAPS}//g' $TMPDIR_WORK/rpmrebuild_rpmqf.src
+	SearchTag FILECAPS ||  sed -i 's/%{FILECAPS}//g' $TMPDIR_WORK/rpmrebuild_rpmqf.src;
 
 	return 0
 }
