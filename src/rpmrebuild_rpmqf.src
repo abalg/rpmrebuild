@@ -84,6 +84,7 @@ function qf_spec_description {
 echo '%|DESCRIPTION?{[%{DESCRIPTION}\n]}|'
 }
 
+# used in rpmrebuild_files.sh rpmrebuild_ghost.sh rpmrebuild_buildroot.sh
 function qf_spec_files {
 echo '[%.1{FILEMODES:perms}\
 %{FILEFLAGS:fflags}\

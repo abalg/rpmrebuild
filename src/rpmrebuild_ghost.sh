@@ -32,6 +32,9 @@
 # <file>        - file name
 #
 # And it should create all (non-exist) ghost files under buildroot
+#
+# this format is used in the 3 scripts : 
+# rpmrebuild_files.sh rpmrebuild_ghost.sh rpmrebuild_buildroot.sh
 ################################################################
 
 [ $# -ne 1 -o "x$1" = "x" ] && {

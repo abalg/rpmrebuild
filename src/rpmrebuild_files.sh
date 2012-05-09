@@ -21,7 +21,7 @@
 ###############################################################################
 
 ################################################################
-# This script get from stanard input data in the following format:
+# This script get from standard input data in the following format:
 # <file_type>   - type of the file (as first letter frpm 'ls -l' output)
 # <file_flags>  - rpm file's flag (as %{FILEFLAGS:fflag}) - may be empty string
 # <file_perm>   - file's permission (as %{FILEMODES:octal})
@@ -37,6 +37,8 @@
 #   RPMREBUILD_COMMENT_MISSING  - 'yes' - comment missing files,
 #                                  otherwise - nothing
 #   RPMREBUILD_WARNING - yes  -  warn, if filename has glob characters
+#
+# it is used in the 3 scripts : rpmrebuild_files.sh rpmrebuild_ghost.sh rpmrebuild_buildroot.sh
 ################################################################
 
 FFLAGS="d c s m n g"

@@ -31,6 +31,8 @@
 # <file_lang>   - file's language     (as %{FILELANGS})
 # <file>        - file name
 #
+# this format is used in the 3 scripts : 
+# rpmrebuild_files.sh rpmrebuild_ghost.sh rpmrebuild_buildroot.sh
 ################################################################
 
 [ $# -ne 1 -o "x$1" = "x" ] && {
