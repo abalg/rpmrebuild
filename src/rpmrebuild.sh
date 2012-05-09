@@ -240,37 +240,39 @@ function SendBugReport
 	return
 }
 ###############################################################################
+# search if the given tag exists in current rpm release
+function SearchTag
+{
+	tag=$1
+	for rpm_tag in $RPM_TAGS
+	do
+		if [ "$tag" = "$rpm_tag" ]
+		then
+			# ok : we find it
+			return 0
+			fi	
+	done
+	return 1
+}
 # rpm tags change along the time : some are added, some are renamed, some are
 # deprecated, then removed
 # the idea is to check if the tag we use for rpmrebuild still exists
 function CheckTags
 {
 	# get rpm tags
-	rpm_tags=$( rpm --querytags )
+	export RPM_TAGS=$( rpm --querytags )
 
-	# rem : rpmrebuild.usedtags is build by extract_tags.pl during package build (cf Makefile)
-	rpmrebuild_tags=$( cat $MY_LIB_DIR/rpmrebuild.usedtags )
+	# list of used tags
+	rpmrebuild_tags=$( $MY_LIB_DIR/rpmrebuild_extract_tags.sh $TMPDIR_WORK/rpmrebuild_rpmqf.src )
 
 	# check for all rpmrebuild tags
 	errors=0
 	for tag in $rpmrebuild_tags
 	do
-		ok=''
-		# if it exists in rpm tags
-		for rpm_tag in $rpm_tags
-		do
-			if [ "$tag" = "$rpm_tag" ]
-			then
-				# ok : we find it
-				ok='y'
-				break
-			fi	
-		done
-		if [ -z "$ok" ]
-		then
+		SearchTag $tag || {
 			Warning "(CheckTags) $MissingTag $tag"
 			let errors="$errors + 1"
-		fi
+		}
 	done
 	if [ $errors -ge 1 ] 
 	then
