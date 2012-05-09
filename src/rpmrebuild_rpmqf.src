@@ -93,6 +93,7 @@ echo '[%.1{FILEMODES:perms}\
 %{FILEGROUPNAME}\
 %{FILEVERIFYFLAGS:octal}\
 %{FILELANGS}\
+%{FILECAPS}\
 %{FILENAMES}\
 ]'
 }
