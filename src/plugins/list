@@ -8,3 +8,4 @@ file2pacDep.plug : change-spec-requires
 nodoc.plug	: change-spec-files
 set_tag		: change-spec-preamble
 uniq.plug	: change-spec-{requires, provides, conflicts, obsoletes}
+un_prelink	: change-files
