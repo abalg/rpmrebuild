@@ -260,20 +260,22 @@ function GenRpmQf
 {
 	export RPM_TAGS=$( rpm --querytags )
 
-	# base code
-	cp $MY_LIB_DIR/rpmrebuild_rpmqf.src $TMPDIR_WORK/rpmrebuild_rpmqf.src
-
 	# then changes according rpm tags
 	# rpm5 uses FILEPATHS instead FILENAMES
-	SearchTag FILENAMES || sed -i 's/FILENAMES/FILEPATHS/g' $TMPDIR_WORK/rpmrebuild_rpmqf.src
+	SED_PAR_1=""
+	SearchTag FILENAMES || SED_PAR_1="-e 's/FILENAMES/FILEPATHS/g'"
 
 	# no TRIGGERTYPE
-	SearchTag TRIGGERTYPE || sed -i 's/%{TRIGGERTYPE}//g' $TMPDIR_WORK/rpmrebuild_rpmqf.src
+	SED_PAR_2=""
+	SearchTag TRIGGERTYPE || SED_PAR_2="-e 's/%{TRIGGERTYPE}//g'"
 
 	# FILECAPS exists on fedora/Suse/Mageia
 	# ex : iputils package (ping)
-	SearchTag FILECAPS ||  sed -i 's/%{FILECAPS}//g' $TMPDIR_WORK/rpmrebuild_rpmqf.src;
+	SED_PAR_3=""
+	SearchTag FILECAPS ||  SED_PAR_3="-e 's/%{FILECAPS}//g'"
 
+	SED_PARS="$SED_PAR_1 $SED_PAR_2_$SED_PAR_3"
+	eval sed $SED_PARS < $MY_LIB_DIR/rpmrebuild_rpmqf.src > $TMPDIR_WORK/rpmrebuild_rpmqf.src || return
 	return 0
 }
 ###############################################################################
