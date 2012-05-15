@@ -258,7 +258,7 @@ function SearchTag
 # generate rpm query file according current rpm tags
 function GenRpmQf
 {
-	export RPM_TAGS=$( rpm --querytags )
+	RPM_TAGS=$( rpm --querytags ) || return
 
 	# then changes according rpm tags
 	# rpm5 uses FILEPATHS instead FILENAMES
@@ -347,7 +347,7 @@ function Main
 	processing_init || return
 
 	# generate rpm query file 
-	GenRpmQf
+	GenRpmQf || return
 	# check it
 	CheckTags || return
 	# and load it
