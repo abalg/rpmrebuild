@@ -6,7 +6,7 @@
 #    Copyright (C) 2004 by Eric Gerbier
 #    Bug reports to: gerbier@users.sourceforge.net
 #      or	   : valery_reznic@users.sourceforge.net
-#    $Id: set_tag.sh 556 2008-04-02 08:33:28Z gerbier $
+#    $Id$
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
