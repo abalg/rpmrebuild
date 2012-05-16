@@ -1,0 +1,68 @@
+.TH "un_prelink.plug" "1" "@VERSION@" "Eric Gerbier" "rpmrebuild plugin"
+.SH "NAME"
+un_prelink.plug \- a plugin for rpmrebuild, to revert prelink
+
+.SH "SYNOPSIS"
+.br 
+rpmrebuild  \-\-include un_prelink.plug <\fIpackagename\fP>
+
+.SH "DESCRIPTION"
+use this plugin to revert prelink.
+
+prelink is a program which modifies ELF shared libraries and ELF dynam-
+ically linked binaries, so that the time which dynamic linker needs for
+their relocation at startup significantly decreases  and  also  due  to
+fewer  relocations the run-time memory consumption decreases too.
+
+.SH "OPTIONS"
+.TP 
+\fB\-h, \-\-help\fP
+output help information plugins option and exit.
+.TP 
+\fB\-v, \-\-version\fP
+print plugin version and exit
+ 
+.SH "FILES"
+.TP 
+\fBun_prelink.sh\fP
+contains the code for change\-files
+.TP 
+\fBun_prelink.plug\fP
+.TP 
+\fBun_prelink.plug.1\fP
+is this man page
+
+.SH "ENVIRONMENT"
+
+.SH "EXAMPLES"
+.LP 
+rpmrebuild \-\-include un_prelink.plug apache
+.br 
+to build apache package with not prelinked binaries
+
+.SH "AUTHORS"
+.LP 
+Eric Gerbier <gerbier@users.sourceforge.net>, based on code from Han Holl
+.TP 
+See <URL:http://rpmrebuild.sourceforge.net/>.
+
+.SH "NOTES"
+.LP 
+.TP 
+
+.SH "COPYRIGHT"
+.LP 
+rpmrebuild is copyright (C) 2011 by Eric Gerbier.
+.br 
+this program is distributed under GNU General Public License
+.br 
+It is provided "as is", without any express or implied
+warranties.  See the file COPYING for details.
+
+.SH "SEE ALSO"
+.LP 
+rpm(8), rpmbuild(8), rpmrebuild_plugins(1)
+.br 
+compat_digest.plug(1), demo.plug(1), demofiles.plug(1),  nodoc.plug(1), uniq.plug(1), file2pacDep.plug(1) set_tag.plug(1) un_prelink.plug(1)
+.br 
+man \-k rrp for plugins specific manpages
