@@ -1,9 +1,10 @@
-* Thu May 10 2012 <gerbier@users.sourceforge.net> 2.7
+* Thu May 16 2012 <gerbier@users.sourceforge.net> 2.7
 - patch from Andreas Kainz for package file checking
 - add new unset_tag plugin
 - add support for rpm version 5 (mandriva)
 - fix -l / --list-plugin option
 - add support of posix capability
+- add new un_prelink plugin (suggest from Han Holl)
 
 * Tue Jul 12 2011 <gerbier@users.sourceforge.net> 2.6
 - fix bug when working on source packages, ghost files
