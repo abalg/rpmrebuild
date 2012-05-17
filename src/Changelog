@@ -5,6 +5,7 @@
 - fix -l / --list-plugin option
 - add support of posix capability
 - add new un_prelink plugin (suggest from Han Holl)
+- add RPMREBUILD_OPTS environment variable
 
 * Tue Jul 12 2011 <gerbier@users.sourceforge.net> 2.6
 - fix bug when working on source packages, ghost files
