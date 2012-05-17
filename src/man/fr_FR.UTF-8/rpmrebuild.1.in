@@ -237,6 +237,10 @@ répertoire des fichiers temporaires.
 \fBRPMREBUILD_TMPDIR\fP
 donne le répertoire pour les fichiers temporaires. S'il n'est pas positionné, le répertoire  ~/.tmp/rpmrebuild.$$ est utilisé.
 .TP 
+\fBRPMREBUILD_OPTS\fP
+permet de passer des options à rpmrebuild, permet de changer les options par défaut.
+Par exemple, pour activer le plugin un_prelink, il suffit de configurer RPMREBUILD_OPTS="--include un_prelink.plug"
+.TP 
 \fBVISUAL\fP
 permet de spécifier un éditeur de fichier. 
 .TP 
