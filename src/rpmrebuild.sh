@@ -256,27 +256,34 @@ function SearchTag
 	return 1
 }
 ###############################################################################
+function ChangeRpmQf
+{
+	SED_PAR=$1
+	input_rpmqf=$TMPDIR_WORK/rpmrebuild_rpmqf.src.$si_rpmqf
+	si_rpmqf=$[si_rpmqf + 1]
+	output_rpmqf=$TMPDIR_WORK/rpmrebuild_rpmqf.src.$si_rpmqf
+	eval sed -e $SED_PAR < $input_rpmqf > $output_rpmqf || return
+}
+###############################################################################
 # generate rpm query file according current rpm tags
 function GenRpmQf
 {
 	RPM_TAGS=$( rpm --querytags ) || return
 
+	# base code
+	cp $MY_LIB_DIR/rpmrebuild_rpmqf.src $TMPDIR_WORK/rpmrebuild_rpmqf.src.$si_rpmqf
+
 	# then changes according rpm tags
 	# rpm5 uses FILEPATHS instead FILENAMES
-	SED_PAR_1=""
-	SearchTag FILENAMES || SED_PAR_1="-e 's/FILENAMES/FILEPATHS/g'"
+	SearchTag FILENAMES || ChangeRpmQf 's/FILENAMES/FILEPATHS/g'
 
 	# no TRIGGERTYPE
-	SED_PAR_2=""
-	SearchTag TRIGGERTYPE || SED_PAR_2="-e 's/%{TRIGGERTYPE}//g'"
+	SearchTag TRIGGERTYPE || ChangeRpmQf 's/%{TRIGGERTYPE}//g'
 
 	# FILECAPS exists on fedora/Suse/Mageia
 	# ex : iputils package (ping)
-	SED_PAR_3=""
-	SearchTag FILECAPS ||  SED_PAR_3="-e 's/%{FILECAPS}//g'"
+	SearchTag FILECAPS ||  ChangeRpmQf 's/%{FILECAPS}//g'
 
-	SED_PARS="$SED_PAR_1 $SED_PAR_2_$SED_PAR_3"
-	eval sed $SED_PARS < $MY_LIB_DIR/rpmrebuild_rpmqf.src > $TMPDIR_WORK/rpmrebuild_rpmqf.src || return
 	return 0
 }
 ###############################################################################
@@ -286,7 +293,7 @@ function GenRpmQf
 function CheckTags
 {
 	# list of used tags
-	rpmrebuild_tags=$( $MY_LIB_DIR/rpmrebuild_extract_tags.sh $TMPDIR_WORK/rpmrebuild_rpmqf.src )
+	rpmrebuild_tags=$( $MY_LIB_DIR/rpmrebuild_extract_tags.sh $TMPDIR_WORK/rpmrebuild_rpmqf.src.$si_rpmqf )
 
 	# check for all rpmrebuild tags
 	errors=0
@@ -352,7 +359,7 @@ function Main
 	# check it
 	CheckTags || return
 	# and load it
-	source $TMPDIR_WORK/rpmrebuild_rpmqf.src   || return
+	source $TMPDIR_WORK/rpmrebuild_rpmqf.src.$si_rpmqf   || return
 
 	export RPMREBUILD_PLUGINS_DIR=${MY_LIB_DIR}/plugins
 
