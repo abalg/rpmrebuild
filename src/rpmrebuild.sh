@@ -214,7 +214,7 @@ function GetInformations
 	Echo "-----------"
 	rpm -q rpmrebuild
 	rpm -q rpm
-	Echo "RPMREBUID_OPTS=$RPMREBUILD_OPTS"
+	#Echo "RPMREBUID_OPTS=$RPMREBUILD_OPTS"
 	Echo "-----------"
 	Echo "$RPM_TAGS"
 	Echo " --------------- $WriteComments -----------------------"
