@@ -144,6 +144,7 @@ while :; do
 	fi
 
 	# %caps handling
+	[ "X$file_cap" = "X(none)" ] && file_cap=""
 	if [ -n "$file_cap" ]; then
 		caps_str="%caps($file_cap) "
 	else
