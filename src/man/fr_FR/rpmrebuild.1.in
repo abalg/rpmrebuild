@@ -1,11 +1,14 @@
 .TH "rpmrebuild" "1" "@VERSION@" "Eric Gerbier" "rpm tools"
 .SH "NAME"
 rpmrebuild \- un outil pour construire un package rpm à partir d'un package installé
+
 .SH "SYNOPSIS"
 rpmrebuild [\fIoption\fP] <\fInom_de_package\fP>
+
 .SH "DESCRIPTION"
 rpmrebuild est un outil pour construire facilement un package rpm.
 Il peut être utilisé pour fabriquer un fichier rpm à partir d'un package installé ou pour modifier un package : modifiez les fichiers installés et lancez rpmrebuild.
+
 .SH "OPTIONS"
 .TP 
 \fB\-5  \-\-md5\-compat\-digest\fP
@@ -174,6 +177,7 @@ postuninstall, verifyscript ou changelog.
 .br 
 Aucune des ces options ne peut être spécifié après les options \fB\-\-change\-spec\-whole\fP
 ou \fB\-\-edit\-whole\fP.
+
 .SH "INCLUDE FILES"
 Chacune des options (format long) peut être donnée en argument de la ligne de
 commande ou dans un fichier inclus (donné avec l'option \-i/\-\-include)
@@ -218,6 +222,7 @@ change\-files    pgm1 a b c
 change\-spec\-pre pgm2 bb
 .br 
 .RE
+
 .SH "FILES"
 .TP 
 \fB~/.rpmmacros\fP 
@@ -225,17 +230,23 @@ ce fichier est utilisé par rpm lors de la construction de packages (macros)
 .TP 
 \fB$RPMREBUILD_TMPDIR/work\fP
 répertoire des fichiers temporaires.
+
 .SH "ENVIRONMENT"
 .LP 
 .TP 
 \fBRPMREBUILD_TMPDIR\fP
 donne le répertoire pour les fichiers temporaires. S'il n'est pas positionné, le répertoire  ~/.tmp/rpmrebuild.$$ est utilisé.
 .TP 
+\fBRPMREBUILD_OPTS\fP
+permet de passer des options à rpmrebuild, permet de changer les options par défaut.
+Par exemple, pour activer le plugin un_prelink, il suffit de configurer RPMREBUILD_OPTS="--include un_prelink.plug"
+.TP 
 \fBVISUAL\fP
 permet de spécifier un éditeur de fichier. 
 .TP 
 \fBEDITOR\fP
 peut aussi être utilisé pour spécifier un editeur de fichier, si \fBVISUAL\fP n'est pas initialisé. Si aucune de ces variables n'est initialisé, rpmrebuild utiliseras \fBvi\fP.
+
 .SH "EXAMPLES"
 .LP 
 Construire un package rpm aussi proche que possible de l'original :
@@ -286,6 +297,7 @@ Eric Gerbier <gerbier@users.sourceforge.net>
 Valery Reznic <valery_reznic@users.sourceforge.net>
 .TP 
 See <URL:http://rpmrebuild.sourceforge.net/>.
+
 .SH "NOTES"
 .LP 
 .TP 
@@ -296,6 +308,7 @@ rpmrebuild ne peut reproduire exactement un package, car
 \- le cheksum md5 ne peut correspondre avec l'original.
 .TP 
 si un package contient des fichier avec des charactères d'expension (* .. ? ), il peut pas être traité par rpmrebuild.
+
 .SH "COPYRIGHT"
 .LP 
 rpmrebuild is copyright (C) 2002 by Eric Gerbier.
@@ -305,6 +318,7 @@ Ce programme est distribué sous la licence GNU General Public.
 Il est fourni en l'état, sans garanties : même avec le plus grand soin, des bug peuvent subsister. 
 .br 
 Consultez le fichier COPYING pour plus de details.
+
 .SH "SEE ALSO"
 .LP 
 rpm(8), rpmbuild(8), rpmrebuild_plugins(1), 'man \-k rrp' pour la doc sur les plugins.
