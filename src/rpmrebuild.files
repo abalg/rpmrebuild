@@ -32,6 +32,8 @@
      /usr/lib/rpmrebuild/plugins/nodoc.sh
      /usr/lib/rpmrebuild/plugins/set_tag.plug
      /usr/lib/rpmrebuild/plugins/set_tag.sh
+     /usr/lib/rpmrebuild/plugins/un_prelink.plug
+     /usr/lib/rpmrebuild/plugins/un_prelink.sh
      /usr/lib/rpmrebuild/plugins/unset_tag.plug
      /usr/lib/rpmrebuild/plugins/unset_tag.sh
      /usr/lib/rpmrebuild/plugins/uniq.plug
@@ -60,6 +62,9 @@
 %doc /usr/share/man/man1/set_tag.plug.1rrp*
 %doc /usr/share/man/fr_FR/man1/set_tag.plug.1rrp*
 %doc /usr/share/man/fr_FR.UTF-8/man1/set_tag.plug.1rrp*
+%doc /usr/share/man/man1/un_prelink.plug.1rrp*
+%doc /usr/share/man/fr_FR/man1/un_prelink.plug.1rrp*
+%doc /usr/share/man/fr_FR.UTF-8/man1/un_prelink.plug.1rrp*
 %doc /usr/share/man/man1/unset_tag.plug.1rrp*
 %doc /usr/share/man/fr_FR/man1/unset_tag.plug.1rrp*
 %doc /usr/share/man/fr_FR.UTF-8/man1/unset_tag.plug.1rrp*
