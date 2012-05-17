@@ -53,6 +53,7 @@ function processing_init
 	si_requires=1
 	si_triggers=1
 	si_verifyscript=1
+	si_rpmqf=1
 }
 
 function processing_spec_change
