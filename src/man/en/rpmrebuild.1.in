@@ -241,8 +241,8 @@ directory where rpmrebuild put temporary files.
 Directory for temporal files. If not set ~/.tmp/rpmrebuild.$$ is used.
 .TP 
 \fBRPMREBUILD_OPTS\fP
-This is another way to pass options to rpmrebuild. It allows to change 
-default options on a host. For example to activate the un_prelink plugin,
+This is another way to pass options to rpmrebuild (to use with care). It allows to change 
+the default options on a host. For example to activate the un_prelink plugin,
 just set RPMREBUILD_OPTS="--include un_prelink.plug"
 .TP 
 \fBVISUAL\fP
