@@ -126,6 +126,34 @@ function CreateBuildRoot
 	return 0
 }
 ###############################################################################
+# get architecture from package to build
+function RpmArch
+{
+	pac_arch=$( spec_query qf_arch )
+	return;
+}
+###############################################################################
+function CheckArch
+{
+	# current arcchitecture
+	cur_arch=$( uname -m)
+
+	# pac_arch is got from RpmArch
+	RpmArch
+	case $pac_arch in
+	$cur_arch) 
+		change_arch="";;
+	noarch)
+		change_arch="";;
+	'(none)')
+		change_arch="";;
+	*)
+		change_arch="setarch $pac_arch";;
+	esac
+	return
+
+}
+###############################################################################
 
 function RpmBuild
 {
@@ -150,7 +178,7 @@ function RpmBuild
 		# Trick rpm (I hope :)
 		ln -s / $BUILDROOT || return
 	fi
-	eval $BUILDCMD --define "'buildroot $BUILDROOT'" $rpm_defines -bb $rpm_verbose $additional ${FIC_SPEC} || {
+	eval $change_arch $BUILDCMD --define "'buildroot $BUILDROOT'" $rpm_defines -bb $rpm_verbose $additional ${FIC_SPEC} || {
    		Error "package '${PAQUET}' $BuildFailed"
    		return 1
 	}
@@ -161,13 +189,13 @@ function RpmBuild
 ###############################################################################
 function RpmFileName
 {
-	QF_RPMFILENAME=$(eval rpm $rpm_defines --eval %_rpmfilename) || return
-	RPMFILENAME=$(eval rpm $rpm_defines --specfile --query --queryformat "${QF_RPMFILENAME}" ${FIC_SPEC}) || return
+	QF_RPMFILENAME=$(eval $change_arch rpm $rpm_defines --eval %_rpmfilename) || return
+	RPMFILENAME=$(eval $change_arch rpm $rpm_defines --specfile --query --queryformat "${QF_RPMFILENAME}" ${FIC_SPEC}) || return
 	# workarount for redhat 6.x
-	arch=$(eval rpm $rpm_defines --specfile --query --queryformat "%{ARCH}"  ${FIC_SPEC})
+	arch=$(eval $change_arch rpm $rpm_defines --specfile --query --queryformat "%{ARCH}"  ${FIC_SPEC})
 	if [ $arch = "(none)" ]
 	then
-		arch=$(eval rpm $rpm_defines --query $package_flag --queryformat "%{ARCH}" ${PAQUET})
+		arch=$(eval $change_arch rpm $rpm_defines --query $package_flag --queryformat "%{ARCH}" ${PAQUET})
 		RPMFILENAME=$(echo $RPMFILENAME | sed "s/(none)/$arch/g")
 	fi
 
@@ -400,6 +428,7 @@ function Main
 		SpecGeneration   || return
 		CreateBuildRoot  || return
 		Processing       || return
+		CheckArch	 || return
 		RpmBuild         || return
 		RpmFileName      || return
 		echo "result: ${RPMFILENAME}"

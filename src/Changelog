@@ -1,4 +1,4 @@
-* Thu May 16 2012 <gerbier@users.sourceforge.net> 2.7
+* Thu May 21 2012 <gerbier@users.sourceforge.net> 2.7
 - patch from Andreas Kainz for package file checking
 - add new unset_tag plugin
 - add support for rpm version 5 (mandriva)
@@ -6,6 +6,7 @@
 - add support of posix capability
 - add new un_prelink plugin (suggest from Han Holl)
 - add RPMREBUILD_OPTS environment variable
+- fix problem with different architure (build 32bit on 64bits)
 
 * Tue Jul 12 2011 <gerbier@users.sourceforge.net> 2.6
 - fix bug when working on source packages, ghost files
