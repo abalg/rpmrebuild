@@ -44,8 +44,8 @@ echo '%|BUILDHOST?{#dummy}|\
 %|OS?{[#OS:           %{OS}]}|\
 %|SIZE?{[#SIZE:           %{SIZE}]}|\
 %|ARCHIVESIZE?{[#ARCHIVESIZE:           %{ARCHIVESIZE}]}|\
-%|ARCH?{[#ARCH:         %{ARCH}]}|\
-%|ARCH?{[BuildArch:     %{ARCH}]}|\
+%|ARCH?{[#ARCH:         %{ARCH}]}:{#ARCH:        noarch}|\
+%|ARCH?{[BuildArch:     %{ARCH}]}:{BuildArch:    noarch}|\
 %|NAME?{[Name:          %{NAME}]}|\
 %|VERSION?{[Version:       %{VERSION}]}|\
 %|RELEASE?{[Release:       %{RELEASE}]}|\
@@ -131,6 +131,6 @@ echo '%|RELEASE?{%{RELEASE}}|'
 }
 
 function qf_spec_arch {
-echo '%{ARCH}'
+echo '%|ARCH?{%{ARCH}}:{noarch}|'
 }
 
