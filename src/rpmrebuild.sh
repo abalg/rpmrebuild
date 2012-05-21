@@ -22,6 +22,8 @@ VERSION="$Id$"
 # debug 
 #set -x 
 ###############################################################################
+# edit spec file
+# use environment variable to choice the editor
 function SpecEdit
 {
 	[ $# -ne 1 -o "x$1" = "x" ] && {
@@ -39,16 +41,14 @@ function SpecEdit
 	return 0
 }
 ###############################################################################
-
+# check for package change
 function VerifyPackage
 {
-	# verification des changements
-	# check for package change
 	rpm --verify --nodeps ${PAQUET} # Don't return here, st=1 - verify fail 
 	return 0
 }
-
 ###############################################################################
+# ask question to user if necessary
 function QuestionsToUser
 {
 	[ "X$batch"     = "Xyes" ] && return 0 ## batch mode, continue
@@ -63,8 +63,8 @@ function QuestionsToUser
 	}
 	return 0
 }
-
 ###############################################################################
+# check if the given name match an installed rpm package
 function IsPackageInstalled
 {
 	# test if package exists
@@ -92,10 +92,11 @@ function IsPackageInstalled
 	fi
 	return 0
 }
-
 ###############################################################################
+# for rpm file, we have to extract files to BUILDROOT directory
 function RpmUnpack
 {
+	# do not install files on /
 	[ "x$BUILDROOT" = "x/" ] && {
 		Error "$BuildRootError" 
         	return 1
@@ -112,15 +113,18 @@ function RpmUnpack
 	return 0
 }
 ###############################################################################
+# create buildroot if necessary
 function CreateBuildRoot
 {
         if [ "x$package_flag" = "x" ]; then
+		# installed package
 		if [ "X$need_change_files" = "Xyes" ]; then
 			/bin/bash $MY_LIB_DIR/rpmrebuild_buildroot.sh $BUILDROOT < $FILES_IN || return
 		else
-			: # Do nothing
+			: # Do nothing (avoid a copy)
 		fi
 	else
+		# rpm file
         	RpmUnpack || return
 	fi 
 	return 0
@@ -133,6 +137,8 @@ function RpmArch
 	return;
 }
 ###############################################################################
+# detect if package arch is not the same as os architecture
+# and set change_arch if necessary
 function CheckArch
 {
 	# current arcchitecture
@@ -154,7 +160,7 @@ function CheckArch
 
 }
 ###############################################################################
-
+# build rpm package using rpmbuild command
 function RpmBuild
 {
 	# rpmrebuild package dependency
@@ -185,8 +191,8 @@ function RpmBuild
 	
 	return 0
 }
-
 ###############################################################################
+# try to guess full package name
 function RpmFileName
 {
 	QF_RPMFILENAME=$(eval $change_arch rpm $rpm_defines --eval %_rpmfilename) || return
@@ -205,6 +211,7 @@ function RpmFileName
 }
 
 ###############################################################################
+# test if build package can be installed
 function InstallationTest
 {
 	# installation test
@@ -215,8 +222,8 @@ function InstallationTest
 	}
 	return 0
 }
-
 ###############################################################################
+# execute all pre-computed operations on spec files
 function Processing
 {
 	local Aborted="no"
@@ -232,7 +239,7 @@ function Processing
 	return 1
 }
 ###############################################################################
-# recover system informations on rpmrebuild context
+# recover system informations on rpm/rpmrebuild context
 function GetInformations
 {
 	Echo "from: $1"
@@ -284,6 +291,8 @@ function SearchTag
 	return 1
 }
 ###############################################################################
+# change rpm query file (sed)
+# and save all intermediate by using si_rpmqf counter
 function ChangeRpmQf
 {
 	SED_PAR=$1
@@ -399,7 +408,7 @@ function Main
 	CommandLineParsing "$@" || return
 	[ "x$NEED_EXIT" = "x" ] || return $NEED_EXIT
 
-	if [ "x" = "x$package_flag" ]; then
+	if [ "x$package_flag" = "x" ]; then
    		[ "X$need_change_files" = "Xyes" ] || BUILDROOT="/"
    		IsPackageInstalled || return
    		if [ "X$verify" = "Xyes" ]; then
