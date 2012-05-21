@@ -30,6 +30,10 @@
 # i have to add TWO strings with 'dummy'.
 # No idea is it due to rpm change or because Eric add more tags.
 
+function qf_arch {
+echo '%{ARCH}'
+}
+
 function qf_spec_preamble {
 echo '%|BUILDHOST?{#dummy}|\
 %|BUILDHOST?{#dummy}|\
