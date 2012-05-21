@@ -1,10 +1,12 @@
 #!/bin/sh
-# a script test rpmrebuild on all installed packages
+# this script test rpmrebuild on all installed packages
+# it must be started as root
 # internal use for developpers
 # $Id$
 
 function bench {
-	list=$( rpm -qa | sort )
+	# rpm -qa can return packages as gpg-pubkey-4ebfc273-48b5dbf3.src
+	list=$( rpm -qa | sed 's/\.src$//' | sort )
 	max=$( echo "$list" | wc -l )
 
 	seen=0
