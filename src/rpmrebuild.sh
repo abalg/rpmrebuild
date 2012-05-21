@@ -133,7 +133,7 @@ function CreateBuildRoot
 # get architecture from package to build
 function RpmArch
 {
-	pac_arch=$( spec_query qf_arch )
+	pac_arch=$( spec_query qf_spec_arch )
 	return;
 }
 ###############################################################################
