@@ -28,9 +28,6 @@ reconstruire un package, mais  :
   (dependances)
 - pour info, le résultat va sur /var/spool/up2date/
 
-enfin, il faut preciser que je n'ai testé le script que sur la distribution redhat (version 6.x et 7.x)
-mail devrait marcher sur nimporte quelle distribution desormais
-
 historique
 ----------
 En 1999, j'ai eu un gros problème, lors de la mise a jour d'un package : la nouvelle version
@@ -39,9 +36,10 @@ impossible de remettre la main sur le fichier rpm, je ne l'avais pas conservé, e
 introuvable sur le net. Par contre, je l'avais installé sur une autre machine ...
 
 N'ayant pas trouve d'outil pour ça sur le net, j'ai donc écrit une première version de ce script,
-qui me sert de temps en temps.
+qui me servait de temps en temps.
 En juillet 2002, par contre, j'ai eu une demande de la part de collègues, pour un besoin équivalent.
-Comme le produit semblait correspondre a une demande, j'ai donc décide de le rendre public sur le net.
+Comme le produit semblait correspondre a une demande, j'ai donc décide de le rendre public sur le net,
+via un projet sous licence libre (GNU Public License).
 
 auteur
 ------

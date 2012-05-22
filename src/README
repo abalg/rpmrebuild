@@ -26,9 +26,6 @@ the rpm software as now a "repackage" option but :
 - it can only be used in erase command (rpm -e --repackage), this can be not possible because of dependencies
 - for informations, the result goes to /var/spool/up2date
 
-The script as only been tested on redhat distribution (6.x and 7.x releases)
-but should work on any distribution now.
-
 historic
 ----------
 In 1999, I had a big problem, when updating a package : the new version was not working !
@@ -37,7 +34,8 @@ I just had it installed, on another host ...
 
 I do not find any tool on the net, so I write a first release for this need, and I use it rarely.
 But, in July 2002, I had a request from other Linux admin.
-As the script seems to match a more general need, I decide to put public on the net
+As the script seems to match a more general need, I decide to put public on the net, as a project 
+over the Gnu Public License.
 
 author
 ------
