@@ -1,0 +1,11 @@
+%defattr(-,root,root)
+/usr/bin/grpmrebuild
+%doc /usr/share/man/man1/grpmrebuild.1*
+
+%doc AUTHORS
+%doc COPYING
+%doc COPYRIGHT
+%doc Changelog
+%doc README
+%doc Todo
+%doc rpmrebuild.lsm
