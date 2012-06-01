@@ -11,5 +11,5 @@ use
 error: No compatible architectures found for build
 <a>
 It occurs, for example, when you have a linux distribution on 64 bits, and try
-to rebuild a 32 bit package. A way to solve the problem is ito use the -e option, 
-to edit the spec file and remove the 'BuildArch' tag; then continue the build, it should works.
+to rebuild a 32 bit package. A nice way to solve the problem is to use the setarch command :
+setarch i586 rpmrebuild your_package
