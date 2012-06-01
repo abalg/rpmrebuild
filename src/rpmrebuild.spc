@@ -4,8 +4,8 @@
 %define test_ver() %(if test %1 == %2; then echo 1; else echo 0;fi )
 # define binary flags
 %define is_rpm3 %test_ver %rpm_ver 3
-%define is_rpm4 %test_ver %rpm_ver 4
-%define is_rpm5 %test_ver %rpm_ver 5
+#%define is_rpm4 %test_ver %rpm_ver 4
+#%define is_rpm5 %test_ver %rpm_ver 5
 
 # The Summary: line should be expanded to about here -----^
 Summary: A tool to build rpm file from rpm database
@@ -24,31 +24,21 @@ Requires: bash
 Requires: cpio
 Requires: sed
 
-# mkdir 
-# sort
-%if %is_rpm5
-# rpm v5
-Requires: rpm >= 5.0, /usr/bin/rpmbuild
-Requires: coreutils
-%define release_suffix rpm5
-%else
-%if %is_rpm4
-# rpm v4
-Requires: rpm >= 4.0, /usr/bin/rpmbuild
-Requires: coreutils
-%define release_suffix rpm4
-%else
 %if %is_rpm3
 # rpm v3
 Requires: rpm < 4.0
 Requires: fileutils
 Requires: textutils
-%define release_suffix rpm3
-%endif
-%endif
+%define release_suffix %{release}rpm3
+
+%else
+# rpm v4 v5
+Requires: /usr/bin/rpmbuild
+Requires: coreutils
+%define release_suffix  %{release} 
 %endif
 
-Release: %{release}%{release_suffix}
+Release: %{release_suffix}
 
 # compatibility with old digest format
 %global _binary_filedigest_algorithm 1
