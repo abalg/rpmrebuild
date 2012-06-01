@@ -1,4 +1,6 @@
-* 2011-04-15 : release 2.5-1, patch from ndyankov : support for broken symlinks, will work on AIX with rpm 3
+* 2012-06-06 : release 2.7, RPMREBUILD_OPTS, unset_tag, un_prelink, posix capability, multi-arch
+* 2011-07-12 : release 2.6, fix bug when working on source packages, ghost files
+* 2011-04-15 : release 2.5, patch from ndyankov : support for broken symlinks, will work on AIX with rpm 3
 * 2009-12-11 : release 2.4-1, --list-plugin and --md5-compat-digest options
 * 2009-01-09 : release 2.3-1, do not use popt any more, fix problem with rpm 4.6 (fedora10), that ignore BuildRoot
 * 2008-08-06 : release 2.2.3-1, fix a problem with new rpm security on mandriva (defaultbuildroot)
