@@ -266,12 +266,12 @@ function SendBugReport
 		echo -n "$EnterEmail"
 		read from
 	}
-	GetInformations $from >> $BUGREPORT 2>&1
+	GetInformations $from >> $RPMREBUILD_BUGREPORT 2>&1
 	AskYesNo "$WantEditReport" && {
-		${VISUAL:-${EDITOR:-vi}} $BUGREPORT
+		${VISUAL:-${EDITOR:-vi}} $RPMREBUILD_BUGREPORT
 	}
 	AskYesNo "$WantStillSend" && {
-		mail -s "[rpmrebuild] bug report" rpmrebuild-bugreport@lists.sourceforge.net < $BUGREPORT
+		mail -s "[rpmrebuild] bug report" rpmrebuild-bugreport@lists.sourceforge.net < $RPMREBUILD_BUGREPORT
 	}
 	return
 }
@@ -357,8 +357,8 @@ function CheckTags
 function Main
 {
 	RPMREBUILD_TMPDIR=${RPMREBUILD_TMPDIR:-~/.tmp/rpmrebuild.$$}
-	BUGREPORT=$RPMREBUILD_TMPDIR/bugreport
-	export BUGREPORT
+	RPMREBUILD_BUGREPORT=$RPMREBUILD_TMPDIR/bugreport
+	export RPMREBUILD_BUGREPORT
 	export RPMREBUILD_TMPDIR
 	TMPDIR_WORK=$RPMREBUILD_TMPDIR/work
 
