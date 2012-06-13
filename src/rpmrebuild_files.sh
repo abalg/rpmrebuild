@@ -140,7 +140,7 @@ while :; do
 		attr_str="%attr(-,-,-) "
 	else
 		file_perm="${file_perm#??}"
-		attr_str="%attr($file_perm $file_user $file_group) "
+		attr_str="%attr($file_perm, $file_user, $file_group) "
 	fi
 
 	# %caps handling
