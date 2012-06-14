@@ -80,6 +80,14 @@ function qf_spec_requires {
 echo '%|REQUIRENAME?{[Requires:      %{REQUIRENAME} %{REQUIREFLAGS:depflags} %{REQUIREVERSION}\n]}|'
 }
 
+function qf_spec_suggest {
+echo '%|SUGGESTSNAME?{[Suggests:      %{SUGGESTSNAME} %{SUGGESTSFLAGS:depflags} %{SUGGESTSVERSION}\n]}|'
+}
+
+function qf_spec_enhance {
+echo '%|ENHANCESNAME?{[Enhances:      %{ENHANCESNAME} %{ENHANCESFLAGS:depflags} %{ENHANCESVERSION}\n]}|'
+}
+
 function qf_spec_description {
 echo '%|DESCRIPTION?{[%{DESCRIPTION}\n]}|'
 }

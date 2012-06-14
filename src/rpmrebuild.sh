@@ -321,6 +321,12 @@ function GenRpmQf
 	# ex : iputils package (ping)
 	SearchTag FILECAPS ||  ChangeRpmQf 's/%{FILECAPS}//g'
 
+	# SUGGESTSNAME
+	SearchTag SUGGESTSNAME ||  ChangeRpmQf '/%{SUGGESTSNAME}/ d'
+
+	# ENHANCESNAME
+	SearchTag ENHANCESNAME ||  ChangeRpmQf '/%{ENHANCESNAME}/ d'
+
 	return 0
 }
 ###############################################################################
