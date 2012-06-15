@@ -81,10 +81,12 @@ echo '%|REQUIRENAME?{[Requires:      %{REQUIRENAME} %{REQUIREFLAGS:depflags} %{R
 }
 
 function qf_spec_suggest {
+echo "#suggest"
 echo '%|SUGGESTSNAME?{[Suggests:      %{SUGGESTSNAME} %{SUGGESTSFLAGS:depflags} %{SUGGESTSVERSION}\n]}|'
 }
 
 function qf_spec_enhance {
+echo "#enhance"
 echo '%|ENHANCESNAME?{[Enhances:      %{ENHANCESNAME} %{ENHANCESFLAGS:depflags} %{ENHANCESVERSION}\n]}|'
 }
 
