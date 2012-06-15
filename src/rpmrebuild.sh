@@ -299,7 +299,7 @@ function ChangeRpmQf
 	input_rpmqf=$TMPDIR_WORK/rpmrebuild_rpmqf.src.$si_rpmqf
 	si_rpmqf=$[si_rpmqf + 1]
 	output_rpmqf=$TMPDIR_WORK/rpmrebuild_rpmqf.src.$si_rpmqf
-	eval sed -e $SED_PAR < $input_rpmqf > $output_rpmqf || return
+	sed -e "$SED_PAR" < $input_rpmqf > $output_rpmqf
 }
 ###############################################################################
 # generate rpm query file according current rpm tags
@@ -322,10 +322,10 @@ function GenRpmQf
 	SearchTag FILECAPS ||  ChangeRpmQf 's/%{FILECAPS}//g'
 
 	# SUGGESTSNAME
-	SearchTag SUGGESTSNAME ||  ChangeRpmQf '/%{SUGGESTSNAME}/ d'
+	SearchTag SUGGESTSNAME ||  ChangeRpmQf '/SUGGESTSNAME/d'
 
 	# ENHANCESNAME
-	SearchTag ENHANCESNAME ||  ChangeRpmQf '/%{ENHANCESNAME}/ d'
+	SearchTag ENHANCESNAME ||  ChangeRpmQf '/ENHANCESNAME/d'
 
 	return 0
 }
