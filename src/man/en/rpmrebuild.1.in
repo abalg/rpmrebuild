@@ -136,6 +136,14 @@ Invoke plugin or editor to change specfile.
 .br 
 \fB\-\-edit\-requires
 .LP 
+\fB\-\-change\-spec\-suggests\fP=<\fIcommand\fP>
+.br 
+\fB\-\-edit\-suggests
+.LP 
+\fB\-\-change\-spec\-enhances\fP=<\fIcommand\fP>
+.br 
+\fB\-\-edit\-enhances
+.LP 
 \fB\-\-change\-spec\-description\fP=<\fIcommand\fP>
 .br 
 \fB\-\-edit\-description
