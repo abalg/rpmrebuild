@@ -9,8 +9,3 @@ what now ?
 
 2.8
 ---
-- add extra tags (suse, mandriva)
-ENHANCES/ENHANCESNAME/...
-SUGGESTS/SUGGESTSNAME/...
-
-- caps_from_rpm caps_from_fs
