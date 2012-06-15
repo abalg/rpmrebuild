@@ -114,6 +114,8 @@ function SpecGeneration
 	spec_query qf_spec_obsoletes    > $SPEC_OBSOLETES.$i    || return
 	spec_provides                  > $SPEC_PROVIDES.$i     || return
 	spec_requires                  > $SPEC_REQUIRES.$i     || return
+	spec_query qf_spec_suggest	> $SPEC_SUGGESTS.$i     || return
+	spec_query qf_spec_enhance	> $SPEC_ENHANCES.$i     || return
 	spec_query qf_spec_description  > $SPEC_DESCRIPTION.$i  || return
 	spec_files                     > $SPEC_FILES.$i        || return
 	spec_query qf_spec_triggers     > $SPEC_TRIGGERS.$i     || return
@@ -162,6 +164,8 @@ function spec_concatenate
 		$SPEC_OBSOLETES.$si_obsoletes       \
 		$SPEC_PROVIDES.$si_provides         \
 		$SPEC_REQUIRES.$si_requires         \
+		$SPEC_SUGGESTS.$si_suggests         \
+		$SPEC_ENHANCES.$si_enhances         \
 	|| return
 
 	echo                   || return

@@ -70,6 +70,8 @@ options:
    --change-spec-obsoletes=<command>
    --change-spec-provides=<command>
    --change-spec-requires=<command>
+   --change-spec-suggests=<command>
+   --change-spec-enhances=<command>
    --change-spec-description=<command>
    --change-spec-files=<command>
    --change-spec-files=<command>
@@ -89,6 +91,8 @@ options:
    --edit-obsoletes
    --edit-provides
    --edit-requires
+   --edit-suggests
+   --edit-enhances
    --edit-description
    --edit-files
    --edit-files
@@ -374,6 +378,28 @@ function ProcessLongOptions
 				LONG_OPTION="change-spec-requires"
 			;;
 
+			change-spec-s | \
+			change-spec-su | \
+			change-spec-sug | \
+			change-spec-sugg | \
+			change-spec-sugge | \
+			change-spec-sugges | \
+			change-spec-suggest | \
+			change-spec-suggests)
+				LONG_OPTION="change-spec-suggests"
+			;;
+
+			change-spec-e | \
+			change-spec-en | \
+			change-spec-enh | \
+			change-spec-enha | \
+			change-spec-enhan | \
+			change-spec-enhanc | \
+			change-spec-enhance | \
+			change-spec-enhances)
+				LONG_OPTION="change-spec-enhances"
+			;;
+
 			change-spec-t | \
 			change-spec-tr | \
 			change-spec-tri | \
@@ -577,6 +603,27 @@ function ProcessLongOptions
 			edit-require | \
 			edit-requires)
 				LONG_OPTION='edit-requires'
+			;;
+
+			edit-su | \
+			edit-sug | \
+			edit-sugg | \
+			edit-sugge | \
+			edit-sugges | \
+			edit-suggest | \
+			edit-suggests)
+				LONG_OPTION="edit-suggests"
+			;;
+
+			edit-e | \
+			edit-en | \
+			edit-enh | \
+			edit-enha | \
+			edit-enhan | \
+			edit-enhanc | \
+			edit-enhance | \
+			edit-enhances)
+				LONG_OPTION="edit-enhances"
 			;;
 
 			edit-s | \
@@ -869,6 +916,8 @@ function ProcessLongOptions
 			change-spec-preun        | \
 			change-spec-provides     | \
 			change-spec-requires     | \
+			change-spec-suggests     | \
+			change-spec-enhances     | \
 			change-spec-triggers     | \
 			change-spec-verifyscript | \
 			change-spec-whole)
@@ -916,6 +965,8 @@ function ProcessLongOptions
 			edit-preun        | \
 			edit-provides     | \
 			edit-requires     | \
+			edit-suggests     | \
+			edit-enhances     | \
 			edit-triggers     | \
 			edit-verifyscript | \
 			edit-whole)
