@@ -1,3 +1,7 @@
+* Thu Jun 15 2012 <gerbier@users.sourceforge.net> 2.8
+- can handle SUGGESTS/ENHANCES rpm tag
+- add --cap-from-fs/cap-from-db options
+
 * Thu Jun 06 2012 <gerbier@users.sourceforge.net> 2.7
 - patch from Andreas Kainz for package file checking
 - add new unset_tag plugin

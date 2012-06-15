@@ -144,7 +144,19 @@ while :; do
 	fi
 
 	# %caps handling
-	[ "X$file_cap" = "X(none)" ] && file_cap=""
+	if [ "X$RPMREBUILD_CAP_FROM_FS" = "Xyes" ]
+	then
+		tst=$( type getcap 2>/dev/null )
+		if [ -n "$tst" ]
+		then
+			file_cap=$(  getcap $file | cut -f2 -d= )
+		else
+			file_cap=""
+		fi
+	else
+		# get capability from rpm query
+		[ "X$file_cap" = "X(none)" ] && file_cap=""
+	fi
 	if [ -n "$file_cap" ]; then
 		caps_str="%caps($file_cap) "
 	else

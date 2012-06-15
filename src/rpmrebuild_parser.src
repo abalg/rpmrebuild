@@ -34,6 +34,8 @@ options:
    -k, --keep-perm              $UsageKeepPerm
        --pug-from-fs            $UsagePugFs
        --pug-from-db (default)  $UsagePugDb
+       --cap-from-fs            $UsageCapFs
+       --cap-from-db (default)  $UsageCapDb
    -l, --list-plugin		$UsageListPlug
    -m, --modify=<command>       $UsageModify
    -n, --notest-install		$UsageNoTestInstall
@@ -814,6 +816,28 @@ function ProcessLongOptions
 				LONG_OPTION='pug-from-fs' # alias
 			;;
 
+			ca | \
+			cap | \
+			cap- | \
+			cap-f | \
+			cap-fr | \
+			cap-fro | \
+			cap-from | \
+			cap-from-)
+				AmbiguousOption
+				return 1
+			;;
+
+			cap-from-d | \
+			cap-from-db)
+				LONG_OPTION='cap-from-db'
+			;;
+
+			cap-from-f | \
+			cap-from-fs)
+				LONG_OPTION='cap-from-fs' # alias
+			;;
+
 			r | \
 			re | \
 			rel | \
@@ -1029,6 +1053,14 @@ function ProcessLongOptions
 
 			pug-from-fs)
 				RPMREBUILD_PUG_FROM_FS="yes"
+			;;
+
+			cap-from-db)
+				RPMREBUILD_CAP_FROM_FS="no"
+			;;
+
+			cap-from-fs)
+				RPMREBUILD_CAP_FROM_FS="yes"
 			;;
 
 			release)
