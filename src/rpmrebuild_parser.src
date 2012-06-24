@@ -187,10 +187,7 @@ function ProcessLongOptions
 {
 		# Get "full" long option
 		case "$LONG_OPTION" in
-			a | \
-			au | \
-			aut | \
-			auto )
+			a)
 				AmbiguousOption
 				return 1
 			;;
@@ -207,6 +204,12 @@ function ProcessLongOptions
 				LONG_OPTION='additional'
 			;;
 
+			au | \
+			aut | \
+			auto )
+				AmbiguousOption
+				return 1
+			;;
 			autop | \
 			autopr | \
 			autopro | \
@@ -236,11 +239,33 @@ function ProcessLongOptions
 			;;
 
 			c | \
-			c- | \
-			ch- | \
-			cha- | \
-			chan- | \
-			chang- | \
+			ca | \
+			cap | \
+			cap- | \
+			cap-f | \
+			cap-fr | \
+			cap-fro | \
+			cap-from | \
+			cap-from-)
+				AmbiguousOption
+				return 1
+			;;
+
+			cap-from-d | \
+			cap-from-db)
+				LONG_OPTION='cap-from-db'
+			;;
+
+			cap-from-f | \
+			cap-from-fs)
+				LONG_OPTION='cap-from-fs' # alias
+			;;
+
+			ch | \
+			cha | \
+			chan | \
+			chang | \
+			change | \
 			change-)
 				AmbiguousOption
 				return 1
@@ -302,6 +327,17 @@ function ProcessLongOptions
 			change-spec-descriptio | \
 			change-spec-description)
 				LONG_OPTION="change-spec-description"
+			;;
+
+			change-spec-e | \
+			change-spec-en | \
+			change-spec-enh | \
+			change-spec-enha | \
+			change-spec-enhan | \
+			change-spec-enhanc | \
+			change-spec-enhance | \
+			change-spec-enhances)
+				LONG_OPTION="change-spec-enhances"
 			;;
 
 			change-spec-f | \
@@ -386,17 +422,6 @@ function ProcessLongOptions
 			change-spec-suggest | \
 			change-spec-suggests)
 				LONG_OPTION="change-spec-suggests"
-			;;
-
-			change-spec-e | \
-			change-spec-en | \
-			change-spec-enh | \
-			change-spec-enha | \
-			change-spec-enhan | \
-			change-spec-enhanc | \
-			change-spec-enhance | \
-			change-spec-enhances)
-				LONG_OPTION="change-spec-enhances"
 			;;
 
 			change-spec-t | \
@@ -530,6 +555,17 @@ function ProcessLongOptions
 				LONG_OPTION='edit-description'
 			;;
 
+			edit-e | \
+			edit-en | \
+			edit-enh | \
+			edit-enha | \
+			edit-enhan | \
+			edit-enhanc | \
+			edit-enhance | \
+			edit-enhances)
+				LONG_OPTION="edit-enhances"
+			;;
+
 			edit-f | \
 			edit-fi | \
 			edit-fil | \
@@ -604,6 +640,17 @@ function ProcessLongOptions
 				LONG_OPTION='edit-requires'
 			;;
 
+			edit-s)
+				AmbiguousOption
+				return 1
+			;;
+
+			edit-sp | \
+			edit-spe | \
+			edit-spec)
+				LONG_OPTION='edit-whole' # alias
+			;;
+
 			edit-su | \
 			edit-sug | \
 			edit-sugg | \
@@ -612,24 +659,6 @@ function ProcessLongOptions
 			edit-suggest | \
 			edit-suggests)
 				LONG_OPTION="edit-suggests"
-			;;
-
-			edit-e | \
-			edit-en | \
-			edit-enh | \
-			edit-enha | \
-			edit-enhan | \
-			edit-enhanc | \
-			edit-enhance | \
-			edit-enhances)
-				LONG_OPTION="edit-enhances"
-			;;
-
-			edit-s | \
-			edit-sp | \
-			edit-spe | \
-			edit-spec)
-				LONG_OPTION='edit-whole' # alias
 			;;
 
 			edit-t | \
@@ -813,28 +842,6 @@ function ProcessLongOptions
 				LONG_OPTION='pug-from-fs' # alias
 			;;
 
-			ca | \
-			cap | \
-			cap- | \
-			cap-f | \
-			cap-fr | \
-			cap-fro | \
-			cap-from | \
-			cap-from-)
-				AmbiguousOption
-				return 1
-			;;
-
-			cap-from-d | \
-			cap-from-db)
-				LONG_OPTION='cap-from-db'
-			;;
-
-			cap-from-f | \
-			cap-from-fs)
-				LONG_OPTION='cap-from-fs' # alias
-			;;
-
 			r | \
 			re | \
 			rel | \
@@ -920,6 +927,14 @@ function ProcessLongOptions
 				batch="yes"
 			;;
 
+			cap-from-db)
+				RPMREBUILD_CAP_FROM_FS="no"
+			;;
+
+			cap-from-fs)
+				RPMREBUILD_CAP_FROM_FS="yes"
+			;;
+
 			change-files)
 				RequeredArgument                || return
 				CreateProcessing "$LONG_OPTION" || return
@@ -928,17 +943,17 @@ function ProcessLongOptions
 			change-spec-changelog    | \
 			change-spec-conflicts    | \
 			change-spec-description  | \
+			change-spec-enhances     | \
 			change-spec-files        | \
 			change-spec-obsoletes    | \
-			change-spec-post         | \
-			change-spec-postun       | \
 			change-spec-pre          | \
 			change-spec-preamble     | \
 			change-spec-preun        | \
+			change-spec-post         | \
+			change-spec-postun       | \
 			change-spec-provides     | \
 			change-spec-requires     | \
 			change-spec-suggests     | \
-			change-spec-enhances     | \
 			change-spec-triggers     | \
 			change-spec-verifyscript | \
 			change-spec-whole)
@@ -977,17 +992,17 @@ function ProcessLongOptions
 			edit-changelog    | \
 			edit-conflicts    | \
 			edit-description  | \
+			edit-enhances     | \
 			edit-files        | \
 			edit-obsoletes    | \
-			edit-post         | \
-			edit-postun       | \
 			edit-pre          | \
 			edit-preamble     | \
 			edit-preun        | \
+			edit-post         | \
+			edit-postun       | \
 			edit-provides     | \
 			edit-requires     | \
 			edit-suggests     | \
-			edit-enhances     | \
 			edit-triggers     | \
 			edit-verifyscript | \
 			edit-whole)
@@ -1050,14 +1065,6 @@ function ProcessLongOptions
 
 			pug-from-fs)
 				RPMREBUILD_PUG_FROM_FS="yes"
-			;;
-
-			cap-from-db)
-				RPMREBUILD_CAP_FROM_FS="no"
-			;;
-
-			cap-from-fs)
-				RPMREBUILD_CAP_FROM_FS="yes"
 			;;
 
 			release)
