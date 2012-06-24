@@ -76,7 +76,6 @@ options:
    --change-spec-enhances=<command>
    --change-spec-description=<command>
    --change-spec-files=<command>
-   --change-spec-files=<command>
    --change-spec-triggers=<command>
    --change-spec-pre=<command>
    --change-spec-post=<command>
@@ -96,7 +95,6 @@ options:
    --edit-suggests
    --edit-enhances
    --edit-description
-   --edit-files
    --edit-files
    --edit-triggers
    --edit-pre
