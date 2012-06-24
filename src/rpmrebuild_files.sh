@@ -53,6 +53,19 @@ g_val="%ghost "    # ghost
 # Should be in the same order as in rpm.
 VERIFY_FLAGS="md5 size link user group mtime mode rdev"
 
+# Check if we need (and have) getcap
+if [ "X$RPMREBUILD_CAP_FROM_FS" = "Xyes" ]; then
+	# Check if we have getcap program
+	tst=$( type getcap 2>/dev/null )
+	if [ "x$tst" = "x" ]; then
+	then
+		echo "$0: WARN: no getcap found, capability will not be taken from filesystem" 1>&2
+		RPMREBUILD_CAP_FROM_FS="no"
+	else
+		: # OK, we have getcap
+	fi
+fi
+
 while :; do
 	read file_type
 	[ "x$file_type" = "x" ] && break
@@ -145,14 +158,7 @@ while :; do
 
 	# %caps handling
 	if [ "X$RPMREBUILD_CAP_FROM_FS" = "Xyes" ]
-	then
-		tst=$( type getcap 2>/dev/null )
-		if [ -n "$tst" ]
-		then
-			file_cap=$(  getcap $file | cut -f2 -d= )
-		else
-			file_cap=""
-		fi
+		file_cap=$(  getcap $file | cut -f2 -d= )
 	else
 		# get capability from rpm query
 		[ "X$file_cap" = "X(none)" ] && file_cap=""
