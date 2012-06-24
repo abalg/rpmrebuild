@@ -341,7 +341,6 @@ function ProcessLongOptions
 				LONG_OPTION="change-spec-postun"
 			;;
 
-			change-spec-p | \
 			change-spec-pr | \
 			change-spec-pre)
 				LONG_OPTION="change-spec-pre"
