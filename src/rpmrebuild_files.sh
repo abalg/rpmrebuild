@@ -42,6 +42,9 @@
 # it is used in the 3 scripts : rpmrebuild_files.sh rpmrebuild_ghost.sh rpmrebuild_buildroot.sh
 ################################################################
 
+MY_LIB_DIR=`dirname $0` || return
+source $MY_LIB_DIR/rpmrebuild_lib.src    || return
+
 FFLAGS="d c s m n g"
 d_val="%doc "      # doc flag
 c_val="%config"    # config flag
@@ -58,7 +61,7 @@ if [ "X$RPMREBUILD_CAP_FROM_FS" = "Xyes" ]; then
 	# Check if we have getcap program
 	tst=$( type getcap 2>/dev/null )
 	if [ "x$tst" = "x" ]; then
-		echo "$0: WARN: no getcap found, capability will not be taken from filesystem" 1>&2
+		Warning "no getcap found, capability will not be taken from filesystem" 1>&2
 		RPMREBUILD_CAP_FROM_FS="no"
 	else
 		: # OK, we have getcap
