@@ -1,3 +1,4 @@
+* 2012-07-11 : release 2.8, SUGGESTS/ENHANCES rpm tag, --cap-from-fs/cap-from-db options
 * 2012-06-06 : release 2.7, RPMREBUILD_OPTS, unset_tag, un_prelink, posix capability, multi-arch
 * 2011-07-12 : release 2.6, fix bug when working on source packages, ghost files
 * 2011-04-15 : release 2.5, patch from ndyankov : support for broken symlinks, will work on AIX with rpm 3
