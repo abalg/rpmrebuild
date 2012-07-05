@@ -20,6 +20,13 @@ passe des options (flags) spécifiques pour \fBrpmbuild\fP
 \fB\-b, \-\-batch\fP
 mode batch (ne pose pas de questions)
 .TP 
+\fB\-\-cap\-from\-db (default)\fP
+utiliser les capacités posix définis dans la base rpm
+.TP 
+\fB\-\-cap\-from\-fs\fP
+utiliser les capacités posix des fichiers installés
+(qui peuvent être différents de ceux enregistrés dans la base rpm à l'installation)
+.TP 
 \fB\-c, \-\-comment\-missing\fP=<\fIyes\fP|\fIno\fP>
 commente les fichiers manquants dans le fichier specfile. Defaut: \fBno\fP (non).
 .TP 
