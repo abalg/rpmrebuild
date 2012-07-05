@@ -58,7 +58,6 @@ if [ "X$RPMREBUILD_CAP_FROM_FS" = "Xyes" ]; then
 	# Check if we have getcap program
 	tst=$( type getcap 2>/dev/null )
 	if [ "x$tst" = "x" ]; then
-	then
 		echo "$0: WARN: no getcap found, capability will not be taken from filesystem" 1>&2
 		RPMREBUILD_CAP_FROM_FS="no"
 	else
@@ -157,7 +156,7 @@ while :; do
 	fi
 
 	# %caps handling
-	if [ "X$RPMREBUILD_CAP_FROM_FS" = "Xyes" ]
+	if [ "X$RPMREBUILD_CAP_FROM_FS" = "Xyes" ]; then
 		file_cap=$(  getcap $file | cut -f2 -d= )
 	else
 		# get capability from rpm query
