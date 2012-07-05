@@ -22,6 +22,13 @@ pass additional flags to \fBrpmbuild\fP
 \fB\-b, \-\-batch\fP
 work in batch mode (no interactive query if files change)
 .TP 
+\fB\-\-cap\-from\-db (default)\fP
+set files posix capabilities as saved in rpm database
+.TP 
+\fB\-\-cap\-from\-fs\fP
+set files posix capabilities as installed files
+(do not force to original capabilities, saved in rpm database)
+.TP 
 \fB\-c, \-\-comment\-missing\fP=<\fIyes\fP|\fIno\fP>
 comment out in the specfile missing files. Default: \fBno\fP.
 .TP 
