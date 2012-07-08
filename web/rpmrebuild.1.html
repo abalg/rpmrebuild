@@ -21,7 +21,7 @@
   <body>
     <h1>rpmrebuild</h1>
     Section: rpm tools (1)<br />
-    Updated: 2.7<br />
+    Updated: 2.8<br />
     <a href="#index">Index</a> <a name="lbAB" id="lbAB"> </a>
     
     <h2>NAME</h2>
@@ -56,6 +56,15 @@
       <dt class="c1">-b, --batch</dt>
       
       <dd>work in batch mode (no interactive query if files change)</dd>
+      
+      <dt class="c1">--cap-from-db (default)</dt>
+      
+      <dd>set files posix capabilities as saved in rpm database</dd>
+      
+      <dt class="c1">--cap-from-fs</dt>
+      
+      <dd>set files posix capabilities as installed files (do not force to original capabilities, saved in rpm
+      database)</dd>
       
       <dt><b>-c, --comment-missing</b>=&lt;<i>yes</i>|<i>no</i>&gt;</dt>
       
@@ -191,6 +200,12 @@
     
     <p><b>--change-spec-requires</b>=&lt;<i>command</i>&gt;<br />
     <b>--edit-requires</b></p>
+    
+    <p><b>--change-spec-suggests</b>=&lt;<i>command</i>&gt;<br />
+    <b>--edit-suggests</b></p>
+    
+    <p><b>--change-spec-enhances</b>=&lt;<i>command</i>&gt;<br />
+    <b>--edit-enhances</b></p>
     
     <p><b>--change-spec-description</b>=&lt;<i>command</i>&gt;<br />
     <b>--edit-description</b></p>
@@ -437,6 +452,6 @@
     </dl>
     <hr />
     This document was created by man2html, using the manual pages.<br />
-    Time: 10:19:33 GMT, June 01, 2012
+    Time: 16:30:55 GMT, July 08, 2012
   </body>
 </html>
