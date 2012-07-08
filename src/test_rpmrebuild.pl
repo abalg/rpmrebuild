@@ -54,3 +54,9 @@ like( $out, qr/Fichier non trouvé/, 'no file' );
 $out = `$cmd -p Todo 2>&1`;
 like( $out, qr/n'est pas un fichier rpm/, 'not an rpm file' );
 
+# capabilities
+# rpmrebuild iputils
+
+# suggests (mandriva)
+# rpmrebuild task-pulseaudio
+
