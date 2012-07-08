@@ -34,7 +34,7 @@ function Warning
 	# screen
 	Echo "$0: WARNING: $@"
 	# for optionnal bug report
-	echo -e "$0: WARNING: $@" >> $BUGREPORT
+	echo -e "$0: WARNING: $@" >> $RPMREBUILD_BUGREPORT
 
 }
 ###############################################################################
