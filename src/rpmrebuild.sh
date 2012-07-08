@@ -314,8 +314,9 @@ function GenRpmQf
 	# rpm5 uses FILEPATHS instead FILENAMES
 	SearchTag FILENAMES || ChangeRpmQf 's/FILENAMES/FILEPATHS/g'
 
-	# no TRIGGERTYPE
+	# no TRIGGERTYPE (mandriva 2011)
 	SearchTag TRIGGERTYPE || ChangeRpmQf 's/%{TRIGGERTYPE}//g'
+	SearchTag TRIGGERCONDS || ChangeRpmQf 's/%{TRIGGERCONDS}//g'
 
 	# FILECAPS exists on fedora/Suse/Mageia
 	# ex : iputils package (ping)
