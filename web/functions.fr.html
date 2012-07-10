@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    
+    <title>fonctionnalités de rpmrebuild</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="Author" content="Gerbier" />
+    <link rev="made" href="mailto:gerbier@users.sourceforge.net" />
+    <link rel="stylesheet" type="text/css" href="project.css" />
+  </head>
+  <body>
+    <div>
+      <h1>fonctionnalités de RPMREBUILD</h1>
+      
+      <h2>resumé</h2>
+      
+      rpmrebuild permet de reconstruire un package rpm à partir des donnée installées (base rpm + fichiers)<br />
+      <br />
+      (Sur debian, le logiciel equivalent est dpkg-repack)
+      <hr />
+      
+      <h2>utilisation</h2>
+      <ul>
+	<li>depuis la version 0.5, il devrait fonctionner sur n'importe quelle distribution basée sur rpm.</li>
+	<li>en utilisation de base, rpmrebuild ne nécessite aucune connaissance sur la fabrication des rpm</li>
+      </ul>
+      
+      <h3>perte du package rpm</h3>
+      
+      C'etait le but initial : fabriquer un rpm à partir des meta-données de la base rpm et des fichiers installés.<br /> 
+      Commande : <em>rpmrebuild package_name</em> 
+      
+      <h3>fabriquer un package modifié</h3>
+      
+      Vous avez installé un package, vous avez modifié sa configuration, et vous voulez distribuer cette version 
+      distribuer sur d'autres machines : il suffit de lancer la même commande : <em>rpmrebuild package_name</em> 
+
+      <h3>modifier le fichier spec</h3>
+
+      Une utilisation avancée, pour les utilisateurs connaissant le format des fichiers spec, permet d'editer au vol
+      le fichier spec : <em>rpmrebuild -e package_name</em>
+
+      <h3>plugins</h3>
+
+      les plugins permettent d'automatiser des modifications sur le fichier spec.
+      
+      <h2>conseils</h2>
+      
+      <ul>
+	      <li>rpmrebuild ne nécessite pas en général d'être lancé sour le compte "root", 
+	      mais seulement si certains fichiers sont protégés, en lecture uniquement pour root. </li>
+	
+	<li>le fichier spec est détruit après usage, pour le conserver, utiliser l'option -s</li>
+	
+	<li>le repertoire de construction des packages depends de la distribution (par exemple sur Redhat : /usr/src/redhat/RPMS).<br />
+	vous pouvez le modifier avec l'option -d ou en utilisant un fichier  ~/.rpmmacros (avec une ligne "%_topdir repertoire_rpm")</li>
+	
+	<li>rpmrebuild a de nombreuses autres options, vous pouvez les consulter avec <em>man rpmrebuild</em> ou <em>rpmrebuild --help</em></li>
+      </ul>
+      
+      <h3>autres possibilités</h3>
+      certaines versions de rpm offrent (ou plutot offraient) une option "repackage", mais 
+      <ol>
+	      <li>cette option ne semble plus exister</li>
+	      <li>cette option necessitait de desinstaller le package (pas toujours possible)</li>
+      </ol>
+
+      <hr />
+      
+      <address>
+      <a href="mailto:gerbier@users.sourceforge.net">Eric Gerbier</a>
+      </address><br />
+      page modifiée le 2012-07-10<br />
+      <a href="index.fr.html">retour à la page principale</a>
+    </div>
+  </body>
+</html>
