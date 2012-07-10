@@ -38,11 +38,19 @@
       You have an installed package, you have customised (configuration ...) and want to
       distribute this one : just use rpmrebuild to build a new rpm ( no need to know anything about rpm building) !
       Command : <em>rpmrebuild package_name</em> 
+
+      <h3>modify the specfile</h3>
+
+      For advanced users, who know the specfile format, you can edit and modify "on the fly" the specfile with the command : <em>rpmrebuild -e package_name</em>
+
+      <h3>plugins</h3>
+
+      Plugins allow to make batch changes on specfiles.
       
       <h3>advices</h3>
       
       <ul>
-	<li>rpmrebuild do not need explicitly to be run on root superuser, but you you have to be root if some files are root-protected (600)</li>
+	<li>rpmrebuild do not need explicitly to be run on root superuser, but you have to be root if some files are root-protected (600)</li>
 	
 	<li>the specfile is deleted after use. If you want to keep it, use -s option</li>
 	
@@ -61,7 +69,7 @@
       <address>
       <a href="mailto:gerbier@users.sourceforge.net">Eric Gerbier</a>
       </address><br />
-      page changed on 2007-06-11<br />
+      page changed on 2012-07-10<br />
     </div>
   </body>
 </html>
