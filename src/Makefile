@@ -18,7 +18,8 @@ RPM_DEFINES :=                             \
    --define '_srcrpmdir $(RPM_SRPMS_DIR)'  \
    --define '_rpmfilename %%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm'
 
-TAR_FILE := $(RPM_SOURCE_DIR)/rpmrebuild.tar.gz
+VERSION=$(shell cat Version)
+TAR_FILE := $(RPM_SOURCE_DIR)/rpmrebuild-$(VERSION).tar.gz
 
 SCRIPTS     := rpmrebuild 
 
