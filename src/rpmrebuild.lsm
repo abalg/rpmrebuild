@@ -1,7 +1,7 @@
 Begin4
 Title:          rpmrebuild
-Version:        2.8
-Entered-date:   2012-07-11
+Version:        2.9
+Entered-date:   2013-01-18
 Description:    rpmrebuild creates spec files used by the Red Hat Package Manager
                 in building RPM packages.  It uses the information it can
                 determine (from the rpm database) to fill in the proper spec file fields. 
