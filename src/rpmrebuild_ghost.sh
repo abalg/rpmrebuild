@@ -3,7 +3,7 @@
 #   rpmrebuild_ghost.sh 
 #      it's a part of the rpmrebuild project
 #
-#    Copyright (C) 2002, 2003 by Valery Reznic
+#    Copyright (C) 2002, 2003, 2013 by Valery Reznic
 #    Bug reports to: valery_reznic@users.sourceforge.net
 #      or          : gerbier@users.sourceforge.net
 #    $Id$
@@ -22,7 +22,7 @@
 
 ################################################################
 # This script get from stanard input data in the following format:
-# <file_type>   - type of the file (as first letter frpm 'ls -l' output)
+# <file_type>   - type of the file (as first field from 'ls -l' output)
 # <file_flags>  - rpm file's flag (as %{FILEFLAGS:fflag}) - may be empty string
 # <file_perm>   - file's permission (as %{FILEMODES:octal})
 # <file_user>   - file's user id
@@ -74,13 +74,20 @@ while :; do
 	File="$BuildRoot/$file"
 	[ -e "$File" ] && continue # File/directory already exist, do nothing
 
-	if [ "X$file_type" = "Xd" ]; then # Directory. Ghost directory ?
-		Mkdir_p $File || exit
-	else # Not directory
-		DirName=${File%/*} # Just in case dir for gjost file not exist
-		Mkdir_p $DirName || exit
-		# Create file itself
-		> $File || exit
-	fi
+	case "X$file_type" in
+		Xd*)
+			# Directory. Ghost directory ?
+			Mkdir_p $File || exit
+		;;
+
+		*)
+			# Not directory
+			#  Just in case dir for ghost file not exist create it
+			DirName=${File%/*}
+			Mkdir_p $DirName || exit
+			# Create file itself
+			> $File || exit
+		;;
+	esac || exit
 done || exit
 exit 0

@@ -3,7 +3,7 @@
 #   rpmrebuild_files.sh 
 #      it's a part of the rpmrebuild project
 #
-#    Copyright (C) 2002, 2003 by Valery Reznic
+#    Copyright (C) 2002, 2003, 2013 by Valery Reznic
 #    Bug reports to: valery_reznic@users.sourceforge.net
 #      or          : gerbier@users.sourceforge.net
 #    $Id$
@@ -22,7 +22,7 @@
 
 ################################################################
 # This script get from stanard input data in the following format:
-# <file_type>   - type of the file (as first letter frpm 'ls -l' output)
+# <file_type>   - type of the file (as first field from 'ls -l' output)
 # <file_flags>  - rpm file's flag (as %{FILEFLAGS:fflag}) - may be empty string
 # <file_perm>   - file's permission (as %{FILEMODES:octal})
 # <file_user>   - file's user id
@@ -60,17 +60,28 @@ while :; do
 
 	[ -e "$file" ] || continue # File/directory not exist, do nothing
 
-	if [ "X$file_type" = "Xd" ]; then # Directory
-		# I don't use --mode here, because it doesn't work
-		# when directory already exist.
-		file_perm="${file_perm#??}"
-		Mkdir_p $BuildRoot/$file || exit
-		chmod $file_perm $BuildRoot/$file || exit
+	case "X$file_type" in
+		Xd*)
+			# Directory
+			# I don't use --mode for Mkdir, because it doesn't work
+			# when directory already exist.
 
-	else # Not directory
-		DirName=${file%/*}
-		Mkdir_p $BuildRoot/$DirName || exit
-		cp --preserve --no-dereference $file $BuildRoot/$file || exit
-	fi
+			# Permissions: see comments in the rpmrebuild_files.sh
+			not_perm="${file_perm%????}"
+			# Strip whatever characters we get from the start
+			# of the string.
+			# result will be 4 permissions characters
+			file_perm="${file_perm#${not_perm}}"
+			Mkdir_p $BuildRoot/$file || exit
+			chmod $file_perm $BuildRoot/$file || exit
+		;;
+
+		*)
+			# Not directory
+			DirName=${file%/*}
+			Mkdir_p $BuildRoot/$DirName || exit
+			cp --preserve --no-dereference $file $BuildRoot/$file || exit
+		;;
+	esac || exit
 done || exit
 exit 0

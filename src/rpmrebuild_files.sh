@@ -3,7 +3,7 @@
 #   rpmrebuild_files.sh 
 #      it's a part of the rpmrebuild project
 #
-#    Copyright (C) 2002, 2003 by Valery Reznic
+#    Copyright (C) 2002, 2003, 2013 by Valery Reznic
 #    Bug reports to: valery_reznic@users.sourceforge.net
 #      or          : gerbier@users.sourceforge.net
 #    $Id$
@@ -22,7 +22,7 @@
 
 ################################################################
 # This script get from standard input data in the following format:
-# <file_type>   - type of the file (as first letter frpm 'ls -l' output)
+# <file_type>   - type of the file (as first field from 'ls -l' output)
 # <file_flags>  - rpm file's flag (as %{FILEFLAGS:fflag}) - may be empty string
 # <file_perm>   - file's permission (as %{FILEMODES:octal})
 # <file_user>   - file's user id
@@ -115,8 +115,15 @@ while :; do
 	fi
    
 	# %dir handling
-	dir_str=""
-	[ "X$file_type" = "Xd" ] && dir_str="%dir "
+	case "X$file_type" in
+		Xd*)
+			dir_str="%dir "
+		;;
+
+		*)
+			dir_str=""
+		;;
+	esac
 
 	# %fflags handling
 	if [ "X$file_flags" = "X" ]; then
@@ -154,7 +161,23 @@ while :; do
 		# get attribute from file system
 		attr_str="%attr(-,-,-) "
 	else
-		file_perm="${file_perm#??}"
+		# rpm 4.10.[12] doesn't support field width in the
+		# query specifier.
+		# Or at least I was not able to find out how use it.
+		# So if before rpm 4.10.2 file_perm was always
+		# 6 characters long, 2 - file type and 4 permissions
+		# now it can be either 5 or 6 characters long
+		# I don't want to use any external program 
+		# sed, printf, whatever - for performance reason:
+		# package can have man, many files.
+		# So, I need to get last 4 characters using only
+		# bash magic
+		# Strip last 4 characters from the end of the string
+		not_perm="${file_perm%????}"
+		# Strip whatever characters we get from the start
+		# of the string.
+		# result will be 4 permissions characters
+		file_perm="${file_perm#${not_perm}}"
 		attr_str="%attr($file_perm, $file_user, $file_group) "
 	fi
 

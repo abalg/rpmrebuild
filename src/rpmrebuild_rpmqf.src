@@ -95,10 +95,13 @@ echo '%|DESCRIPTION?{[%{DESCRIPTION}\n]}|'
 }
 
 # used in rpmrebuild_files.sh rpmrebuild_ghost.sh rpmrebuild_buildroot.sh
+# rpm 4.10 (Fedora 18) not supported width in format specifier.
+# Let remove it here and deal with full output in files that use this
+# function output
 function qf_spec_files {
-echo '[%.1{FILEMODES:perms}\
+echo '[%{FILEMODES:perms}\
 %{FILEFLAGS:fflags}\
-%6.6{FILEMODES:octal}\
+%{FILEMODES:octal}\
 %{FILEUSERNAME}\
 %{FILEGROUPNAME}\
 %{FILEVERIFYFLAGS:octal}\
