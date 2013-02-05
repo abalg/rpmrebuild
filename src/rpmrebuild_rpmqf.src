@@ -53,6 +53,7 @@ echo '%|BUILDHOST?{#dummy}|\
 %|GROUP?{[Group:         %{GROUP}]}|\
 %|SUMMARY?{[Summary:       %{SUMMARY}]}|\
 %|DISTRIBUTION?{[Distribution:  %{DISTRIBUTION}]}|\
+%|DISTTAG?{[DistTag:       %{DISTTAG}]}|\
 %|URL?{[URL:           %{URL}]}|\
 %|VENDOR?{[Vendor:        %{VENDOR}]}|\
 %|PACKAGER?{[Packager:      %{PACKAGER}]}|\
