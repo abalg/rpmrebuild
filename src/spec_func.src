@@ -120,7 +120,9 @@ function SpecGeneration
 	spec_files                     > $SPEC_FILES.$i        || return
 	spec_query qf_spec_triggers     > $SPEC_TRIGGERS.$i     || return
 	spec_query qf_spec_pre          > $SPEC_PRE.$i          || return
+	spec_query qf_spec_pretrans     > $SPEC_PRETRANS.$i     || return
 	spec_query qf_spec_post         > $SPEC_POST.$i         || return
+	spec_query qf_spec_posttrans    > $SPEC_POSTTRANS.$i    || return
 	spec_query qf_spec_preun        > $SPEC_PREUN.$i        || return
 	spec_query qf_spec_postun       > $SPEC_POSTUN.$i       || return
 	spec_query qf_spec_verifyscript > $SPEC_VERIFYSCRIPT.$i || return
@@ -198,7 +200,9 @@ function spec_concatenate
 		-e "$sed_global" 	             \
 		$SPEC_TRIGGERS.$si_triggers         \
 		$SPEC_PRE.$si_pre                   \
+		$SPEC_PRETRANS.$si_pretrans         \
 		$SPEC_POST.$si_post                 \
+		$SPEC_POSTTRANS.$si_posttrans       \
 		$SPEC_PREUN.$si_preun               \
 		$SPEC_POSTUN.$si_postun             \
 		$SPEC_VERIFYSCRIPT.$si_verifyscript \

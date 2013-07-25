@@ -31,7 +31,9 @@ change-spec-description demo.sh
 change-spec-files demo.sh
 change-spec-triggers demo.sh
 change-spec-pre demo.sh
+change-spec-pretrans demo.sh
 change-spec-post demo.sh
+change-spec-posttrans demo.sh
 change-spec-preun demo.sh
 change-spec-postun demo.sh
 change-spec-verifyscript demo.sh

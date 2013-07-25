@@ -28,8 +28,10 @@ function processing_init
 	SPEC_FILES=$SPEC_DIR/files
 	SPEC_OBSOLETES=$SPEC_DIR/obsoletes
 	SPEC_POST=$SPEC_DIR/post
+	SPEC_POSTTRANS=$SPEC_DIR/posttrans
 	SPEC_POSTUN=$SPEC_DIR/postun
 	SPEC_PRE=$SPEC_DIR/pre
+	SPEC_PRETRANS=$SPEC_DIR/pretrans
 	SPEC_PREAMBLE=$SPEC_DIR/preamble
 	SPEC_PREUN=$SPEC_DIR/preun
 	SPEC_PROVIDES=$SPEC_DIR/provides
@@ -47,8 +49,10 @@ function processing_init
 	si_files=1
 	si_obsoletes=1
 	si_post=1
+	si_posttrans=1
 	si_postun=1
 	si_pre=1
+	si_pretrans=1
 	si_preamble=1
 	si_preun=1
 	si_provides=1
@@ -124,6 +128,13 @@ function processing_spec_change
 			SPEC_OUT=$SPEC_POST.$si_post
 		;;
 
+		Xchange-spec-posttrans | \
+		Xedit-posttrans)
+			SPEC_IN=$SPEC_POSTTRANS.$si_posttrans
+			si_posttrans=$[si_posttrans + 1]
+			SPEC_OUT=$SPEC_POSTTRANS.$si_posttrans
+		;;
+
 		Xchange-spec-postun | \
 		Xedit-postun)
 			SPEC_IN=$SPEC_POSTUN.$si_postun
@@ -136,6 +147,13 @@ function processing_spec_change
 			SPEC_IN=$SPEC_PRE.$si_pre
 			si_pre=$[si_pre + 1]
 			SPEC_OUT=$SPEC_PRE.$si_pre
+		;;
+
+		Xchange-spec-pretrans | \
+		Xedit-pretrans)
+			SPEC_IN=$SPEC_PRETRANS.$si_pretrans
+			si_pretrans=$[si_pretrans + 1]
+			SPEC_OUT=$SPEC_PRETRANS.$si_pretrans
 		;;
 
 		Xchange-spec-preamble | \

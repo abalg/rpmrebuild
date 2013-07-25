@@ -78,7 +78,9 @@ options:
    --change-spec-files=<command>
    --change-spec-triggers=<command>
    --change-spec-pre=<command>
+   --change-spec-pretrans=<command>
    --change-spec-post=<command>
+   --change-spec-posttrans=<command>
    --change-spec-preun=<command>
    --change-spec-postun=<command>
    --change-spec-verifyscript=<command>
@@ -370,6 +372,11 @@ function ProcessLongOptions
 				LONG_OPTION="change-spec-post"
 			;;
 
+			change-spec-postt | \
+			change-spec-posttrans)
+				LONG_OPTION="change-spec-posttrans"
+			;;
+
 			change-spec-postu | \
 			change-spec-postun)
 				LONG_OPTION="change-spec-postun"
@@ -378,6 +385,11 @@ function ProcessLongOptions
 			change-spec-pr | \
 			change-spec-pre)
 				LONG_OPTION="change-spec-pre"
+			;;
+
+			change-spec-pret | \
+			change-spec-pretrans)
+				LONG_OPTION="change-spec-pretrans"
 			;;
 
 			change-spec-prea | \
@@ -947,9 +959,11 @@ function ProcessLongOptions
 			change-spec-files        | \
 			change-spec-obsoletes    | \
 			change-spec-pre          | \
+			change-spec-pretrans     | \
 			change-spec-preamble     | \
 			change-spec-preun        | \
 			change-spec-post         | \
+			change-spec-posttrans    | \
 			change-spec-postun       | \
 			change-spec-provides     | \
 			change-spec-requires     | \

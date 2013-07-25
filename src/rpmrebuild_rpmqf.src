@@ -120,8 +120,16 @@ function qf_spec_pre {
 echo '%|PREINPROG?{%%pre -p %{PREINPROG}\n%|PREIN?{[%{PREIN}\n]}|}:{%|PREIN?{\n%%pre\n[%{PREIN}\n]}|}|'
 }
 
+function qf_spec_pretrans {
+echo '%|PRETRANSPROG?{%%pretrans -p %{PRETRANSPROG}\n%|PRETRANS?{[%{PRETRANS}\n]}|}:{%|PRETRANS?{\n%%pretrans\n[%{PRETRANS}\n]}|}|'
+}
+
 function qf_spec_post {
 echo '%|POSTINPROG?{%%post -p %{POSTINPROG}\n%|POSTIN?{[%{POSTIN}\n]}|}:{%|POSTIN?{\n%%post\n[%{POSTIN}\n]}|}|'
+}
+
+function qf_spec_posttrans {
+echo '%|POSTTRANSPROG?{%%posttrans -p %{POSTTRANSPROG}\n%|POSTTRANS?{[%{POSTTRANS}\n]}|}:{%|POSTTRANS?{\n%%posttrans\n[%{POSTTRANS}\n]}|}|'
 }
 
 function qf_spec_preun {
