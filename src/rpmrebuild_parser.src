@@ -100,7 +100,9 @@ options:
    --edit-files
    --edit-triggers
    --edit-pre
+   --edit-pretrans
    --edit-post
+   --edit-posttrans
    --edit-preun
    --edit-postun
    --edit-verifyscript
@@ -373,6 +375,9 @@ function ProcessLongOptions
 			;;
 
 			change-spec-postt | \
+			change-spec-posttr | \
+			change-spec-posttra | \
+			change-spec-posttran | \
 			change-spec-posttrans)
 				LONG_OPTION="change-spec-posttrans"
 			;;
@@ -388,6 +393,9 @@ function ProcessLongOptions
 			;;
 
 			change-spec-pret | \
+			change-spec-pretr | \
+			change-spec-pretra | \
+			change-spec-pretran | \
 			change-spec-pretrans)
 				LONG_OPTION="change-spec-pretrans"
 			;;
@@ -609,6 +617,14 @@ function ProcessLongOptions
 				LONG_OPTION='edit-post'
 			;;
 
+			edit-postt | \
+			edit-posttr | \
+			edit-posttra | \
+			edit-posttran | \
+			edit-posttrans)
+				LONG_OPTION='edit-posttrans'
+			;;
+
 			edit-postu | \
 			edit-postun)
 				LONG_OPTION='edit-postun'
@@ -617,6 +633,14 @@ function ProcessLongOptions
 			edit-pr | \
 			edit-pre)
 				LONG_OPTION='edit-pre'
+			;;
+
+			edit-pret | \
+			edit-pretr | \
+			edit-pretra | \
+			edit-pretran | \
+			edit-pretrans)
+				LONG_OPTION='edit-pretrans'
 			;;
 
 			edit-prea | \
@@ -1010,9 +1034,11 @@ function ProcessLongOptions
 			edit-files        | \
 			edit-obsoletes    | \
 			edit-pre          | \
+			edit-pretrans     | \
 			edit-preamble     | \
 			edit-preun        | \
 			edit-post         | \
+			edit-posttrans    | \
 			edit-postun       | \
 			edit-provides     | \
 			edit-requires     | \
