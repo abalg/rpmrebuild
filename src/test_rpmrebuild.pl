@@ -28,31 +28,31 @@ my $cmd = './rpmrebuild';
 
 # 1 :  no arguments
 my $out = `$cmd 2>&1`;
-like( $out, qr/il manque le nom du package/, 'no parameter' );
+like( $out, qr/il manque le nom du package/, 'no parameter' ) or diag("out=$out\n");
 
 # 2 version
 $out = `$cmd --version 2>&1`;
-like( $out, qr/\d+\./, 'version' );
+like( $out, qr/\d+\./, 'version' ) or diag("out=$out\n");
 
 # 3 help
 $out = `$cmd --help 2>&1`;
-like( $out, qr/options:/, 'help' );
+like( $out, qr/options:/, 'help' ) or diag("out=$out\n");
 
 # 4 bad package
 $out = `$cmd tototo 2>&1`;
-like( $out, qr/n'est pas installé/, 'no package' );
+like( $out, qr/n'est pas installé/, 'no package' ) or diag("out=$out\n");
 
 # 5 multiple package
 $out = `$cmd gpg-pubkey 2>&1`;
-like( $out, qr/plusieurs packages correspondent/, 'multiple package' );
+like( $out, qr/plusieurs packages correspondent/, 'multiple package' ) or diag("out=$out\n");
 
 # 6 bad file name
 $out = `$cmd -p tototo 2>&1`;
-like( $out, qr/Fichier non trouvé/, 'no file' );
+like( $out, qr/Fichier non trouvé/, 'no file' ) or diag("out=$out\n");
 
 # 7 file not from package
 $out = `$cmd -p Todo 2>&1`;
-like( $out, qr/n'est pas un fichier rpm/, 'not an rpm file' );
+like( $out, qr/n'est pas un fichier rpm/, 'not an rpm file' ) or diag("out=$out\n");
 
 # capabilities
 # rpmrebuild iputils
