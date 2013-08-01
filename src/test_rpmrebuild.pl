@@ -40,7 +40,7 @@ like( $out, qr/options:/, 'help' ) or diag("out=$out\n");
 
 # 4 bad package
 $out = `$cmd tototo 2>&1`;
-like( $out, qr/n'est pas installé/, 'no package' ) or diag("out=$out\n");
+like( $out, qr/n'est pas installÃ©/, 'no package' ) or diag("out=$out\n");
 
 # 5 multiple package
 $out = `$cmd gpg-pubkey 2>&1`;
@@ -48,7 +48,7 @@ like( $out, qr/plusieurs packages correspondent/, 'multiple package' ) or diag("
 
 # 6 bad file name
 $out = `$cmd -p tototo 2>&1`;
-like( $out, qr/Fichier non trouvé/, 'no file' ) or diag("out=$out\n");
+like( $out, qr/Fichier non trouvÃ©/, 'no file' ) or diag("out=$out\n");
 
 # 7 file not from package
 $out = `$cmd -p Todo 2>&1`;
