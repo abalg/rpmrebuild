@@ -179,6 +179,14 @@ Invoke plugin or editor to change specfile.
 .br 
 \fB\-\-edit\-postun
 .LP 
+\fB\-\-change\-spec\-pretrans\fP=<\fIcommand\fP>
+.br 
+\fB\-\-edit\-postrans
+.LP 
+\fB\-\-change\-spec\-postrans\fP=<\fIcommand\fP>
+.br 
+\fB\-\-edit\-postrans
+.LP 
 \fB\-\-change\-spec\-verifyscript\fP=<\fIcommand\fP>
 .br 
 \fB\-\-edit\-verifyscript
