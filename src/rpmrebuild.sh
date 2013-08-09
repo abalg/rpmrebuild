@@ -215,17 +215,17 @@ function RpmFileName
 function InstallationTest
 {
         if [ "x$package_flag" = "x" ]; then
-		# do not test install if work on rpm files
-		return 0;
-	else
 		# installation test
 		# force is necessary to avoid the message : already installed
 		rpm -U --test --force ${RPMFILENAME} || {
-		Error "package '${PAQUET}' $TestFailed"
-		return 1
-	}
-	return 0
-fi
+			Error "package '${PAQUET}' $TestFailed"
+			return 1
+		}
+		return 0
+	else
+		# do not test install if work on rpm files
+		return 0;
+	fi
 }
 ###############################################################################
 # execute all pre-computed operations on spec files
