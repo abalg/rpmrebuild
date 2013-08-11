@@ -1,3 +1,7 @@
+* Sun Aug 11 2013 <valery_reznic@users.sourceforge.net> 2.10-2
+- bugfix from 2.10 on test install : test was inverted (applied on rpm files
+instead installed rpm)
+
 * Tue Aug 01 2013 <valery_reznic@users.sourceforge.net> 2.10
 - add tag DISTTAG (feature request)
 - do not test install if work on rpm files
