@@ -136,6 +136,9 @@ clean:
 
 man: $(MANPAGES)
 
+html:
+	./faire_doc.sh
+
 help:
 	@echo "list of targets :"
 	@echo "- tar : build tar.gz"
@@ -143,3 +146,4 @@ help:
 	@echo "- rpmbuild : build rpm packages"
 	@echo "- install : install software"
 	@echo "- man : build man pages"
+	@echo "- html : build html pages"
