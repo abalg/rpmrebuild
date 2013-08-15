@@ -139,6 +139,8 @@ man: $(MANPAGES)
 html:
 	./faire_doc.sh
 
+alldist: rpmbuild dist html
+
 help:
 	@echo "list of targets :"
 	@echo "- tar : build tar.gz"
@@ -147,3 +149,4 @@ help:
 	@echo "- install : install software"
 	@echo "- man : build man pages"
 	@echo "- html : build html pages"
+	@echo "- alldist : build all packages"
