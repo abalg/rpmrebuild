@@ -56,7 +56,7 @@ $UsageCopyright
 $UsageLicense
 "
 }
-
+###############################################################################
 function Usage_Plugins
 {
 	name='rpmrebuild'
@@ -113,6 +113,7 @@ options:
 "
 
 }
+###############################################################################
 function List_Plugins
 {
 	plugindir=$( dirname $0)/plugins
@@ -144,7 +145,7 @@ function UnrecognizedOption
 	Echo "$0: $UnrecognizeOption \`--$LONG_OPTION'"
 	Try_Help
 }
-
+###############################################################################
 function AmbiguousOption
 {
 	Echo "$0: $AmbiguousOption \`--$LONG_OPTION'"
@@ -1149,6 +1150,7 @@ function ProcessLongOptions
 		esac || return
 	return 0
 }
+###############################################################################
 function CommandLineParsing
 {
 	# Default flags' values. To be sure they don't came from environment
