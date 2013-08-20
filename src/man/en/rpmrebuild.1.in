@@ -53,6 +53,9 @@ output help information about plugins options and exit.
 \fB\-i, \-\-include\fP=<\fIfile\fP>
 read more options from the file 'file'.
 .TP 
+\fB\-I, \-\-install>
+install the created package
+.TP 
 \fB\-k, \-\-keep\-perm
 alias to \fB\-\-pug\-from\-fs\fP
 .TP 

@@ -51,6 +51,9 @@ affiche une aide sur les plugins, puis sort.
 \fB\-i, \-\-include\fP=<\fIfile\fP>
 lit les options dans le fichier 'file' indiqué.
 .TP 
+\fB\-I, \-\-install>
+installe le package crée
+.TP 
 \fB\-k, \-\-keep\-perm
 alias de l'option \fB\-\-pug\-from\-fs\fP
 .TP 

@@ -31,6 +31,7 @@ options:
    -e, --edit-spec              $UsageEditSpec
    -f, --filter=<command>       $UsageFilter
    -i, --includes=<file>        $UsageInclude
+   -I, --install                $UsageInstall
    -k, --keep-perm              $UsageKeepPerm
        --pug-from-fs            $UsagePugFs
        --pug-from-db (default)  $UsagePugDb
@@ -759,14 +760,20 @@ function ProcessLongOptions
 				LONG_OPTION='help-plugins'
 			;;
 
-			i | \
-			in | \
 			inc | \
 			incl | \
 			inclu | \
 			includ | \
 			include)
 				LONG_OPTION='include'
+			;;
+
+			ins | \
+			inst | \
+			insta | \
+			instal | \
+			install)
+				LONG_OPTION='install'
 			;;
 
 			k | \
@@ -1080,6 +1087,10 @@ function ProcessLongOptions
 				Include || return
 			;;
 
+			install)
+                   		package_install="y"
+			;;
+
 			list-plugin)
 				List_Plugins
 				NEED_EXIT=0
@@ -1166,6 +1177,7 @@ function CommandLineParsing
 	rpm_defines=""
 	rpmdir=""
 	package_flag=""
+	package_install=""
 	spec_only="no"
 	specfile=""
 	verify="yes"
@@ -1180,7 +1192,7 @@ function CommandLineParsing
 
 	export LONG_OPTION
 
-	while getopts "5a:bc:d:D:ef:hi:klm:npPRrs:vVwy:-:" opt; do
+	while getopts "5a:bc:d:D:ef:hi:Iklm:npPRrs:vVwy:-:" opt; do
 		OPTIND_INCR=""
 		case "$opt" in
 			5) LONG_OPTION=md5-compat-digest;;
@@ -1192,6 +1204,7 @@ function CommandLineParsing
 			e) LONG_OPTION=edit-spec;;
 			f) LONG_OPTION=filter;;
 			i) LONG_OPTION=include;;
+			I) LONG_OPTION=install;;
 			k) LONG_OPTION=keep-perm;;
 			l) LONG_OPTION=list-plugin;;
 			m) LONG_OPTION=modify;;    
@@ -1239,6 +1252,9 @@ function CommandLineParsing
 		ProcessLongOptions || return
 		[ "x$NEED_EXIT" = "x" ] || return $NEED_EXIT
 	done || return
+
+	# controls
+	CheckOptions
 
 	CreateProcessing "fini" || return
 	[ "X$spec_only" = "Xyes" -a "X$need_change_files" = "Xyes" ] && {
@@ -1304,3 +1320,18 @@ function CommandLineParsing
 	fi
 	return 0
 }
+##############################################################################
+function CheckOptions
+{
+	if [ -n "$package_install" ]
+	then
+		# force package test
+		NOTESTINSTALL=""
+	elif [ -n "$package_flag" ]
+	then
+		# no test if work on files (not installed)
+		NOTESTINSTALL="1"
+	fi
+	return 0
+}
+###############################################################################

@@ -214,17 +214,30 @@ function RpmFileName
 # test if build package can be installed
 function InstallationTest
 {
-        if [ "x$package_flag" = "x" ]; then
-		# installation test
-		# force is necessary to avoid the message : already installed
-		rpm -U --test --force ${RPMFILENAME} || {
-			Error "package '${PAQUET}' $TestFailed"
+	# installation test
+	# force is necessary to avoid the message : already installed
+	rpm -U --test --force ${RPMFILENAME} || {
+		Error "package '${PAQUET}' $TestFailed"
+		return 1
+	}
+	return 0
+}
+###############################################################################
+# install the package
+function Installation
+{
+	# chek if root
+	ID=$( id -u )
+	if [ $ID -eq 0 ]
+	then
+		rpm -Uvh --force ${RPMFILENAME} || {
+			Error "package '${PAQUET}' $InstallFailed"
 			return 1
 		}
 		return 0
 	else
-		# do not test install if work on rpm files
-		return 0;
+		Error "package '${PAQUET}' $InstallCannot"
+		return 1;
 	fi
 }
 ###############################################################################
@@ -455,6 +468,9 @@ function Main
 		echo "result: ${RPMFILENAME}"
 		if [ -z "$NOTESTINSTALL" ]; then
 			InstallationTest || return
+		fi
+		if [ -n "$package_install" ]; then
+			Installation || return
 		fi
 	fi
 	return 0
