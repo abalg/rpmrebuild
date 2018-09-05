@@ -7,11 +7,15 @@ MKDIR       := mkdir -p
 RM          := rm --force
 RMDIR       := rm --force --recursive
 
-TARGET_DIR    := $(DESTDIR)/usr/bin
-TARGET_LIB    := $(DESTDIR)/usr/lib/rpmrebuild
-TARGET_PLUGIN := $(DESTDIR)/usr/lib/rpmrebuild/plugins
-TARGET_LOCALE := $(DESTDIR)/usr/lib/rpmrebuild/locale
-TARGET_MAN    := $(DESTDIR)/usr/share/man
+ifndef prefix
+prefix=/usr
+endif
+
+TARGET_DIR    := $(DESTDIR)$(prefix)/bin
+TARGET_LIB    := $(DESTDIR)$(prefix)/lib/rpmrebuild
+TARGET_PLUGIN := $(DESTDIR)$(prefix)/lib/rpmrebuild/plugins
+TARGET_LOCALE := $(DESTDIR)$(prefix)/lib/rpmrebuild/locale
+TARGET_MAN    := $(DESTDIR)$(prefix)/share/man
 
 LANGS := en fr_FR fr_FR.UTF-8
 
